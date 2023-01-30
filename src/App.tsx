@@ -53,7 +53,7 @@ const App: React.FC = () => {
           items={items1}
         />
       </Header>
-      <Content style={{ padding: "0 50px" }}>
+      <Content style={{ padding: "0 50px", minHeight: "100vh" }}>
         <Breadcrumb style={{ margin: "16px 0" }}>
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -69,13 +69,13 @@ const App: React.FC = () => {
               items={items2}
             />
           </Sider>
-          <Content style={{ padding: "0 24px", minHeight: 280 }}>
+          <Content style={{ padding: "0 24px", minHeight: "50vh" }}>
             Content
           </Content>
         </Layout>
       </Content>
       <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2023 Created by Ant UED
+        HCMUS &copy;2023 Document approval and publication system
       </Footer>
     </Layout>
   );
