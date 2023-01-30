@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
+import logo from "assets/logo.png";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -43,14 +44,16 @@ const MainPage: React.FC = () => {
 
   return (
     <Layout>
-      <Header className="header">
-        {/* <div className="flex"></div>
-        <div className="logo">Hello</div> */}
+      <Header className="header flex items-center justify-center">
+        <div className="logo bg-red flex-none w-40">
+          <img src={logo} style={{ width: "50%" }} alt="doc" />
+        </div>
         <Menu
           theme="dark"
           mode="horizontal"
-          // defaultSelectedKeys={["3"]}
+          defaultSelectedKeys={["1"]}
           items={items1}
+          className="flex-auto"
         />
       </Header>
       <Content style={{ padding: "0 50px", minHeight: "100vh" }}>
