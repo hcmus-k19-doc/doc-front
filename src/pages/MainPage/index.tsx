@@ -1,16 +1,18 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, theme } from "antd";
 import PageHeader from "components/PageHeader";
+import SidebarPage from "components/SidebarPage";
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Footer } = Layout;
 
-const items2: MenuProps["items"] = [
+const sub: MenuProps["items"] = [
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
@@ -20,10 +22,10 @@ const items2: MenuProps["items"] = [
   return {
     key: `sub${key}`,
     icon: React.createElement(icon),
-    label: `subnav ${key}`,
+    label: `sub ${key}`,
 
     children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
+      const subKey: number = index * 4 + j + 1;
       return {
         key: subKey,
         label: `option${subKey}`,
@@ -32,38 +34,43 @@ const items2: MenuProps["items"] = [
   };
 });
 
+const menu: MenuProps = {
+  mode: "inline",
+  defaultSelectedKeys: ["1"],
+  defaultOpenKeys: ["sub1"],
+  items: sub,
+};
+
 const MainPage: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   return (
-    <Layout>
-      <PageHeader />
-      <Content style={{ padding: "0 50px", minHeight: "100vh" }}>
-        <Breadcrumb className="mt-4 mb-4">
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>MainPage</Breadcrumb.Item>
-        </Breadcrumb>
-        <Layout className="py-5" style={{ backgroundColor: colorBgContainer }}>
-          <Sider style={{ background: colorBgContainer }}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              items={items2}
-            />
-          </Sider>
-          <Content className="px-5 py-3" style={{ minHeight: "70vh" }}>
-            Content
-          </Content>
-        </Layout>
-      </Content>
-      <Footer style={{ textAlign: "center" }}>
-        HCMUS &copy;2023 Document approval and publication system
-      </Footer>
-    </Layout>
+    <BrowserRouter>
+      <Layout>
+        <PageHeader />
+        <Content style={{ padding: "0 50px", minHeight: "100vh" }}>
+          <Breadcrumb className="mt-4 mb-4">
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>MainPage</Breadcrumb.Item>
+          </Breadcrumb>
+          <Layout
+            className="py-5"
+            style={{ backgroundColor: colorBgContainer }}
+          >
+            <Routes>
+              <Route path="/" element={<SidebarPage {...menu} />} />
+              <Route path="/hello" element={<div>Hello</div>} />
+            </Routes>
+          </Layout>
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          HCMUS &copy;2023 Document approval and publication system
+        </Footer>
+      </Layout>
+    </BrowserRouter>
   );
 };
 
