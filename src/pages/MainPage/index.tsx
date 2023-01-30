@@ -44,8 +44,8 @@ const MainPage: React.FC = () => {
   return (
     <Layout>
       <Header className="header">
-        <div className="flex"></div>
-        <div className="logo">Hello</div>
+        {/* <div className="flex"></div>
+        <div className="logo">Hello</div> */}
         <Menu
           theme="dark"
           mode="horizontal"
