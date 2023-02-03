@@ -10,6 +10,7 @@ import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, theme } from "antd";
 import PageHeader from "components/PageHeader";
 import SidebarPage from "components/SidebarPage";
+import LoginPage from "pages/LoginPage";
 
 const { Content, Footer } = Layout;
 
@@ -139,6 +140,7 @@ const MainPage: React.FC = () => {
           <Routes>
             <Route path="/" element={<SidebarPage {...menu} />} />
             <Route path="/docin/*" element={<SidebarPage {...menu} />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/hello" element={<div>Hello</div>} />
           </Routes>
         </Layout>

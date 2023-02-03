@@ -9,15 +9,8 @@ import {
   Table,
   Form,
   Input,
-  Radio,
   Select,
-  Cascader,
   DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Checkbox,
-  Upload,
 } from "antd";
 
 import "./index.css";
