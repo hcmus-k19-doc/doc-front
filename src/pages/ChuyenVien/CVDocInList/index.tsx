@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Divider, Radio, Table } from "antd";
+import React from "react";
+import { Divider, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 interface DataType {
@@ -11,17 +11,49 @@ interface DataType {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "STT",
+    dataIndex: "id",
     render: (text: string) => <a>{text}</a>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
+    title: "Cấp gửi",
+    dataIndex: "issuer",
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Loại văn bản",
+    dataIndex: "type",
+  },
+  {
+    title: "Số đến theo sổ",
+    dataIndex: "arriveId",
+  },
+  {
+    title: "Số ký hiệu gốc",
+    dataIndex: "originId",
+  },
+  {
+    title: "Ngày đến",
+    dataIndex: "arriveDate",
+  },
+  {
+    title: "Nơi phát hành",
+    dataIndex: "issuePlace",
+  },
+  {
+    title: "Trích yếu",
+    dataIndex: "summary",
+  },
+  {
+    title: "Toàn văn",
+    dataIndex: "fullText",
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "status",
+  },
+  {
+    title: "Thời hạn xử lý",
+    dataIndex: "deadline",
   },
 ];
 
@@ -52,45 +84,13 @@ const data: DataType[] = [
   },
 ];
 
-// rowSelection object indicates the need for row selection
-const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record: DataType) => ({
-    disabled: record.name === "Disabled User", // Column configuration not to be checked
-    name: record.name,
-  }),
-};
-
 const CVDocInList: React.FC = () => {
-  const [selectionType, setSelectionType] = useState<"checkbox" | "radio">(
-    "checkbox"
-  );
-
   return (
     <div>
-      <Radio.Group
-        onChange={({ target: { value } }) => {
-          setSelectionType(value);
-        }}
-        value={selectionType}
-      >
-        <Radio value="checkbox">Checkbox</Radio>
-        <Radio value="radio">radio</Radio>
-      </Radio.Group>
-
+      Chỗ của tiêu thức tìm kiếm, bla bla
       <Divider />
-
       <Table
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
-        }}
+        rowSelection={{ type: "checkbox" }}
         columns={columns}
         dataSource={data}
       />
