@@ -1,9 +1,13 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 import type { MenuProps } from "antd";
 import { Layout, Menu } from "antd";
-import logo from "assets/logo.png";
+import { BellOutlined, LogoutOutlined } from "@ant-design/icons";
+import { Badge } from "antd";
 
-import { Link, useNavigate } from "react-router-dom";
+import "./index.css";
+import logo from "assets/logo.png";
 
 const { Header } = Layout;
 
@@ -35,6 +39,11 @@ const PageHeader: React.FC = () => {
         items={items1}
         className="flex-auto"
       />
+      <Badge count={5} overflowCount={99} size="small">
+        <BellOutlined />
+      </Badge>
+
+      <LogoutOutlined className="ml-5" />
     </Header>
   );
 };
