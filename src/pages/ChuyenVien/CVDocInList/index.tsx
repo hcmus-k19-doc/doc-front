@@ -1,23 +1,52 @@
 import React from "react";
-import { Divider, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { FilterFilled } from "@ant-design/icons";
+import {
+  Button,
+  Collapse,
+  Divider,
+  Pagination,
+  Table,
+  Form,
+  Input,
+  Radio,
+  Select,
+  Cascader,
+  DatePicker,
+  InputNumber,
+  TreeSelect,
+  Switch,
+  Checkbox,
+  Upload,
+} from "antd";
 
+import "./index.css";
+import { primaryColor } from "config/constant";
+
+const { Panel } = Collapse;
 interface DataType {
   key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+  id: string;
+  issueLevel: string;
+  type: string;
+  arriveId: string;
+  originId: string;
+  arriveDate: string;
+  issuePlace: string;
+  summary: string;
+  fullText: string;
+  status: string;
+  deadline: string;
 }
 
 const columns: ColumnsType<DataType> = [
   {
     title: "STT",
     dataIndex: "id",
-    render: (text: string) => <a>{text}</a>,
   },
   {
     title: "Cấp gửi",
-    dataIndex: "issuer",
+    dataIndex: "issueLevel",
   },
   {
     title: "Loại văn bản",
@@ -26,10 +55,12 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Số đến theo sổ",
     dataIndex: "arriveId",
+    render: (text: string) => <a className="link">{text}</a>,
   },
   {
     title: "Số ký hiệu gốc",
     dataIndex: "originId",
+    render: (text: string) => <a className="link">{text}</a>,
   },
   {
     title: "Ngày đến",
@@ -42,6 +73,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Trích yếu",
     dataIndex: "summary",
+    width: "25%",
   },
   {
     title: "Toàn văn",
@@ -60,39 +92,102 @@ const columns: ColumnsType<DataType> = [
 const data: DataType[] = [
   {
     key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
+    id: "1",
+    issueLevel: "Thành phố",
+    type: "Công văn",
+    arriveId: "120/ĐP",
+    originId: "1237/VP-VX",
+    arriveDate: "12/12/2020",
+    issuePlace: "Phòng Văn hóa",
+    summary:
+      "Công văn yêu cầu đăng ký tham gia chương trình abc xyz Công văn yêu cầu đăng ký tham gia chương trình abc xyz",
+    fullText: "*link",
+    status: "Đã xử lý",
+    deadline: "24/12/2020",
   },
   {
     key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Disabled User",
-    age: 99,
-    address: "Sydney No. 1 Lake Park",
+    id: "2",
+    issueLevel: "Thành phố",
+    type: "Công văn",
+    arriveId: "120/ĐP",
+    originId: "1237/VP-VX",
+    arriveDate: "12/12/2020",
+    issuePlace: "Phòng Văn hóa",
+    summary:
+      "Công văn yêu cầu đăng ký tham gia chương trình abc xyz Công văn yêu cầu đăng ký tham gia chương trình abc xyz",
+    fullText: "*link",
+    status: "Đã xử lý",
+    deadline: "24/12/2020",
   },
 ];
+
+const { TextArea } = Input;
 
 const CVDocInList: React.FC = () => {
   return (
     <div>
-      Chỗ của tiêu thức tìm kiếm, bla bla
+      <div className="text-lg text-primary">Danh sách văn bản đến</div>
+
+      <Collapse
+        bordered={false}
+        expandIcon={() => <FilterFilled style={{ color: primaryColor }} />}
+      >
+        <Panel header="Tiêu thức tìm kiếm" key="1">
+          <Form
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 14 }}
+            layout="horizontal"
+            style={{ maxWidth: 600 }}
+          >
+            <Form.Item label="Input">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Select">
+              <Select>
+                <Select.Option value="demo">Demo</Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item label="DatePicker">
+              <DatePicker />
+            </Form.Item>
+
+            <Form.Item label="TextArea">
+              <TextArea rows={4} />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" ghost>
+                Tìm kiếm
+              </Button>
+            </Form.Item>
+          </Form>
+        </Panel>
+      </Collapse>
+
       <Divider />
+
       <Table
         rowSelection={{ type: "checkbox" }}
         columns={columns}
         dataSource={data}
+        scroll={{ x: true }}
+        pagination={false}
+        footer={() => (
+          <div className="mt-5 flex justify-between">
+            <Button type="primary" ghost>
+              Trình lãnh đạo
+            </Button>
+
+            <Pagination
+              pageSize={5}
+              total={50}
+              showTotal={(total) => `Kết quả: ${total} văn bản`}
+            />
+          </div>
+        )}
       />
     </div>
   );

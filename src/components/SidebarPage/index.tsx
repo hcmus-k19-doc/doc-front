@@ -18,7 +18,7 @@ const SidebarPage: React.FC<MenuProps> = (menu) => {
           items={menu.items}
         />
       </Sider>
-      <Content className="px-5 py-3" style={{ minHeight: "70vh" }}>
+      <Content className="px-5 py-2" style={{ minHeight: "70vh" }}>
         <Routes>
           <Route path="/" element={<CVDocInList />} />
           <Route path="/process" element={<div>VBDen xu ly</div>} />

@@ -66,20 +66,20 @@ const MainPage: React.FC = () => {
 
   const sub: MenuProps["items"] = [
     {
-      key: `vbden`,
+      key: `docin`,
       icon: React.createElement(ArrowDownOutlined),
       label: `Văn bản đến`,
 
       children: [
         {
-          key: "den1",
+          key: "in1",
           label: "Danh sách văn bản đến",
           onClick: () => {
             navigate("/docin");
           },
         },
         {
-          key: "den2",
+          key: "in2",
           label: "Xử lý văn bản đến",
           onClick: () => {
             navigate("/docin/process");
@@ -88,31 +88,31 @@ const MainPage: React.FC = () => {
       ],
     },
     {
-      key: `vbdi`,
+      key: `docout`,
       icon: React.createElement(ArrowUpOutlined),
       label: `Văn bản đi`,
       children: [
         {
-          key: "di1",
+          key: "out1",
           label: "Test",
         },
         {
-          key: "di2",
+          key: "out2",
           label: "Test",
         },
       ],
     },
     {
-      key: `vbnb`,
+      key: `docinternal`,
       icon: React.createElement(InboxOutlined),
       label: `Văn bản nội bộ`,
       children: [
         {
-          key: "nb1",
+          key: "internal1",
           label: "Test",
         },
         {
-          key: "nb2",
+          key: "internal2",
           label: "Test",
         },
       ],
@@ -121,8 +121,8 @@ const MainPage: React.FC = () => {
 
   const menu: MenuProps = {
     mode: "inline",
-    defaultSelectedKeys: ["den1"],
-    defaultOpenKeys: ["vbden"],
+    defaultSelectedKeys: ["in1"],
+    defaultOpenKeys: ["docin"],
     items: sub,
   };
 
