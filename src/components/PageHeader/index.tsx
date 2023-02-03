@@ -1,10 +1,15 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import type { MenuProps } from "antd";
 import { Layout, Menu } from "antd";
-import { BellOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  BellOutlined,
+  LogoutOutlined,
+  GlobalOutlined,
+} from "@ant-design/icons";
 import { Badge } from "antd";
+import type { MenuProps } from "antd";
+import { Dropdown, Space } from "antd";
 
 import "./index.css";
 import logo from "assets/logo.png";
@@ -21,6 +26,17 @@ const PageHeader: React.FC = () => {
       navigate("/hello");
     },
   }));
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: "English",
+    },
+    {
+      key: "2",
+      label: "Vietnamese",
+    },
+  ];
 
   return (
     <Header
@@ -39,7 +55,13 @@ const PageHeader: React.FC = () => {
         items={items1}
         className="flex-auto"
       />
-      <Badge count={5} overflowCount={99} size="small">
+      <Dropdown menu={{ items }} placement="bottomRight">
+        <Space>
+          <GlobalOutlined />
+        </Space>
+      </Dropdown>
+
+      <Badge count={5} overflowCount={99} size="small" className="ml-5">
         <BellOutlined />
       </Badge>
 

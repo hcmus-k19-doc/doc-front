@@ -1,8 +1,10 @@
-.anticon,
+span.anticon,
 i {
   color: #4fafd1;
+  font-size: 18px;
 }
 
-span.anticon {
-  font-size: 18px;
+span.anticon:hover,
+i:hover {
+  cursor: pointer;
 }
