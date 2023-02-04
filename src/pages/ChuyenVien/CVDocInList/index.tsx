@@ -166,7 +166,7 @@ const CVDocInList: React.FC = () => {
         rowSelection={{ type: "checkbox" }}
         columns={columns}
         dataSource={data}
-        scroll={{ x: true }}
+        scroll={{ x: 1500 }}
         pagination={false}
         footer={() => (
           <div className="mt-5 flex justify-between">
