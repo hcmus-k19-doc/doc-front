@@ -1,9 +1,11 @@
-import './App.css';
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
-import { BrowserRouter } from 'react-router-dom';
-import MainPage from 'pages/MainPage';
 import { primaryColor } from 'config/constant';
+
+import { AuthInit } from './components/AuthComponent';
+
+import './App.css';
 
 const App: React.FC = () => {
   return (
@@ -13,9 +15,9 @@ const App: React.FC = () => {
           colorPrimary: primaryColor,
         },
       }}>
-      <BrowserRouter>
-        <MainPage />
-      </BrowserRouter>
+      <AuthInit>
+        <Outlet />
+      </AuthInit>
     </ConfigProvider>
   );
 };
