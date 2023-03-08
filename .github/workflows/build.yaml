@@ -3,7 +3,7 @@ name: DOC Vite + React build
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 jobs:
   Build:
