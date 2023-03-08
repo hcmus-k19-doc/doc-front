@@ -1,6 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ArrowDownOutlined, ArrowUpOutlined, InboxOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, theme } from 'antd';
@@ -9,50 +8,6 @@ import SidebarPage from 'components/SidebarPage';
 import LoginPage from 'pages/LoginPage';
 
 const { Content, Footer } = Layout;
-
-// const sub: MenuProps["items"] = [
-//   UserOutlined,
-//   LaptopOutlined,
-//   NotificationOutlined,
-// ].map((icon, index) => {
-//   const key = String(index + 1);
-
-//   return {
-//     key: `sub${key}`,
-//     icon: React.createElement(icon),
-//     label: `sub ${key}`,
-
-//     children: new Array(4).fill(null).map((_, j) => {
-//       const subKey: number = index * 4 + j + 1;
-//       return {
-//         key: subKey,
-//         label: `option${subKey}`,
-//       };
-//     }),
-//   };
-// });
-
-// [
-//   UserOutlined,
-//   LaptopOutlined,
-//   NotificationOutlined,
-// ].map((icon, index) => {
-//   const key = String(index + 1);
-
-//   return {
-//     key: `sub${key}`,
-//     icon: React.createElement(icon),
-//     label: `sub ${key}`,
-
-//     children: new Array(4).fill(null).map((_, j) => {
-//       const subKey: number = index * 4 + j + 1;
-//       return {
-//         key: subKey,
-//         label: `option${subKey}`,
-//       };
-//     }),
-//   };
-// });
 
 const MainPage: React.FC = () => {
   const {
