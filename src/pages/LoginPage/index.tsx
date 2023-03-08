@@ -2,10 +2,9 @@ import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
 import logo from 'assets/logo.png';
-
-import { useAuth } from '../../components/AuthComponent';
-import { getToken } from '../../services/SecurityService';
-import { getCurrentUser } from '../../services/UserService';
+import { useAuth } from 'components/AuthComponent';
+import { getToken } from 'services/SecurityService';
+import { getCurrentUser } from 'services/UserService';
 
 const LoginPage: React.FC = () => {
   const { saveAuth, setCurrentUser } = useAuth();
