@@ -1,9 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import { AuthInit } from 'components/AuthComponent';
 import { primaryColor } from 'config/constant';
-
-import { AuthInit } from './components/AuthComponent';
 
 import './App.css';
 

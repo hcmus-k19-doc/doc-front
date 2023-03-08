@@ -10,7 +10,7 @@
     "plugin:import/typescript",
     "plugin:prettier/recommended"
   ],
-  "ignorePatterns": ["node_modules", "build", "tailwind.config.js", "webpack.config.js"],
+  "ignorePatterns": ["node_modules", "dist", "tailwind.config.js", "vite.config.ts"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
