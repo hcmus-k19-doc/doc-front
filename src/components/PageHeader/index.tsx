@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import { Layout, Menu, Badge, Dropdown, Space } from 'antd';
-import { BellOutlined, LogoutOutlined, GlobalOutlined } from '@ant-design/icons';
-
+import { BellOutlined, GlobalOutlined, LogoutOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
+import { Badge, Dropdown, Layout, Menu, Space } from 'antd';
+import logo from 'assets/logo.png';
 
 import './index.css';
-import logo from 'assets/logo.png';
 
 const { Header } = Layout;
 

@@ -1,11 +1,26 @@
+import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { LoginForm, ProFormText, ProConfigProvider } from '@ant-design/pro-components';
-
+import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
 import logo from 'assets/logo.png';
 
-import './index.css';
+import { useAuth } from '../../components/AuthComponent';
+import { getToken } from '../../services/SecurityService';
+import { getCurrentUser } from '../../services/UserService';
 
 const LoginPage: React.FC = () => {
+  const { saveAuth, setCurrentUser } = useAuth();
+
+  const handleOnFinish = async (values: Record<string, string>) => {
+    try {
+      const { data: token } = await getToken(values['username'], values['password']);
+      saveAuth(token);
+      const { data: user } = await getCurrentUser();
+      setCurrentUser(user);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <ProConfigProvider hashed={false}>
       <div style={{ backgroundColor: 'white' }}>
@@ -18,9 +33,7 @@ const LoginPage: React.FC = () => {
               submitText: 'Đăng nhập',
             },
           }}
-          onFinish={async (values) => {
-            alert(JSON.stringify(values));
-          }}>
+          onFinish={handleOnFinish}>
           <ProFormText
             name='username'
             fieldProps={{
