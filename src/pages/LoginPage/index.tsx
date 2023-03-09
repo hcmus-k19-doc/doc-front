@@ -1,13 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
-import logo from 'assets/logo.png';
+import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import { getToken } from 'services/SecurityService';
 import { getCurrentUser } from 'services/UserService';
 
+const I18N_PREFIX = 'LOGIN';
+
 const LoginPage: React.FC = () => {
   const { saveAuth, setCurrentUser } = useAuth();
+  const { t } = useTranslation();
 
   const handleOnFinish = async (values: Record<string, string>) => {
     try {
@@ -26,10 +30,10 @@ const LoginPage: React.FC = () => {
         <LoginForm
           logo={logo}
           title='DOC'
-          subTitle='Hệ thống phê duyệt và phát hành văn thư'
+          subTitle={t(`${I18N_PREFIX}.SUBTITLE`)}
           submitter={{
             searchConfig: {
-              submitText: 'Đăng nhập',
+              submitText: t(`${I18N_PREFIX}.SUBMITTER.SUBMIT_TEXT`),
             },
           }}
           onFinish={handleOnFinish}>
@@ -39,11 +43,11 @@ const LoginPage: React.FC = () => {
               size: 'large',
               prefix: <UserOutlined className='prefixIcon' />,
             }}
-            placeholder='Tên đăng nhập'
+            placeholder={t(`${I18N_PREFIX}.USERNAME.PLACEHOLDER`) as string}
             rules={[
               {
                 required: true,
-                message: 'Hãy điền tên đăng nhập!',
+                message: t(`${I18N_PREFIX}.USERNAME.RULE_MESSAGE`) as string,
               },
             ]}
           />
@@ -53,11 +57,11 @@ const LoginPage: React.FC = () => {
               size: 'large',
               prefix: <LockOutlined className='prefixIcon' />,
             }}
-            placeholder='Mật khẩu'
+            placeholder={t(`${I18N_PREFIX}.PASSWORD.PLACEHOLDER`) as string}
             rules={[
               {
                 required: true,
-                message: 'Hãy điền mật khẩu!',
+                message: t(`${I18N_PREFIX}.PASSWORD.RULE_MESSAGE`) as string,
               },
             ]}
           />

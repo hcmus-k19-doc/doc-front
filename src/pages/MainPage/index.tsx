@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ArrowDownOutlined, ArrowUpOutlined, InboxOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -16,23 +17,25 @@ const MainPage: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
   const sub: MenuProps['items'] = [
     {
       key: `docin`,
       icon: React.createElement(ArrowDownOutlined),
-      label: `Văn bản đến`,
+      label: t('MAIN_PAGE.MENU.ITEMS.LABEL'),
 
       children: [
         {
           key: 'in1',
-          label: 'Danh sách văn bản đến',
+          label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
           onClick: () => {
             navigate('/docin');
           },
         },
         {
           key: 'in2',
-          label: 'Xử lý văn bản đến',
+          label: t('MAIN_PAGE.MENU.ITEMS.PROCESSES_INCOMING_DOCUMENT'),
           onClick: () => {
             navigate('/docin/process');
           },
@@ -42,7 +45,7 @@ const MainPage: React.FC = () => {
     {
       key: `docout`,
       icon: React.createElement(ArrowUpOutlined),
-      label: `Văn bản đi`,
+      label: t(`MAIN_PAGE.MENU.ITEMS.OUTGOING_DOCUMENT`),
       children: [
         {
           key: 'out1',
@@ -57,7 +60,7 @@ const MainPage: React.FC = () => {
     {
       key: `docinternal`,
       icon: React.createElement(InboxOutlined),
-      label: `Văn bản nội bộ`,
+      label: t(`MAIN_PAGE.MENU.ITEMS.INTERNAL_DOCUMENT`),
       children: [
         {
           key: 'internal1',
