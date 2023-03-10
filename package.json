@@ -25,9 +25,11 @@
     "build": "react-scripts build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "lint-staged": "lint-staged",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
-    "format": "yarn run prettier:fix && yarn run lint:fix"
+    "format": "yarn run prettier:fix && yarn run lint:fix",
+    "postinstall": "npx husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -58,8 +60,15 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-simple-import-sort": "10.0.0",
+    "lint-staged": "13.1.2",
     "prettier": "2.8.3",
     "tailwindcss": "3.2.4",
     "typescript": "4.9.5"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn run format",
+      "git add ."
+    ]
   }
 }
