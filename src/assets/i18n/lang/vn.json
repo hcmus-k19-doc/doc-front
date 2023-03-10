@@ -42,5 +42,8 @@
       "SEARCH": "Tìm kiếm",
       "RESET": "Làm mới"
     }
+  },
+  "USER": {
+    "INVALID": "Tài khoản không hợp lệ"
   }
 }
