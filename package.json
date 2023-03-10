@@ -34,6 +34,7 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-simple-import-sort": "10.0.0",
+    "lint-staged": "13.1.2",
     "postcss": "8.4.21",
     "prettier": "2.8.3",
     "tailwindcss": "3.2.7",
@@ -47,9 +48,11 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "lint-staged": "lint-staged",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
-    "format": "yarn run prettier:fix && yarn run lint:fix"
+    "format": "yarn run prettier:fix && yarn run lint:fix",
+    "postinstall": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -67,6 +70,12 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn run format",
+      "git add ."
     ]
   }
 }

@@ -2,3 +2,7 @@ node_modules
 dist
 coverage
 .vscode
+postcss.config.js
+tailwind.config.js
+src/models
+vite.config.ts

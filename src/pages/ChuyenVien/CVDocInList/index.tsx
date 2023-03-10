@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import {
   Button,
@@ -15,7 +16,6 @@ import type { ColumnsType } from 'antd/es/table';
 import { primaryColor } from 'config/constant';
 
 import './index.css';
-import { useTranslation } from 'react-i18next';
 
 const { Panel } = Collapse;
 
