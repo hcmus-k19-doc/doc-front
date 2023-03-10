@@ -52,7 +52,7 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
     "format": "yarn run prettier:fix && yarn run lint:fix",
-    "postinstall": "husky install"
+    "postinstall": "npx husky install"
   },
   "eslintConfig": {
     "extends": [
