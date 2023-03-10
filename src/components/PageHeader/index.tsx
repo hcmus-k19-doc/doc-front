@@ -1,9 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { BellOutlined, GlobalOutlined, LogoutOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Badge, Dropdown, Layout, Menu, Space } from 'antd';
-import logo from 'assets/logo.png';
+import logo from 'assets/icons/logo.png';
 
 import './index.css';
 
@@ -11,6 +12,9 @@ const { Header } = Layout;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
+  console.log(t('PAGE_HEADER.LANGUAGES.EN'));
 
   const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,
@@ -23,11 +27,11 @@ const PageHeader: React.FC = () => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: 'English',
+      label: t('PAGE_HEADER.LANGUAGES.EN'),
     },
     {
       key: '2',
-      label: 'Vietnamese',
+      label: t('PAGE_HEADER.LANGUAGES.VI'),
     },
   ];
 
