@@ -15,8 +15,10 @@ import type { ColumnsType } from 'antd/es/table';
 import { primaryColor } from 'config/constant';
 
 import './index.css';
+import { useTranslation } from 'react-i18next';
 
 const { Panel } = Collapse;
+
 interface DataType {
   key: React.Key;
   id: string;
@@ -118,14 +120,16 @@ const data: DataType[] = [
 const { TextArea } = Input;
 
 const CVDocInList: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <div className='text-lg text-primary'>Danh sách văn bản đến</div>
+      <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST')}</div>
 
       <Collapse
         bordered={false}
         expandIcon={() => <FilterFilled style={{ color: primaryColor }} />}>
-        <Panel header='Tiêu thức tìm kiếm' key='1'>
+        <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
@@ -169,13 +173,13 @@ const CVDocInList: React.FC = () => {
         footer={() => (
           <div className='mt-5 flex justify-between'>
             <Button type='primary' ghost>
-              Trình lãnh đạo
+              {t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}
             </Button>
 
             <Pagination
               pageSize={5}
               total={50}
-              showTotal={(total) => `Kết quả: ${total} văn bản`}
+              showTotal={(total) => t('COMMON.PAGINATION.SHOW_TOTAL', { total })}
             />
           </div>
         )}
