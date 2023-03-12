@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import CVDocInList from '@pages/ChuyenVien/CVDocInList';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
-import CVDocInList from 'pages/ChuyenVien/CVDocInList';
 
 const { Content, Sider } = Layout;
 

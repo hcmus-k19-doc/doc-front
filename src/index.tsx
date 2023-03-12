@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
-import i18n from 'assets/i18n/i18n.config';
+import i18n from '@assets/i18n/i18n.config';
+import AppRoutes from '@components/AppRoutes';
+import { AuthProvider } from '@components/AuthComponent';
+import { setupAxios } from '@utils/AuthUtils';
 import axios from 'axios';
-import AppRoutes from 'components/AppRoutes';
-import { AuthProvider } from 'components/AuthComponent';
-import { setupAxios } from 'utils/AuthUtils';
 
 import './index.css';
 

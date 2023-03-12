@@ -2,9 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { BellOutlined, GlobalOutlined, LogoutOutlined } from '@ant-design/icons';
+import logo from '@assets/icons/logo.png';
 import type { MenuProps } from 'antd';
 import { Badge, Dropdown, Layout, Menu, Space } from 'antd';
-import logo from 'assets/icons/logo.png';
 
 import './index.css';
 

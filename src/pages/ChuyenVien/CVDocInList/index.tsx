@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
+import { primaryColor } from '@config/constant';
 import {
   Button,
   Collapse,
@@ -13,7 +14,6 @@ import {
   Table,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { primaryColor } from 'config/constant';
 
 import './index.css';
 
