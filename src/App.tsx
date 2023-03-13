@@ -1,9 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
-import { primaryColor } from 'config/constant';
-
-import { AuthInit } from './components/AuthComponent';
+import { AuthInit } from 'components/AuthComponent';
+import { PRIMARY_COLOR } from 'config/constant';
 
 import './App.css';
 
@@ -12,7 +11,7 @@ const App: React.FC = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: primaryColor,
+          colorPrimary: PRIMARY_COLOR,
         },
       }}>
       <AuthInit>

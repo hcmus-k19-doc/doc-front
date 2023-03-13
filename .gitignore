@@ -24,4 +24,4 @@ yarn-error.log*
 
 /.idea/
 
-/src/models/doc-main-models.ts
+# /src/models/doc-main-models.ts

@@ -1,9 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-
-import App from '../../App';
-import { useAuth } from '../AuthComponent';
-import AuthRoutes from '../AuthRoute/AuthRoutes';
-import PrivateRoutes from '../PrivateRoutes';
+import App from 'App';
+import { useAuth } from 'components/AuthComponent';
+import AuthRoutes from 'components/AuthRoute/AuthRoutes';
+import PrivateRoutes from 'components/PrivateRoutes';
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();

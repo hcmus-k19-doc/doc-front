@@ -2,12 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ArrowDownOutlined, ArrowUpOutlined, InboxOutlined } from '@ant-design/icons';
-import PageHeader from '@components/PageHeader';
-import SidebarPage from '@components/SidebarPage';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, theme } from 'antd';
-
-import LoginPage from '../LoginPage';
+import PageHeader from 'components/PageHeader';
+import SidebarPage from 'components/SidebarPage';
+import LoginPage from 'pages/LoginPage';
 
 const { Content, Footer } = Layout;
 

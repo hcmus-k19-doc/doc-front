@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
-import logo from 'assets/logo.png';
+import logo from 'assets/icons/logo.png';
 import axios from 'axios';
-import { useAuth } from '../../components/AuthComponent';
-import { getToken } from '../../services/SecurityService';
-import { getCurrentUser } from '../../services/UserService';
+import { useAuth } from 'components/AuthComponent';
+import { getToken } from 'services/SecurityService';
+import { getCurrentUser } from 'services/UserService';
+
+import './index.css';
 
 const I18N_PREFIX = 'LOGIN';
 
@@ -47,7 +49,6 @@ const LoginPage: React.FC = () => {
           <ProFormText
             name='username'
             hasFeedback={!!error}
-            help={t(error as string)}
             validateStatus={error ? 'error' : 'success'}
             fieldProps={{
               size: 'large',
@@ -64,7 +65,6 @@ const LoginPage: React.FC = () => {
           <ProFormText.Password
             name='password'
             hasFeedback={!!error}
-            help={t(error as string)}
             validateStatus={error ? 'error' : 'success'}
             fieldProps={{
               size: 'large',

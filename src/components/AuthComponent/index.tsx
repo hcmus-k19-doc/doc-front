@@ -9,11 +9,10 @@ import React, {
   useState,
 } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
-
-import { UserDto } from '../../models/doc-main-models';
-import { TokenDto } from '../../models/models';
-import { getCurrentUser } from '../../services/UserService';
-import * as authUtils from '../../utils/AuthUtils';
+import { UserDto } from 'models/doc-main-models';
+import { TokenDto } from 'models/models';
+import { getCurrentUser } from 'services/UserService';
+import * as authUtils from 'utils/AuthUtils';
 
 const initAuthContextPropsState = {
   auth: authUtils.getAuth(),

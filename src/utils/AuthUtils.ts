@@ -1,4 +1,4 @@
-import { TokenDto } from '../models/models';
+import { TokenDto } from 'models/models';
 
 const AUTH_LOCAL_STORAGE_KEY = 'doc-auth-react-v';
 

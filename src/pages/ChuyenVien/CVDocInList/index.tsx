@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
-import { primaryColor } from '@config/constant';
 import {
   Button,
   Collapse,
@@ -14,6 +13,7 @@ import {
   Table,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { PRIMARY_COLOR } from 'config/constant';
 
 import './index.css';
 
@@ -128,7 +128,7 @@ const CVDocInList: React.FC = () => {
 
       <Collapse
         bordered={false}
-        expandIcon={() => <FilterFilled style={{ color: primaryColor }} />}>
+        expandIcon={() => <FilterFilled style={{ color: PRIMARY_COLOR }} />}>
         <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
             labelCol={{ span: 4 }}
