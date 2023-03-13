@@ -10,8 +10,8 @@ export interface UserDto {
 }
 
 export const enum DocSystemRoleEnum {
-    DIRECTOR = "DIRECTOR",
-    EXPERT = "EXPERT",
-    MANAGER = "MANAGER",
-    STAFF = "STAFF",
+    DIRECTOR = "DIRECTOR",  //LanhDao
+    EXPERT = "EXPERT", //ChuyenVien
+    MANAGER = "MANAGER", //PhongBan
+    STAFF = "STAFF", //VanThu
 }
