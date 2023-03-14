@@ -2,7 +2,8 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
-import CVDocInList from 'pages/ChuyenVien/CVDocInList';
+
+import CVDocInListWrapper from '../../pages/ChuyenVien/CVDocInList';
 
 const { Content, Sider } = Layout;
 
@@ -19,7 +20,7 @@ const SidebarPage: React.FC<MenuProps> = (menu) => {
       </Sider>
       <Content className='px-5 py-2' style={{ minHeight: '70vh' }}>
         <Routes>
-          <Route path='/' element={<CVDocInList />} />
+          <Route path='/' element={<CVDocInListWrapper />} />
           <Route path='/process' element={<div>VBDen xu ly</div>} />
         </Routes>
       </Content>

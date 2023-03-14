@@ -6,3 +6,7 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+.footer-btn {
+  color: #fff !important;
+}

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 import { FilterFilled } from '@ant-design/icons';
 import {
   Button,
@@ -14,11 +13,13 @@ import {
   Table,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { queryState, useQueryResponse } from 'components/IncomingDocListQuery';
 import { PRIMARY_COLOR } from 'config/constant';
-import { format } from 'date-fns';
-import { getIncomingDocuments } from 'services/IncomingDocumentService';
+import { RecoilRoot, useRecoilState } from 'recoil';
 
-import { FooterProps, PAGE_SIZE, TableDataType, TableRowDataType } from './models';
+import { DocQueryState } from '../../../models/models';
+
+import { PAGE_SIZE, TableRowDataType } from './models';
 
 import './index.css';
 
@@ -79,20 +80,25 @@ const ExpandIcon = () => {
   return <FilterFilled style={{ color: PRIMARY_COLOR }} />;
 };
 
-const Footer: React.FC<FooterProps> = ({ totalElements, setPage }) => {
+const Footer = () => {
   const { t } = useTranslation();
+  const [state, setState] = useRecoilState(queryState);
+  const { data } = useQueryResponse();
+
+  const handleOnChange = (page: number) => {
+    const updatedState = { ...state, page } as DocQueryState;
+    setState(updatedState);
+  };
 
   return (
     <div className='mt-5 flex justify-between'>
-      <Button type='primary' ghost>
-        {t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}
-      </Button>
+      <Button type='primary'>{t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}</Button>
 
       <Pagination
         defaultCurrent={1}
         defaultPageSize={PAGE_SIZE}
-        onChange={(page) => setPage(page)}
-        total={totalElements}
+        onChange={handleOnChange}
+        total={data?.totalElements}
         showTotal={(total) => t('COMMON.PAGINATION.SHOW_TOTAL', { total })}
       />
     </div>
@@ -101,43 +107,10 @@ const Footer: React.FC<FooterProps> = ({ totalElements, setPage }) => {
 
 const CVDocInList: React.FC = () => {
   const { t } = useTranslation();
-  const [page, setPage] = React.useState(1);
+  const { isLoading, data } = useQueryResponse();
 
-  const { isLoading, data } = useQuery(
-    `QUERIES.INCOMING_DOCUMENT_LIST-${page}-${PAGE_SIZE}`,
-    () => {
-      return getIncomingDocuments('', page)
-        .then((data) => {
-          const totalElements = data.totalElements;
-          const rowsData: TableRowDataType[] = data.payload.map((item) => {
-            return {
-              key: item.id,
-              id: item.id,
-              issueLevel: t(`SENDING_LEVEL.${item.sendingLevel.level}`),
-              type: t(`DOCUMENT_TYPE.${item.documentType.type}`),
-              arriveId: item.incomingNumber,
-              originId: item.originalSymbolNumber,
-              arriveDate: format(new Date(item.arrivingDate), 'dd-MM-yyyy'),
-              issuePlace: item.distributionOrg.name,
-              summary: item.summary,
-              fullText: '',
-              status: 'HEHE',
-              deadline: 'HUHU',
-            };
-          });
-
-          const tableData: TableDataType = {
-            page: 1,
-            totalElements: totalElements,
-            payload: rowsData,
-          };
-          return tableData;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  );
+  const [state, setState] = useRecoilState(queryState);
+  console.log(state);
 
   return (
     <div>
@@ -146,11 +119,16 @@ const CVDocInList: React.FC = () => {
       <Collapse bordered={false} expandIcon={ExpandIcon}>
         <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
+            onChange={(e: FormEvent) => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              setState({ ...state, incomingNumber: e.target.value });
+            }}
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
             layout='horizontal'
             style={{ maxWidth: 600 }}>
-            <Form.Item label='Input'>
+            <Form.Item label={t('search_criteria_bar.incoming_number')}>
               <Input />
             </Form.Item>
 
@@ -169,9 +147,7 @@ const CVDocInList: React.FC = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type='primary' ghost>
-                Tìm kiếm
-              </Button>
+              <Button type='primary'>Tìm kiếm</Button>
             </Form.Item>
           </Form>
         </Panel>
@@ -186,10 +162,16 @@ const CVDocInList: React.FC = () => {
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
-        footer={() => <Footer totalElements={data?.totalElements || 0} setPage={setPage} />}
+        footer={Footer}
       />
     </div>
   );
 };
 
-export default CVDocInList;
+const CVDocInListWrapper = () => (
+  <RecoilRoot>
+    <CVDocInList />
+  </RecoilRoot>
+);
+
+export default CVDocInListWrapper;

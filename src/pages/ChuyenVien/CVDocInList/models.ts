@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export type TableRowDataType = {
   key: number;
   id: number;
@@ -20,10 +18,5 @@ export type TableDataType = {
   totalElements: number;
   payload: TableRowDataType[];
 };
-
-export interface FooterProps {
-  totalElements: number;
-  setPage: Dispatch<SetStateAction<number>>;
-}
 
 export const PAGE_SIZE = 3;

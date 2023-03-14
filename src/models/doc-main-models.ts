@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-14 09:25:44.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-14 20:25:35.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -22,6 +22,8 @@ export interface DocumentTypeDto extends DocAbstractDto {
 }
 
 export interface IncomingDocumentDto extends DocAbstractDto {
+    status: ProcessingStatus;
+    processingDuration: DateAsString;
     incomingNumber: string;
     documentType: DocumentTypeDto;
     originalSymbolNumber: string;
@@ -42,6 +44,12 @@ export interface UserDto extends DocAbstractDto {
 }
 
 export type DateAsString = string;
+
+export const enum ProcessingStatus {
+    UNPROCESSED = "UNPROCESSED",
+    IN_PROGRESS = "IN_PROGRESS",
+    CLOSED = "CLOSED",
+}
 
 export const enum DocSystemRoleEnum {
     DIRECTOR = "DIRECTOR",
