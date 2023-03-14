@@ -45,5 +45,19 @@
   },
   "USER": {
     "INVALID": "Tài khoản không hợp lệ"
+  },
+  "SENDING_LEVEL": {
+    "CITY": "Thành phố",
+    "DISTRICT": "Quận huyện",
+    "SCHOOL": "Trường"
+  },
+  "DOCUMENT_TYPE": {
+    "CONTRACT": "Hợp đồng",
+    "INSTRUCTION": "Công văn",
+    "INVOICE": "Hóa đơn",
+    "LETTER": "Thư",
+    "PAYMENT": "Phiếu chi",
+    "RECEIPT": "Phiếu thu",
+    "OTHER": "Khác"
   }
 }
