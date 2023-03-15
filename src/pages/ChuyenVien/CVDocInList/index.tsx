@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import {
@@ -13,11 +13,10 @@ import {
   Table,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { useRequestQuery, useResponseQuery } from 'components/IncomingDocListQuery';
 import { PRIMARY_COLOR } from 'config/constant';
-import { RecoilRoot, useRecoilState } from 'recoil';
-
-import { DocQueryState } from '../../../models/models';
+import { RecoilRoot } from 'recoil';
+import { useRequestQuery, useResponseQuery } from 'shared/hooks/IncomingDocumentListQuery';
+import { DocQueryState } from 'shared/hooks/IncomingDocumentListQuery/stateModel';
 
 import { PAGE_SIZE, TableRowDataType } from './models';
 
@@ -117,35 +116,55 @@ const CVDocInList: React.FC = () => {
       <Collapse bordered={false} expandIcon={ExpandIcon}>
         <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
-            onChange={(e: FormEvent) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              setRequestQuery({ ...requestQuery, incomingNumber: e.target.value });
+            onFinish={(values) => {
+              setRequestQuery({ ...requestQuery, ...values } as DocQueryState);
             }}
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 14 }}
-            layout='horizontal'
-            style={{ maxWidth: 600 }}>
-            <Form.Item label={t('search_criteria_bar.incoming_number')}>
-              <Input />
-            </Form.Item>
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}>
+            <div className='grid grid-cols-2'>
+              <Form.Item name='incomingNumber' label={t('search_criteria_bar.incoming_number')}>
+                <Input />
+              </Form.Item>
 
-            <Form.Item label='Select'>
-              <Select>
-                <Select.Option value='demo'>Demo</Select.Option>
-              </Select>
-            </Form.Item>
+              <Form.Item
+                name='originalSymbolNumber'
+                label={t('search_criteria_bar.original_symbol_number')}>
+                <Input />
+              </Form.Item>
 
-            <Form.Item label='DatePicker'>
-              <DatePicker />
-            </Form.Item>
+              <Form.Item name='documentType' label={t('search_criteria_bar.document_type')}>
+                <Select>
+                  <Select.Option value='demo'>Demo</Select.Option>
+                </Select>
+              </Form.Item>
 
-            <Form.Item label='TextArea'>
-              <TextArea rows={4} />
-            </Form.Item>
+              <Form.Item
+                name='distributionOrg'
+                label={t('search_criteria_bar.distribution_organization')}>
+                <Select>
+                  <Select.Option value='demo'>Demo</Select.Option>
+                </Select>
+              </Form.Item>
 
-            <Form.Item>
-              <Button type='primary'>Tìm kiếm</Button>
+              <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
+                <DatePicker className='flex flex-grow' />
+              </Form.Item>
+
+              <Form.Item
+                name='processingDuration'
+                label={t('search_criteria_bar.processing_duration')}>
+                <DatePicker className='flex flex-grow' />
+              </Form.Item>
+
+              <Form.Item name='summary' label={t('search_criteria_bar.summary')}>
+                <TextArea rows={4} />
+              </Form.Item>
+            </div>
+
+            <Form.Item className='ml-6'>
+              <Button htmlType='submit' type='primary'>
+                Tìm kiếm
+              </Button>
             </Form.Item>
           </Form>
         </Panel>

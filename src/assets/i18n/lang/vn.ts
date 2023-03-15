@@ -67,5 +67,11 @@ export default {
   },
   search_criteria_bar: {
     incoming_number: 'Số văn bản đến',
+    original_symbol_number: 'Số ký hiệu gốc',
+    document_type: 'Loại văn bản',
+    distribution_organization: 'Cơ quan ban hành',
+    arriving_date: 'Ngày đến',
+    processing_duration: 'Thời hạn xử lý',
+    summary: 'Trích yếu',
   },
 };
