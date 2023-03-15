@@ -1,17 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { format } from 'date-fns';
-import { atom, useRecoilValue } from 'recoil';
+import { DocQueryState } from 'models/models';
+import { PAGE_SIZE, TableDataType, TableRowDataType } from 'pages/ChuyenVien/CVDocInList/models';
+import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { getIncomingDocuments } from 'services/IncomingDocumentService';
 
-import { DocQueryState } from '../../models/models';
-import {
-  PAGE_SIZE,
-  TableDataType,
-  TableRowDataType,
-} from '../../pages/ChuyenVien/CVDocInList/models';
-import { getIncomingDocuments } from '../../services/IncomingDocumentService';
-
-export const queryState = atom<DocQueryState>({
+const queryState = atom<DocQueryState>({
   key: 'DOC_QUERY_STATE',
   default: {
     page: 1,
@@ -19,7 +14,9 @@ export const queryState = atom<DocQueryState>({
   },
 });
 
-export const useQueryResponse = () => {
+export const useRequestQuery = () => useRecoilState(queryState);
+
+export const useResponseQuery = () => {
   const { t } = useTranslation();
   const query = useRecoilValue<DocQueryState>(queryState);
 
@@ -38,8 +35,8 @@ export const useQueryResponse = () => {
           issuePlace: item.distributionOrg.name,
           summary: item.summary,
           fullText: '',
-          status: 'HEHE',
-          deadline: 'HUHU',
+          status: t(`PROCESSING_STATUS.${item.status}`),
+          deadline: format(new Date(item.processingDuration), 'dd-MM-yyyy'),
         };
       });
 

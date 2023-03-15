@@ -13,7 +13,7 @@ import {
   Table,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { queryState, useQueryResponse } from 'components/IncomingDocListQuery';
+import { useRequestQuery, useResponseQuery } from 'components/IncomingDocListQuery';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot, useRecoilState } from 'recoil';
 
@@ -82,12 +82,12 @@ const ExpandIcon = () => {
 
 const Footer = () => {
   const { t } = useTranslation();
-  const [state, setState] = useRecoilState(queryState);
-  const { data } = useQueryResponse();
+  const [requestQuery, setRequestQuery] = useRequestQuery();
+  const { data } = useResponseQuery();
 
   const handleOnChange = (page: number) => {
-    const updatedState = { ...state, page } as DocQueryState;
-    setState(updatedState);
+    const updatedState = { ...requestQuery, page } as DocQueryState;
+    setRequestQuery(updatedState);
   };
 
   return (
@@ -107,10 +107,8 @@ const Footer = () => {
 
 const CVDocInList: React.FC = () => {
   const { t } = useTranslation();
-  const { isLoading, data } = useQueryResponse();
-
-  const [state, setState] = useRecoilState(queryState);
-  console.log(state);
+  const { isLoading, data } = useResponseQuery();
+  const [requestQuery, setRequestQuery] = useRequestQuery();
 
   return (
     <div>
@@ -122,7 +120,7 @@ const CVDocInList: React.FC = () => {
             onChange={(e: FormEvent) => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              setState({ ...state, incomingNumber: e.target.value });
+              setRequestQuery({ ...requestQuery, incomingNumber: e.target.value });
             }}
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
