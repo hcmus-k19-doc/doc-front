@@ -27,6 +27,9 @@
       "REPORT_TO_LEADER": "Trình lãnh đạo"
     }
   },
+  "proces-incoming-doc-page": {
+    "title": "Tiếp nhận văn bản đến"
+  },
   "PAGE_HEADER": {
     "LANGUAGES": {
       "EN": "Tiếng Anh",

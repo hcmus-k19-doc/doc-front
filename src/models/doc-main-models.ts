@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-13 22:46:49.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-15 21:46:47.
 
 export interface UserDto {
     id: number;
@@ -10,8 +10,8 @@ export interface UserDto {
 }
 
 export const enum DocSystemRoleEnum {
-    DIRECTOR = "DIRECTOR",  //LanhDao
-    EXPERT = "EXPERT", //ChuyenVien
-    MANAGER = "MANAGER", //PhongBan
-    STAFF = "STAFF", //VanThu
+    DIRECTOR = "DIRECTOR",
+    EXPERT = "EXPERT",
+    MANAGER = "MANAGER",
+    STAFF = "STAFF",
 }

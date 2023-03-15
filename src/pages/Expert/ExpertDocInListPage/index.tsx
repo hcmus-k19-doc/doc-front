@@ -119,7 +119,7 @@ const data: DataType[] = [
 
 const { TextArea } = Input;
 
-const CVDocInList: React.FC = () => {
+const ExpertDocInList: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -188,4 +188,4 @@ const CVDocInList: React.FC = () => {
   );
 };
 
-export default CVDocInList;
+export default ExpertDocInList;

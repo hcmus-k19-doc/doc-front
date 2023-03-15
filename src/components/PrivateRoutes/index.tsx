@@ -5,7 +5,7 @@ const PrivateRoutes = () => {
   return (
     <Routes>
       <Route path='/auth/*' element={<Navigate to='/index' />} />
-      <Route path='/index' element={<MainPage />} />
+      <Route path='/index/*' element={<MainPage />} />
     </Routes>
   );
 };

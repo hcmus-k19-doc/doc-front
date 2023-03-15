@@ -7,7 +7,6 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, theme } from 'antd';
 import PageHeader from 'components/PageHeader';
 import SidebarPage from 'components/SidebarPage';
-import LoginPage from 'pages/LoginPage';
 
 const { Content, Footer } = Layout;
 
@@ -31,14 +30,14 @@ const MainPage: React.FC = () => {
           key: 'in1',
           label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
           onClick: () => {
-            navigate('/docin');
+            navigate('/index/docin');
           },
         },
         {
           key: 'in2',
           label: t('MAIN_PAGE.MENU.ITEMS.PROCESSES_INCOMING_DOCUMENT'),
           onClick: () => {
-            navigate('/docin/process');
+            navigate('/index/docin/process');
           },
         },
       ],
@@ -95,8 +94,6 @@ const MainPage: React.FC = () => {
           <Routes>
             <Route path='/' element={<SidebarPage {...menu} />} />
             <Route path='/docin/*' element={<SidebarPage {...menu} />} />
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/hello' element={<div>Hello</div>} />
           </Routes>
         </Layout>
       </Content>
