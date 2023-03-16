@@ -27,8 +27,30 @@
       "REPORT_TO_LEADER": "Trình lãnh đạo"
     }
   },
-  "proces-incoming-doc-page": {
-    "title": "Tiếp nhận văn bản đến"
+  "procesIncomingDocPage": {
+    "title": "Tiếp nhận văn bản đến",
+    "form": {
+      "docFolder": "Sổ văn bản",
+      "docType": "Loại văn bản",
+      "docNumber": "Số đến theo sổ",
+      "folder": "Hồ sơ công việc",
+      "originalSymbolNumber": "Số ký hiệu gốc",
+      "distributionOrg": "Cơ quan ban hành",
+      "distributionDate": "Ngày ban hành",
+      "arrivingDate": "Ngày đến",
+      "arrivingTime": "Giờ đến",
+      "summary": "Trích yếu",
+      "signer": "Người ký",
+      "signerTitle": "Chức vụ",
+      "confidentiality": "Độ mật",
+      "urgency": "Độ khẩn",
+      "files": "Tài liệu đính kèm",
+      "fileHelper": "Bấm hoặc kéo thả tệp vào đây để tải lên",
+      "button": {
+        "save": "Hoàn tất",
+        "cancel": "Hủy bỏ"
+      }
+    }
   },
   "PAGE_HEADER": {
     "LANGUAGES": {

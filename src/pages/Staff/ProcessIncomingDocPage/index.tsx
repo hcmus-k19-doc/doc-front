@@ -42,13 +42,13 @@ function ProcessIncomingDocPage() {
 
   return (
     <div>
-      <div className='text-lg text-primary'>{t('proces-incoming-doc-page.title')}</div>
+      <div className='text-lg text-primary'>{t('procesIncomingDocPage.title')}</div>
       <Form layout='vertical'>
         <Row>
           <Col span={16}>
             <Row>
               <Col span={11}>
-                <Form.Item label='Sổ văn bản'>
+                <Form.Item label={t('procesIncomingDocPage.form.docFolder')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -56,7 +56,7 @@ function ProcessIncomingDocPage() {
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                <Form.Item label='Loại văn bản'>
+                <Form.Item label={t('procesIncomingDocPage.form.docType')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -66,13 +66,13 @@ function ProcessIncomingDocPage() {
 
             <Row>
               <Col span={11}>
-                <Form.Item label='Số đến theo sổ'>
+                <Form.Item label={t('procesIncomingDocPage.form.docNumber')}>
                   <Input />
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                <Form.Item label='Số ký hiệu gốc'>
+                <Form.Item label={t('procesIncomingDocPage.form.originalSymbolNumber')}>
                   <Input />
                 </Form.Item>
               </Col>
@@ -80,7 +80,7 @@ function ProcessIncomingDocPage() {
 
             <Row>
               <Col span={11}>
-                <Form.Item label='Cơ quan ban hành'>
+                <Form.Item label={t('procesIncomingDocPage.form.distributionOrg')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -88,7 +88,7 @@ function ProcessIncomingDocPage() {
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                <Form.Item label='Hồ sơ công việc'>
+                <Form.Item label={t('procesIncomingDocPage.form.folder')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -98,7 +98,7 @@ function ProcessIncomingDocPage() {
 
             <Row>
               <Col span={11}>
-                <Form.Item label='Ngày ban hành'>
+                <Form.Item label={t('procesIncomingDocPage.form.distributionDate')}>
                   <DatePicker className='w-full' />
                 </Form.Item>
               </Col>
@@ -106,7 +106,7 @@ function ProcessIncomingDocPage() {
               <Col span={2}></Col>
 
               <Col span={6}>
-                <Form.Item label='Ngày đến'>
+                <Form.Item label={t('procesIncomingDocPage.form.arrivingDate')}>
                   <DatePicker className='w-full' />
                 </Form.Item>
               </Col>
@@ -114,7 +114,7 @@ function ProcessIncomingDocPage() {
               <Col span={1}></Col>
 
               <Col span={4}>
-                <Form.Item label='Giờ đến'>
+                <Form.Item label={t('procesIncomingDocPage.form.arrivingTime')}>
                   <TimePicker className='w-full' />
                 </Form.Item>
               </Col>
@@ -122,7 +122,7 @@ function ProcessIncomingDocPage() {
 
             <Row>
               <Col span={11}>
-                <Form.Item label='Người ký'>
+                <Form.Item label={t('procesIncomingDocPage.form.signer')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -130,7 +130,7 @@ function ProcessIncomingDocPage() {
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                <Form.Item label='Chức vụ'>
+                <Form.Item label={t('procesIncomingDocPage.form.signerTitle')}>
                   <Input />
                 </Form.Item>
               </Col>
@@ -138,7 +138,7 @@ function ProcessIncomingDocPage() {
 
             <Row>
               <Col span={11}>
-                <Form.Item label='Độ khẩn'>
+                <Form.Item label={t('procesIncomingDocPage.form.urgency')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -146,7 +146,7 @@ function ProcessIncomingDocPage() {
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                <Form.Item label='Độ mật'>
+                <Form.Item label={t('procesIncomingDocPage.form.confidentiality')}>
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>{' '}
@@ -154,28 +154,28 @@ function ProcessIncomingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item label='Trích yếu'>
+            <Form.Item label={t('procesIncomingDocPage.form.summary')}>
               <TextArea rows={2} />
             </Form.Item>
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item label='Tài liệu đính kèm' valuePropName='fileList'>
+            <Form.Item label={t('procesIncomingDocPage.form.files')} valuePropName='fileList'>
               <Dragger {...props}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
                 </p>
-                <p className='ant-upload-text'>Bấm hoặc kéo thả tệp vào đây để tải lên</p>
+                <p className='ant-upload-text'>{t('procesIncomingDocPage.form.fileHelper')}</p>
               </Dragger>
             </Form.Item>
           </Col>
 
           <Row className='w-full justify-end '>
             <Button type='primary' size='large' className='mr-5'>
-              Hoàn tất
+              {t('procesIncomingDocPage.form.button.save')}
             </Button>
             <Button type='primary' size='large' className='mr-5'>
-              Hủy bỏ
+              {t('procesIncomingDocPage.form.button.cancel')}
             </Button>
           </Row>
         </Row>
