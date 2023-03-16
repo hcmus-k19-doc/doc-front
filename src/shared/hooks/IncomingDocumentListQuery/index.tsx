@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { PAGE_SIZE, TableDataType, TableRowDataType } from 'pages/ChuyenVien/CVDocInList/models';
+import { PAGE_SIZE, TableDataType, TableRowDataType } from 'pages/ChuyenVien/CVDocInPage/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { getIncomingDocuments } from 'services/IncomingDocumentService';
-import { DocQueryState } from './stateModel';
+
+import { DocQueryState } from './states';
 
 const queryState = atom<DocQueryState>({
   key: 'DOC_QUERY_STATE',

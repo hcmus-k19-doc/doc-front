@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import {
   Button,
+  Col,
   Collapse,
   DatePicker,
   Divider,
   Form,
   Input,
   Pagination,
+  Row,
   Select,
   Table,
 } from 'antd';
@@ -16,7 +18,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
 import { useRequestQuery, useResponseQuery } from 'shared/hooks/IncomingDocumentListQuery';
-import { DocQueryState } from 'shared/hooks/IncomingDocumentListQuery/stateModel';
+import { DocQueryState } from 'shared/hooks/IncomingDocumentListQuery/states';
 
 import { PAGE_SIZE, TableRowDataType } from './models';
 
@@ -104,7 +106,7 @@ const Footer = () => {
   );
 };
 
-const CVDocInList: React.FC = () => {
+const CVDocInPage: React.FC = () => {
   const { t } = useTranslation();
   const { isLoading, data } = useResponseQuery();
   const [requestQuery, setRequestQuery] = useRequestQuery();
@@ -119,47 +121,72 @@ const CVDocInList: React.FC = () => {
             onFinish={(values) => {
               setRequestQuery({ ...requestQuery, ...values } as DocQueryState);
             }}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 14 }}>
-            <div className='grid grid-cols-2'>
-              <Form.Item name='incomingNumber' label={t('search_criteria_bar.incoming_number')}>
-                <Input />
-              </Form.Item>
+            layout='vertical'>
+            <Row justify='center'>
+              <Col span={16}>
+                <Row>
+                  <Col span={11}>
+                    <Form.Item
+                      name='incomingNumber'
+                      label={t('search_criteria_bar.incoming_number')}>
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      name='originalSymbolNumber'
+                      label={t('search_criteria_bar.original_symbol_number')}>
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-              <Form.Item
-                name='originalSymbolNumber'
-                label={t('search_criteria_bar.original_symbol_number')}>
-                <Input />
-              </Form.Item>
+                <Row>
+                  <Col span={11}>
+                    <Form.Item name='documentType' label={t('search_criteria_bar.document_type')}>
+                      <Select>
+                        <Select.Option value='demo'>Demo</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      name='distributionOrg'
+                      label={t('search_criteria_bar.distribution_organization')}>
+                      <Select>
+                        <Select.Option value='demo'>Demo</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-              <Form.Item name='documentType' label={t('search_criteria_bar.document_type')}>
-                <Select>
-                  <Select.Option value='demo'>Demo</Select.Option>
-                </Select>
-              </Form.Item>
+                <Row>
+                  <Col span={11}>
+                    <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
+                      <DatePicker className='flex flex-grow' />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      name='processingDuration'
+                      label={t('search_criteria_bar.processing_duration')}>
+                      <DatePicker className='flex flex-grow' />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-              <Form.Item
-                name='distributionOrg'
-                label={t('search_criteria_bar.distribution_organization')}>
-                <Select>
-                  <Select.Option value='demo'>Demo</Select.Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
-                <DatePicker className='flex flex-grow' />
-              </Form.Item>
-
-              <Form.Item
-                name='processingDuration'
-                label={t('search_criteria_bar.processing_duration')}>
-                <DatePicker className='flex flex-grow' />
-              </Form.Item>
-
-              <Form.Item name='summary' label={t('search_criteria_bar.summary')}>
-                <TextArea rows={4} />
-              </Form.Item>
-            </div>
+                <Row>
+                  <Col span={24}>
+                    <Form.Item name='summary' label={t('search_criteria_bar.summary')}>
+                      <TextArea rows={4} />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
 
             <Form.Item className='ml-6'>
               <Button htmlType='submit' type='primary'>
@@ -185,10 +212,10 @@ const CVDocInList: React.FC = () => {
   );
 };
 
-const CVDocInListWrapper = () => (
+const CVDocInPageWrapper = () => (
   <RecoilRoot>
-    <CVDocInList />
+    <CVDocInPage />
   </RecoilRoot>
 );
 
-export default CVDocInListWrapper;
+export default CVDocInPageWrapper;
