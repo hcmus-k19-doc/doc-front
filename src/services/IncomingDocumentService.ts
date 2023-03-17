@@ -1,22 +1,18 @@
 import axios from 'axios';
-import { PAGE_SIZE } from 'pages/ChuyenVien/CVDocInPage/models';
-
-import { REACT_APP_DOC_MAIN_SERVICE_URL } from '../config/constant';
-import { DocPaginationDto, IncomingDocumentDto } from '../models/doc-main-models';
+import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
+import { DocPaginationDto, IncomingDocumentDto, SearchCriteriaDto } from 'models/doc-main-models';
 
 export function getIncomingDocuments(
-  query: string,
-  page: number,
-  pageSize = PAGE_SIZE
+  searchCriteria: Partial<SearchCriteriaDto>,
+  page: number
 ): Promise<DocPaginationDto<IncomingDocumentDto>> {
   return axios
-    .get<DocPaginationDto<IncomingDocumentDto>>(
-      `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents`,
+    .post<DocPaginationDto<IncomingDocumentDto>>(
+      `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/search`,
+      searchCriteria,
       {
         params: {
-          query,
           page: page - 1,
-          pageSize,
         },
       }
     )

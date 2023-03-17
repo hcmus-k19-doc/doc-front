@@ -1,14 +1,16 @@
+import { Dayjs } from 'dayjs';
+
 type PaginationState = {
-  page?: number;
+  page: number;
 };
 
-type SearchState = {
+export type SearchState = {
   incomingNumber?: string;
   originalSymbolNumber?: string;
   documentType?: string;
   distributionOrg?: string;
-  arrivingDate?: string;
-  processingDuration?: string;
+  arrivingDate?: Dayjs[];
+  processingDuration?: Dayjs[];
   summary?: string;
 };
 

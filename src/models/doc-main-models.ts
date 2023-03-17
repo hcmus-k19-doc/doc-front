@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-15 20:31:57.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-17 21:59:54.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -31,6 +31,18 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     arrivingDate: DateAsString;
     summary: string;
     sendingLevel: SendingLevelDto;
+}
+
+export interface SearchCriteriaDto {
+    incomingNumber: string;
+    originalSymbolNumber: string;
+    documentType: string;
+    distributionOrg: string;
+    arrivingDateFrom: DateAsString;
+    arrivingDateTo: DateAsString;
+    processingDurationFrom: DateAsString;
+    processingDurationTo: DateAsString;
+    summary: string;
 }
 
 export interface SendingLevelDto extends DocAbstractDto {

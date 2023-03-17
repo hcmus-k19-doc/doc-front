@@ -14,13 +14,15 @@ import {
   Select,
   Table,
 } from 'antd';
+import locale from 'antd/es/date-picker/locale/vi_VN';
 import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
 import { useRequestQuery, useResponseQuery } from 'shared/hooks/IncomingDocumentListQuery';
-import { DocQueryState } from 'shared/hooks/IncomingDocumentListQuery/states';
+import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/states';
+import { DateTimeUtils } from 'utils/DateTimeUtils';
 
-import { PAGE_SIZE, TableRowDataType } from './models';
+import { PAGE_SIZE, TableRowDataType } from './core/models';
 
 import './index.css';
 
@@ -118,7 +120,7 @@ const CVDocInPage: React.FC = () => {
       <Collapse bordered={false} expandIcon={ExpandIcon}>
         <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
-            onFinish={(values) => {
+            onFinish={(values: SearchState) => {
               setRequestQuery({ ...requestQuery, ...values } as DocQueryState);
             }}
             layout='vertical'>
@@ -165,7 +167,11 @@ const CVDocInPage: React.FC = () => {
                 <Row>
                   <Col span={11}>
                     <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
-                      <DatePicker className='flex flex-grow' />
+                      <DatePicker.RangePicker
+                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        locale={locale}
+                        className='flex flex-grow'
+                      />
                     </Form.Item>
                   </Col>
                   <Col span={2}></Col>
@@ -173,7 +179,11 @@ const CVDocInPage: React.FC = () => {
                     <Form.Item
                       name='processingDuration'
                       label={t('search_criteria_bar.processing_duration')}>
-                      <DatePicker className='flex flex-grow' />
+                      <DatePicker.RangePicker
+                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        locale={locale}
+                        className='flex flex-grow'
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
