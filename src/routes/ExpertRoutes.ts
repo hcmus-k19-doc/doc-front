@@ -1,7 +1,7 @@
 import { PATH_EXPERT } from 'config/path';
 import ChuyenVien from 'pages/ChuyenVien';
 
-const ExpertRoutes = [
+const ExpertRoutes = () => [
   {
     path: PATH_EXPERT.EXPERT,
     component: ChuyenVien,
