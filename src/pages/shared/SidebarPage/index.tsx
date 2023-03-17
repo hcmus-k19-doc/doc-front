@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
+import IncomingDocDetailPage from 'pages/shared/IncomingDocDetailPage';
 import IncomingDocListPage from 'pages/shared/IncomingDocListPage';
 import ProcessIncomingDocPage from 'pages/staff/ProcessIncomingDocPage';
 
@@ -22,6 +23,7 @@ const SidebarPage: React.FC<MenuProps> = (menu) => {
         <Routes>
           <Route path='/' element={<IncomingDocListPage />} />
           <Route path='/process' element={<ProcessIncomingDocPage />} />
+          <Route path='/detail/:docId' element={<IncomingDocDetailPage />} />
         </Routes>
       </Content>
     </>
