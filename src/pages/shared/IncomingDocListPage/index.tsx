@@ -3,38 +3,33 @@ import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import {
   Button,
+  Col,
   Collapse,
   DatePicker,
   Divider,
   Form,
   Input,
   Pagination,
+  Row,
   Select,
   Table,
 } from 'antd';
+import locale from 'antd/es/date-picker/locale/vi_VN';
 import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
+import { RecoilRoot } from 'recoil';
+import { useRequestQuery, useResponseQuery } from 'shared/hooks/IncomingDocumentListQuery';
+import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/states';
+import { DateTimeUtils } from 'utils/DateTimeUtils';
+
+import { PAGE_SIZE, TableRowDataType } from './core/models';
 
 import './index.css';
 
 const { Panel } = Collapse;
+const { TextArea } = Input;
 
-interface DataType {
-  key: React.Key;
-  id: string;
-  issueLevel: string;
-  type: string;
-  arriveId: string;
-  originId: string;
-  arriveDate: string;
-  issuePlace: string;
-  summary: string;
-  fullText: string;
-  status: string;
-  deadline: string;
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<TableRowDataType> = [
   {
     title: 'STT',
     dataIndex: 'id',
@@ -84,77 +79,127 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    id: '1',
-    issueLevel: 'Thành phố',
-    type: 'Công văn',
-    arriveId: '120/ĐP',
-    originId: '1237/VP-VX',
-    arriveDate: '12/12/2020',
-    issuePlace: 'Phòng Văn hóa',
-    summary:
-      'Công văn yêu cầu đăng ký tham gia chương trình abc xyz Công văn yêu cầu đăng ký tham gia chương trình abc xyz',
-    fullText: '*link',
-    status: 'Đã xử lý',
-    deadline: '24/12/2020',
-  },
-  {
-    key: '2',
-    id: '2',
-    issueLevel: 'Thành phố',
-    type: 'Công văn',
-    arriveId: '120/ĐP',
-    originId: '1237/VP-VX',
-    arriveDate: '12/12/2020',
-    issuePlace: 'Phòng Văn hóa',
-    summary:
-      'Công văn yêu cầu đăng ký tham gia chương trình abc xyz Công văn yêu cầu đăng ký tham gia chương trình abc xyz',
-    fullText: '*link',
-    status: 'Đã xử lý',
-    deadline: '24/12/2020',
-  },
-];
+const ExpandIcon = () => {
+  return <FilterFilled style={{ color: PRIMARY_COLOR }} />;
+};
 
-const { TextArea } = Input;
-
-const IncomingDocList: React.FC = () => {
+const Footer = () => {
   const { t } = useTranslation();
+  const [requestQuery, setRequestQuery] = useRequestQuery();
+  const { data } = useResponseQuery();
+
+  const handleOnChange = (page: number) => {
+    const updatedState = { ...requestQuery, page } as DocQueryState;
+    setRequestQuery(updatedState);
+  };
+
+  return (
+    <div className='mt-5 flex justify-between'>
+      <Button type='primary'>{t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}</Button>
+
+      <Pagination
+        defaultCurrent={1}
+        defaultPageSize={PAGE_SIZE}
+        onChange={handleOnChange}
+        total={data?.totalElements}
+        showTotal={(total) => t('COMMON.PAGINATION.SHOW_TOTAL', { total })}
+      />
+    </div>
+  );
+};
+
+const IncomingDocListPage: React.FC = () => {
+  const { t } = useTranslation();
+  const { isLoading, data } = useResponseQuery();
+  const [requestQuery, setRequestQuery] = useRequestQuery();
 
   return (
     <div>
       <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST')}</div>
 
-      <Collapse
-        bordered={false}
-        expandIcon={() => <FilterFilled style={{ color: PRIMARY_COLOR }} />}>
+      <Collapse bordered={false} expandIcon={ExpandIcon}>
         <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 14 }}
-            layout='horizontal'
-            style={{ maxWidth: 600 }}>
-            <Form.Item label='Input'>
-              <Input />
-            </Form.Item>
+            onFinish={(values: SearchState) => {
+              setRequestQuery({ ...requestQuery, ...values } as DocQueryState);
+            }}
+            layout='vertical'>
+            <Row justify='center'>
+              <Col span={16}>
+                <Row>
+                  <Col span={11}>
+                    <Form.Item
+                      name='incomingNumber'
+                      label={t('search_criteria_bar.incoming_number')}>
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      name='originalSymbolNumber'
+                      label={t('search_criteria_bar.original_symbol_number')}>
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-            <Form.Item label='Select'>
-              <Select>
-                <Select.Option value='demo'>Demo</Select.Option>
-              </Select>
-            </Form.Item>
+                <Row>
+                  <Col span={11}>
+                    <Form.Item name='documentType' label={t('search_criteria_bar.document_type')}>
+                      <Select>
+                        <Select.Option value='demo'>Demo</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      name='distributionOrg'
+                      label={t('search_criteria_bar.distribution_organization')}>
+                      <Select>
+                        <Select.Option value='demo'>Demo</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-            <Form.Item label='DatePicker'>
-              <DatePicker />
-            </Form.Item>
+                <Row>
+                  <Col span={11}>
+                    <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
+                      <DatePicker.RangePicker
+                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        locale={locale}
+                        className='flex flex-grow'
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      name='processingDuration'
+                      label={t('search_criteria_bar.processing_duration')}>
+                      <DatePicker.RangePicker
+                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        locale={locale}
+                        className='flex flex-grow'
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-            <Form.Item label='TextArea'>
-              <TextArea rows={4} />
-            </Form.Item>
+                <Row>
+                  <Col span={24}>
+                    <Form.Item name='summary' label={t('search_criteria_bar.summary')}>
+                      <TextArea rows={4} />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
 
-            <Form.Item>
-              <Button type='primary' ghost>
+            <Form.Item className='ml-6'>
+              <Button htmlType='submit' type='primary'>
                 Tìm kiếm
               </Button>
             </Form.Item>
@@ -165,27 +210,22 @@ const IncomingDocList: React.FC = () => {
       <Divider />
 
       <Table
+        loading={isLoading}
         rowSelection={{ type: 'checkbox' }}
         columns={columns}
-        dataSource={data}
+        dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
-        footer={() => (
-          <div className='mt-5 flex justify-between'>
-            <Button type='primary' ghost>
-              {t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}
-            </Button>
-
-            <Pagination
-              pageSize={5}
-              total={50}
-              showTotal={(total) => t('COMMON.PAGINATION.SHOW_TOTAL', { total })}
-            />
-          </div>
-        )}
+        footer={Footer}
       />
     </div>
   );
 };
 
-export default IncomingDocList;
+const IncomingDocListPageWrapper = () => (
+  <RecoilRoot>
+    <IncomingDocListPage />
+  </RecoilRoot>
+);
+
+export default IncomingDocListPageWrapper;

@@ -14,7 +14,6 @@ const PageHeader: React.FC = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-  console.log(t('PAGE_HEADER.LANGUAGES.EN'));
 
   const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,
