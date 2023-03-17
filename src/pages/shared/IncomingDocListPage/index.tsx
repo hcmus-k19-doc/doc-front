@@ -108,7 +108,7 @@ const Footer = () => {
   );
 };
 
-const CVDocInPage: React.FC = () => {
+const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
   const { isLoading, data } = useResponseQuery();
   const [requestQuery, setRequestQuery] = useRequestQuery();
@@ -222,10 +222,10 @@ const CVDocInPage: React.FC = () => {
   );
 };
 
-const CVDocInPageWrapper = () => (
+const IncomingDocListPageWrapper = () => (
   <RecoilRoot>
-    <CVDocInPage />
+    <IncomingDocListPage />
   </RecoilRoot>
 );
 
-export default CVDocInPageWrapper;
+export default IncomingDocListPageWrapper;

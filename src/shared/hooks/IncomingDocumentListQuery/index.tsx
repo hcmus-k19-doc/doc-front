@@ -5,7 +5,7 @@ import {
   PAGE_SIZE,
   TableDataType,
   TableRowDataType,
-} from 'pages/ChuyenVien/CVDocInPage/core/models';
+} from 'pages/shared/IncomingDocListPage/core/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { getIncomingDocuments } from 'services/IncomingDocumentService';
 import { DateTimeUtils } from 'utils/DateTimeUtils';
