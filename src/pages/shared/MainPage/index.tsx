@@ -6,7 +6,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, InboxOutlined } from '@ant-design/i
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, theme } from 'antd';
 import PageHeader from 'components/PageHeader';
-import SidebarPage from 'components/SidebarPage';
+import SidebarPage from 'pages/shared/SidebarPage';
 
 const { Content, Footer } = Layout;
 

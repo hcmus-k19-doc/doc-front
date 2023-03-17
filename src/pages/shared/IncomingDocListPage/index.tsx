@@ -119,7 +119,7 @@ const data: DataType[] = [
 
 const { TextArea } = Input;
 
-const ExpertDocInList: React.FC = () => {
+const IncomingDocList: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -188,4 +188,4 @@ const ExpertDocInList: React.FC = () => {
   );
 };
 
-export default ExpertDocInList;
+export default IncomingDocList;

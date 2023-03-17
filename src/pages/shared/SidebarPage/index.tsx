@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
-import ExpertDocInListPage from 'pages/Expert/ExpertDocInListPage';
-import ProcessIncomingDocPage from 'pages/Staff/ProcessIncomingDocPage';
+import ExpertDocInListPage from 'pages/shared/IncomingDocListPage';
+import ProcessIncomingDocPage from 'pages/staff/ProcessIncomingDocPage';
 
 const { Content, Sider } = Layout;
 

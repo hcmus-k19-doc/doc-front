@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import LoginPage from 'pages/LoginPage';
+import LoginPage from 'pages/shared/LoginPage';
 
 const AuthRoutes = () => {
   return (

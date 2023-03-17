@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import MainPage from 'pages/MainPage';
+import MainPage from 'pages/shared/MainPage';
 
 const PrivateRoutes = () => {
   return (
