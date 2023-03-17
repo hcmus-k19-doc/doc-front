@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LanhDao = () => {
+const LanhDao: React.FC = () => {
   return <div>Lanh dao component</div>;
 };
 

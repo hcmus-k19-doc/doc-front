@@ -1,5 +1,6 @@
 const pathExpert = {
-  EXPERT_1: '/expert',
+  EXPERT: '/expert',
+  CVDocInList: '/', // '/expert/cv-doc-in-list'
 };
 
 export default pathExpert;

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { useStyle } from './styles';
 
-const VanThu = () => {
+const VanThu: React.FC = () => {
   const theme = {
     color: 'red',
   };

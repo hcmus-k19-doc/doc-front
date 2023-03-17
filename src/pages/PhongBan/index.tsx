@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PhongBan = () => {
+const PhongBan: React.FC = () => {
   return <div>Phong Ban Component</div>;
 };
 
