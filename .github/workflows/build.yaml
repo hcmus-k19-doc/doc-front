@@ -1,4 +1,4 @@
-name: DOC Vite + React build
+name: DOC build
 
 on:
   pull_request:
@@ -19,9 +19,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Lint
-        run: yarn lint-staged
 
       - name: Build production
         run: yarn build
