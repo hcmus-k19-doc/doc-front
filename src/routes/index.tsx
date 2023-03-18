@@ -3,7 +3,7 @@ import App from 'App';
 import { useAuth } from 'components/AuthComponent';
 import AuthRoutes from 'components/AuthRoute/AuthRoutes';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
-import MainPage from 'pages/MainPage';
+import ErrorComponent from 'pages/Error';
 
 import { CommonRoutes as commonRoutes } from './CommonRoutes';
 import { DirectorRoutes as directorRoutes } from './DirectorRoutes';
@@ -25,9 +25,11 @@ const PublicRoutes: React.FC = () => {
 const PrivateRoutes: React.FC = () => {
   const { currentUser } = useAuth();
 
-  const getAllAuthRoutes = () => {
-    const authRoutes = [...commonRoutes()];
+  console.log('user 1', { currentUser });
 
+  const getAllAuthRoutes = () => {
+    const authRoutes = [];
+    authRoutes.push(...commonRoutes());
     if (currentUser?.roles.includes(DocSystemRoleEnum.DIRECTOR)) {
       authRoutes.push(...directorRoutes());
     }
@@ -40,18 +42,25 @@ const PrivateRoutes: React.FC = () => {
     if (currentUser?.roles.includes(DocSystemRoleEnum.STAFF)) {
       authRoutes.push(...staffRoutes());
     }
+
     return authRoutes;
   };
+  console.log(getAllAuthRoutes());
 
   return (
     <Routes>
       <Route element={<App />}>
-        {/* <Route path='/index' element={<MainPage />} /> */}
         {getAllAuthRoutes().map((route) => (
-          <Route key={route.path} path={route.path} element={<route.component />} />
+          <Route
+            key={route.path}
+            path={route.path}
+            element={<route.component />}
+            // errorElement={<route.errorElement />}
+          />
         ))}
       </Route>
-      <Route path='/auth/*' element={<Navigate to='/index' />} />
+      <Route path='/auth/*' element={<Navigate to='/' />} />
+      {/* <Route path='*' element={<Navigate to='/' />} /> */}
     </Routes>
   );
 };

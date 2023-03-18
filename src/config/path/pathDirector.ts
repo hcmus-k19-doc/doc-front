@@ -1,5 +1,5 @@
 const pathDirector = {
-  DIRECTOR: '/index/director',
+  DIRECTOR: '/director',
 };
 
 export default pathDirector;

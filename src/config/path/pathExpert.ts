@@ -1,5 +1,5 @@
 const pathExpert = {
-  EXPERT: '/index/expert',
+  EXPERT: '/expert',
   // CVDocInList: '/', // '/expert/cv-doc-in-list'
 };
 

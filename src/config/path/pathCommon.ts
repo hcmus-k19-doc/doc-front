@@ -4,8 +4,8 @@ const pathCommon = {
   FORGOT_PASSWORD: '/auth/forgot-password',
   LOGOUT: '/auth/logout',
   NOTFOUND: '/404',
-  UNAUTHORIZED: '/auth/unauthorized',
-  HOME: '/index',
+  UNAUTHORIZED: '/unauthorized',
+  HOME: '/*',
 };
 
 export default pathCommon;

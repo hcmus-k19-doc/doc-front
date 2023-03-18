@@ -1,5 +1,5 @@
 const pathManager = {
-  MANAGER: '/index/manager',
+  MANAGER: '/manager',
 };
 
 export default pathManager;
