@@ -1,5 +1,5 @@
 const pathStaff = {
-  STAFF: '/staff',
+  STAFF: '/index/staff',
 };
 
 export default pathStaff;

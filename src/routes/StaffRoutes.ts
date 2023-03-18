@@ -1,7 +1,9 @@
 import { PATH_STAFF } from 'config/path';
 import VanThu from 'pages/VanThu';
 
-const StaffRoutes = () => [
+import { RouteConfig } from './CommonRoutes';
+
+const StaffRoutes = (): RouteConfig[] => [
   {
     path: PATH_STAFF.STAFF,
     component: VanThu,
