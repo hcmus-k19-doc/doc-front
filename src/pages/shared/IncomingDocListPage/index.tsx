@@ -224,8 +224,8 @@ const IncomingDocListPage: React.FC = () => {
                   onClick={() => form.resetFields()}
                   htmlType='submit'
                   type='default'
-                  className='px-[32px]'>
-                  Reset
+                  className='px-[32px] reset-btn'>
+                  {t('COMMON.SEARCH_CRITERIA.RESET')}
                 </Button>
               </Form.Item>
             </Row>
