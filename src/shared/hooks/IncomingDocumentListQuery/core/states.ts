@@ -7,8 +7,8 @@ type PaginationState = {
 export type SearchState = {
   incomingNumber?: string;
   originalSymbolNumber?: string;
-  documentType?: string;
-  distributionOrg?: string;
+  documentTypeId?: number;
+  distributionOrgId?: number;
   arrivingDate?: Dayjs[];
   processingDuration?: Dayjs[];
   summary?: string;
