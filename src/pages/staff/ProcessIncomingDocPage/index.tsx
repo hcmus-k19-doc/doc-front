@@ -65,7 +65,12 @@ function ProcessIncomingDocPage() {
   return (
     <div>
       <div className='text-lg text-primary'>{t('procesIncomingDocPage.title')}</div>
-      <Form layout='vertical' onFinish={onFinish}>
+      <Form
+        layout='vertical'
+        onFinish={onFinish}
+        initialValues={{
+          incomingNumber: '123456789',
+        }}>
         <Row>
           <Col span={16}>
             <Row>
@@ -74,12 +79,13 @@ function ProcessIncomingDocPage() {
                   label={t('procesIncomingDocPage.form.docFolder')}
                   name='docFolder'
                   required
-                  rules={[
-                    {
-                      required: true,
-                      message: t('procesIncomingDocPage.form.docFolderRequired') as string,
-                    },
-                  ]}>
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: t('procesIncomingDocPage.form.docFolderRequired') as string,
+                  //   },
+                  // ]}
+                >
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
                   </Select>
@@ -88,13 +94,13 @@ function ProcessIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.docType')}
-                  name='docType'
+                  label={t('procesIncomingDocPage.form.documentType')}
+                  name='documentType'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.docTypeRequired') as string,
+                      message: t('procesIncomingDocPage.form.documentTypeRequired') as string,
                     },
                   ]}>
                   <Select>
@@ -108,9 +114,9 @@ function ProcessIncomingDocPage() {
               <Col span={11}>
                 <Form.Item
                   required
-                  label={t('procesIncomingDocPage.form.docNumber')}
-                  name='docNumber'>
-                  <Input disabled defaultValue={'1234567890'} />
+                  label={t('procesIncomingDocPage.form.incomingNumber')}
+                  name='incomingNumber'>
+                  <Input disabled />
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -205,18 +211,18 @@ function ProcessIncomingDocPage() {
               </Col>
             </Row>
 
-            <Row>
+            {/* <Row>
               <Col span={11}>
                 <Form.Item
                   label={t('procesIncomingDocPage.form.signer')}
                   name='signer'
-                  // required
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: t('procesIncomingDocPage.form.signerRequired') as string,
-                  //   },
-                  // ]}
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('procesIncomingDocPage.form.signerRequired') as string,
+                    },
+                  ]}
                 >
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
@@ -239,7 +245,7 @@ function ProcessIncomingDocPage() {
                   <Input />
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row>
               <Col span={11}>
@@ -316,7 +322,7 @@ function ProcessIncomingDocPage() {
               {t('procesIncomingDocPage.form.button.save')}
             </Button>
             <Button
-              type='primary'
+              type='default'
               size='large'
               className='mr-5'
               onClick={() => {
