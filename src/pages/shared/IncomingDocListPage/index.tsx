@@ -101,6 +101,7 @@ const Footer = () => {
       <Button type='primary'>{t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}</Button>
 
       <Pagination
+        current={requestQuery.page}
         defaultCurrent={1}
         defaultPageSize={PAGE_SIZE}
         onChange={handleOnChange}
