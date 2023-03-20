@@ -10,3 +10,8 @@
 .footer-btn {
   color: #fff !important;
 }
+
+.reset-btn {
+  border-color: #4fafd1;
+  color: #4fafd1;
+}

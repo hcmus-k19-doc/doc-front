@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-17 21:59:54.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-19 15:10:53.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -36,8 +36,8 @@ export interface IncomingDocumentDto extends DocAbstractDto {
 export interface SearchCriteriaDto {
     incomingNumber: string;
     originalSymbolNumber: string;
-    documentType: string;
-    distributionOrg: string;
+    documentTypeId: number;
+    distributionOrgId: number;
     arrivingDateFrom: DateAsString;
     arrivingDateTo: DateAsString;
     processingDurationFrom: DateAsString;
