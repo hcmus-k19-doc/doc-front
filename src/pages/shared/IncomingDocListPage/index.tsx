@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import {
@@ -17,6 +17,7 @@ import {
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
+import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
@@ -119,9 +120,14 @@ const IncomingDocListPage: React.FC = () => {
   const { distributionOrgs } = useDistributionOrgRes();
   const [form] = useForm();
   const [requestQuery, setRequestQuery] = useIncomingDocReq();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOnOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
   return (
-    <div>
+    <>
       <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST')}</div>
 
       <Collapse bordered={false} expandIcon={ExpandIcon}>
@@ -245,7 +251,23 @@ const IncomingDocListPage: React.FC = () => {
         pagination={false}
         footer={Footer}
       />
-    </div>
+
+      <Divider />
+
+      <Button className='float-right px-8' htmlType='button' onClick={handleOnOpenModal}>
+        {t('incomingDocDetailPage.button.collect')}
+      </Button>
+
+      <TransferDocModal
+        isModalOpen={isModalOpen}
+        handleCancel={() => {
+          setIsModalOpen(false);
+        }}
+        handleOk={() => {
+          setIsModalOpen(false);
+        }}
+      />
+    </>
   );
 };
 
