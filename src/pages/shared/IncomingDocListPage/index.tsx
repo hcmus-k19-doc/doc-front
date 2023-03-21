@@ -17,7 +17,6 @@ import {
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
-import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
@@ -25,6 +24,8 @@ import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
+
+import TransferDocModal from '../../../components/TransferDocModal';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
 

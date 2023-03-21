@@ -177,4 +177,14 @@ export default {
       extend: 'Yêu cầu gia hạn',
     },
   },
+  transfer_modal: {
+    title: 'Luân chuyển văn bản tới',
+    radio: {
+      transfer_to_director: 'Chuyển ban giám đốc',
+      transfer_to_chief_of_office: 'Chuyển chánh văn phòng',
+      transfer: 'Chuyển xử lý',
+    },
+  },
+  director: 'Ban giám đốc',
+  chief_of_office: 'Chánh văn phòng',
 };
