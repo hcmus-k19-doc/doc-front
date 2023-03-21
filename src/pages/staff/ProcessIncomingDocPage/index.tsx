@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
+import { Mutation, useMutation } from '@tanstack/react-query';
 import {
   Button,
   Col,
@@ -14,7 +15,11 @@ import {
   UploadProps,
 } from 'antd';
 import Dragger from 'antd/es/upload/Dragger';
+import { format } from 'date-fns';
+import { Confidentiality, IncomingDocumentDto, Urgency } from 'models/doc-main-models';
+import incomingDocumentService from 'services/IncomingDocumentService';
 import Swal from 'sweetalert2';
+import { DateTimeUtils } from 'utils/DateTimeUtils';
 
 import './index.css';
 
@@ -46,16 +51,52 @@ function ProcessIncomingDocPage() {
     },
   };
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    Swal.fire({
-      icon: 'success',
-      html: t('procesIncomingDocPage.form.message.success') as string,
-      showConfirmButton: false,
-      timer: 2000,
-    }).then(() => {
-      navigate('/index/docin');
-    });
+  const createIncomingDocument = useMutation({
+    mutationFn: (incomingDocument: IncomingDocumentDto) => {
+      console.log(incomingDocument);
+      return incomingDocumentService.createIncomingDocument(incomingDocument);
+    },
+  });
+
+  const onFinish = async (values: any) => {
+    const incomingDocument: IncomingDocumentDto = {
+      ...values,
+      documentType: {
+        id: 1,
+      },
+      distributionDate: new Date(),
+      arrivingDate: new Date(),
+      arrivingTime: values.arrivingTime.format('HH:mm:ss'),
+      distributionOrg: {
+        id: 1,
+      },
+      folder: 'Test',
+      urgency: Urgency.LOW,
+      confidentiality: Confidentiality.LOW,
+      sendingLevel: {
+        id: 1,
+      },
+    };
+
+    createIncomingDocument.mutate(incomingDocument);
+
+    if (createIncomingDocument.isSuccess) {
+      Swal.fire({
+        icon: 'success',
+        html: t('procesIncomingDocPage.form.message.success') as string,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        navigate('/index/docin');
+      });
+    } else if (createIncomingDocument.isError) {
+      Swal.fire({
+        icon: 'error',
+        html: t('procesIncomingDocPage.form.message.error') as string,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
   };
 
   const onCancel = () => {
