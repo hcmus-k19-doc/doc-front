@@ -179,12 +179,17 @@ export default {
   },
   transfer_modal: {
     title: 'Luân chuyển văn bản tới',
-    radio: {
-      transfer_to_director: 'Chuyển ban giám đốc',
-      transfer_to_chief_of_office: 'Chuyển chánh văn phòng',
-      transfer: 'Chuyển xử lý',
+    director_view: {
+      sender: 'Người chuyển',
+      implementation_date: 'Ngày thực hiện',
+      document: 'Văn bản',
+      summary: 'Trích yếu - đề nghị',
+      receiver: 'Người nhận',
+    },
+    sidebar: {
+      director: 'Ban giám đốc',
+      chief_of_office: 'Chánh văn phòng',
+      secretary: 'Văn thư',
     },
   },
-  director: 'Ban giám đốc',
-  chief_of_office: 'Chánh văn phòng',
 };
