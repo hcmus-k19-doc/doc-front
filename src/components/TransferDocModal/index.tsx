@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Col, Divider, Form, Menu, Modal, Row, Table } from 'antd';
+import { Col, Divider, Menu, Modal, Row, Table, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
 import {
@@ -19,6 +19,8 @@ import {
   Props,
 } from './core/models';
 
+const { Text } = Typography;
+
 const TransferDocModal: React.FC<Props> = ({ isModalOpen, handleOk, handleCancel }) => {
   const { t } = useTranslation();
   const transferLabels = [t(i18n_director), t(i18n_chief_of_office), t(i18_secretary)];
@@ -30,9 +32,9 @@ const TransferDocModal: React.FC<Props> = ({ isModalOpen, handleOk, handleCancel
     getItem(t(i18_secretary), 3),
   ];
 
-  function handleMenuOnSelect({ selectedKeys }: MenuSelectProps) {
+  const handleMenuOnSelect = ({ selectedKeys }: MenuSelectProps) => {
     setTransferLabel(transferLabels[parseInt(selectedKeys[0]) - 1]);
-  }
+  };
 
   return (
     <Modal
@@ -45,7 +47,7 @@ const TransferDocModal: React.FC<Props> = ({ isModalOpen, handleOk, handleCancel
       <Row className='mt-5'>
         <Col span='5'>
           <Menu
-            style={{ height: '100%' }}
+            className='h-full'
             onSelect={handleMenuOnSelect}
             defaultSelectedKeys={['1']}
             mode='inline'
@@ -55,27 +57,39 @@ const TransferDocModal: React.FC<Props> = ({ isModalOpen, handleOk, handleCancel
         </Col>
         <Col span='1'></Col>
         <Col span='18'>
-          <Form>
-            <Row>
-              <Col span='12'>{t(i18n_sender)}</Col>
-            </Row>
-            <Row>
-              <Col span='12'>{t(i18n_implementation_date)}</Col>
-            </Row>
-            <Row>
-              <Col span='12'>{t(i18n_document)}</Col>
-            </Row>
-            <Row>
-              <Form.Item name='summary' label={t(i18n_summary)}>
-                <TextArea rows={4} />
-              </Form.Item>
-            </Row>
-            <Row>
-              <Col span='12'>{t(i18n_receiver)}</Col>
-            </Row>
+          <Row>
+            <Col span='6'>
+              <Text strong>{t(i18n_sender)}</Text>
+            </Col>
+            <Col span='6'>{t(i18n_sender)}</Col>
+          </Row>
+          <Row className='my-6'>
+            <Col span='6'>
+              <Text strong>{t(i18n_implementation_date)}</Text>
+            </Col>
+            <Col span='6'>{t(i18n_implementation_date)}</Col>
+          </Row>
+          <Row className='mt-3 mb-3'>
+            <Col span='6'>
+              <Text strong>{t(i18n_document)}</Text>
+            </Col>
+            <Col span='6'>{t(i18n_document)}</Col>
+          </Row>
+          <Row className='mt-4 mb-4' align='middle'>
+            <Col span='6'>
+              <Text strong>{t(i18n_summary)}</Text>
+            </Col>
+            <Col span='16'>
+              <TextArea rows={4} />
+            </Col>
+          </Row>
+          <Row className='mb-3'>
+            <Col span='12'>
+              <Text strong>{t(i18n_receiver)}</Text>
+            </Col>
+          </Row>
 
-            <Table rowSelection={{ type: 'checkbox' }} scroll={{ x: 1500 }} pagination={false} />
-          </Form>
+          <Table rowSelection={{ type: 'checkbox' }} scroll={{ x: 1500 }} pagination={false} />
         </Col>
       </Row>
     </Modal>
