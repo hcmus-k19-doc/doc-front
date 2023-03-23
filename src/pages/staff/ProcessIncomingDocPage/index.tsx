@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 import {
   Button,
   Col,
@@ -15,7 +15,18 @@ import {
   UploadProps,
 } from 'antd';
 import Dragger from 'antd/es/upload/Dragger';
+import {
+  Confidentiality,
+  DistributionOrganizationDto,
+  DocumentTypeDto,
+  IncomingDocumentDto,
+  IncomingDocumentPostDto,
+  Urgency,
+} from 'models/doc-main-models';
+import distributionOrgService from 'services/DistributionOrgService';
+import documentTypeService from 'services/DocumentTypeService';
 import incomingDocumentService from 'services/IncomingDocumentService';
+import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
 import Swal from 'sweetalert2';
 
 import './index.css';
@@ -24,6 +35,24 @@ function ProcessIncomingDocPage() {
   const { t } = useTranslation();
   const { TextArea } = Input;
   const navigate = useNavigate();
+
+  const [documentTypesQuery, distributionOrgQuery] = useDropDownQuery();
+
+  const renderDistributionOrg = () => {
+    return distributionOrgQuery.data?.map((org: DistributionOrganizationDto) => (
+      <Select.Option key={org.id} value={org.id}>
+        {org.name}
+      </Select.Option>
+    ));
+  };
+
+  const renderDocumentTypes = () => {
+    return documentTypesQuery.data?.map((docType: DocumentTypeDto) => (
+      <Select.Option key={docType.id} value={docType.id}>
+        {docType.type}
+      </Select.Option>
+    ));
+  };
 
   const dummyRequest = ({ onSuccess }: any) => {
     setTimeout(() => {
@@ -49,35 +78,33 @@ function ProcessIncomingDocPage() {
   };
 
   // const createIncomingDocument = useMutation({
-  //   mutationFn: (incomingDocument: IncomingDocumentDto) => {
-  //     console.log(incomingDocument);
+  //   mutationFn: (incomingDocument: IncomingDocumentPostDto) => {
   //     return incomingDocumentService.createIncomingDocument(incomingDocument);
   //   },
   // });
 
   const onFinish = async (values: any) => {
-    console.log(values);
+    delete values.files;
 
-    // const incomingDocument: IncomingDocumentDto = {
-    //   ...values,
-    //   documentType: {
-    //     id: 1,
-    //   },
-    //   distributionDate: new Date(),
-    //   arrivingDate: new Date(),
-    //   arrivingTime: values.arrivingTime.format('HH:mm:ss'),
-    //   distributionOrg: {
-    //     id: 1,
-    //   },
-    //   folder: 'Test',
-    //   urgency: Urgency.LOW,
-    //   confidentiality: Confidentiality.LOW,
-    //   sendingLevel: {
-    //     id: 1,
-    //   },
-    // };
+    const incomingDocument: IncomingDocumentPostDto = {
+      ...values,
+      distributionDate: new Date(),
+      arrivingDate: new Date(),
+      arrivingTime: values.arrivingTime?.format('HH:mm:ss'),
+    };
 
-    // createIncomingDocument.mutate(incomingDocument);
+    const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
+
+    if (response.status === 200) {
+      Swal.fire({
+        icon: 'success',
+        html: t('procesIncomingDocPage.form.message.success') as string,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        navigate('/index/docin');
+      });
+    }
 
     // if (createIncomingDocument.isSuccess) {
     //   Swal.fire({
@@ -92,8 +119,8 @@ function ProcessIncomingDocPage() {
     //   Swal.fire({
     //     icon: 'error',
     //     html: t('procesIncomingDocPage.form.message.error') as string,
-    //     showConfirmButton: false,
-    //     timer: 2000,
+    //     confirmButtonColor: '#3085d6',
+    //     confirmButtonText: 'Oh no!',
     //   });
     // }
   };
@@ -143,9 +170,7 @@ function ProcessIncomingDocPage() {
                       message: t('procesIncomingDocPage.form.documentTypeRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
+                  <Select>{renderDocumentTypes()}</Select>
                 </Form.Item>
               </Col>
             </Row>
@@ -190,9 +215,7 @@ function ProcessIncomingDocPage() {
                       message: t('procesIncomingDocPage.form.distributionOrgRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
+                  <Select>{renderDistributionOrg()}</Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -300,7 +323,9 @@ function ProcessIncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                    <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
+                    <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
+                    <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -317,7 +342,9 @@ function ProcessIncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                    <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
+                    <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
+                    <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>

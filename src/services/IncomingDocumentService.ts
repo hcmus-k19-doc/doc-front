@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
-import { DocPaginationDto, IncomingDocumentDto, SearchCriteriaDto } from 'models/doc-main-models';
+import {
+  DocPaginationDto,
+  IncomingDocumentDto,
+  IncomingDocumentPostDto,
+  SearchCriteriaDto,
+} from 'models/doc-main-models';
 
 function getIncomingDocuments(
   searchCriteria: Partial<SearchCriteriaDto>,
@@ -19,7 +24,7 @@ function getIncomingDocuments(
     .then((response) => response.data);
 }
 
-async function createIncomingDocument(incomingDocument: IncomingDocumentDto) {
+async function createIncomingDocument(incomingDocument: IncomingDocumentPostDto) {
   const response = await axios.post<IncomingDocumentDto>(
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/create`,
     incomingDocument
