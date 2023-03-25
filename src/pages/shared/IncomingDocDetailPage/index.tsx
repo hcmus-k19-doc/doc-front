@@ -169,13 +169,13 @@ function IncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('incomingDocDetailPage.form.docType')}
-                  name='docType'
+                  label={t('incomingDocDetailPage.form.documentType')}
+                  name='documentType'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.docTypeRequired') as string,
+                      message: t('incomingDocDetailPage.form.documentTypeRequired') as string,
                     },
                   ]}>
                   <Select>
@@ -189,8 +189,8 @@ function IncomingDocPage() {
               <Col span={11}>
                 <Form.Item
                   required
-                  label={t('incomingDocDetailPage.form.docNumber')}
-                  name='docNumber'>
+                  label={t('incomingDocDetailPage.form.incomingNumber')}
+                  name='incomingNumber'>
                   <Input disabled defaultValue={'1234567890'} />
                 </Form.Item>
               </Col>

@@ -23,7 +23,7 @@ import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
-import { DateTimeUtils } from 'utils/DateTimeUtils';
+import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
 
@@ -156,7 +156,7 @@ const IncomingDocListPage: React.FC = () => {
                   <Col span={11}>
                     <Form.Item name='documentTypeId' label={t('search_criteria_bar.document_type')}>
                       <Select>
-                        {documentTypes?.map((documentType) => (
+                        {documentTypes?.map((documentType: any) => (
                           <Select.Option key={documentType.id} value={documentType.id}>
                             {t(`DOCUMENT_TYPE.${documentType.type}`)}
                           </Select.Option>
@@ -170,7 +170,7 @@ const IncomingDocListPage: React.FC = () => {
                       name='distributionOrgId'
                       label={t('search_criteria_bar.distribution_organization')}>
                       <Select>
-                        {distributionOrgs?.map((distributionOrg) => (
+                        {distributionOrgs?.map((distributionOrg: any) => (
                           <Select.Option key={distributionOrg.id} value={distributionOrg.id}>
                             {distributionOrg.name}
                           </Select.Option>
@@ -184,7 +184,7 @@ const IncomingDocListPage: React.FC = () => {
                   <Col span={11}>
                     <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
                       <DatePicker.RangePicker
-                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        format={DAY_MONTH_YEAR_FORMAT}
                         locale={locale}
                         className='flex flex-grow'
                       />
@@ -196,7 +196,7 @@ const IncomingDocListPage: React.FC = () => {
                       name='processingDuration'
                       label={t('search_criteria_bar.processing_duration')}>
                       <DatePicker.RangePicker
-                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        format={DAY_MONTH_YEAR_FORMAT}
                         locale={locale}
                         className='flex flex-grow'
                       />

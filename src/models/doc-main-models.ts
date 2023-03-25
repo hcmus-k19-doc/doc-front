@@ -1,9 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-19 15:10:53.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-25 20:40:19.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
+    symbol: string;
 }
 
 export interface DocAbstractDto {
@@ -21,6 +22,12 @@ export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
 }
 
+export interface FolderDto extends DocAbstractDto {
+    folderName: string;
+    nextNumber: number;
+    year: number;
+}
+
 export interface IncomingDocumentDto extends DocAbstractDto {
     status: ProcessingStatus;
     processingDuration: DateAsString;
@@ -31,6 +38,24 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     arrivingDate: DateAsString;
     summary: string;
     sendingLevel: SendingLevelDto;
+    folder: FolderDto;
+}
+
+export interface IncomingDocumentGetDto {
+}
+
+export interface IncomingDocumentPostDto {
+    incomingNumber: string;
+    documentType: number;
+    originalSymbolNumber: string;
+    distributionOrg: number;
+    distributionDate: DateAsString;
+    arrivingDate: DateAsString;
+    arrivingTime: DateAsString;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    folder: number;
 }
 
 export interface SearchCriteriaDto {
@@ -56,6 +81,18 @@ export interface UserDto extends DocAbstractDto {
 }
 
 export type DateAsString = string;
+
+export const enum Confidentiality {
+    LOW = "LOW",
+    MEDIUM = "MEDIUM",
+    HIGH = "HIGH",
+}
+
+export const enum Urgency {
+    LOW = "LOW",
+    MEDIUM = "MEDIUM",
+    HIGH = "HIGH",
+}
 
 export const enum ProcessingStatus {
     UNPROCESSED = "UNPROCESSED",

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
@@ -13,8 +14,23 @@ import {
   TimePicker,
   UploadProps,
 } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import { PRIMARY_COLOR } from 'config/constant';
+import {
+  Confidentiality,
+  DistributionOrganizationDto,
+  DocumentTypeDto,
+  FolderDto,
+  IncomingDocumentPostDto,
+  Urgency,
+} from 'models/doc-main-models';
+import incomingDocumentService from 'services/IncomingDocumentService';
+import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
+import DateValidator from 'shared/validators/DateValidator';
 import Swal from 'sweetalert2';
+import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
 
@@ -22,6 +38,50 @@ function ProcessIncomingDocPage() {
   const { t } = useTranslation();
   const { TextArea } = Input;
   const navigate = useNavigate();
+  const [form] = useForm();
+
+  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownQuery();
+
+  const renderFolders = () => {
+    return foldersQuery.data?.map((folder: FolderDto) => (
+      <Select.Option key={folder.id} value={folder.id}>
+        {folder.folderName}
+      </Select.Option>
+    ));
+  };
+
+  const renderDistributionOrg = () => {
+    return distributionOrgsQuery.data?.map((org: DistributionOrganizationDto) => (
+      <Select.Option key={org.id} value={org.id}>
+        {org.name}
+      </Select.Option>
+    ));
+  };
+
+  const renderDocumentTypes = () => {
+    return documentTypesQuery.data?.map((docType: DocumentTypeDto) => (
+      <Select.Option key={docType.id} value={docType.id}>
+        {docType.type}
+      </Select.Option>
+    ));
+  };
+
+  const handleFolderChange = (value: any) => {
+    const folder: FolderDto =
+      foldersQuery.data?.find((folder: FolderDto) => folder.id === value) || ({} as FolderDto);
+    form.setFieldValue('incomingNumber', constructIncomingNumber(folder));
+  };
+
+  useEffect(() => {
+    form.setFieldsValue({
+      folder: foldersQuery.data?.[0].id,
+      incomingNumber: constructIncomingNumber(foldersQuery.data?.[0] || ({} as FolderDto)),
+      documentType: documentTypesQuery.data?.[0].id,
+      distributionOrg: distributionOrgsQuery.data?.[0].id,
+      urgency: Urgency.HIGH,
+      confidentiality: Confidentiality.HIGH,
+    });
+  });
 
   const dummyRequest = ({ onSuccess }: any) => {
     setTimeout(() => {
@@ -46,16 +106,38 @@ function ProcessIncomingDocPage() {
     },
   };
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    Swal.fire({
-      icon: 'success',
-      html: t('procesIncomingDocPage.form.message.success') as string,
-      showConfirmButton: false,
-      timer: 2000,
-    }).then(() => {
-      navigate('/index/docin');
-    });
+  const onFinish = async (values: any) => {
+    try {
+      delete values.files;
+
+      const incomingDocument: IncomingDocumentPostDto = {
+        ...values,
+        distributionDate: new Date(values.distributionDate),
+        arrivingDate: new Date(values.arrivingDate),
+        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+      };
+
+      const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
+
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          html: t('procesIncomingDocPage.form.message.success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          navigate('/index/docin');
+        });
+      }
+    } catch (error) {
+      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
+      Swal.fire({
+        icon: 'error',
+        html: t('procesIncomingDocPage.form.message.error') as string,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
   };
 
   const onCancel = () => {
@@ -65,14 +147,14 @@ function ProcessIncomingDocPage() {
   return (
     <div>
       <div className='text-lg text-primary'>{t('procesIncomingDocPage.title')}</div>
-      <Form layout='vertical' onFinish={onFinish}>
+      <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
           <Col span={16}>
             <Row>
               <Col span={11}>
                 <Form.Item
                   label={t('procesIncomingDocPage.form.docFolder')}
-                  name='docFolder'
+                  name='folder'
                   required
                   rules={[
                     {
@@ -80,26 +162,24 @@ function ProcessIncomingDocPage() {
                       message: t('procesIncomingDocPage.form.docFolderRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                  <Select onChange={(value: number) => handleFolderChange(value)}>
+                    {renderFolders()}{' '}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.docType')}
-                  name='docType'
+                  label={t('procesIncomingDocPage.form.documentType')}
+                  name='documentType'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.docTypeRequired') as string,
+                      message: t('procesIncomingDocPage.form.documentTypeRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
+                  <Select>{renderDocumentTypes()}</Select>
                 </Form.Item>
               </Col>
             </Row>
@@ -108,9 +188,9 @@ function ProcessIncomingDocPage() {
               <Col span={11}>
                 <Form.Item
                   required
-                  label={t('procesIncomingDocPage.form.docNumber')}
-                  name='docNumber'>
-                  <Input disabled defaultValue={'1234567890'} />
+                  label={t('procesIncomingDocPage.form.incomingNumber')}
+                  name='incomingNumber'>
+                  <Input disabled />
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -144,9 +224,7 @@ function ProcessIncomingDocPage() {
                       message: t('procesIncomingDocPage.form.distributionOrgRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
+                  <Select>{renderDistributionOrg()}</Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -162,11 +240,27 @@ function ProcessIncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t(
+                        'procesIncomingDocPage.form.distributionDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('procesIncomingDocPage.form.distributionDateInvalid') as string,
+                      validator: (_, value) => {
+                        const arrivingDate = form.getFieldValue('arrivingDate');
+                        return DateValidator.validateBeforeAfter(value, arrivingDate);
+                      },
+                    },
+                    {
                       required: true,
                       message: t('procesIncomingDocPage.form.distributionDateRequired') as string,
                     },
                   ]}>
-                  <DatePicker className='w-full' />
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
                 </Form.Item>
               </Col>
             </Row>
@@ -179,11 +273,27 @@ function ProcessIncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t(
+                        'procesIncomingDocPage.form.arrivingDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('procesIncomingDocPage.form.arrivingDateInvalid') as string,
+                      validator: (_, value) => {
+                        const distributionDate = form.getFieldValue('distributionDate');
+                        return DateValidator.validateBeforeAfter(distributionDate, value);
+                      },
+                    },
+                    {
                       required: true,
                       message: t('procesIncomingDocPage.form.arrivingDateRequired') as string,
                     },
                   ]}>
-                  <DatePicker className='w-full' />
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
                 </Form.Item>
               </Col>
 
@@ -205,18 +315,18 @@ function ProcessIncomingDocPage() {
               </Col>
             </Row>
 
-            <Row>
+            {/* <Row>
               <Col span={11}>
                 <Form.Item
                   label={t('procesIncomingDocPage.form.signer')}
                   name='signer'
-                  // required
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: t('procesIncomingDocPage.form.signerRequired') as string,
-                  //   },
-                  // ]}
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('procesIncomingDocPage.form.signerRequired') as string,
+                    },
+                  ]}
                 >
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
@@ -239,7 +349,7 @@ function ProcessIncomingDocPage() {
                   <Input />
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row>
               <Col span={11}>
@@ -254,7 +364,9 @@ function ProcessIncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                    <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
+                    <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
+                    <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -271,7 +383,9 @@ function ProcessIncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                    <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
+                    <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
+                    <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -316,7 +430,7 @@ function ProcessIncomingDocPage() {
               {t('procesIncomingDocPage.form.button.save')}
             </Button>
             <Button
-              type='primary'
+              type='default'
               size='large'
               className='mr-5'
               onClick={() => {
