@@ -15,11 +15,14 @@ import {
   Table,
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/vi_VN';
+import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
-import { useRequestQuery, useResponseQuery } from 'shared/hooks/IncomingDocumentListQuery';
-import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/states';
+import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
+import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
+import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
+import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
@@ -85,8 +88,8 @@ const ExpandIcon = () => {
 
 const Footer = () => {
   const { t } = useTranslation();
-  const [requestQuery, setRequestQuery] = useRequestQuery();
-  const { data } = useResponseQuery();
+  const [requestQuery, setRequestQuery] = useIncomingDocReq();
+  const { data } = useIncomingDocRes();
 
   const handleOnChange = (page: number) => {
     const updatedState = { ...requestQuery, page } as DocQueryState;
@@ -98,6 +101,7 @@ const Footer = () => {
       <Button type='primary'>{t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}</Button>
 
       <Pagination
+        current={requestQuery.page}
         defaultCurrent={1}
         defaultPageSize={PAGE_SIZE}
         onChange={handleOnChange}
@@ -110,8 +114,11 @@ const Footer = () => {
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
-  const { isLoading, data } = useResponseQuery();
-  const [requestQuery, setRequestQuery] = useRequestQuery();
+  const { isLoading, data } = useIncomingDocRes();
+  const { documentTypes } = useDocumentTypesRes();
+  const { distributionOrgs } = useDistributionOrgRes();
+  const [form] = useForm();
+  const [requestQuery, setRequestQuery] = useIncomingDocReq();
 
   return (
     <div>
@@ -120,8 +127,9 @@ const IncomingDocListPage: React.FC = () => {
       <Collapse bordered={false} expandIcon={ExpandIcon}>
         <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
           <Form
+            form={form}
             onFinish={(values: SearchState) => {
-              setRequestQuery({ ...requestQuery, ...values } as DocQueryState);
+              setRequestQuery({ ...requestQuery, ...values, page: 1 });
             }}
             layout='vertical'>
             <Row justify='center'>
@@ -146,19 +154,27 @@ const IncomingDocListPage: React.FC = () => {
 
                 <Row>
                   <Col span={11}>
-                    <Form.Item name='documentType' label={t('search_criteria_bar.document_type')}>
+                    <Form.Item name='documentTypeId' label={t('search_criteria_bar.document_type')}>
                       <Select>
-                        <Select.Option value='demo'>Demo</Select.Option>
+                        {documentTypes?.map((documentType: any) => (
+                          <Select.Option key={documentType.id} value={documentType.id}>
+                            {t(`DOCUMENT_TYPE.${documentType.type}`)}
+                          </Select.Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>
                   <Col span={2}></Col>
                   <Col span={11}>
                     <Form.Item
-                      name='distributionOrg'
+                      name='distributionOrgId'
                       label={t('search_criteria_bar.distribution_organization')}>
                       <Select>
-                        <Select.Option value='demo'>Demo</Select.Option>
+                        {distributionOrgs?.map((distributionOrg: any) => (
+                          <Select.Option key={distributionOrg.id} value={distributionOrg.id}>
+                            {distributionOrg.name}
+                          </Select.Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -198,11 +214,22 @@ const IncomingDocListPage: React.FC = () => {
               </Col>
             </Row>
 
-            <Form.Item className='ml-6'>
-              <Button htmlType='submit' type='primary'>
-                Tìm kiếm
-              </Button>
-            </Form.Item>
+            <Row justify='space-between'>
+              <Form.Item className='ml-6'>
+                <Button htmlType='submit' type='primary'>
+                  Tìm kiếm
+                </Button>
+              </Form.Item>
+              <Form.Item className='mr-6'>
+                <Button
+                  onClick={() => form.resetFields()}
+                  htmlType='submit'
+                  type='default'
+                  className='px-[32px] reset-btn'>
+                  {t('COMMON.SEARCH_CRITERIA.RESET')}
+                </Button>
+              </Form.Item>
+            </Row>
           </Form>
         </Panel>
       </Collapse>

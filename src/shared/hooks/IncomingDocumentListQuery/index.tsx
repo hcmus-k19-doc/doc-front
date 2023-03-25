@@ -10,24 +10,24 @@ import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
-import { DocQueryState } from './states';
+import { DocQueryState } from './core/states';
 
 const queryState = atom<DocQueryState>({
   key: 'DOC_QUERY_STATE',
   default: {
     page: 1,
-    incomingNumber: '',
   },
 });
 
-export const useRequestQuery = () => useRecoilState(queryState);
+export const useIncomingDocReq = () => useRecoilState(queryState);
 
-export const useResponseQuery = () => {
+export const useIncomingDocRes = () => {
   const { t } = useTranslation();
   const query = useRecoilValue<DocQueryState>(queryState);
 
   return useQuery({
     queryKey: ['QUERIES.INCOMING_DOCUMENT_LIST', query, PAGE_SIZE],
+    keepPreviousData: true,
     queryFn: () => {
       return incomingDocumentService
         .getIncomingDocuments(
