@@ -20,7 +20,7 @@ import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
 import { useRequestQuery, useResponseQuery } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/states';
-import { DateTimeUtils } from 'utils/DateTimeUtils';
+import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
 
@@ -168,7 +168,7 @@ const IncomingDocListPage: React.FC = () => {
                   <Col span={11}>
                     <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
                       <DatePicker.RangePicker
-                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        format={DAY_MONTH_YEAR_FORMAT}
                         locale={locale}
                         className='flex flex-grow'
                       />
@@ -180,7 +180,7 @@ const IncomingDocListPage: React.FC = () => {
                       name='processingDuration'
                       label={t('search_criteria_bar.processing_duration')}>
                       <DatePicker.RangePicker
-                        format={DateTimeUtils.DAY_MONTH_YEAR_FORMAT}
+                        format={DAY_MONTH_YEAR_FORMAT}
                         locale={locale}
                         className='flex flex-grow'
                       />

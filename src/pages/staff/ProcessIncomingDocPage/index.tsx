@@ -1,7 +1,7 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 import {
   Button,
   Col,
@@ -14,20 +14,23 @@ import {
   TimePicker,
   UploadProps,
 } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import { PRIMARY_COLOR } from 'config/constant';
 import {
   Confidentiality,
   DistributionOrganizationDto,
   DocumentTypeDto,
-  IncomingDocumentDto,
+  FolderDto,
   IncomingDocumentPostDto,
   Urgency,
 } from 'models/doc-main-models';
-import distributionOrgService from 'services/DistributionOrgService';
-import documentTypeService from 'services/DocumentTypeService';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
+import ArrivingDateValidator from 'shared/validators/ArrivingDateValidator';
 import Swal from 'sweetalert2';
+import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
 
@@ -35,11 +38,20 @@ function ProcessIncomingDocPage() {
   const { t } = useTranslation();
   const { TextArea } = Input;
   const navigate = useNavigate();
+  const [form] = useForm();
 
-  const [documentTypesQuery, distributionOrgQuery] = useDropDownQuery();
+  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownQuery();
+
+  const renderFolders = () => {
+    return foldersQuery.data?.map((folder: FolderDto) => (
+      <Select.Option key={folder.id} value={folder.id}>
+        {folder.folderName}
+      </Select.Option>
+    ));
+  };
 
   const renderDistributionOrg = () => {
-    return distributionOrgQuery.data?.map((org: DistributionOrganizationDto) => (
+    return distributionOrgsQuery.data?.map((org: DistributionOrganizationDto) => (
       <Select.Option key={org.id} value={org.id}>
         {org.name}
       </Select.Option>
@@ -53,6 +65,23 @@ function ProcessIncomingDocPage() {
       </Select.Option>
     ));
   };
+
+  const handleFolderChange = (value: any) => {
+    const folder: FolderDto =
+      foldersQuery.data?.find((folder: FolderDto) => folder.id === value) || ({} as FolderDto);
+    form.setFieldValue('incomingNumber', constructIncomingNumber(folder));
+  };
+
+  useEffect(() => {
+    form.setFieldsValue({
+      folder: foldersQuery.data?.[0].id,
+      incomingNumber: constructIncomingNumber(foldersQuery.data?.[0] || ({} as FolderDto)),
+      documentType: documentTypesQuery.data?.[0].id,
+      distributionOrg: distributionOrgsQuery.data?.[0].id,
+      urgency: Urgency.HIGH,
+      confidentiality: Confidentiality.HIGH,
+    });
+  });
 
   const dummyRequest = ({ onSuccess }: any) => {
     setTimeout(() => {
@@ -77,52 +106,38 @@ function ProcessIncomingDocPage() {
     },
   };
 
-  // const createIncomingDocument = useMutation({
-  //   mutationFn: (incomingDocument: IncomingDocumentPostDto) => {
-  //     return incomingDocumentService.createIncomingDocument(incomingDocument);
-  //   },
-  // });
-
   const onFinish = async (values: any) => {
-    delete values.files;
+    try {
+      delete values.files;
 
-    const incomingDocument: IncomingDocumentPostDto = {
-      ...values,
-      distributionDate: new Date(),
-      arrivingDate: new Date(),
-      arrivingTime: values.arrivingTime?.format('HH:mm:ss'),
-    };
+      const incomingDocument: IncomingDocumentPostDto = {
+        ...values,
+        distributionDate: new Date(values.distributionDate),
+        arrivingDate: new Date(values.arrivingDate),
+        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+      };
 
-    const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
+      const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
 
-    if (response.status === 200) {
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          html: t('procesIncomingDocPage.form.message.success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          navigate('/index/docin');
+        });
+      }
+    } catch (error) {
+      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
       Swal.fire({
-        icon: 'success',
-        html: t('procesIncomingDocPage.form.message.success') as string,
-        showConfirmButton: false,
-        timer: 2000,
-      }).then(() => {
-        navigate('/index/docin');
+        icon: 'error',
+        html: t('procesIncomingDocPage.form.message.error') as string,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
       });
     }
-
-    // if (createIncomingDocument.isSuccess) {
-    //   Swal.fire({
-    //     icon: 'success',
-    //     html: t('procesIncomingDocPage.form.message.success') as string,
-    //     showConfirmButton: false,
-    //     timer: 2000,
-    //   }).then(() => {
-    //     navigate('/index/docin');
-    //   });
-    // } else if (createIncomingDocument.isError) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     html: t('procesIncomingDocPage.form.message.error') as string,
-    //     confirmButtonColor: '#3085d6',
-    //     confirmButtonText: 'Oh no!',
-    //   });
-    // }
   };
 
   const onCancel = () => {
@@ -132,12 +147,7 @@ function ProcessIncomingDocPage() {
   return (
     <div>
       <div className='text-lg text-primary'>{t('procesIncomingDocPage.title')}</div>
-      <Form
-        layout='vertical'
-        onFinish={onFinish}
-        initialValues={{
-          incomingNumber: '123456789',
-        }}>
+      <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
           <Col span={16}>
             <Row>
@@ -146,15 +156,14 @@ function ProcessIncomingDocPage() {
                   label={t('procesIncomingDocPage.form.docFolder')}
                   name='folder'
                   required
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: t('procesIncomingDocPage.form.docFolderRequired') as string,
-                  //   },
-                  // ]}
-                >
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                  rules={[
+                    {
+                      required: true,
+                      message: t('procesIncomingDocPage.form.docFolderRequired') as string,
+                    },
+                  ]}>
+                  <Select onChange={(value: number) => handleFolderChange(value)}>
+                    {renderFolders()}{' '}
                   </Select>
                 </Form.Item>
               </Col>
@@ -235,7 +244,7 @@ function ProcessIncomingDocPage() {
                       message: t('procesIncomingDocPage.form.distributionDateRequired') as string,
                     },
                   ]}>
-                  <DatePicker className='w-full' />
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
                 </Form.Item>
               </Col>
             </Row>
@@ -248,11 +257,18 @@ function ProcessIncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t('procesIncomingDocPage.form.arrivingDateInvalid') as string,
+                      validator: (_, value) => {
+                        const distributionDate = form.getFieldValue('distributionDate');
+                        return ArrivingDateValidator.validate(value, distributionDate);
+                      },
+                    },
+                    {
                       required: true,
                       message: t('procesIncomingDocPage.form.arrivingDateRequired') as string,
                     },
                   ]}>
-                  <DatePicker className='w-full' />
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
                 </Form.Item>
               </Col>
 

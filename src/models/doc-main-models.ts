@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-23 21:56:15.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-25 16:27:58.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -32,6 +32,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     arrivingDate: DateAsString;
     summary: string;
     sendingLevel: SendingLevelDto;
+    folder: FolderDto;
 }
 
 export interface IncomingDocumentGetDto {
@@ -48,7 +49,7 @@ export interface IncomingDocumentPostDto {
     summary: string;
     urgency: Urgency;
     confidentiality: Confidentiality;
-    folder: string;
+    folder: number;
 }
 
 export interface SearchCriteriaDto {
@@ -71,6 +72,12 @@ export interface UserDto extends DocAbstractDto {
     username: string;
     email: string;
     roles: DocSystemRoleEnum[];
+}
+
+export interface FolderDto extends DocAbstractDto {
+    folderName: string;
+    nextNumber: number;
+    year: number;
 }
 
 export type DateAsString = string;

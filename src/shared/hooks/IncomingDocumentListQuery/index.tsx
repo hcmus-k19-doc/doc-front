@@ -8,7 +8,7 @@ import {
 } from 'pages/shared/IncomingDocListPage/core/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
-import { DateTimeUtils } from 'utils/DateTimeUtils';
+import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { DocQueryState } from './states';
 
@@ -32,14 +32,10 @@ export const useResponseQuery = () => {
       return incomingDocumentService
         .getIncomingDocuments(
           {
-            arrivingDateFrom: query.arrivingDate?.[0].format(DateTimeUtils.DAY_MONTH_YEAR_FORMAT),
-            arrivingDateTo: query.arrivingDate?.[1].format(DateTimeUtils.DAY_MONTH_YEAR_FORMAT),
-            processingDurationFrom: query.processingDuration?.[0].format(
-              DateTimeUtils.DAY_MONTH_YEAR_FORMAT
-            ),
-            processingDurationTo: query.processingDuration?.[1].format(
-              DateTimeUtils.DAY_MONTH_YEAR_FORMAT
-            ),
+            arrivingDateFrom: query.arrivingDate?.[0].format(DAY_MONTH_YEAR_FORMAT),
+            arrivingDateTo: query.arrivingDate?.[1].format(DAY_MONTH_YEAR_FORMAT),
+            processingDurationFrom: query.processingDuration?.[0].format(DAY_MONTH_YEAR_FORMAT),
+            processingDurationTo: query.processingDuration?.[1].format(DAY_MONTH_YEAR_FORMAT),
             ...query,
           },
           query.page
