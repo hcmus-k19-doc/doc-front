@@ -27,7 +27,7 @@ import {
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
-import ArrivingDateValidator from 'shared/validators/ArrivingDateValidator';
+import DateValidator from 'shared/validators/DateValidator';
 import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
@@ -240,6 +240,22 @@ function ProcessIncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t(
+                        'procesIncomingDocPage.form.distributionDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('procesIncomingDocPage.form.distributionDateInvalid') as string,
+                      validator: (_, value) => {
+                        const arrivingDate = form.getFieldValue('arrivingDate');
+                        return DateValidator.validateBeforeAfter(value, arrivingDate);
+                      },
+                    },
+                    {
                       required: true,
                       message: t('procesIncomingDocPage.form.distributionDateRequired') as string,
                     },
@@ -257,10 +273,19 @@ function ProcessIncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t(
+                        'procesIncomingDocPage.form.arrivingDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
                       message: t('procesIncomingDocPage.form.arrivingDateInvalid') as string,
                       validator: (_, value) => {
                         const distributionDate = form.getFieldValue('distributionDate');
-                        return ArrivingDateValidator.validate(value, distributionDate);
+                        return DateValidator.validateBeforeAfter(distributionDate, value);
                       },
                     },
                     {

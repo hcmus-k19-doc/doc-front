@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-25 16:27:58.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-25 19:47:03.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -20,6 +20,12 @@ export interface DocPaginationDto<T> {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+}
+
+export interface FolderDto extends DocAbstractDto {
+    folderName: string;
+    nextNumber: number;
+    year: number;
 }
 
 export interface IncomingDocumentDto extends DocAbstractDto {
@@ -55,8 +61,8 @@ export interface IncomingDocumentPostDto {
 export interface SearchCriteriaDto {
     incomingNumber: string;
     originalSymbolNumber: string;
-    documentType: string;
-    distributionOrg: string;
+    documentTypeId: number;
+    distributionOrgId: number;
     arrivingDateFrom: DateAsString;
     arrivingDateTo: DateAsString;
     processingDurationFrom: DateAsString;
@@ -74,18 +80,12 @@ export interface UserDto extends DocAbstractDto {
     roles: DocSystemRoleEnum[];
 }
 
-export interface FolderDto extends DocAbstractDto {
-    folderName: string;
-    nextNumber: number;
-    year: number;
-}
-
 export type DateAsString = string;
 
-export const enum ProcessingStatus {
-    UNPROCESSED = "UNPROCESSED",
-    IN_PROGRESS = "IN_PROGRESS",
-    CLOSED = "CLOSED",
+export const enum Confidentiality {
+    LOW = "LOW",
+    MEDIUM = "MEDIUM",
+    HIGH = "HIGH",
 }
 
 export const enum Urgency {
@@ -94,10 +94,10 @@ export const enum Urgency {
     HIGH = "HIGH",
 }
 
-export const enum Confidentiality {
-    LOW = "LOW",
-    MEDIUM = "MEDIUM",
-    HIGH = "HIGH",
+export const enum ProcessingStatus {
+    UNPROCESSED = "UNPROCESSED",
+    IN_PROGRESS = "IN_PROGRESS",
+    CLOSED = "CLOSED",
 }
 
 export const enum DocSystemRoleEnum {
