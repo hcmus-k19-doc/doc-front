@@ -131,8 +131,6 @@ export default {
         fileSuccess: 'đã được đính kèm',
         success: 'Tiếp nhận văn bản thành công',
         error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
-        file_already_existed: 'Tệp đã tồn tại',
-        file_type_not_accepted: 'Loại tệp không được hỗ trợ',
       },
     },
   },
@@ -186,6 +184,12 @@ export default {
       confirm: 'Xác nhận đã xem',
       return: 'Trả lại',
       extend: 'Yêu cầu gia hạn',
+    },
+  },
+  error: {
+    file: {
+      file_already_existed: 'Tệp đã tồn tại',
+      file_type_not_accepted: 'Loại tệp không được hỗ trợ',
     },
   },
 };
