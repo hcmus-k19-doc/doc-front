@@ -1,4 +1,4 @@
-export interface TransferDirectorQueryState {
+export interface DirectorTransferQueryState {
   documentIds?: number[];
   summary?: string;
   assigneeId?: number;

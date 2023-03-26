@@ -265,7 +265,7 @@ const IncomingDocListPage: React.FC = () => {
       <Divider />
 
       <Button className='float-right px-8' htmlType='button' onClick={handleOnOpenModal}>
-        {t('incomingDocDetailPage.button.collect')}
+        {t('incomingDocDetailPage.button.transfer')}
       </Button>
 
       <TransferDocModal

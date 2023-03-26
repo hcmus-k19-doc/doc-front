@@ -1,8 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Col, Form, Row, Select, SelectProps, Typography } from 'antd';
+import { Col, Form, Row, Select, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useTransferDirectorQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { useAuth } from 'components/AuthComponent';
+import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
+import { useDirectorTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
 import {
   DirectorScreenFormProps,
@@ -16,8 +18,6 @@ import {
 } from '../../core/models';
 
 const { Text } = Typography;
-const assigneeSelectOptions: SelectProps['options'] = [];
-const collaboratorSelectOptions: SelectProps['options'] = [];
 
 const dummyData = {
   sender: 'Nguyễn Văn A',
@@ -66,18 +66,17 @@ const dummyData = {
   ],
 };
 
-assigneeSelectOptions.push(...dummyData.assignee);
-collaboratorSelectOptions.push(...dummyData.collaborators);
-
 const DirectorScreenComponent: React.FC<DirectorScreenProps> = ({ form }) => {
   const { t } = useTranslation();
-  const setTransferDocQuery = useTransferDirectorQuerySetter();
+  const { directors } = useDirectorTransferRes();
+  const { currentUser } = useAuth();
+  const setDirectorTransferQuery = useDirectorTransferQuerySetter();
 
   return (
     <Form
       form={form}
       onFinish={(values: DirectorScreenFormProps) => {
-        setTransferDocQuery({
+        setDirectorTransferQuery({
           summary: values.summary,
           assigneeId: values.assignee,
           collaboratorIds: values.collaborators,
@@ -87,7 +86,7 @@ const DirectorScreenComponent: React.FC<DirectorScreenProps> = ({ form }) => {
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
         </Col>
-        <Col span='6'>{dummyData.sender}</Col>
+        <Col span='6'>{`${currentUser?.firstName} ${currentUser?.lastName}`}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -117,7 +116,7 @@ const DirectorScreenComponent: React.FC<DirectorScreenProps> = ({ form }) => {
         </Col>
         <Col span='16'>
           <Form.Item name='assignee'>
-            <Select style={{ width: '100%' }} allowClear options={assigneeSelectOptions} />
+            <Select style={{ width: '100%' }} allowClear options={directors} />
           </Form.Item>
         </Col>
       </Row>
@@ -127,7 +126,7 @@ const DirectorScreenComponent: React.FC<DirectorScreenProps> = ({ form }) => {
         </Col>
         <Col span='16'>
           <Form.Item name='collaborators'>
-            <Select mode='multiple' allowClear options={collaboratorSelectOptions} />
+            <Select mode='multiple' allowClear options={directors} />
           </Form.Item>
         </Col>
       </Row>
