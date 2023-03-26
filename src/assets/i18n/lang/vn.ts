@@ -32,6 +32,15 @@ export default {
       EN: 'Tiếng Anh',
       VI: 'Tiếng Việt',
     },
+    logout: {
+      title: 'Đăng xuất',
+      modal: {
+        title: 'Xác nhận',
+        ok_text: 'Đăng xuất',
+        cancel_text: 'Hủy',
+        content: 'Bạn có chắc chắn muốn đăng xuất?',
+      },
+    },
   },
   COMMON: {
     PAGINATION: {
@@ -122,6 +131,8 @@ export default {
         fileSuccess: 'đã được đính kèm',
         success: 'Tiếp nhận văn bản thành công',
         error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+        file_already_existed: 'Tệp đã tồn tại',
+        file_type_not_accepted: 'Loại tệp không được hỗ trợ',
       },
     },
   },
