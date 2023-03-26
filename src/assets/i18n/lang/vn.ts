@@ -184,7 +184,8 @@ export default {
       implementation_date: 'Ngày thực hiện',
       document: 'Văn bản',
       summary: 'Trích yếu - đề nghị',
-      receiver: 'Người nhận',
+      assignee: 'Người nhận',
+      collaborators: 'Người tham gia',
     },
     sidebar: {
       director: 'Ban giám đốc',

@@ -20,7 +20,7 @@ import type { ColumnsType } from 'antd/es/table';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
-import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
+import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
@@ -119,11 +119,21 @@ const IncomingDocListPage: React.FC = () => {
   const { documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
   const [form] = useForm();
+  const [modalForm] = useForm();
   const [requestQuery, setRequestQuery] = useIncomingDocReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOnOpenModal = () => {
     setIsModalOpen(true);
+  };
+
+  const handleOnCancelModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOnOkModal = () => {
+    setIsModalOpen(false);
+    modalForm.submit();
   };
 
   return (
@@ -259,13 +269,10 @@ const IncomingDocListPage: React.FC = () => {
       </Button>
 
       <TransferDocModal
+        form={modalForm}
         isModalOpen={isModalOpen}
-        handleCancel={() => {
-          setIsModalOpen(false);
-        }}
-        handleOk={() => {
-          setIsModalOpen(false);
-        }}
+        handleCancel={handleOnCancelModal}
+        handleOk={handleOnOkModal}
       />
     </>
   );
