@@ -14,17 +14,40 @@ import {
   TimePicker,
   UploadProps,
 } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import dayjs from 'dayjs';
+import {
+  Confidentiality,
+  DistributionOrganizationDto,
+  DocumentTypeDto,
+  FolderDto,
+  IncomingDocumentDto,
+  Urgency,
+} from 'models/doc-main-models';
+import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
+import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
+import DateValidator from 'shared/validators/DateValidator';
 import Swal from 'sweetalert2';
+import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
+import { HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
 
 function IncomingDocPage() {
   const { TextArea } = Input;
+  const { docId } = useParams();
   const { t } = useTranslation();
+  const [form] = useForm();
+
   const navigate = useNavigate();
 
-  const { docId } = useParams();
+  const data = {
+    role: 355,
+  };
+
+  const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>(Array(10).fill(false));
 
   const buttonArr: JSX.Element[] = [
     <Button type='primary' key='1' size='large' name='collect'>
@@ -71,12 +94,6 @@ function IncomingDocPage() {
   // Ví dụ các nút ứng với quyền của chuyên viên xử lý chính
   // 101100011 (theo chiều từ trên xún) --> 355 --> role = 355
 
-  const data = {
-    role: 355,
-  };
-
-  const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>(Array(10).fill(false));
-
   const resolveDisplayButton = (roleNum: number) => {
     const arr = [];
     for (let i = 0; i < 9; i++) {
@@ -103,8 +120,64 @@ function IncomingDocPage() {
     });
   };
 
+  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
+  const incomingDocumentQuery = useIncomingDocumentDetailQuery(+(docId || 1));
+
+  const renderFolders = () => {
+    return foldersQuery.data?.map((folder: FolderDto) => (
+      <Select.Option key={folder.id} value={folder.id}>
+        {folder.folderName}
+      </Select.Option>
+    ));
+  };
+
+  const renderDistributionOrg = () => {
+    return distributionOrgsQuery.data?.map((org: DistributionOrganizationDto) => (
+      <Select.Option key={org.id} value={org.id}>
+        {org.name}
+      </Select.Option>
+    ));
+  };
+
+  const renderDocumentTypes = () => {
+    return documentTypesQuery.data?.map((docType: DocumentTypeDto) => (
+      <Select.Option key={docType.id} value={docType.id}>
+        {docType.type}
+      </Select.Option>
+    ));
+  };
+
+  const handleFolderChange = (value: any) => {
+    if (incomingDocumentQuery.data?.folder?.id === value) {
+      form.setFieldValue('incomingNumber', incomingDocumentQuery.data?.incomingNumber);
+      return;
+    }
+
+    const folder: FolderDto =
+      foldersQuery.data?.find((folder: FolderDto) => folder.id === value) || ({} as FolderDto);
+
+    form.setFieldValue('incomingNumber', constructIncomingNumber(folder));
+  };
+
   useEffect(() => {
-    console.log(docId);
+    const incomingDocument = incomingDocumentQuery.data || ({} as IncomingDocumentDto);
+
+    form.setFieldsValue({
+      folder: incomingDocument.folder?.id,
+      incomingNumber: incomingDocument.incomingNumber,
+      documentType: incomingDocument.documentType?.id,
+      distributionOrg: incomingDocument.distributionOrg?.id,
+      urgency: incomingDocument.urgency,
+      confidentiality: incomingDocument.confidentiality,
+      originalSymbolNumber: incomingDocument.originalSymbolNumber,
+      distributionDate: dayjs(incomingDocument.distributionDate),
+      arrivingDate: dayjs(incomingDocument.arrivingDate),
+      arrivingTime: dayjs(incomingDocument.arrivingTime, HH_MM_SS_FORMAT),
+      summary: incomingDocument.summary,
+    });
+  });
+
+  useEffect(() => {
     resolveDisplayButton(data.role);
   }, []);
 
@@ -146,14 +219,14 @@ function IncomingDocPage() {
   return (
     <div>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
-      <Form layout='vertical' onFinish={onFinish}>
+      <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
           <Col span={16}>
             <Row>
               <Col span={11}>
                 <Form.Item
                   label={t('incomingDocDetailPage.form.docFolder')}
-                  name='docFolder'
+                  name='folder'
                   required
                   rules={[
                     {
@@ -161,8 +234,8 @@ function IncomingDocPage() {
                       message: t('incomingDocDetailPage.form.docFolderRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                  <Select onChange={(value: number) => handleFolderChange(value)}>
+                    {renderFolders()}{' '}
                   </Select>
                 </Form.Item>
               </Col>
@@ -178,9 +251,7 @@ function IncomingDocPage() {
                       message: t('incomingDocDetailPage.form.documentTypeRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
+                  <Select>{renderDocumentTypes()}</Select>
                 </Form.Item>
               </Col>
             </Row>
@@ -191,7 +262,7 @@ function IncomingDocPage() {
                   required
                   label={t('incomingDocDetailPage.form.incomingNumber')}
                   name='incomingNumber'>
-                  <Input disabled defaultValue={'1234567890'} />
+                  <Input disabled />
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -225,9 +296,7 @@ function IncomingDocPage() {
                       message: t('incomingDocDetailPage.form.distributionOrgRequired') as string,
                     },
                   ]}>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
+                  <Select>{renderDistributionOrg()}</Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -243,11 +312,27 @@ function IncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t(
+                        'incomingDocDetailPage.form.distributionDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('incomingDocDetailPage.form.distributionDateInvalid') as string,
+                      validator: (_, value) => {
+                        const arrivingDate = form.getFieldValue('arrivingDate');
+                        return DateValidator.validateBeforeAfter(value, arrivingDate);
+                      },
+                    },
+                    {
                       required: true,
                       message: t('incomingDocDetailPage.form.distributionDateRequired') as string,
                     },
                   ]}>
-                  <DatePicker className='w-full' />
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
                 </Form.Item>
               </Col>
             </Row>
@@ -260,11 +345,27 @@ function IncomingDocPage() {
                   required
                   rules={[
                     {
+                      message: t(
+                        'incomingDocDetailPage.form.arrivingDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('incomingDocDetailPage.form.arrivingDateInvalid') as string,
+                      validator: (_, value) => {
+                        const distributionDate = form.getFieldValue('distributionDate');
+                        return DateValidator.validateBeforeAfter(distributionDate, value);
+                      },
+                    },
+                    {
                       required: true,
                       message: t('incomingDocDetailPage.form.arrivingDateRequired') as string,
                     },
                   ]}>
-                  <DatePicker className='w-full' />
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
                 </Form.Item>
               </Col>
 
@@ -286,18 +387,18 @@ function IncomingDocPage() {
               </Col>
             </Row>
 
-            <Row>
+            {/* <Row>
               <Col span={11}>
                 <Form.Item
                   label={t('incomingDocDetailPage.form.signer')}
                   name='signer'
-                  // required
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: t('incomingDocDetailPage.form.signerRequired') as string,
-                  //   },
-                  // ]}
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.signerRequired') as string,
+                    },
+                  ]}
                 >
                   <Select>
                     <Select.Option value='demo'>Demo</Select.Option>
@@ -320,7 +421,7 @@ function IncomingDocPage() {
                   <Input />
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row>
               <Col span={11}>
@@ -335,7 +436,9 @@ function IncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                    <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
+                    <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
+                    <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -352,7 +455,9 @@ function IncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
+                    <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
+                    <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
+                    <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>

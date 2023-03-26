@@ -26,7 +26,7 @@ import {
   Urgency,
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
-import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
+import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import DateValidator from 'shared/validators/DateValidator';
 import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
@@ -40,7 +40,7 @@ function ProcessIncomingDocPage() {
   const navigate = useNavigate();
   const [form] = useForm();
 
-  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownQuery();
+  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (

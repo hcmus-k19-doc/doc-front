@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { FilterFilled } from '@ant-design/icons';
 import {
   Button,
@@ -19,7 +20,7 @@ import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
-import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
+import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizationsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
@@ -48,12 +49,10 @@ const columns: ColumnsType<TableRowDataType> = [
   {
     title: 'Số đến theo sổ',
     dataIndex: 'arriveId',
-    render: (text: string) => <a className='link'>{text}</a>,
   },
   {
     title: 'Số ký hiệu gốc',
     dataIndex: 'originId',
-    render: (text: string) => <a className='link'>{text}</a>,
   },
   {
     title: 'Ngày đến',
@@ -114,6 +113,7 @@ const Footer = () => {
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { isLoading, data } = useIncomingDocRes();
   const { documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
@@ -238,6 +238,14 @@ const IncomingDocListPage: React.FC = () => {
 
       <Table
         loading={isLoading}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              navigate(`/index/docin/detail/${record.id}`);
+            },
+          };
+        }}
+        rowClassName='cursor-pointer'
         rowSelection={{ type: 'checkbox' }}
         columns={columns}
         dataSource={data?.payload}

@@ -33,9 +33,18 @@ async function createIncomingDocument(incomingDocument: IncomingDocumentPostDto)
   return response;
 }
 
+async function getIncomingDocumentById(id: number) {
+  const response = await axios.get<IncomingDocumentDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/${id}`
+  );
+
+  return response;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
+  getIncomingDocumentById,
 };
 
 export default incomingDocumentService;

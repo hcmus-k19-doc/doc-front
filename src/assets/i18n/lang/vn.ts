@@ -125,6 +125,7 @@ export default {
       },
     },
   },
+
   incomingDocDetailPage: {
     title: 'Chi tiết văn bản đến',
     form: {
