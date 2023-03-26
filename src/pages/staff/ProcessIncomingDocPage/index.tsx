@@ -12,11 +12,13 @@ import {
   Row,
   Select,
   TimePicker,
+  Upload,
   UploadProps,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { RcFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
-import { PRIMARY_COLOR } from 'config/constant';
+import { ALLOWED_FILE_TYPES, PRIMARY_COLOR } from 'config/constant';
 import {
   Confidentiality,
   DistributionOrganizationDto,
@@ -92,7 +94,28 @@ function ProcessIncomingDocPage() {
   const fileProps: UploadProps = {
     name: 'file',
     multiple: true,
+    maxCount: 3,
     customRequest: dummyRequest,
+    beforeUpload: (file: RcFile) => {
+      // Check file max count
+      if (form.getFieldValue('files')?.fileList?.length >= 3) {
+        message.error(t('procesIncomingDocPage.form.message.fileMaxCountError') as string);
+      }
+
+      // Check file type
+      const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
+      if (!isValidType) {
+        message.error(t('procesIncomingDocPage.form.message.fileTypeError') as string);
+      }
+
+      // Check file size (max 3MB)
+      const isValidSize = file.size / 1024 / 1024 < 3;
+      if (!isValidSize) {
+        message.error(t('procesIncomingDocPage.form.message.fileSizeError') as string);
+      }
+
+      return (isValidType && isValidSize) || Upload.LIST_IGNORE;
+    },
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -108,7 +131,8 @@ function ProcessIncomingDocPage() {
 
   const onFinish = async (values: any) => {
     try {
-      delete values.files;
+      console.log('Received values of form: ', values);
+      // delete values.files;
 
       const incomingDocument: IncomingDocumentPostDto = {
         ...values,
@@ -130,7 +154,7 @@ function ProcessIncomingDocPage() {
         });
       }
     } catch (error) {
-      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
+      // Only in this case, deal to the UX, just show a popup instead of navigating to error page
       Swal.fire({
         icon: 'error',
         html: t('procesIncomingDocPage.form.message.error') as string,
