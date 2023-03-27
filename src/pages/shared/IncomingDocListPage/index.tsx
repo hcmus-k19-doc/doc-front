@@ -24,6 +24,10 @@ import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import {
+  initialDirectorTransferQueryState,
+  useDirectorTransferQuery,
+} from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
@@ -120,8 +124,9 @@ const IncomingDocListPage: React.FC = () => {
   const { distributionOrgs } = useDistributionOrgRes();
   const [form] = useForm();
   const [modalForm] = useForm();
-  const [requestQuery, setRequestQuery] = useIncomingDocReq();
+  const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [directorTransferQueryValue, setDirectorTransferQueryValue] = useDirectorTransferQuery();
 
   const handleOnOpenModal = () => {
     setIsModalOpen(true);
@@ -129,11 +134,15 @@ const IncomingDocListPage: React.FC = () => {
 
   const handleOnCancelModal = () => {
     setIsModalOpen(false);
+    modalForm.resetFields();
+    setDirectorTransferQueryValue(initialDirectorTransferQueryState);
   };
 
   const handleOnOkModal = () => {
     setIsModalOpen(false);
     modalForm.submit();
+    modalForm.resetFields();
+    setDirectorTransferQueryValue(initialDirectorTransferQueryState);
   };
 
   return (
@@ -145,7 +154,7 @@ const IncomingDocListPage: React.FC = () => {
           <Form
             form={form}
             onFinish={(values: SearchState) => {
-              setRequestQuery({ ...requestQuery, ...values, page: 1 });
+              setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
             }}
             layout='vertical'>
             <Row justify='center'>

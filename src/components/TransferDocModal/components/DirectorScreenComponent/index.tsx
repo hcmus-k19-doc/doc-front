@@ -86,7 +86,7 @@ const DirectorScreenComponent: React.FC<DirectorScreenProps> = ({ form }) => {
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
         </Col>
-        <Col span='6'>{`${currentUser?.firstName} ${currentUser?.lastName}`}</Col>
+        <Col span='6'>{currentUser?.fullName}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
