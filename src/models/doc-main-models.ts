@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-25 20:40:19.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-27 21:10:21.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -77,6 +77,7 @@ export interface SendingLevelDto extends DocAbstractDto {
 export interface UserDto extends DocAbstractDto {
     username: string;
     email: string;
+    fullName: string;
     roles: DocSystemRoleEnum[];
 }
 
