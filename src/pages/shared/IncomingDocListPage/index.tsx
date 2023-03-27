@@ -26,7 +26,7 @@ import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocum
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import {
   initialDirectorTransferQueryState,
-  useDirectorTransferQuery,
+  useDirectorTransferQuerySetter,
 } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
@@ -126,7 +126,7 @@ const IncomingDocListPage: React.FC = () => {
   const [modalForm] = useForm();
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [directorTransferQueryValue, setDirectorTransferQueryValue] = useDirectorTransferQuery();
+  const directorTransferQuerySetter = useDirectorTransferQuerySetter();
 
   const handleOnOpenModal = () => {
     setIsModalOpen(true);
@@ -135,14 +135,14 @@ const IncomingDocListPage: React.FC = () => {
   const handleOnCancelModal = () => {
     setIsModalOpen(false);
     modalForm.resetFields();
-    setDirectorTransferQueryValue(initialDirectorTransferQueryState);
+    directorTransferQuerySetter(initialDirectorTransferQueryState);
   };
 
   const handleOnOkModal = () => {
     setIsModalOpen(false);
     modalForm.submit();
     modalForm.resetFields();
-    setDirectorTransferQueryValue(initialDirectorTransferQueryState);
+    directorTransferQuerySetter(initialDirectorTransferQueryState);
   };
 
   return (
