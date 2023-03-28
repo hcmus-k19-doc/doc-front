@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-26 12:40:09.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-27 21:27:03.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -39,6 +39,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     summary: string;
     sendingLevel: SendingLevelDto;
     folder: FolderDto;
+    attachments: AttachmentDto[];
 }
 
 export interface IncomingDocumentGetDto {
@@ -56,6 +57,7 @@ export interface IncomingDocumentPostDto {
     urgency: Urgency;
     confidentiality: Confidentiality;
     folder: number;
+    attachments: MultipartFile[];
 }
 
 export interface SearchCriteriaDto {
@@ -78,6 +80,48 @@ export interface UserDto extends DocAbstractDto {
     username: string;
     email: string;
     roles: DocSystemRoleEnum[];
+}
+
+export interface AttachmentDto {
+    id: number;
+    version: number;
+    alfrescoFileId: string;
+    alfrescoFolderId: string;
+    fileType: string;
+    data: MultipartFile;
+}
+
+export interface MultipartFile extends InputStreamSource {
+    name: string;
+    bytes: any;
+    empty: boolean;
+    resource: Resource;
+    size: number;
+    originalFilename: string;
+    contentType: string;
+}
+
+export interface Resource extends InputStreamSource {
+    open: boolean;
+    file: any;
+    readable: boolean;
+    url: URL;
+    description: string;
+    uri: URI;
+    filename: string;
+}
+
+export interface InputStreamSource {
+    inputStream: any;
+}
+
+export interface URL {
+}
+
+export interface URI extends Comparable<URI> {
+}
+
+export interface Comparable<T> {
 }
 
 export type DateAsString = string;

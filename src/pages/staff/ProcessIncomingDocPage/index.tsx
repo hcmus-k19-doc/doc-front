@@ -20,6 +20,7 @@ import { RcFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import { ALLOWED_FILE_TYPES, PRIMARY_COLOR } from 'config/constant';
 import {
+  AttachmentDto,
   Confidentiality,
   DistributionOrganizationDto,
   DocumentTypeDto,
@@ -131,7 +132,17 @@ function ProcessIncomingDocPage() {
 
   const onFinish = async (values: any) => {
     try {
-      console.log('Received values of form: ', values);
+      const attachments = new FormData();
+      console.log('values', values);
+      values.files.fileList.forEach((file: any, index: number) => {
+        console.log('file-ff', file);
+        attachments.append(`file-${index}`, file.originFileObj);
+      });
+
+      for (const pair of attachments.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+      }
+
       // delete values.files;
 
       const incomingDocument: IncomingDocumentPostDto = {
@@ -139,7 +150,9 @@ function ProcessIncomingDocPage() {
         distributionDate: new Date(values.distributionDate),
         arrivingDate: new Date(values.arrivingDate),
         arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+        attachments,
       };
+      console.log('incomingDocument', incomingDocument);
 
       const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
 
