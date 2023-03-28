@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-28 16:55:17.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-28 20:47:40.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -96,8 +96,8 @@ export interface MultipartFile extends InputStreamSource {
     empty: boolean;
     resource: Resource;
     size: number;
-    contentType: string;
     originalFilename: string;
+    contentType: string;
 }
 
 export interface Resource extends InputStreamSource {

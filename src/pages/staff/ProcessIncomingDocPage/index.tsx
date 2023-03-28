@@ -138,10 +138,6 @@ function ProcessIncomingDocPage() {
         attachments.append('attachments', file.originFileObj);
       });
 
-      for (const pair of attachments.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-      }
-
       delete values.files;
 
       const incomingDocument: IncomingDocumentPostDto = {
@@ -152,21 +148,23 @@ function ProcessIncomingDocPage() {
       };
       console.log('incomingDocumentPostDto', incomingDocument);
 
-      attachments.append('incomingDocumentPostDto', JSON.stringify(incomingDocument));
-      const response = await incomingDocumentService.createIncomingDocument(attachments);
+      const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
       console.log('response', response);
-      // const attachmentsResponse = await attachmentService.uploadAttachments(attachments);
-      // console.log('attachmentsResponse', attachmentsResponse);
+      attachments.append('incomingDocumentId', response.data.id.toString());
+      const attachmentsResponse = await attachmentService.uploadAttachments(attachments);
+      console.log('attachmentsResponse', attachmentsResponse);
 
       if (response.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          html: t('procesIncomingDocPage.form.message.success') as string,
-          showConfirmButton: false,
-          timer: 2000,
-        }).then(() => {
-          navigate('/index/docin');
-        });
+        if (attachmentsResponse.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            html: t('procesIncomingDocPage.form.message.success') as string,
+            showConfirmButton: false,
+            timer: 2000,
+          }).then(() => {
+            navigate('/index/docin');
+          });
+        }
       }
     } catch (error) {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
