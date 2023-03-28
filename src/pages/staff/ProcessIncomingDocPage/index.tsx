@@ -20,7 +20,6 @@ import { RcFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import { ALLOWED_FILE_TYPES, PRIMARY_COLOR } from 'config/constant';
 import {
-  AttachmentDto,
   Confidentiality,
   DistributionOrganizationDto,
   DocumentTypeDto,
@@ -28,6 +27,7 @@ import {
   IncomingDocumentPostDto,
   Urgency,
 } from 'models/doc-main-models';
+import attachmentService from 'services/AttachmentService';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
 import DateValidator from 'shared/validators/DateValidator';
@@ -134,27 +134,29 @@ function ProcessIncomingDocPage() {
     try {
       const attachments = new FormData();
       console.log('values', values);
-      values.files.fileList.forEach((file: any, index: number) => {
-        console.log('file-ff', file);
-        attachments.append(`file-${index}`, file.originFileObj);
+      values.files.fileList.forEach((file: any) => {
+        attachments.append('attachments', file.originFileObj);
       });
 
       for (const pair of attachments.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
       }
 
-      // delete values.files;
+      delete values.files;
 
       const incomingDocument: IncomingDocumentPostDto = {
         ...values,
         distributionDate: new Date(values.distributionDate),
         arrivingDate: new Date(values.arrivingDate),
         arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
-        attachments,
       };
-      console.log('incomingDocument', incomingDocument);
+      console.log('incomingDocumentPostDto', incomingDocument);
 
-      const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
+      attachments.append('incomingDocumentPostDto', JSON.stringify(incomingDocument));
+      const response = await incomingDocumentService.createIncomingDocument(attachments);
+      console.log('response', response);
+      // const attachmentsResponse = await attachmentService.uploadAttachments(attachments);
+      // console.log('attachmentsResponse', attachmentsResponse);
 
       if (response.status === 200) {
         Swal.fire({

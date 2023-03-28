@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-27 21:27:03.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-28 16:55:17.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -57,7 +57,6 @@ export interface IncomingDocumentPostDto {
     urgency: Urgency;
     confidentiality: Confidentiality;
     folder: number;
-    attachments: MultipartFile[];
 }
 
 export interface SearchCriteriaDto {
@@ -97,8 +96,8 @@ export interface MultipartFile extends InputStreamSource {
     empty: boolean;
     resource: Resource;
     size: number;
-    originalFilename: string;
     contentType: string;
+    originalFilename: string;
 }
 
 export interface Resource extends InputStreamSource {

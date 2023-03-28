@@ -24,8 +24,8 @@ function getIncomingDocuments(
     .then((response) => response.data);
 }
 
-async function createIncomingDocument(incomingDocument: IncomingDocumentPostDto) {
-  const response = await axios.post<IncomingDocumentDto>(
+async function createIncomingDocument(incomingDocument: FormData) {
+  const response = await axios.post<FormData>(
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/create`,
     incomingDocument
   );
