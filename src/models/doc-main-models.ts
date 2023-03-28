@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-28 20:47:40.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-28 23:25:36.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -78,12 +78,11 @@ export interface SendingLevelDto extends DocAbstractDto {
 export interface UserDto extends DocAbstractDto {
     username: string;
     email: string;
+    fullName: string;
     roles: DocSystemRoleEnum[];
 }
 
-export interface AttachmentDto {
-    id: number;
-    version: number;
+export interface AttachmentDto extends DocAbstractDto {
     alfrescoFileId: string;
     alfrescoFolderId: string;
     fileType: string;

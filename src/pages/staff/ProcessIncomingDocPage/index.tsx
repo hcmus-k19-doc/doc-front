@@ -132,15 +132,15 @@ function ProcessIncomingDocPage() {
 
   const onFinish = async (values: any) => {
     try {
-      const attachments = new FormData();
+      const incomingDocument = new FormData();
       console.log('values', values);
       values.files.fileList.forEach((file: any) => {
-        attachments.append('attachments', file.originFileObj);
+        incomingDocument.append('attachments', file.originFileObj);
       });
 
       delete values.files;
 
-      const incomingDocument: IncomingDocumentPostDto = {
+      const incomingDocumentPostDto: IncomingDocumentPostDto = {
         ...values,
         distributionDate: new Date(values.distributionDate),
         arrivingDate: new Date(values.arrivingDate),
@@ -148,23 +148,19 @@ function ProcessIncomingDocPage() {
       };
       console.log('incomingDocumentPostDto', incomingDocument);
 
+      incomingDocument.append('incomingDocumentPostDto', JSON.stringify(incomingDocumentPostDto));
       const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
       console.log('response', response);
-      attachments.append('incomingDocumentId', response.data.id.toString());
-      const attachmentsResponse = await attachmentService.uploadAttachments(attachments);
-      console.log('attachmentsResponse', attachmentsResponse);
 
       if (response.status === 200) {
-        if (attachmentsResponse.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            html: t('procesIncomingDocPage.form.message.success') as string,
-            showConfirmButton: false,
-            timer: 2000,
-          }).then(() => {
-            navigate('/index/docin');
-          });
-        }
+        Swal.fire({
+          icon: 'success',
+          html: t('procesIncomingDocPage.form.message.success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          navigate('/index/docin');
+        });
       }
     } catch (error) {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
