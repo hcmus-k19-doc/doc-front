@@ -11,7 +11,7 @@ import React, {
 import { LoadingOutlined } from '@ant-design/icons';
 import { UserDto } from 'models/doc-main-models';
 import { TokenDto } from 'models/models';
-import { getCurrentUser } from 'services/UserService';
+import userService from 'services/UserService';
 import * as authUtils from 'utils/AuthUtils';
 
 const initAuthContextPropsState = {
@@ -77,7 +77,7 @@ export const AuthInit: React.FC<Props> = ({ children }) => {
     const requestUser = async () => {
       try {
         if (!didRequest.current) {
-          const { data } = await getCurrentUser();
+          const { data } = await userService.getCurrentUser();
           if (data) {
             setCurrentUser(data);
           }

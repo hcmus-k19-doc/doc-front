@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import {
@@ -17,12 +17,17 @@ import {
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
+import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
-import { useDistributionOrgRes } from 'shared/hooks/DistributionOrganizations';
+import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import {
+  initialDirectorTransferQueryState,
+  useDirectorTransferQuerySetter,
+} from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
@@ -118,10 +123,30 @@ const IncomingDocListPage: React.FC = () => {
   const { documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
   const [form] = useForm();
-  const [requestQuery, setRequestQuery] = useIncomingDocReq();
+  const [modalForm] = useForm();
+  const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const directorTransferQuerySetter = useDirectorTransferQuerySetter();
+
+  const handleOnOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOnCancelModal = () => {
+    setIsModalOpen(false);
+    modalForm.resetFields();
+    directorTransferQuerySetter(initialDirectorTransferQueryState);
+  };
+
+  const handleOnOkModal = () => {
+    setIsModalOpen(false);
+    modalForm.submit();
+    modalForm.resetFields();
+    directorTransferQuerySetter(initialDirectorTransferQueryState);
+  };
 
   return (
-    <div>
+    <>
       <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST')}</div>
 
       <Collapse bordered={false} expandIcon={ExpandIcon}>
@@ -129,7 +154,7 @@ const IncomingDocListPage: React.FC = () => {
           <Form
             form={form}
             onFinish={(values: SearchState) => {
-              setRequestQuery({ ...requestQuery, ...values, page: 1 });
+              setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
             }}
             layout='vertical'>
             <Row justify='center'>
@@ -245,7 +270,20 @@ const IncomingDocListPage: React.FC = () => {
         pagination={false}
         footer={Footer}
       />
-    </div>
+
+      <Divider />
+
+      <Button className='float-right px-8' htmlType='button' onClick={handleOnOpenModal}>
+        {t('incomingDocDetailPage.button.transfer')}
+      </Button>
+
+      <TransferDocModal
+        form={modalForm}
+        isModalOpen={isModalOpen}
+        handleCancel={handleOnCancelModal}
+        handleOk={handleOnOkModal}
+      />
+    </>
   );
 };
 

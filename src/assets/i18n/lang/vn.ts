@@ -190,6 +190,22 @@ export default {
       extend: 'Yêu cầu gia hạn',
     },
   },
+  transfer_modal: {
+    title: 'Luân chuyển văn bản tới',
+    director_view: {
+      sender: 'Người chuyển',
+      implementation_date: 'Ngày thực hiện',
+      document: 'Văn bản',
+      summary: 'Trích yếu - đề nghị',
+      assignee: 'Người nhận',
+      collaborators: 'Người tham gia',
+    },
+    sidebar: {
+      director: 'Ban giám đốc',
+      chief_of_office: 'Chánh văn phòng',
+      secretary: 'Văn thư',
+    },
+  },
   error: {
     file: {
       file_already_existed: 'Tệp đã tồn tại',
