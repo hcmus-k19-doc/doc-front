@@ -132,6 +132,7 @@ export default {
         fileMaxCountError: 'Chỉ có thể đính kèm tối đa 3 tệp',
         fileTypeError: 'Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png',
         fileSizeError: 'Kích thước tệp không được vượt quá 3MB',
+        fileDuplicateError: 'Tệp đã được đính kèm',
         success: 'Tiếp nhận văn bản thành công',
         error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
       },

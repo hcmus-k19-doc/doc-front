@@ -16,7 +16,7 @@ import {
   UploadProps,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { RcFile } from 'antd/es/upload';
+import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import { ALLOWED_FILE_TYPES, PRIMARY_COLOR } from 'config/constant';
 import {
@@ -98,6 +98,14 @@ function ProcessIncomingDocPage() {
     maxCount: 3,
     customRequest: dummyRequest,
     beforeUpload: (file: RcFile) => {
+      // Check file duplicate
+      const isDuplicate = form
+        .getFieldValue('files')
+        ?.fileList?.find((f: UploadFile) => f.name === file.name);
+      if (isDuplicate) {
+        message.error(t('procesIncomingDocPage.form.message.fileDuplicateError') as string);
+      }
+
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
         message.error(t('procesIncomingDocPage.form.message.fileMaxCountError') as string);
@@ -115,7 +123,7 @@ function ProcessIncomingDocPage() {
         message.error(t('procesIncomingDocPage.form.message.fileSizeError') as string);
       }
 
-      return (isValidType && isValidSize) || Upload.LIST_IGNORE;
+      return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
     },
     onChange(info) {
       const { status } = info.file;
