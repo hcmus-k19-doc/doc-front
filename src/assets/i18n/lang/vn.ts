@@ -32,6 +32,15 @@ export default {
       EN: 'Tiếng Anh',
       VI: 'Tiếng Việt',
     },
+    logout: {
+      title: 'Đăng xuất',
+      modal: {
+        title: 'Xác nhận',
+        ok_text: 'Đăng xuất',
+        cancel_text: 'Hủy',
+        content: 'Bạn có chắc chắn muốn đăng xuất?',
+      },
+    },
   },
   COMMON: {
     PAGINATION: {
@@ -120,6 +129,10 @@ export default {
       message: {
         fileError: 'đính kèm không thành công.',
         fileSuccess: 'đã được đính kèm',
+        fileMaxCountError: 'Chỉ có thể đính kèm tối đa 3 tệp',
+        fileTypeError: 'Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png',
+        fileSizeError: 'Kích thước tệp không được vượt quá 3MB',
+        fileDuplicateError: 'Tệp đã được đính kèm',
         success: 'Tiếp nhận văn bản thành công',
         error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
       },
@@ -191,6 +204,12 @@ export default {
       director: 'Ban giám đốc',
       chief_of_office: 'Chánh văn phòng',
       secretary: 'Văn thư',
+    },
+  },
+  error: {
+    file: {
+      file_already_existed: 'Tệp đã tồn tại',
+      file_type_not_accepted: 'Loại tệp không được hỗ trợ',
     },
   },
 };

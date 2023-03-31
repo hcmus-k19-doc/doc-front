@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-27 21:10:21.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-31 22:22:20.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -39,6 +39,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     summary: string;
     sendingLevel: SendingLevelDto;
     folder: FolderDto;
+    attachments: AttachmentDto[];
 }
 
 export interface IncomingDocumentGetDto {
@@ -79,6 +80,13 @@ export interface UserDto extends DocAbstractDto {
     email: string;
     fullName: string;
     roles: DocSystemRoleEnum[];
+}
+
+export interface AttachmentDto extends DocAbstractDto {
+    incomingDocId: number;
+    alfrescoFileId: string;
+    alfrescoFolderId: string;
+    fileType: string;
 }
 
 export type DateAsString = string;
