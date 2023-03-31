@@ -1,11 +1,6 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
-import {
-  DocPaginationDto,
-  IncomingDocumentDto,
-  IncomingDocumentPostDto,
-  SearchCriteriaDto,
-} from 'models/doc-main-models';
+import { DocPaginationDto, IncomingDocumentDto, SearchCriteriaDto } from 'models/doc-main-models';
 
 function getIncomingDocuments(
   searchCriteria: Partial<SearchCriteriaDto>,
