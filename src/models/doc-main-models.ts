@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-31 09:57:11.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-31 22:22:20.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
