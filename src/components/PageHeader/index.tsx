@@ -10,6 +10,8 @@ import {
 import { MenuProps, Modal } from 'antd';
 import { Badge, Dropdown, Layout, Menu, Space } from 'antd';
 import logo from 'assets/icons/logo.png';
+import securityService from 'services/SecurityService';
+import * as authUtils from 'utils/AuthUtils';
 import { useAuth } from 'components/AuthComponent';
 
 import './index.css';
@@ -18,9 +20,7 @@ const { Header } = Layout;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
-
   const { t } = useTranslation();
-
   const { logout } = useAuth();
 
   const [modal, contextHolder] = Modal.useModal();
@@ -51,7 +51,9 @@ const PageHeader: React.FC = () => {
       content: t('PAGE_HEADER.logout.modal.content'),
       okText: t('PAGE_HEADER.logout.modal.ok_text'),
       cancelText: t('PAGE_HEADER.logout.modal.cancel_text'),
-      onOk: () => {
+      onOk: async () => {
+        const token = authUtils.getAuth();
+        await securityService.logout(token?.refresh_token);
         logout();
       },
       centered: true,

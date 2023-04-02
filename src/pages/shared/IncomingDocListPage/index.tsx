@@ -23,14 +23,15 @@ import { RecoilRoot } from 'recoil';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
-import { DocQueryState, SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import { SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import {
   initialDirectorTransferQueryState,
   useDirectorTransferQuerySetter,
 } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
-import { PAGE_SIZE, TableRowDataType } from './core/models';
+import Buttons from './components/Buttons';
+import { TableRowDataType } from './core/models';
 
 import './index.css';
 
@@ -93,12 +94,11 @@ const ExpandIcon = () => {
 
 const Footer = () => {
   const { t } = useTranslation();
-  const [requestQuery, setRequestQuery] = useIncomingDocReq();
+  const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const { data } = useIncomingDocRes();
 
-  const handleOnChange = (page: number) => {
-    const updatedState = { ...requestQuery, page } as DocQueryState;
-    setRequestQuery(updatedState);
+  const handleOnChange = (page: number, pageSize: number) => {
+    setIncomingDocReqQuery({ ...incomingDocReqQuery, page, pageSize });
   };
 
   return (
@@ -106,9 +106,8 @@ const Footer = () => {
       <Button type='primary'>{t('MAIN_PAGE.BUTTON.REPORT_TO_LEADER')}</Button>
 
       <Pagination
-        current={requestQuery.page}
+        current={incomingDocReqQuery.page}
         defaultCurrent={1}
-        defaultPageSize={PAGE_SIZE}
         onChange={handleOnChange}
         total={data?.totalElements}
         showTotal={(total) => t('COMMON.PAGINATION.SHOW_TOTAL', { total })}
@@ -157,8 +156,8 @@ const IncomingDocListPage: React.FC = () => {
               setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
             }}
             layout='vertical'>
-            <Row justify='center'>
-              <Col span={16}>
+            <Row justify='space-between'>
+              <Col className='ml-10' span={16}>
                 <Row>
                   <Col span={11}>
                     <Form.Item
@@ -183,7 +182,7 @@ const IncomingDocListPage: React.FC = () => {
                       <Select>
                         {documentTypes?.map((documentType: any) => (
                           <Select.Option key={documentType.id} value={documentType.id}>
-                            {t(`DOCUMENT_TYPE.${documentType.type}`)}
+                            {documentType.type}
                           </Select.Option>
                         ))}
                       </Select>
@@ -237,23 +236,12 @@ const IncomingDocListPage: React.FC = () => {
                   </Col>
                 </Row>
               </Col>
-            </Row>
 
-            <Row justify='space-between'>
-              <Form.Item className='ml-6'>
-                <Button htmlType='submit' type='primary'>
-                  Tìm kiếm
-                </Button>
-              </Form.Item>
-              <Form.Item className='mr-6'>
-                <Button
-                  onClick={() => form.resetFields()}
-                  htmlType='submit'
-                  type='default'
-                  className='px-[32px] reset-btn'>
-                  {t('COMMON.SEARCH_CRITERIA.RESET')}
-                </Button>
-              </Form.Item>
+              <Col className='flex flex-col-reverse' span={7}>
+                <Row justify='space-around'>
+                  <Buttons form={form} />
+                </Row>
+              </Col>
             </Row>
           </Form>
         </Panel>

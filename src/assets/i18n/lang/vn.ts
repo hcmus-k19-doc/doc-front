@@ -60,15 +60,6 @@ export default {
     DISTRICT: 'Quận huyện',
     SCHOOL: 'Trường',
   },
-  DOCUMENT_TYPE: {
-    CONTRACT: 'Hợp đồng',
-    INSTRUCTION: 'Công văn',
-    INVOICE: 'Hóa đơn',
-    LETTER: 'Thư',
-    PAYMENT: 'Phiếu chi',
-    RECEIPT: 'Phiếu thu',
-    OTHER: 'Khác',
-  },
   PROCESSING_STATUS: {
     UNPROCESSED: 'Chưa xử lý',
     IN_PROGRESS: 'Đang xử lý',
