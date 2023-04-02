@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FilterFilled } from '@ant-design/icons';
+import { FileZipOutlined, FilterFilled } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -13,6 +13,7 @@ import {
   Row,
   Select,
   Table,
+  Tooltip,
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
@@ -36,56 +37,6 @@ import './index.css';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
-
-const columns: ColumnsType<TableRowDataType> = [
-  {
-    title: 'STT',
-    dataIndex: 'id',
-  },
-  {
-    title: 'Cấp gửi',
-    dataIndex: 'issueLevel',
-  },
-  {
-    title: 'Loại văn bản',
-    dataIndex: 'type',
-  },
-  {
-    title: 'Số đến theo sổ',
-    dataIndex: 'arriveId',
-    render: (text: string) => <a className='link'>{text}</a>,
-  },
-  {
-    title: 'Số ký hiệu gốc',
-    dataIndex: 'originId',
-    render: (text: string) => <a className='link'>{text}</a>,
-  },
-  {
-    title: 'Ngày đến',
-    dataIndex: 'arriveDate',
-  },
-  {
-    title: 'Nơi phát hành',
-    dataIndex: 'issuePlace',
-  },
-  {
-    title: 'Trích yếu',
-    dataIndex: 'summary',
-    width: '25%',
-  },
-  {
-    title: 'Toàn văn',
-    dataIndex: 'fullText',
-  },
-  {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-  },
-  {
-    title: 'Thời hạn xử lý',
-    dataIndex: 'deadline',
-  },
-];
 
 const ExpandIcon = () => {
   return <FilterFilled style={{ color: PRIMARY_COLOR }} />;
@@ -127,6 +78,64 @@ const IncomingDocListPage: React.FC = () => {
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const directorTransferQuerySetter = useDirectorTransferQuerySetter();
+
+  const columns: ColumnsType<TableRowDataType> = [
+    {
+      title: t('incomingDocListPage.table.columns.id'),
+      dataIndex: 'id',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.issueLevel'),
+      dataIndex: 'issueLevel',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.type'),
+      dataIndex: 'type',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.arriveId'),
+      dataIndex: 'arriveId',
+      render: (text: string) => <a className='link'>{text}</a>,
+    },
+    {
+      title: t('incomingDocListPage.table.columns.originId'),
+      dataIndex: 'originId',
+      render: (text: string) => <a className='link'>{text}</a>,
+    },
+    {
+      title: t('incomingDocListPage.table.columns.arriveDate'),
+      dataIndex: 'arriveDate',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.issuePlace'),
+      dataIndex: 'issuePlace',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.summary'),
+      dataIndex: 'summary',
+      width: '25%',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.fullText'),
+      dataIndex: 'fullText',
+      align: 'center',
+      render: () => {
+        return (
+          <Tooltip title='hihi' placement='bottom'>
+            <FileZipOutlined className='zip-icon' />
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: t('incomingDocListPage.table.columns.status'),
+      dataIndex: 'status',
+    },
+    {
+      title: t('incomingDocListPage.table.columns.deadline'),
+      dataIndex: 'deadline',
+    },
+  ];
 
   const handleOnOpenModal = () => {
     setIsModalOpen(true);
@@ -242,7 +251,7 @@ const IncomingDocListPage: React.FC = () => {
             <Row justify='space-between'>
               <Form.Item className='ml-6'>
                 <Button htmlType='submit' type='primary'>
-                  Tìm kiếm
+                  {t('COMMON.SEARCH_CRITERIA.SEARCH')}
                 </Button>
               </Form.Item>
               <Form.Item className='mr-6'>
