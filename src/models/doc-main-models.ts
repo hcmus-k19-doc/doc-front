@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-31 22:22:20.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-02 12:35:23.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -86,7 +86,7 @@ export interface AttachmentDto extends DocAbstractDto {
     incomingDocId: number;
     alfrescoFileId: string;
     alfrescoFolderId: string;
-    fileType: string;
+    fileType: FileType;
 }
 
 export type DateAsString = string;
@@ -114,4 +114,10 @@ export const enum DocSystemRoleEnum {
     EXPERT = "EXPERT",
     MANAGER = "MANAGER",
     STAFF = "STAFF",
+}
+
+export const enum FileType {
+    PDF = "PDF",
+    PNG = "PNG",
+    JPG = "JPG",
 }
