@@ -24,7 +24,7 @@ import './index.css';
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
-  const [error, setError] = useState<string>();
+  const [, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
