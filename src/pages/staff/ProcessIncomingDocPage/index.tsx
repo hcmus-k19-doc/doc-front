@@ -153,7 +153,7 @@ function ProcessIncomingDocPage() {
         arrivingDate: new Date(values.arrivingDate),
         arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
       };
-      console.log('incomingDocumentPostDto', incomingDocument);
+      console.log('incomingDocumentPostDto', incomingDocumentPostDto);
 
       incomingDocument.append('incomingDocumentPostDto', JSON.stringify(incomingDocumentPostDto));
       const response = await incomingDocumentService.createIncomingDocument(incomingDocument);

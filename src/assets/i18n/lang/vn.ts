@@ -74,7 +74,32 @@ export default {
     processing_duration: 'Thời hạn xử lý',
     summary: 'Trích yếu',
   },
-
+  incomingDocListPage: {
+    table: {
+      columns: {
+        id: 'STTddd',
+        issueLevel: 'Cấp gửi',
+        type: 'Loại văn bản',
+        arriveId: 'Số đến theo sổ',
+        originId: 'Số ký hiệu gốc',
+        arriveDate: 'Ngày đến',
+        issuePlace: 'Nơi phát hành',
+        summary: 'Trích yếu',
+        fullText: 'Toàn văn',
+        status: 'Trạng thái',
+        deadline: 'Thời hạn xử lý',
+      },
+      tooltip: {
+        downloadAttachment: 'Tải tệp đính kèm',
+      },
+    },
+    message: {
+      attachment: {
+        not_found: 'Không có dữ liệu',
+        download_success: 'Tải tệp đính kèm thành công',
+      },
+    },
+  },
   procesIncomingDocPage: {
     title: 'Tiếp nhận văn bản đến',
     form: {

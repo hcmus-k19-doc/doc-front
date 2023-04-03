@@ -1,3 +1,5 @@
+import { AttachmentDto } from 'models/doc-main-models';
+
 export type TableRowDataType = {
   key: number;
   id: number;
@@ -11,6 +13,7 @@ export type TableRowDataType = {
   fullText: string;
   status: string;
   deadline: string;
+  attachments: AttachmentDto[];
 };
 
 export type TableDataType = {
