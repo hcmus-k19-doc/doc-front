@@ -12,10 +12,9 @@
   ],
   "ignorePatterns": [
     "node_modules",
-    "dist",
+    "build",
     "postcss.config.js",
     "tailwind.config.js",
-    "vite.config.ts",
     "src/models/*"
   ],
   "parser": "@typescript-eslint/parser",
@@ -30,9 +29,10 @@
     "react/jsx-uses-react": ["off"],
     "react/jsx-props-no-spreading": ["off"],
     "react/no-unescaped-entities": ["off"],
+    "@typescript-eslint/no-unused-vars": ["warn"],
     "@typescript-eslint/no-explicit-any": "off",
     "simple-import-sort/imports": [
-      "error",
+      "warn",
       {
         "groups": [
           // Packages `react` related packages come first.
