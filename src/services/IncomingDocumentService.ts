@@ -4,7 +4,8 @@ import { DocPaginationDto, IncomingDocumentDto, SearchCriteriaDto } from 'models
 
 function getIncomingDocuments(
   searchCriteria: Partial<SearchCriteriaDto>,
-  page: number
+  page: number,
+  pageSize: number
 ): Promise<DocPaginationDto<IncomingDocumentDto>> {
   return axios
     .post<DocPaginationDto<IncomingDocumentDto>>(
@@ -13,6 +14,7 @@ function getIncomingDocuments(
       {
         params: {
           page: page - 1,
+          pageSize: pageSize,
         },
       }
     )

@@ -2,6 +2,7 @@ import { Dayjs } from 'dayjs';
 
 type PaginationState = {
   page: number;
+  pageSize: number;
 };
 
 export type SearchState = {

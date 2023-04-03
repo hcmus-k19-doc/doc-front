@@ -1,47 +1,17 @@
-import React, {
-  createContext,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { createContext, FC, useContext, useEffect, useRef, useState } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 import { UserDto } from 'models/doc-main-models';
 import { TokenDto } from 'models/models';
 import userService from 'services/UserService';
 import * as authUtils from 'utils/AuthUtils';
 
-const initAuthContextPropsState = {
-  auth: authUtils.getAuth(),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  saveAuth: () => {},
-  currentUser: undefined,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setCurrentUser: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  logout: () => {},
-};
-
-type AuthContextProps = {
-  auth: TokenDto | undefined;
-  saveAuth: (auth: TokenDto | undefined) => void;
-  currentUser: UserDto | undefined;
-  setCurrentUser: Dispatch<SetStateAction<UserDto | undefined>>;
-  logout: () => void;
-};
+import { AuthContextProps, initAuthContextPropsState, Props } from './core';
 
 const AuthContext = createContext<AuthContextProps>(initAuthContextPropsState);
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-
-interface Props {
-  children: React.ReactNode;
-}
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [auth, setAuth] = useState<TokenDto | undefined>(authUtils.getAuth());
@@ -54,7 +24,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       authUtils.removeAuth();
     }
   };
-  const logout = () => {
+
+  const logout = async () => {
     saveAuth(undefined);
     setCurrentUser(undefined);
   };

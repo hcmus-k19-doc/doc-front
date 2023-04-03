@@ -15,8 +15,9 @@ export type TableRowDataType = {
 
 export type TableDataType = {
   page: number;
+  pageSize: number;
   totalElements: number;
   payload: TableRowDataType[];
 };
 
-export const PAGE_SIZE = 3;
+export const PAGE_SIZE = 10;
