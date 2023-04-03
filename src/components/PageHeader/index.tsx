@@ -7,12 +7,11 @@ import {
   GlobalOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { MenuProps, Modal } from 'antd';
-import { Badge, Dropdown, Layout, Menu, Space } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Space } from 'antd';
 import logo from 'assets/icons/logo.png';
+import { useAuth } from 'components/AuthComponent';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
-import { useAuth } from 'components/AuthComponent';
 
 import './index.css';
 
