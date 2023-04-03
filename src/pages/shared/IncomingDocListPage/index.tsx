@@ -22,7 +22,6 @@ import { TableRowDataType } from './core/models';
 
 import './index.css';
 
-
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
   const [error, setError] = useState<string>();
