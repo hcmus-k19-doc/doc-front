@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Divider, Table } from 'antd';
+import { FileZipOutlined } from '@ant-design/icons';
+import { Button, Divider, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
-import locale from 'antd/es/date-picker/locale/vi_VN';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
+import attachmentService from 'services/AttachmentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import {
   initialDirectorTransferQueryState,
   useDirectorTransferQuerySetter,
 } from 'shared/hooks/TransferDocQuery';
 import Swal from 'sweetalert2';
-import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import Footer from './components/Footer';
 import SearchForm from './components/SearchForm';
