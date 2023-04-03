@@ -23,9 +23,7 @@
     "recoil": "0.7.7",
     "tailwindcss": "3.2.4",
     "sweetalert2": "^11.7.3",
-    "sweetalert2-react-content": "^5.0.7",
-    "@react-buddy/ide-toolbox": "^2.3.1",
-    "@react-buddy/palette-antd": "^5.0.0"
+    "sweetalert2-react-content": "^5.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
