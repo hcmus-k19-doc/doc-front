@@ -3,15 +3,13 @@ import { REACT_APP_DOC_FILE_SERVICE_URL } from 'config/constant';
 import { AttachmentDto } from 'models/doc-main-models';
 
 async function downloadAttachments(attachmentDtoList: AttachmentDto[], incomingDocId: string) {
-  const response = await axios.post(
+  return await axios.post(
     `${REACT_APP_DOC_FILE_SERVICE_URL}/files/download/${incomingDocId}`,
     attachmentDtoList,
     {
       responseType: 'blob',
     }
   );
-
-  return response;
 }
 
 function saveZipFileToDisk(response: AxiosResponse<any, any>) {

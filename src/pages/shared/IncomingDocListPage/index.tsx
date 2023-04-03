@@ -102,8 +102,8 @@ const IncomingDocListPage: React.FC = () => {
         Swal.fire({
           icon: 'success',
           html: t('incomingDocListPage.message.attachment.download_success') as string,
-          confirmButtonColor: PRIMARY_COLOR,
-          confirmButtonText: 'OK',
+          showConfirmButton: false,
+          timer: 2000,
         });
       }
     } catch (error) {
