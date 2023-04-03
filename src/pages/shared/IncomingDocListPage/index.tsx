@@ -18,9 +18,11 @@ import {
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
+import axios from 'axios';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
+import attachmentService from 'services/AttachmentService';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
@@ -29,6 +31,7 @@ import {
   initialDirectorTransferQueryState,
   useDirectorTransferQuerySetter,
 } from 'shared/hooks/TransferDocQuery';
+import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE, TableRowDataType } from './core/models';
@@ -70,6 +73,7 @@ const Footer = () => {
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
+  const [error, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
   const { documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
@@ -78,6 +82,39 @@ const IncomingDocListPage: React.FC = () => {
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const directorTransferQuerySetter = useDirectorTransferQuerySetter();
+
+  const handleDownloadAttachment = async (record: TableRowDataType) => {
+    try {
+      const response = await attachmentService.downloadAttachments(
+        record.attachments,
+        record.id.toString()
+      );
+
+      if (response.status === 204) {
+        Swal.fire({
+          icon: 'error',
+          html: t('incomingDocListPage.message.attachment.not_found') as string,
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
+      } else if (response.status === 200) {
+        attachmentService.saveZipFileToDisk(response);
+        Swal.fire({
+          icon: 'success',
+          html: t('incomingDocListPage.message.attachment.download_success') as string,
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.message);
+        console.error(error.response?.data.message);
+      } else {
+        console.error(error);
+      }
+    }
+  };
 
   const columns: ColumnsType<TableRowDataType> = [
     {
@@ -119,10 +156,15 @@ const IncomingDocListPage: React.FC = () => {
       title: t('incomingDocListPage.table.columns.fullText'),
       dataIndex: 'fullText',
       align: 'center',
-      render: () => {
+      render: (text, record) => {
         return (
-          <Tooltip title='hihi' placement='bottom'>
-            <FileZipOutlined className='zip-icon' />
+          <Tooltip
+            title={t('incomingDocListPage.table.tooltip.downloadAttachment')}
+            placement='bottom'>
+            <FileZipOutlined
+              className='zip-icon'
+              onClick={() => handleDownloadAttachment(record)}
+            />
           </Tooltip>
         );
       },

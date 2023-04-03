@@ -98,6 +98,15 @@ export default {
         status: 'Trạng thái',
         deadline: 'Thời hạn xử lý',
       },
+      tooltip: {
+        downloadAttachment: 'Tải tệp đính kèm',
+      },
+    },
+    message: {
+      attachment: {
+        not_found: 'Không có dữ liệu',
+        download_success: 'Tải tệp đính kèm thành công',
+      },
     },
   },
   procesIncomingDocPage: {
