@@ -10,10 +10,7 @@ import { PRIMARY_COLOR } from 'config/constant';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
-import {
-  initialDirectorTransferQueryState,
-  useDirectorTransferQuerySetter,
-} from 'shared/hooks/TransferDocQuery';
+import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import Swal from 'sweetalert2';
 
 import Footer from './components/Footer';
@@ -28,7 +25,7 @@ const IncomingDocListPage: React.FC = () => {
   const { isLoading, data } = useIncomingDocRes();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const directorTransferQuerySetter = useDirectorTransferQuerySetter();
+  const transferQuerySetter = useTransferQuerySetter();
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
     try {
@@ -133,14 +130,15 @@ const IncomingDocListPage: React.FC = () => {
   const handleOnCancelModal = () => {
     setIsModalOpen(false);
     modalForm.resetFields();
-    directorTransferQuerySetter(initialDirectorTransferQueryState);
+    transferQuerySetter(initialTransferQueryState);
   };
 
   const handleOnOkModal = () => {
     setIsModalOpen(false);
     modalForm.submit();
+    console.log(modalForm.getFieldsValue());
     modalForm.resetFields();
-    directorTransferQuerySetter(initialDirectorTransferQueryState);
+    transferQuerySetter(initialTransferQueryState);
   };
 
   return (

@@ -1,19 +1,21 @@
 import { atom, useRecoilState, useSetRecoilState } from 'recoil';
 
-import { DirectorTransferQueryState } from './core/states';
+import { TransferQueryState } from './core/states';
 
-export const initialDirectorTransferQueryState: DirectorTransferQueryState = {
+export const initialTransferQueryState: TransferQueryState = {
   documentIds: [],
   summary: undefined,
   assigneeId: undefined,
   collaboratorIds: [],
+  processingTime: undefined,
+  isInfiniteProcessingTime: false,
 };
 
-const directorTransferQueryState = atom<DirectorTransferQueryState>({
-  key: 'DIRECTOR_TRANSFER_QUERY_STATE',
-  default: initialDirectorTransferQueryState,
+const transferQueryState = atom<TransferQueryState>({
+  key: 'TRANSFER_QUERY_STATE',
+  default: initialTransferQueryState,
 });
 
-export const useDirectorTransferQuery = () => useRecoilState(directorTransferQueryState);
+export const useTransferQuery = () => useRecoilState(transferQueryState);
 
-export const useDirectorTransferQuerySetter = () => useSetRecoilState(directorTransferQueryState);
+export const useTransferQuerySetter = () => useSetRecoilState(transferQueryState);

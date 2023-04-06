@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
 
 import DirectorScreenComponent from './components/DirectorScreenComponent';
+import SecretaryScreenComponent from './components/SecretaryScreenComponent';
 import {
   getItem,
   i18_secretary,
@@ -34,6 +35,19 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
     setTransferLabel(transferLabels[parseInt(selectedKeys[0]) - 1]);
   };
 
+  const handleSwitchScreen = () => {
+    switch (transferLabel) {
+      case t(i18n_director):
+        return <DirectorScreenComponent form={form} />;
+      case t(i18n_chief_of_office):
+        return <SecretaryScreenComponent form={form} />;
+      case t(i18_secretary):
+        return <SecretaryScreenComponent form={form} />;
+      default:
+        return <DirectorScreenComponent form={form} />;
+    }
+  };
+
   return (
     <Modal
       title={`${t(i18n_transfer_modal_title)} ${transferLabel}`.toUpperCase()}
@@ -54,9 +68,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
           />
         </Col>
         <Col span='1'></Col>
-        <Col span='18'>
-          <DirectorScreenComponent form={form} />
-        </Col>
+        <Col span='18'>{handleSwitchScreen()}</Col>
       </Row>
     </Modal>
   );

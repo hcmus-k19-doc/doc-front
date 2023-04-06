@@ -4,17 +4,17 @@ import { Col, Form, Row, Select, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
-import { useDirectorTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
 import {
-  DirectorScreenFormProps,
-  DirectorScreenProps,
   i18_collaborators,
   i18n_assignee,
   i18n_document,
   i18n_implementation_date,
   i18n_sender,
   i18n_summary,
+  TransferDocScreenFormProps,
+  TransferDocScreenProps,
 } from '../../core/models';
 
 const { Text } = Typography;
@@ -66,16 +66,16 @@ const dummyData = {
   ],
 };
 
-const DirectorScreenComponent: React.FC<DirectorScreenProps> = ({ form }) => {
+const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
   const { currentUser } = useAuth();
-  const setDirectorTransferQuery = useDirectorTransferQuerySetter();
+  const setDirectorTransferQuery = useTransferQuerySetter();
 
   return (
     <Form
       form={form}
-      onFinish={(values: DirectorScreenFormProps) => {
+      onFinish={(values: TransferDocScreenFormProps) => {
         setDirectorTransferQuery({
           summary: values.summary,
           assigneeId: values.assignee,
