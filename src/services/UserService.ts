@@ -11,9 +11,15 @@ const getDirectors = async () => {
   return res.data;
 };
 
+const getSecretaries = async () => {
+  const res = await axios.get<UserDto[]>(`${REACT_APP_DOC_MAIN_SERVICE_URL}/users/secretaries`);
+  return res.data;
+};
+
 const userService = {
   getCurrentUser,
   getDirectors,
+  getSecretaries,
 };
 
 export default userService;

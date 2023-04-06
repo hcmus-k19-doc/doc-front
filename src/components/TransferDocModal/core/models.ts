@@ -12,6 +12,8 @@ export const i18n_document = `${i18n_transfer_modal}.director_view.document`;
 export const i18n_summary = `${i18n_transfer_modal}.director_view.summary`;
 export const i18n_assignee = `${i18n_transfer_modal}.director_view.assignee`;
 export const i18_collaborators = `${i18n_transfer_modal}.director_view.collaborators`;
+export const i18n_processing_time = `${i18n_transfer_modal}.secretary_view.processing_time`;
+export const i18n_is_infinite_processing_time = `${i18n_transfer_modal}.secretary_view.is_infinite_processing_time`;
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
@@ -33,12 +35,14 @@ export interface MenuSelectProps {
   selectedKeys: string[];
 }
 
-export interface DirectorScreenProps {
+export interface TransferDocScreenProps {
   form: FormInstance;
 }
 
-export interface DirectorScreenFormProps {
+export interface TransferDocScreenFormProps {
   summary: string;
   assignee: number;
   collaborators: number[];
+  processingTime: string;
+  isInfiniteProcessingTime: boolean;
 }

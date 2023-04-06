@@ -216,6 +216,10 @@ export default {
       assignee: 'Người nhận',
       collaborators: 'Người tham gia',
     },
+    secretary_view: {
+      processing_time: 'Hạn xử lý',
+      is_infinite_processing_time: 'Không thời hạn',
+    },
     sidebar: {
       director: 'Ban giám đốc',
       chief_of_office: 'Chánh văn phòng',
