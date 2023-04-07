@@ -229,11 +229,6 @@ function ProcessIncomingDocPage() {
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                {/* <Form.Item label={t('procesIncomingDocPage.form.folder')} name='workFolder'>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
-                </Form.Item> */}
                 <Form.Item
                   label={t('procesIncomingDocPage.form.distributionDate')}
                   name='distributionDate'
