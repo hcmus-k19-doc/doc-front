@@ -1,19 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Row,
-  Select,
-  TimePicker,
-  UploadProps,
-} from 'antd';
+import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadProps } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import dayjs from 'dayjs';
@@ -25,12 +14,11 @@ import {
   IncomingDocumentDto,
   Urgency,
 } from 'models/doc-main-models';
+import DocButtonList from 'shared/components/DocButtonList';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
 import DateValidator from 'shared/validators/DateValidator';
-import Swal from 'sweetalert2';
-import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
-import { HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
@@ -43,41 +31,7 @@ function IncomingDocPage() {
 
   const navigate = useNavigate();
 
-  const data = {
-    role: 355,
-  };
-
-  const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>(Array(10).fill(false));
-
-  const buttonArr: JSX.Element[] = [
-    <Button type='primary' key='1' size='large' name='collect'>
-      {t('incomingDocDetailPage.button.collect')}
-    </Button>,
-    <Button type='primary' key='2' size='large' name='edit'>
-      {t('incomingDocDetailPage.button.edit')}
-    </Button>,
-    <Button type='primary' key='3' size='large' name='process'>
-      {t('incomingDocDetailPage.button.process')}
-    </Button>,
-    <Button type='primary' size='large' key='4' name='transfer'>
-      {t('incomingDocDetailPage.button.transfer')}
-    </Button>,
-    <Button type='primary' size='large' key='5' name='assign'>
-      {t('incomingDocDetailPage.button.assign')}
-    </Button>,
-    <Button type='primary' size='large' key='6' name='comment'>
-      {t('incomingDocDetailPage.button.comment')}
-    </Button>,
-    <Button type='primary' size='large' key='7' name='confirm'>
-      {t('incomingDocDetailPage.button.confirm')}
-    </Button>,
-    <Button type='primary' size='large' key='9' name='return'>
-      {t('incomingDocDetailPage.button.return')}
-    </Button>,
-    <Button type='primary' size='large' key='10' name='extend'>
-      {t('incomingDocDetailPage.button.extend')}
-    </Button>,
-  ];
+  const [isEditing, setIsEditing] = useState(false);
 
   // 2^9 - 1 = 511 (9 cái nút)
 
@@ -91,37 +45,22 @@ function IncomingDocPage() {
   // 0 trả lại
   // 0 yêu cầu gia hạn
 
-  // Ví dụ các nút ứng với quyền của chuyên viên xử lý chính
-  // 101100011 (theo chiều từ trên xún) --> 355 --> role = 355
+  // 101100011 (theo chiều từ trên xún) --> 355 --> role = 355: văn thư
 
-  const resolveDisplayButton = (roleNum: number) => {
-    const arr = [];
-    for (let i = 0; i < 9; i++) {
-      if ((roleNum >> (8 - i)) & 1) {
-        arr.push(true);
-      } else {
-        arr.push(false);
-      }
-    }
+  // 110100000 (theo chiều từ trên xún) --> 416 --> role = 416: chuyên viên chính
 
-    setButtonDisplayArr(arr);
-  };
+  // Xem btn arr trong DocButtonList
 
-  const renderButton = () => {
-    return buttonDisplayArr.map((item, index) => {
-      if (item) {
-        return (
-          <>
-            {buttonArr[index]}
-            {index === buttonDisplayArr.length - 1 ? null : <span className='mr-5'></span>}
-          </>
-        );
-      }
-    });
+  const data = {
+    role: 416,
   };
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const incomingDocumentQuery = useIncomingDocumentDetailQuery(+(docId || 1));
+
+  const enableEditing = () => {
+    setIsEditing(true);
+  };
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -159,9 +98,9 @@ function IncomingDocPage() {
     form.setFieldValue('incomingNumber', constructIncomingNumber(folder));
   };
 
-  useEffect(() => {
-    const incomingDocument = incomingDocumentQuery.data || ({} as IncomingDocumentDto);
+  const incomingDocument = incomingDocumentQuery.data || ({} as IncomingDocumentDto);
 
+  if (incomingDocument) {
     form.setFieldsValue({
       folder: incomingDocument.folder?.id,
       incomingNumber: incomingDocument.incomingNumber,
@@ -175,11 +114,7 @@ function IncomingDocPage() {
       arrivingTime: dayjs(incomingDocument.arrivingTime, HH_MM_SS_FORMAT),
       summary: incomingDocument.summary,
     });
-  });
-
-  useEffect(() => {
-    resolveDisplayButton(data.role);
-  }, []);
+  }
 
   const dummyRequest = ({ onSuccess }: any) => {
     setTimeout(() => {
@@ -206,20 +141,20 @@ function IncomingDocPage() {
 
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    Swal.fire({
-      icon: 'success',
-      html: t('incomingDocDetailPage.form.message.success') as string,
-      showConfirmButton: false,
-      timer: 2000,
-    }).then(() => {
-      navigate('/index/docin');
-    });
+    // Swal.fire({
+    //   icon: 'success',
+    //   html: t('incomingDocDetailPage.form.message.success') as string,
+    //   showConfirmButton: false,
+    //   timer: 2000,
+    // }).then(() => {
+    //   navigate('/index/docin');
+    // });
   };
 
   return (
-    <div>
+    <>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
-      <Form form={form} layout='vertical' onFinish={onFinish}>
+      <Form form={form} layout='vertical' onFinish={onFinish} disabled={!isEditing}>
         <Row>
           <Col span={16}>
             <Row>
@@ -387,42 +322,6 @@ function IncomingDocPage() {
               </Col>
             </Row>
 
-            {/* <Row>
-              <Col span={11}>
-                <Form.Item
-                  label={t('incomingDocDetailPage.form.signer')}
-                  name='signer'
-                  required
-                  rules={[
-                    {
-                      required: true,
-                      message: t('incomingDocDetailPage.form.signerRequired') as string,
-                    },
-                  ]}
-                >
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={11}>
-                <Form.Item
-                  label={t('incomingDocDetailPage.form.signerTitle')}
-                  name='signerTitle'
-                  // required
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: t('incomingDocDetailPage.form.signerTitleRequired') as string,
-                  //   },
-                  // ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row> */}
-
             <Row>
               <Col span={11}>
                 <Form.Item
@@ -496,11 +395,12 @@ function IncomingDocPage() {
               </Dragger>
             </Form.Item>
           </Col>
-
-          <Row className='w-full justify-end '>{renderButton()}</Row>
         </Row>
       </Form>
-    </div>
+      <Row className='w-full justify-end '>
+        <DocButtonList roleNumber={data.role} enableEditing={enableEditing} />
+      </Row>
+    </>
   );
 }
 

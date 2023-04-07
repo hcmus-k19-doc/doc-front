@@ -11,6 +11,7 @@ import { setupAxios } from 'utils/AuthUtils';
 import './index.css';
 
 setupAxios(axios);
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
