@@ -7,15 +7,18 @@ import {
   GlobalOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Space } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Space, Typography } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
 
+import ReminderCalendar from './components/ReminderCalendar';
+
 import './index.css';
 
 const { Header } = Layout;
+const { Title } = Typography;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -32,24 +35,24 @@ const PageHeader: React.FC = () => {
     },
   }));
 
-  const items: MenuProps['items'] = [
+  const languageItems: MenuProps['items'] = [
     {
       key: '1',
-      label: t('PAGE_HEADER.LANGUAGES.EN'),
+      label: t('page_header.languages.en'),
     },
     {
       key: '2',
-      label: t('PAGE_HEADER.LANGUAGES.VI'),
+      label: t('page_header.languages.vi'),
     },
   ];
 
   const confirmLogout = () => {
     modal.confirm({
-      title: t('PAGE_HEADER.logout.modal.title'),
+      title: t('page_header.logout.modal.title'),
       icon: <ExclamationCircleOutlined />,
-      content: t('PAGE_HEADER.logout.modal.content'),
-      okText: t('PAGE_HEADER.logout.modal.ok_text'),
-      cancelText: t('PAGE_HEADER.logout.modal.cancel_text'),
+      content: t('page_header.logout.modal.content'),
+      okText: t('page_header.logout.modal.ok_text'),
+      cancelText: t('page_header.logout.modal.cancel_text'),
       onOk: async () => {
         const token = authUtils.getAuth();
         await securityService.logout(token?.refresh_token);
@@ -75,14 +78,26 @@ const PageHeader: React.FC = () => {
         items={items1}
         className='flex-auto'
       />
-      <Dropdown menu={{ items }} placement='bottomRight'>
+      <Dropdown menu={{ items: languageItems }} placement='bottomRight'>
         <Space>
           <GlobalOutlined />
         </Space>
       </Dropdown>
 
       <Badge count={5} overflowCount={99} size='small' className='ml-5'>
-        <BellOutlined />
+        <Popover
+          overlayInnerStyle={{ width: '700px' }}
+          placement='bottomRight'
+          title={() => (
+            <Title className='ml-3 mt-3' level={4}>
+              {t('page_header.reminder')}
+            </Title>
+          )}
+          content={ReminderCalendar}
+          trigger='click'
+          showArrow={false}>
+          <BellOutlined />
+        </Popover>
       </Badge>
 
       <LogoutOutlined className='ml-5' onClick={confirmLogout} />
