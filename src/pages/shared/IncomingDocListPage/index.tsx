@@ -25,6 +25,7 @@ const IncomingDocListPage: React.FC = () => {
   const { isLoading, data } = useIncomingDocRes();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDocIds, setSelectedDocIds] = useState<number[]>([]);
   const transferQuerySetter = useTransferQuerySetter();
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
@@ -123,6 +124,14 @@ const IncomingDocListPage: React.FC = () => {
     },
   ];
 
+  const rowSelection = {
+    selectedRowKeys: selectedDocIds,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: TableRowDataType[]) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectedDocIds(selectedRows.map((row) => row.id));
+    },
+  };
+
   const handleOnOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -138,8 +147,12 @@ const IncomingDocListPage: React.FC = () => {
     modalForm.submit();
     console.log(modalForm.getFieldsValue());
     modalForm.resetFields();
+    console.log('selectedDocIds: ', selectedDocIds);
     transferQuerySetter(initialTransferQueryState);
+    setSelectedDocIds([]);
   };
+
+  const hasSelected = selectedDocIds.length > 0;
 
   return (
     <>
@@ -151,7 +164,7 @@ const IncomingDocListPage: React.FC = () => {
 
       <Table
         loading={isLoading}
-        rowSelection={{ type: 'checkbox' }}
+        rowSelection={{ type: 'checkbox', ...rowSelection }}
         columns={columns}
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
@@ -161,9 +174,14 @@ const IncomingDocListPage: React.FC = () => {
 
       <Divider />
 
-      <Button className='float-right px-8' htmlType='button' onClick={handleOnOpenModal}>
-        {t('incomingDocDetailPage.button.transfer')}
-      </Button>
+      <div className='float-right px-8'>
+        <span style={{ marginRight: 8 }}>
+          {hasSelected ? `Selected ${selectedDocIds.length} items` : ''}
+        </span>
+        <Button htmlType='button' onClick={handleOnOpenModal}>
+          {t('incomingDocDetailPage.button.transfer')}
+        </Button>
+      </div>
 
       <TransferDocModal
         form={modalForm}

@@ -77,7 +77,7 @@ export default {
   incomingDocListPage: {
     table: {
       columns: {
-        id: 'STTddd',
+        id: 'STT',
         issueLevel: 'Cấp gửi',
         type: 'Loại văn bản',
         arriveId: 'Số đến theo sổ',
