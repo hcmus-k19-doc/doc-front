@@ -67,10 +67,6 @@ const IncomingDocListPage: React.FC = () => {
       dataIndex: 'id',
     },
     {
-      title: t('incomingDocListPage.table.columns.issueLevel'),
-      dataIndex: 'issueLevel',
-    },
-    {
       title: t('incomingDocListPage.table.columns.type'),
       dataIndex: 'type',
     },
@@ -127,7 +123,6 @@ const IncomingDocListPage: React.FC = () => {
   const rowSelection = {
     selectedRowKeys: selectedDocIds,
     onChange: (selectedRowKeys: React.Key[], selectedRows: TableRowDataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       setSelectedDocIds(selectedRows.map((row) => row.id));
     },
   };
@@ -147,7 +142,6 @@ const IncomingDocListPage: React.FC = () => {
     modalForm.submit();
     console.log(modalForm.getFieldsValue());
     modalForm.resetFields();
-    console.log('selectedDocIds: ', selectedDocIds);
     transferQuerySetter(initialTransferQueryState);
     setSelectedDocIds([]);
   };
@@ -178,7 +172,7 @@ const IncomingDocListPage: React.FC = () => {
         <span style={{ marginRight: 8 }}>
           {hasSelected ? `Selected ${selectedDocIds.length} items` : ''}
         </span>
-        <Button htmlType='button' onClick={handleOnOpenModal}>
+        <Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>
           {t('incomingDocDetailPage.button.transfer')}
         </Button>
       </div>
@@ -188,6 +182,7 @@ const IncomingDocListPage: React.FC = () => {
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
+        selectedDocIds={selectedDocIds}
       />
     </>
   );

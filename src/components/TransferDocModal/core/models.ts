@@ -29,6 +29,7 @@ export interface TransferModalProps {
   handleOk: () => void;
   handleCancel: () => void;
   form: FormInstance;
+  selectedDocIds: number[];
 }
 
 export interface MenuSelectProps {
@@ -37,6 +38,7 @@ export interface MenuSelectProps {
 
 export interface TransferDocScreenProps {
   form: FormInstance;
+  selectedDocIds: number[];
 }
 
 export interface TransferDocScreenFormProps {

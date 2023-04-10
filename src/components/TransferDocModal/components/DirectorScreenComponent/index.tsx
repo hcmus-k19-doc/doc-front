@@ -66,11 +66,13 @@ const dummyData = {
   ],
 };
 
-const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form }) => {
+const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocIds }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
+
+  console.log('selectedDocIds', selectedDocIds);
 
   return (
     <Form
