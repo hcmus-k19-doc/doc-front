@@ -73,3 +73,17 @@ export const useIncomingDocRes = () => {
     },
   });
 };
+
+export function useIncomingDocByIdsRes(ids: number[]) {
+  const { data } = useQuery({
+    queryKey: ['QUERIES.INCOMING_DOCUMENT_LIST_BY_IDS', ids],
+    queryFn: () => {
+      return incomingDocumentService.getIncomingDocumentsByIds(ids);
+    },
+    cacheTime: 0,
+  });
+
+  return {
+    data,
+  };
+}

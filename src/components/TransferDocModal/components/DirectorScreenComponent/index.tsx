@@ -3,13 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { Col, Form, Row, Select, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
+import format from 'date-fns/format';
 import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
+import { useIncomingDocByIdsRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import {
   i18_collaborators,
   i18n_assignee,
   i18n_document,
+  i18n_document_number,
   i18n_implementation_date,
   i18n_sender,
   i18n_summary,
@@ -17,62 +21,16 @@ import {
   TransferDocScreenProps,
 } from '../../core/models';
 
-const { Text } = Typography;
+import './index.css';
 
-const dummyData = {
-  sender: 'Nguyễn Văn A',
-  implementationDate: '01/01/2021',
-  document: 'Văn bản số 1',
-  summary: 'Nội dung văn bản',
-  assignee: [
-    {
-      value: 1,
-      label: 'Nguyễn Văn B',
-    },
-    {
-      value: 2,
-      label: 'Nguyễn Văn C',
-    },
-    {
-      value: 3,
-      label: 'Nguyễn Văn D',
-    },
-  ],
-  collaborators: [
-    {
-      value: 1,
-      label: 'Nguyễn Văn B',
-    },
-    {
-      value: 2,
-      label: 'Nguyễn Văn C',
-    },
-    {
-      value: 3,
-      label: 'Nguyễn Văn D',
-    },
-    {
-      value: 4,
-      label: 'Nguyễn Văn E',
-    },
-    {
-      value: 5,
-      label: 'Nguyễn Văn F',
-    },
-    {
-      value: 6,
-      label: 'Nguyễn Văn G',
-    },
-  ],
-};
+const { Text } = Typography;
 
 const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocIds }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
+  const { data } = useIncomingDocByIdsRes(selectedDocIds);
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
-
-  console.log('selectedDocIds', selectedDocIds);
 
   return (
     <Form
@@ -94,24 +52,30 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
         <Col span='6'>
           <Text strong>{t(i18n_implementation_date)}</Text>
         </Col>
-        <Col span='6'>{dummyData.implementationDate}</Col>
+        <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
       </Row>
-      <Row className='mt-3 mb-3'>
-        <Col span='6'>
-          <Text strong>{t(i18n_document)}</Text>
-        </Col>
-        <Col span='6'>{dummyData.document}</Col>
-      </Row>
-      <Row className='mt-4 mb-4' align='middle'>
-        <Col span='6'>
-          <Text strong>{t(i18n_summary)}</Text>
-        </Col>
-        <Col span='16'>
-          <Form.Item name='summary'>
-            <TextArea rows={4} value={dummyData.summary} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <div className='document-info'>
+        {data?.map((item) => {
+          return (
+            <React.Fragment key={item.id}>
+              <Row className='mt-3 mb-3'>
+                <Col span='6'>
+                  <Text strong>{t(i18n_document)}</Text>
+                </Col>
+                <Col span='18'>{t(i18n_document_number, { id: item.incomingNumber })}</Col>
+              </Row>
+              <Row className='mt-4 mb-4' align='middle'>
+                <Col span='6'>
+                  <Text strong>{t(i18n_summary)}</Text>
+                </Col>
+                <Col span='16'>
+                  <TextArea rows={4} disabled defaultValue={item.summary} />
+                </Col>
+              </Row>
+            </React.Fragment>
+          );
+        })}
+      </div>
       <Row className='mb-3'>
         <Col span='6'>
           <Text strong>{t(i18n_assignee)}</Text>

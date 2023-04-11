@@ -208,6 +208,7 @@ export default {
   },
   transfer_modal: {
     title: 'Luân chuyển văn bản tới',
+    document_number: 'Văn bản số  {{id}}',
     director_view: {
       sender: 'Người chuyển',
       implementation_date: 'Ngày thực hiện',

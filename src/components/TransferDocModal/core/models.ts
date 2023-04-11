@@ -14,6 +14,7 @@ export const i18n_assignee = `${i18n_transfer_modal}.director_view.assignee`;
 export const i18_collaborators = `${i18n_transfer_modal}.director_view.collaborators`;
 export const i18n_processing_time = `${i18n_transfer_modal}.secretary_view.processing_time`;
 export const i18n_is_infinite_processing_time = `${i18n_transfer_modal}.secretary_view.is_infinite_processing_time`;
+export const i18n_document_number = `${i18n_transfer_modal}.document_number`;
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
