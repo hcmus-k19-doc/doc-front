@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
 import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadProps } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
   Confidentiality,
@@ -12,12 +13,15 @@ import {
   DocumentTypeDto,
   FolderDto,
   IncomingDocumentDto,
+  IncomingDocumentPutDto,
   Urgency,
 } from 'models/doc-main-models';
+import incomingDocumentService from 'services/IncomingDocumentService';
 import DocButtonList from 'shared/components/DocButtonList';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
 import DateValidator from 'shared/validators/DateValidator';
+import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
@@ -29,27 +33,25 @@ function IncomingDocPage() {
   const { t } = useTranslation();
   const [form] = useForm();
 
-  const navigate = useNavigate();
-
   const [isEditing, setIsEditing] = useState(false);
 
-  // 2^9 - 1 = 511 (9 cái nút)
+  /* 2^9 - 1 = 511 (9 cái nút)
 
-  // 0 thu thập
-  // 0 chỉnh sửa
-  // 0 soạn vb bc
-  // 0 chuyển xử lý
-  // 0 phân công
-  // 0 góp ý văn bản
-  // 0 xác nhận đã xem
-  // 0 trả lại
-  // 0 yêu cầu gia hạn
+  0 thu thập
+  0 chỉnh sửa
+  0 soạn vb bc
+  0 chuyển xử lý
+  0 phân công
+  0 góp ý văn bản
+  0 xác nhận đã xem
+  0 trả lại
+  0 yêu cầu gia hạn
 
-  // 101100011 (theo chiều từ trên xún) --> 355 --> role = 355: văn thư
+  011100011 (theo chiều từ trên xún) --> 371 --> role = 371: chuyên viên
 
-  // 110100000 (theo chiều từ trên xún) --> 416 --> role = 416: chuyên viên chính
+  110100000 (theo chiều từ trên xún) --> 416 --> role = 416: chuyên viên chính
 
-  // Xem btn arr trong DocButtonList
+  Xem btn arr trong DocButtonList */
 
   const data = {
     role: 416,
@@ -139,22 +141,47 @@ function IncomingDocPage() {
     },
   };
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    // Swal.fire({
-    //   icon: 'success',
-    //   html: t('incomingDocDetailPage.form.message.success') as string,
-    //   showConfirmButton: false,
-    //   timer: 2000,
-    // }).then(() => {
-    //   navigate('/index/docin');
-    // });
+  const saveChange = async (values: any) => {
+    try {
+      delete values.files;
+
+      const incomingDocument: IncomingDocumentPutDto = {
+        ...values,
+        id: +(docId || 0),
+        distributionDate: new Date(values.distributionDate),
+        arrivingDate: new Date(values.arrivingDate),
+        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+      };
+
+      const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
+
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          html: t('incomingDocDetailPage.form.message.success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
+      Swal.fire({
+        icon: 'error',
+        html: t('incomingDocDetailPage.form.message.error') as string,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
+  const onFinishEditing = () => {
+    form.submit();
   };
 
   return (
     <>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
-      <Form form={form} layout='vertical' onFinish={onFinish} disabled={!isEditing}>
+      <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
         <Row>
           <Col span={16}>
             <Row>
@@ -393,7 +420,12 @@ function IncomingDocPage() {
         </Row>
       </Form>
       <Row className='w-full justify-end '>
-        <DocButtonList roleNumber={data.role} enableEditing={enableEditing} />
+        <DocButtonList
+          roleNumber={data.role}
+          enableEditing={enableEditing}
+          isEditing={isEditing}
+          onFinishEditing={onFinishEditing}
+        />
       </Row>
     </>
   );

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-26 20:32:35.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-12 01:00:14.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -45,10 +45,21 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     confidentiality: Confidentiality;
 }
 
-export interface IncomingDocumentGetDto {
+export interface IncomingDocumentPostDto {
+    incomingNumber: string;
+    documentType: number;
+    originalSymbolNumber: string;
+    distributionOrg: number;
+    distributionDate: DateAsString;
+    arrivingDate: DateAsString;
+    arrivingTime: DateAsString;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    folder: number;
 }
 
-export interface IncomingDocumentPostDto {
+export interface IncomingDocumentPutDto extends DocAbstractDto {
     incomingNumber: string;
     documentType: number;
     originalSymbolNumber: string;

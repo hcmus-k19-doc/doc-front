@@ -4,18 +4,30 @@ import { t } from 'i18next';
 
 export interface DocButtonListProps {
   roleNumber: number;
+  isEditing: boolean;
   enableEditing: () => void;
+  onFinishEditing: () => void;
 }
 
-const DocButtonList = ({ enableEditing, roleNumber }: DocButtonListProps) => {
+const DocButtonList = ({
+  enableEditing,
+  roleNumber,
+  isEditing,
+  onFinishEditing,
+}: DocButtonListProps) => {
   const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>([]);
 
   const buttonArr: JSX.Element[] = [
+    <Button
+      type='primary'
+      key='2'
+      size='large'
+      name='edit'
+      onClick={isEditing ? onFinishEditing : enableEditing}>
+      {isEditing ? t('incomingDocDetailPage.button.save') : t('incomingDocDetailPage.button.edit')}
+    </Button>,
     <Button type='primary' key='1' size='large' name='collect'>
       {t('incomingDocDetailPage.button.collect')}
-    </Button>,
-    <Button type='primary' key='2' size='large' name='edit' onClick={enableEditing}>
-      {t('incomingDocDetailPage.button.edit')}
     </Button>,
     <Button type='primary' key='3' size='large' name='process'>
       {t('incomingDocDetailPage.button.process')}

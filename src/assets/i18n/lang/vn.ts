@@ -127,7 +127,7 @@ export default {
   },
 
   incomingDocDetailPage: {
-    title: 'Chi tiết văn bản đến',
+    title: 'Tiếp nhận văn bản đến',
     form: {
       docFolder: 'Sổ văn bản',
       docFolderRequired: 'Hãy chọn sổ văn bản',
@@ -142,9 +142,13 @@ export default {
       distributionOrg: 'Cơ quan ban hành',
       distributionOrgRequired: 'Hãy chọn cơ quan ban hành',
       distributionDate: 'Ngày ban hành',
+      distributionDateInvalid: 'Ngày ban hành phải cùng hoặc sớm hơn ngày đến',
+      distributionDateGreaterThanNowError: 'Ngày ban hành phải sớm hơn hoặc bằng ngày hiện tại',
       distributionDateRequired: 'Hãy chọn ngày ban hành',
       arrivingDate: 'Ngày đến',
       arrivingDateRequired: 'Hãy chọn ngày đến',
+      arrivingDateInvalid: 'Ngày đến phải cùng hoặc sau ngày ban hành',
+      arrivingDateGreaterThanNowError: 'Ngày đến phải sớm hơn hoặc bằng ngày hiện tại',
       arrivingTime: 'Giờ đến',
       arrivingTimeRequired: 'Hãy chọn giờ đến',
       summary: 'Trích yếu',
@@ -160,15 +164,11 @@ export default {
       files: 'Tài liệu đính kèm',
       filesRequired: 'Hãy chọn tài liệu đính kèm',
       fileHelper: 'Bấm hoặc kéo thả tệp vào đây để tải lên',
-      message: {
-        fileError: 'đính kèm không thành công.',
-        fileSuccess: 'đã được đính kèm',
-        success: 'Tiếp nhận văn bản thành công',
-      },
     },
     button: {
       collect: 'Thu thập',
       edit: 'Chỉnh sửa',
+      save: 'Lưu chỉnh sửa',
       process: 'Xử lý văn bản',
       transfer: 'Chuyển xử lý',
       assign: 'Phân công',
@@ -176,6 +176,12 @@ export default {
       confirm: 'Xác nhận đã xem',
       return: 'Trả lại',
       extend: 'Yêu cầu gia hạn',
+    },
+    message: {
+      fileError: 'đính kèm không thành công.',
+      fileSuccess: 'đã được đính kèm',
+      success: 'Chỉnh sửa văn bản thành công',
+      error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
     },
   },
 };

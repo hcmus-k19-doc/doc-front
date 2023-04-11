@@ -4,6 +4,7 @@ import {
   DocPaginationDto,
   IncomingDocumentDto,
   IncomingDocumentPostDto,
+  IncomingDocumentPutDto,
   SearchCriteriaDto,
 } from 'models/doc-main-models';
 
@@ -33,6 +34,15 @@ async function createIncomingDocument(incomingDocument: IncomingDocumentPostDto)
   return response;
 }
 
+async function updateIncomingDocument(incomingDocument: IncomingDocumentPutDto) {
+  const response = await axios.put<IncomingDocumentPutDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/update`,
+    incomingDocument
+  );
+
+  return response;
+}
+
 async function getIncomingDocumentById(id: number) {
   const response = await axios.get<IncomingDocumentDto>(
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/${id}`
@@ -45,6 +55,7 @@ const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
   getIncomingDocumentById,
+  updateIncomingDocument,
 };
 
 export default incomingDocumentService;
