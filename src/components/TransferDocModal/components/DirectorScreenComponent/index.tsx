@@ -78,7 +78,10 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
       </div>
       <Row className='mb-3'>
         <Col span='6'>
-          <Text strong>{t(i18n_assignee)}</Text>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18n_assignee)}
+          </Typography.Text>
         </Col>
         <Col span='16'>
           <Form.Item name='assignee'>
@@ -88,7 +91,10 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
       </Row>
       <Row className='mt-3 mb-3'>
         <Col span='6'>
-          <Text strong>{t(i18_collaborators)}</Text>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18_collaborators)}
+          </Typography.Text>
         </Col>
         <Col span='16'>
           <Form.Item name='collaborators'>

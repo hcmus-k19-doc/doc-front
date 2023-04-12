@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileZipOutlined } from '@ant-design/icons';
-import { Button, Divider, Table, Tooltip } from 'antd';
+import { Button, Divider, message, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
+import { TransferDocDto } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
+import incomingDocumentService from 'services/IncomingDocumentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import Swal from 'sweetalert2';
@@ -137,13 +139,53 @@ const IncomingDocListPage: React.FC = () => {
     transferQuerySetter(initialTransferQueryState);
   };
 
-  const handleOnOkModal = () => {
-    setIsModalOpen(false);
-    modalForm.submit();
-    console.log(modalForm.getFieldsValue());
-    modalForm.resetFields();
-    transferQuerySetter(initialTransferQueryState);
-    setSelectedDocIds([]);
+  const handleOnOkModal = async () => {
+    const transferDocDto: TransferDocDto = {
+      documentIds: selectedDocIds,
+      summary: modalForm.getFieldValue('summary'),
+      assigneeId: modalForm.getFieldValue('assignee') as number,
+      collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
+      processingTime: modalForm.getFieldValue('processingTime'),
+      infiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
+    };
+    if (
+      validateAssigneeAndCollaborators(transferDocDto.assigneeId, transferDocDto.collaboratorIds)
+    ) {
+      setIsModalOpen(false);
+      modalForm.submit();
+      console.log(modalForm.getFieldsValue());
+
+      modalForm.resetFields();
+      transferQuerySetter(transferDocDto);
+      try {
+        const response = await incomingDocumentService.transferDocumentsToDirector(transferDocDto);
+        console.log('response', response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data.message);
+          console.error(error.response?.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+      setSelectedDocIds([]);
+    }
+  };
+
+  const validateAssigneeAndCollaborators = (assigneeId?: number, collaboratorIds?: number[]) => {
+    if (!assigneeId) {
+      message.error(t('transfer_modal.form.assignee_required'));
+      return false;
+    }
+    if (collaboratorIds?.length === 0 || !collaboratorIds) {
+      message.error(t('transfer_modal.form.collaborators_required'));
+      return false;
+    }
+    if (collaboratorIds?.includes(assigneeId as number)) {
+      message.error(t('transfer_modal.form.collaborator_can_not_has_same_value_with_assignee'));
+      return false;
+    }
+    return true;
   };
 
   const hasSelected = selectedDocIds.length > 0;

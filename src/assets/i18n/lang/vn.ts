@@ -226,6 +226,15 @@ export default {
       chief_of_office: 'Chánh văn phòng',
       secretary: 'Văn thư',
     },
+    form: {
+      assignee_required: 'Hãy chọn người nhận',
+      processing_time_required: 'Hãy chọn hạn xử lý',
+      processing_time_invalid: 'Hạn xử lý không hợp lệ',
+      processing_time_infinite: 'Không thời hạn',
+      collaborators_required: 'Hãy chọn người tham gia',
+      collaborator_can_not_has_same_value_with_assignee:
+        'Người tham gia không được trùng với người nhận',
+    },
   },
   error: {
     file: {

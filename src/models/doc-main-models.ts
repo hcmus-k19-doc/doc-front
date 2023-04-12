@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-10 23:01:35.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-12 20:17:54.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -73,6 +73,15 @@ export interface SearchCriteriaDto {
 
 export interface SendingLevelDto extends DocAbstractDto {
     level: string;
+}
+
+export interface TransferDocDto {
+    documentIds?: number[];
+    summary?: string;
+    assigneeId?: number;
+    collaboratorIds?: number[];
+    processingTime?: string;
+    infiniteProcessingTime?: boolean;
 }
 
 export interface UserDto extends DocAbstractDto {
