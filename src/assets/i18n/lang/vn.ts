@@ -77,7 +77,7 @@ export default {
   incomingDocListPage: {
     table: {
       columns: {
-        id: 'STTddd',
+        id: 'STT',
         issueLevel: 'Cấp gửi',
         type: 'Loại văn bản',
         arriveId: 'Số đến theo sổ',
@@ -98,6 +98,14 @@ export default {
         not_found: 'Không có dữ liệu',
         download_success: 'Tải tệp đính kèm thành công',
       },
+      selected_docs: {
+        unprocessed: 'Chưa xử lý',
+        in_progress: 'Đang xử lý',
+        closed: 'Đã xử lý',
+        summary:
+          'Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{closedDocs}} đã xử lý)',
+      },
+      transfer_success: 'Chuyển văn bản thành công',
     },
   },
   procesIncomingDocPage: {
@@ -208,6 +216,7 @@ export default {
   },
   transfer_modal: {
     title: 'Luân chuyển văn bản tới',
+    document_number: 'Văn bản số  {{id}}',
     director_view: {
       sender: 'Người chuyển',
       implementation_date: 'Ngày thực hiện',
@@ -224,6 +233,17 @@ export default {
       director: 'Ban giám đốc',
       chief_of_office: 'Chánh văn phòng',
       secretary: 'Văn thư',
+    },
+    form: {
+      assignee_required: 'Hãy chọn người nhận',
+      processing_time_required: 'Hãy chọn hạn xử lý',
+      processing_time_invalid: 'Hạn xử lý không hợp lệ',
+      processing_time_infinite: 'Không thời hạn',
+      collaborators_required: 'Hãy chọn người tham gia',
+      collaborator_can_not_has_same_value_with_assignee:
+        'Người tham gia không được trùng với người nhận',
+      only_unprocessed_docs_can_be_transferred_to_director:
+        'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc',
     },
   },
   error: {

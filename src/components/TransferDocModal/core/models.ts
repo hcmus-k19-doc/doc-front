@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormInstance, MenuProps } from 'antd';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 
 export const i18n_transfer_modal = 'transfer_modal';
 export const i18n_transfer_modal_title = `${i18n_transfer_modal}.title`;
@@ -14,6 +15,7 @@ export const i18n_assignee = `${i18n_transfer_modal}.director_view.assignee`;
 export const i18_collaborators = `${i18n_transfer_modal}.director_view.collaborators`;
 export const i18n_processing_time = `${i18n_transfer_modal}.secretary_view.processing_time`;
 export const i18n_is_infinite_processing_time = `${i18n_transfer_modal}.secretary_view.is_infinite_processing_time`;
+export const i18n_document_number = `${i18n_transfer_modal}.document_number`;
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
@@ -29,6 +31,7 @@ export interface TransferModalProps {
   handleOk: () => void;
   handleCancel: () => void;
   form: FormInstance;
+  selectedDocs: IncomingDocumentDto[];
 }
 
 export interface MenuSelectProps {
@@ -37,6 +40,7 @@ export interface MenuSelectProps {
 
 export interface TransferDocScreenProps {
   form: FormInstance;
+  selectedDocs: IncomingDocumentDto[];
 }
 
 export interface TransferDocScreenFormProps {

@@ -59,6 +59,7 @@ export const useIncomingDocRes = () => {
               status: t(`PROCESSING_STATUS.${item.status}`),
               deadline: format(new Date(item.processingDuration), 'dd-MM-yyyy'),
               attachments: item.attachments,
+              incomingNumber: item.incomingNumber,
             };
           });
 

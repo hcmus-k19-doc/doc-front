@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
-import { DocPaginationDto, IncomingDocumentDto, SearchCriteriaDto } from 'models/doc-main-models';
+import {
+  DocPaginationDto,
+  IncomingDocumentDto,
+  SearchCriteriaDto,
+  TransferDocDto,
+} from 'models/doc-main-models';
 
 function getIncomingDocuments(
   searchCriteria: Partial<SearchCriteriaDto>,
@@ -30,9 +35,19 @@ async function createIncomingDocument(incomingDocument: FormData) {
   return response;
 }
 
+async function transferDocumentsToDirector(transferDocDto: TransferDocDto) {
+  const response = await axios.post<IncomingDocumentDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-to-director`,
+    transferDocDto
+  );
+
+  return response;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
+  transferDocumentsToDirector,
 };
 
 export default incomingDocumentService;

@@ -140,7 +140,6 @@ function ProcessIncomingDocPage() {
   const onFinish = async (values: any) => {
     try {
       const incomingDocument = new FormData();
-      console.log('values', values);
       values.files.fileList.forEach((file: any) => {
         incomingDocument.append('attachments', file.originFileObj);
       });
@@ -153,11 +152,9 @@ function ProcessIncomingDocPage() {
         arrivingDate: new Date(values.arrivingDate),
         arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
       };
-      console.log('incomingDocumentPostDto', incomingDocumentPostDto);
 
       incomingDocument.append('incomingDocumentPostDto', JSON.stringify(incomingDocumentPostDto));
       const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
-      console.log('response', response);
 
       if (response.status === 200) {
         Swal.fire({

@@ -20,6 +20,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   handleOk,
   handleCancel,
   form,
+  selectedDocs,
 }) => {
   const { t } = useTranslation();
   const transferLabels = [t(i18n_director), t(i18n_chief_of_office), t(i18_secretary)];
@@ -38,13 +39,13 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   const handleSwitchScreen = () => {
     switch (transferLabel) {
       case t(i18n_director):
-        return <DirectorScreenComponent form={form} />;
+        return <DirectorScreenComponent form={form} selectedDocs={selectedDocs} />;
       case t(i18n_chief_of_office):
-        return <SecretaryScreenComponent form={form} />;
+        return <SecretaryScreenComponent form={form} selectedDocs={selectedDocs} />;
       case t(i18_secretary):
-        return <SecretaryScreenComponent form={form} />;
+        return <SecretaryScreenComponent form={form} selectedDocs={selectedDocs} />;
       default:
-        return <DirectorScreenComponent form={form} />;
+        return <DirectorScreenComponent form={form} selectedDocs={selectedDocs} />;
     }
   };
 
