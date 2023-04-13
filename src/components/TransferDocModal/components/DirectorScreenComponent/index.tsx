@@ -30,8 +30,6 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
 
-  console.log('selectedDocs', selectedDocs);
-
   return (
     <Form
       form={form}

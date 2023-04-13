@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
-import { IncomingDocumentDto, ProcessingStatus, TransferDocDto } from 'models/doc-main-models';
+import { IncomingDocumentDto, TransferDocDto } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import incomingDocumentService from 'services/IncomingDocumentService';
@@ -152,17 +152,24 @@ const IncomingDocListPage: React.FC = () => {
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
     };
     if (
-      validateAssigneeAndCollaborators(transferDocDto.assigneeId, transferDocDto.collaboratorIds)
+      validateAssigneeAndCollaborators(transferDocDto.assigneeId, transferDocDto.collaboratorIds) &&
+      isUnprocessedDocs(selectedDocs)
     ) {
       setIsModalOpen(false);
       modalForm.submit();
-      console.log(modalForm.getFieldsValue());
-
       modalForm.resetFields();
       transferQuerySetter(transferDocDto);
       try {
         const response = await incomingDocumentService.transferDocumentsToDirector(transferDocDto);
-        console.log('response', response);
+        if (response.status === 200) {
+          // TODO: refetch data
+          Swal.fire({
+            icon: 'success',
+            html: t('incomingDocListPage.message.transfer_success') as string,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setError(error.response?.data.message);
@@ -191,10 +198,18 @@ const IncomingDocListPage: React.FC = () => {
     return true;
   };
 
+  const isUnprocessedDocs = (selectedDocs: IncomingDocumentDto[]) => {
+    const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED'));
+    if (!result) {
+      message.error(t('transfer_modal.form.only_unprocessed_docs_can_be_transferred_to_director'));
+      return false;
+    }
+    return true;
+  };
+
   const hasSelected = selectedDocs.length > 0;
 
   const getSelectedDocsMessage = () => {
-
     const unprocessedDocs = selectedDocs.filter(
       (doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED')
     ).length;

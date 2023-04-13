@@ -105,6 +105,7 @@ export default {
         summary:
           'Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{closedDocs}} đã xử lý)',
       },
+      transfer_success: 'Chuyển văn bản thành công',
     },
   },
   procesIncomingDocPage: {
@@ -241,6 +242,8 @@ export default {
       collaborators_required: 'Hãy chọn người tham gia',
       collaborator_can_not_has_same_value_with_assignee:
         'Người tham gia không được trùng với người nhận',
+      only_unprocessed_docs_can_be_transferred_to_director:
+        'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc',
     },
   },
   error: {
