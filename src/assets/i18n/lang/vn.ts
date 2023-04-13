@@ -75,7 +75,7 @@ export default {
     summary: 'Trích yếu',
   },
 
-  procesIncomingDocPage: {
+  processIncomingDocPage: {
     title: 'Tiếp nhận văn bản đến',
     form: {
       docFolder: 'Sổ văn bản',
@@ -117,12 +117,12 @@ export default {
         save: 'Hoàn tất',
         cancel: 'Hủy bỏ',
       },
-      message: {
-        fileError: 'đính kèm không thành công.',
-        fileSuccess: 'đã được đính kèm',
-        success: 'Tiếp nhận văn bản thành công',
-        error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
-      },
+    },
+    message: {
+      fileError: 'đính kèm không thành công.',
+      fileSuccess: 'đã được đính kèm',
+      success: 'Tiếp nhận văn bản thành công',
+      error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
     },
   },
 
