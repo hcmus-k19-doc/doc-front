@@ -98,6 +98,13 @@ export default {
         not_found: 'Không có dữ liệu',
         download_success: 'Tải tệp đính kèm thành công',
       },
+      selected_docs: {
+        unprocessed: 'Chưa xử lý',
+        in_progress: 'Đang xử lý',
+        closed: 'Đã xử lý',
+        summary:
+          'Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{closedDocs}} đã xử lý)',
+      },
     },
   },
   procesIncomingDocPage: {

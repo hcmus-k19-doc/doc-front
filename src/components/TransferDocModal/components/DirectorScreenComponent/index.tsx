@@ -5,7 +5,6 @@ import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
 import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
-import { useIncomingDocByIdsRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
@@ -25,12 +24,13 @@ import './index.css';
 
 const { Text } = Typography;
 
-const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocIds }) => {
+const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
-  const { data } = useIncomingDocByIdsRes(selectedDocIds);
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
+
+  console.log('selectedDocs', selectedDocs);
 
   return (
     <Form
@@ -55,7 +55,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
         <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
       </Row>
       <div className='document-info'>
-        {data?.map((item) => {
+        {selectedDocs.map((item) => {
           return (
             <React.Fragment key={item.id}>
               <Row className='mt-3 mb-3'>

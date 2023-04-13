@@ -5,9 +5,10 @@ import { Button, Divider, message, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
+import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
-import { TransferDocDto } from 'models/doc-main-models';
+import { IncomingDocumentDto, ProcessingStatus, TransferDocDto } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import incomingDocumentService from 'services/IncomingDocumentService';
@@ -23,11 +24,12 @@ import './index.css';
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const [, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDocIds, setSelectedDocIds] = useState<number[]>([]);
+  const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const transferQuerySetter = useTransferQuerySetter();
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
@@ -123,9 +125,9 @@ const IncomingDocListPage: React.FC = () => {
   ];
 
   const rowSelection = {
-    selectedRowKeys: selectedDocIds,
+    selectedRowKeys: selectedDocs.map((doc) => doc.id),
     onChange: (selectedRowKeys: React.Key[], selectedRows: TableRowDataType[]) => {
-      setSelectedDocIds(selectedRows.map((row) => row.id));
+      setSelectedDocs(selectedRows as unknown as IncomingDocumentDto[]);
     },
   };
 
@@ -141,12 +143,13 @@ const IncomingDocListPage: React.FC = () => {
 
   const handleOnOkModal = async () => {
     const transferDocDto: TransferDocDto = {
-      documentIds: selectedDocIds,
+      documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
+      reporterId: currentUser?.id as number,
       assigneeId: modalForm.getFieldValue('assignee') as number,
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
-      infiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
+      isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
     };
     if (
       validateAssigneeAndCollaborators(transferDocDto.assigneeId, transferDocDto.collaboratorIds)
@@ -168,7 +171,7 @@ const IncomingDocListPage: React.FC = () => {
           console.error(error);
         }
       }
-      setSelectedDocIds([]);
+      setSelectedDocs([]);
     }
   };
 
@@ -188,7 +191,22 @@ const IncomingDocListPage: React.FC = () => {
     return true;
   };
 
-  const hasSelected = selectedDocIds.length > 0;
+  const hasSelected = selectedDocs.length > 0;
+
+  const getSelectedDocsMessage = () => {
+
+    const unprocessedDocs = selectedDocs.filter(
+      (doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED')
+    ).length;
+    const processingDocs = selectedDocs.filter(
+      (doc) => doc.status === t('PROCESSING_STATUS.IN_PROGRESS')
+    ).length;
+    const closedDocs = selectedDocs.filter(
+      (doc) => doc.status === t('PROCESSING_STATUS.CLOSED')
+    ).length;
+
+    return { unprocessedDocs, processingDocs, closedDocs };
+  };
 
   return (
     <>
@@ -212,7 +230,12 @@ const IncomingDocListPage: React.FC = () => {
 
       <div className='float-right px-8'>
         <span style={{ marginRight: 8 }}>
-          {hasSelected ? `Selected ${selectedDocIds.length} items` : ''}
+          {hasSelected
+            ? t('incomingDocListPage.message.selected_docs.summary', {
+                count: hasSelected ? selectedDocs.length : 0,
+                ...getSelectedDocsMessage(),
+              })
+            : ''}
         </span>
         <Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>
           {t('incomingDocDetailPage.button.transfer')}
@@ -224,7 +247,7 @@ const IncomingDocListPage: React.FC = () => {
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
-        selectedDocIds={selectedDocIds}
+        selectedDocs={selectedDocs}
       />
     </>
   );

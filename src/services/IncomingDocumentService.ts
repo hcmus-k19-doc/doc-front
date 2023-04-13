@@ -26,15 +26,6 @@ function getIncomingDocuments(
     .then((response) => response.data);
 }
 
-async function getIncomingDocumentsByIds(ids: number[]): Promise<IncomingDocumentDto[]> {
-  const response = await axios.post<IncomingDocumentDto[]>(
-    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/get-by-ids`,
-    ids
-  );
-
-  return response.data;
-}
-
 async function createIncomingDocument(incomingDocument: FormData) {
   const response = await axios.post<IncomingDocumentDto>(
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/create`,
@@ -55,7 +46,6 @@ async function transferDocumentsToDirector(transferDocDto: TransferDocDto) {
 
 const incomingDocumentService = {
   getIncomingDocuments,
-  getIncomingDocumentsByIds,
   createIncomingDocument,
   transferDocumentsToDirector,
 };

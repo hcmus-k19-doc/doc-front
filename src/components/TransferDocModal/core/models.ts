@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormInstance, MenuProps } from 'antd';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 
 export const i18n_transfer_modal = 'transfer_modal';
 export const i18n_transfer_modal_title = `${i18n_transfer_modal}.title`;
@@ -30,7 +31,7 @@ export interface TransferModalProps {
   handleOk: () => void;
   handleCancel: () => void;
   form: FormInstance;
-  selectedDocIds: number[];
+  selectedDocs: IncomingDocumentDto[];
 }
 
 export interface MenuSelectProps {
@@ -39,7 +40,7 @@ export interface MenuSelectProps {
 
 export interface TransferDocScreenProps {
   form: FormInstance;
-  selectedDocIds: number[];
+  selectedDocs: IncomingDocumentDto[];
 }
 
 export interface TransferDocScreenFormProps {
