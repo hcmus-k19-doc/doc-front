@@ -32,6 +32,15 @@ export default {
       EN: 'Tiếng Anh',
       VI: 'Tiếng Việt',
     },
+    logout: {
+      title: 'Đăng xuất',
+      modal: {
+        title: 'Xác nhận',
+        ok_text: 'Đăng xuất',
+        cancel_text: 'Hủy',
+        content: 'Bạn có chắc chắn muốn đăng xuất?',
+      },
+    },
   },
   COMMON: {
     PAGINATION: {
@@ -51,15 +60,6 @@ export default {
     DISTRICT: 'Quận huyện',
     SCHOOL: 'Trường',
   },
-  DOCUMENT_TYPE: {
-    CONTRACT: 'Hợp đồng',
-    INSTRUCTION: 'Công văn',
-    INVOICE: 'Hóa đơn',
-    LETTER: 'Thư',
-    PAYMENT: 'Phiếu chi',
-    RECEIPT: 'Phiếu thu',
-    OTHER: 'Khác',
-  },
   PROCESSING_STATUS: {
     UNPROCESSED: 'Chưa xử lý',
     IN_PROGRESS: 'Đang xử lý',
@@ -74,8 +74,41 @@ export default {
     processing_duration: 'Thời hạn xử lý',
     summary: 'Trích yếu',
   },
-
-  processIncomingDocPage: {
+  incomingDocListPage: {
+    table: {
+      columns: {
+        id: 'STT',
+        issueLevel: 'Cấp gửi',
+        type: 'Loại văn bản',
+        arriveId: 'Số đến theo sổ',
+        originId: 'Số ký hiệu gốc',
+        arriveDate: 'Ngày đến',
+        issuePlace: 'Nơi phát hành',
+        summary: 'Trích yếu',
+        fullText: 'Toàn văn',
+        status: 'Trạng thái',
+        deadline: 'Thời hạn xử lý',
+      },
+      tooltip: {
+        downloadAttachment: 'Tải tệp đính kèm',
+      },
+    },
+    message: {
+      attachment: {
+        not_found: 'Không có dữ liệu',
+        download_success: 'Tải tệp đính kèm thành công',
+      },
+      selected_docs: {
+        unprocessed: 'Chưa xử lý',
+        in_progress: 'Đang xử lý',
+        closed: 'Đã xử lý',
+        summary:
+          'Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{closedDocs}} đã xử lý)',
+      },
+      transfer_success: 'Chuyển văn bản thành công',
+    },
+  },
+  procesIncomingDocPage: {
     title: 'Tiếp nhận văn bản đến',
     form: {
       docFolder: 'Sổ văn bản',
@@ -117,12 +150,16 @@ export default {
         save: 'Hoàn tất',
         cancel: 'Hủy bỏ',
       },
-    },
-    message: {
-      fileError: 'đính kèm không thành công.',
-      fileSuccess: 'đã được đính kèm',
-      success: 'Tiếp nhận văn bản thành công',
-      error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+      message: {
+        fileError: 'đính kèm không thành công.',
+        fileSuccess: 'đã được đính kèm',
+        fileMaxCountError: 'Chỉ có thể đính kèm tối đa 3 tệp',
+        fileTypeError: 'Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png',
+        fileSizeError: 'Kích thước tệp không được vượt quá 3MB',
+        fileDuplicateError: 'Tệp đã được đính kèm',
+        success: 'Tiếp nhận văn bản thành công',
+        error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+      },
     },
   },
 
@@ -182,6 +219,44 @@ export default {
       fileSuccess: 'đã được đính kèm',
       success: 'Chỉnh sửa văn bản thành công',
       error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+    },
+  },
+  transfer_modal: {
+    title: 'Luân chuyển văn bản tới',
+    document_number: 'Văn bản số  {{id}}',
+    director_view: {
+      sender: 'Người chuyển',
+      implementation_date: 'Ngày thực hiện',
+      document: 'Văn bản',
+      summary: 'Trích yếu - đề nghị',
+      assignee: 'Người nhận',
+      collaborators: 'Người tham gia',
+    },
+    secretary_view: {
+      processing_time: 'Hạn xử lý',
+      is_infinite_processing_time: 'Không thời hạn',
+    },
+    sidebar: {
+      director: 'Ban giám đốc',
+      chief_of_office: 'Chánh văn phòng',
+      secretary: 'Văn thư',
+    },
+    form: {
+      assignee_required: 'Hãy chọn người nhận',
+      processing_time_required: 'Hãy chọn hạn xử lý',
+      processing_time_invalid: 'Hạn xử lý không hợp lệ',
+      processing_time_infinite: 'Không thời hạn',
+      collaborators_required: 'Hãy chọn người tham gia',
+      collaborator_can_not_has_same_value_with_assignee:
+        'Người tham gia không được trùng với người nhận',
+      only_unprocessed_docs_can_be_transferred_to_director:
+        'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc',
+    },
+  },
+  error: {
+    file: {
+      file_already_existed: 'Tệp đã tồn tại',
+      file_type_not_accepted: 'Loại tệp không được hỗ trợ',
     },
   },
 };

@@ -3,14 +3,15 @@ import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DocPaginationDto,
   IncomingDocumentDto,
-  IncomingDocumentPostDto,
   IncomingDocumentPutDto,
   SearchCriteriaDto,
+  TransferDocDto,
 } from 'models/doc-main-models';
 
 function getIncomingDocuments(
   searchCriteria: Partial<SearchCriteriaDto>,
-  page: number
+  page: number,
+  pageSize: number
 ): Promise<DocPaginationDto<IncomingDocumentDto>> {
   return axios
     .post<DocPaginationDto<IncomingDocumentDto>>(
@@ -19,13 +20,14 @@ function getIncomingDocuments(
       {
         params: {
           page: page - 1,
+          pageSize: pageSize,
         },
       }
     )
     .then((response) => response.data);
 }
 
-async function createIncomingDocument(incomingDocument: IncomingDocumentPostDto) {
+async function createIncomingDocument(incomingDocument: FormData) {
   const response = await axios.post<IncomingDocumentDto>(
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/create`,
     incomingDocument
@@ -51,11 +53,21 @@ async function getIncomingDocumentById(id: number) {
   return response;
 }
 
+async function transferDocumentsToDirector(transferDocDto: TransferDocDto) {
+  const response = await axios.post<IncomingDocumentDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-to-director`,
+    transferDocDto
+  );
+
+  return response;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
   getIncomingDocumentById,
   updateIncomingDocument,
+  transferDocumentsToDirector,
 };
 
 export default incomingDocumentService;

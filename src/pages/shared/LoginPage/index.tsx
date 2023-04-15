@@ -5,8 +5,8 @@ import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-compo
 import logo from 'assets/icons/logo.png';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
-import { getToken } from 'services/SecurityService';
-import { getCurrentUser } from 'services/UserService';
+import securityService from 'services/SecurityService';
+import userService from 'services/UserService';
 
 import './index.css';
 
@@ -19,9 +19,9 @@ const LoginPage: React.FC = () => {
 
   const handleOnFinish = async (values: Record<string, string>) => {
     try {
-      const { data: token } = await getToken(values['username'], values['password']);
+      const { data: token } = await securityService.login(values['username'], values['password']);
       saveAuth(token);
-      const { data: user } = await getCurrentUser();
+      const { data: user } = await userService.getCurrentUser();
       setCurrentUser(user);
     } catch (e) {
       if (axios.isAxiosError(e)) {

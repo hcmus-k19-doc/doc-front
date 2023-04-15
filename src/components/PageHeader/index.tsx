@@ -1,10 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { BellOutlined, GlobalOutlined, LogoutOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Badge, Dropdown, Layout, Menu, Space } from 'antd';
+import {
+  BellOutlined,
+  ExclamationCircleOutlined,
+  GlobalOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Space } from 'antd';
 import logo from 'assets/icons/logo.png';
+import { useAuth } from 'components/AuthComponent';
+import securityService from 'services/SecurityService';
+import * as authUtils from 'utils/AuthUtils';
 
 import './index.css';
 
@@ -12,8 +19,10 @@ const { Header } = Layout;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
-
   const { t } = useTranslation();
+  const { logout } = useAuth();
+
+  const [modal, contextHolder] = Modal.useModal();
 
   const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,
@@ -33,6 +42,22 @@ const PageHeader: React.FC = () => {
       label: t('PAGE_HEADER.LANGUAGES.VI'),
     },
   ];
+
+  const confirmLogout = () => {
+    modal.confirm({
+      title: t('PAGE_HEADER.logout.modal.title'),
+      icon: <ExclamationCircleOutlined />,
+      content: t('PAGE_HEADER.logout.modal.content'),
+      okText: t('PAGE_HEADER.logout.modal.ok_text'),
+      cancelText: t('PAGE_HEADER.logout.modal.cancel_text'),
+      onOk: async () => {
+        const token = authUtils.getAuth();
+        await securityService.logout(token?.refresh_token);
+        logout();
+      },
+      centered: true,
+    });
+  };
 
   return (
     <Header
@@ -60,7 +85,8 @@ const PageHeader: React.FC = () => {
         <BellOutlined />
       </Badge>
 
-      <LogoutOutlined className='ml-5' />
+      <LogoutOutlined className='ml-5' onClick={confirmLogout} />
+      {contextHolder}
     </Header>
   );
 };
