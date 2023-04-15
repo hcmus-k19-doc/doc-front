@@ -3,6 +3,7 @@ import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DocPaginationDto,
   IncomingDocumentDto,
+  IncomingDocumentPutDto,
   SearchCriteriaDto,
   TransferDocDto,
 } from 'models/doc-main-models';
@@ -35,6 +36,23 @@ async function createIncomingDocument(incomingDocument: FormData) {
   return response;
 }
 
+async function updateIncomingDocument(incomingDocument: IncomingDocumentPutDto) {
+  const response = await axios.put<IncomingDocumentPutDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/update`,
+    incomingDocument
+  );
+
+  return response;
+}
+
+async function getIncomingDocumentById(id: number) {
+  const response = await axios.get<IncomingDocumentDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/${id}`
+  );
+
+  return response;
+}
+
 async function transferDocumentsToDirector(transferDocDto: TransferDocDto) {
   const response = await axios.post<IncomingDocumentDto>(
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-to-director`,
@@ -47,6 +65,8 @@ async function transferDocumentsToDirector(transferDocDto: TransferDocDto) {
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
+  getIncomingDocumentById,
+  updateIncomingDocument,
   transferDocumentsToDirector,
 };
 

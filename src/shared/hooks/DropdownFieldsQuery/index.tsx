@@ -18,7 +18,7 @@ const getFolders = async () => {
   return response.data;
 };
 
-export const useDropDownQuery = () => {
+export const useDropDownFieldsQuery = () => {
   return useQueries({
     queries: [
       {

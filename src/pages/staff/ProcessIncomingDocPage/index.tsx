@@ -28,7 +28,7 @@ import {
   Urgency,
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
-import { useDropDownQuery } from 'shared/hooks/ProcessingIncomingDocumentQuery';
+import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import DateValidator from 'shared/validators/DateValidator';
 import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
@@ -42,7 +42,7 @@ function ProcessIncomingDocPage() {
   const navigate = useNavigate();
   const [form] = useForm();
 
-  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownQuery();
+  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -130,9 +130,9 @@ function ProcessIncomingDocPage() {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(`${info.file.name} ${t('procesIncomingDocPage.form.message.fileSuccess')}`);
+        message.success(`${info.file.name} ${t('processIncomingDocPage.message.fileSuccess')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('procesIncomingDocPage.form.message.fileError')}`);
+        message.error(`${info.file.name} ${t('processIncomingDocPage.message.fileError')}`);
       }
     },
   };
@@ -159,7 +159,7 @@ function ProcessIncomingDocPage() {
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',
-          html: t('procesIncomingDocPage.form.message.success') as string,
+          html: t('processIncomingDocPage.message.success') as string,
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
@@ -170,7 +170,7 @@ function ProcessIncomingDocPage() {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
       Swal.fire({
         icon: 'error',
-        html: t('procesIncomingDocPage.form.message.error') as string,
+        html: t('processIncomingDocPage.message.error') as string,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -183,20 +183,20 @@ function ProcessIncomingDocPage() {
 
   return (
     <div>
-      <div className='text-lg text-primary'>{t('procesIncomingDocPage.title')}</div>
+      <div className='text-lg text-primary'>{t('processIncomingDocPage.title')}</div>
       <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
           <Col span={16}>
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.docFolder')}
+                  label={t('processIncomingDocPage.form.docFolder')}
                   name='folder'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.docFolderRequired') as string,
+                      message: t('processIncomingDocPage.form.docFolderRequired') as string,
                     },
                   ]}>
                   <Select onChange={(value: number) => handleFolderChange(value)}>
@@ -207,13 +207,13 @@ function ProcessIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.documentType')}
+                  label={t('processIncomingDocPage.form.documentType')}
                   name='documentType'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.documentTypeRequired') as string,
+                      message: t('processIncomingDocPage.form.documentTypeRequired') as string,
                     },
                   ]}>
                   <Select>{renderDocumentTypes()}</Select>
@@ -225,7 +225,7 @@ function ProcessIncomingDocPage() {
               <Col span={11}>
                 <Form.Item
                   required
-                  label={t('procesIncomingDocPage.form.incomingNumber')}
+                  label={t('processIncomingDocPage.form.incomingNumber')}
                   name='incomingNumber'>
                   <Input disabled />
                 </Form.Item>
@@ -233,14 +233,14 @@ function ProcessIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.originalSymbolNumber')}
+                  label={t('processIncomingDocPage.form.originalSymbolNumber')}
                   required
                   name='originalSymbolNumber'
                   rules={[
                     {
                       required: true,
                       message: t(
-                        'procesIncomingDocPage.form.originalSymbolNumberRequired'
+                        'processIncomingDocPage.form.originalSymbolNumberRequired'
                       ) as string,
                     },
                   ]}>
@@ -252,13 +252,13 @@ function ProcessIncomingDocPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.distributionOrg')}
+                  label={t('processIncomingDocPage.form.distributionOrg')}
                   name='distributionOrg'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.distributionOrgRequired') as string,
+                      message: t('processIncomingDocPage.form.distributionOrgRequired') as string,
                     },
                   ]}>
                   <Select>{renderDistributionOrg()}</Select>
@@ -266,19 +266,14 @@ function ProcessIncomingDocPage() {
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
-                {/* <Form.Item label={t('procesIncomingDocPage.form.folder')} name='workFolder'>
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
-                </Form.Item> */}
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.distributionDate')}
+                  label={t('processIncomingDocPage.form.distributionDate')}
                   name='distributionDate'
                   required
                   rules={[
                     {
                       message: t(
-                        'procesIncomingDocPage.form.distributionDateGreaterThanNowError'
+                        'processIncomingDocPage.form.distributionDateGreaterThanNowError'
                       ) as string,
                       validator: (_, value) => {
                         const now = new Date();
@@ -286,7 +281,7 @@ function ProcessIncomingDocPage() {
                       },
                     },
                     {
-                      message: t('procesIncomingDocPage.form.distributionDateInvalid') as string,
+                      message: t('processIncomingDocPage.form.distributionDateInvalid') as string,
                       validator: (_, value) => {
                         const arrivingDate = form.getFieldValue('arrivingDate');
                         return DateValidator.validateBeforeAfter(value, arrivingDate);
@@ -294,7 +289,7 @@ function ProcessIncomingDocPage() {
                     },
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.distributionDateRequired') as string,
+                      message: t('processIncomingDocPage.form.distributionDateRequired') as string,
                     },
                   ]}>
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
@@ -305,13 +300,13 @@ function ProcessIncomingDocPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.arrivingDate')}
+                  label={t('processIncomingDocPage.form.arrivingDate')}
                   name='arrivingDate'
                   required
                   rules={[
                     {
                       message: t(
-                        'procesIncomingDocPage.form.arrivingDateGreaterThanNowError'
+                        'processIncomingDocPage.form.arrivingDateGreaterThanNowError'
                       ) as string,
                       validator: (_, value) => {
                         const now = new Date();
@@ -319,7 +314,7 @@ function ProcessIncomingDocPage() {
                       },
                     },
                     {
-                      message: t('procesIncomingDocPage.form.arrivingDateInvalid') as string,
+                      message: t('processIncomingDocPage.form.arrivingDateInvalid') as string,
                       validator: (_, value) => {
                         const distributionDate = form.getFieldValue('distributionDate');
                         return DateValidator.validateBeforeAfter(distributionDate, value);
@@ -327,7 +322,7 @@ function ProcessIncomingDocPage() {
                     },
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.arrivingDateRequired') as string,
+                      message: t('processIncomingDocPage.form.arrivingDateRequired') as string,
                     },
                   ]}>
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
@@ -338,13 +333,13 @@ function ProcessIncomingDocPage() {
 
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.arrivingTime')}
+                  label={t('processIncomingDocPage.form.arrivingTime')}
                   name='arrivingTime'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.arrivingTimeRequired') as string,
+                      message: t('processIncomingDocPage.form.arrivingTimeRequired') as string,
                     },
                   ]}>
                   <TimePicker className='w-full' />
@@ -355,13 +350,13 @@ function ProcessIncomingDocPage() {
             {/* <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.signer')}
+                  label={t('processIncomingDocPage.form.signer')}
                   name='signer'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.signerRequired') as string,
+                      message: t('processIncomingDocPage.form.signerRequired') as string,
                     },
                   ]}
                 >
@@ -373,13 +368,13 @@ function ProcessIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.signerTitle')}
+                  label={t('processIncomingDocPage.form.signerTitle')}
                   name='signerTitle'
                   // required
                   // rules={[
                   //   {
                   //     required: true,
-                  //     message: t('procesIncomingDocPage.form.signerTitleRequired') as string,
+                  //     message: t('processIncomingDocPage.form.signerTitleRequired') as string,
                   //   },
                   // ]}
                 >
@@ -391,13 +386,13 @@ function ProcessIncomingDocPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.urgency')}
+                  label={t('processIncomingDocPage.form.urgency')}
                   name='urgency'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.urgencyRequired') as string,
+                      message: t('processIncomingDocPage.form.urgencyRequired') as string,
                     },
                   ]}>
                   <Select>
@@ -410,13 +405,13 @@ function ProcessIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('procesIncomingDocPage.form.confidentiality')}
+                  label={t('processIncomingDocPage.form.confidentiality')}
                   name='confidentiality'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('procesIncomingDocPage.form.confidentialityRequired') as string,
+                      message: t('processIncomingDocPage.form.confidentialityRequired') as string,
                     },
                   ]}>
                   <Select>
@@ -429,13 +424,13 @@ function ProcessIncomingDocPage() {
             </Row>
 
             <Form.Item
-              label={t('procesIncomingDocPage.form.summary')}
+              label={t('processIncomingDocPage.form.summary')}
               name='summary'
               required
               rules={[
                 {
                   required: true,
-                  message: t('procesIncomingDocPage.form.summaryRequired') as string,
+                  message: t('processIncomingDocPage.form.summaryRequired') as string,
                 },
               ]}>
               <TextArea rows={2} />
@@ -444,27 +439,27 @@ function ProcessIncomingDocPage() {
           <Col span={1}></Col>
           <Col span={7}>
             <Form.Item
-              label={t('procesIncomingDocPage.form.files')}
+              label={t('processIncomingDocPage.form.files')}
               name='files'
               required
               rules={[
                 {
                   required: true,
-                  message: t('procesIncomingDocPage.form.filesRequired') as string,
+                  message: t('processIncomingDocPage.form.filesRequired') as string,
                 },
               ]}>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
                 </p>
-                <p className='ant-upload-text'>{t('procesIncomingDocPage.form.fileHelper')}</p>
+                <p className='ant-upload-text'>{t('processIncomingDocPage.form.fileHelper')}</p>
               </Dragger>
             </Form.Item>
           </Col>
 
           <Row className='w-full justify-end '>
             <Button type='primary' size='large' htmlType='submit' className='mr-5'>
-              {t('procesIncomingDocPage.form.button.save')}
+              {t('processIncomingDocPage.form.button.save')}
             </Button>
             <Button
               type='default'
@@ -473,7 +468,7 @@ function ProcessIncomingDocPage() {
               onClick={() => {
                 onCancel();
               }}>
-              {t('procesIncomingDocPage.form.button.cancel')}
+              {t('processIncomingDocPage.form.button.cancel')}
             </Button>
           </Row>
         </Row>

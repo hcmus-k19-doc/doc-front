@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
 import { Button, Divider, message, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -30,6 +31,7 @@ const IncomingDocListPage: React.FC = () => {
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
+  const navigate = useNavigate();
   const transferQuerySetter = useTransferQuerySetter();
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
@@ -77,12 +79,10 @@ const IncomingDocListPage: React.FC = () => {
     {
       title: t('incomingDocListPage.table.columns.arriveId'),
       dataIndex: 'arriveId',
-      render: (text: string) => <a className='link'>{text}</a>,
     },
     {
       title: t('incomingDocListPage.table.columns.originId'),
       dataIndex: 'originId',
-      render: (text: string) => <a className='link'>{text}</a>,
     },
     {
       title: t('incomingDocListPage.table.columns.arriveDate'),
@@ -233,6 +233,13 @@ const IncomingDocListPage: React.FC = () => {
 
       <Table
         loading={isLoading}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              navigate(`/index/docin/detail/${record.id}`);
+            },
+          };
+        }}
         rowSelection={{ type: 'checkbox', ...rowSelection }}
         columns={columns}
         dataSource={data?.payload}
