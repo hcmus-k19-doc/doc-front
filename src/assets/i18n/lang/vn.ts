@@ -108,7 +108,7 @@ export default {
       transfer_success: 'Chuyển văn bản thành công',
     },
   },
-  procesIncomingDocPage: {
+  processIncomingDocPage: {
     title: 'Tiếp nhận văn bản đến',
     form: {
       docFolder: 'Sổ văn bản',
