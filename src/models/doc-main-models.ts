@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-12 01:00:14.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-15 21:54:00.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -41,6 +41,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     summary: string;
     sendingLevel: SendingLevelDto;
     folder: FolderDto;
+    attachments: AttachmentDto[];
     urgency: Urgency;
     confidentiality: Confidentiality;
 }
@@ -89,10 +90,28 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
+export interface TransferDocDto {
+    documentIds?: number[];
+    summary?: string;
+    reporterId?: number;
+    assigneeId?: number;
+    collaboratorIds?: number[];
+    processingTime?: string;
+    isInfiniteProcessingTime?: boolean;
+}
+
 export interface UserDto extends DocAbstractDto {
     username: string;
     email: string;
+    fullName: string;
     roles: DocSystemRoleEnum[];
+}
+
+export interface AttachmentDto extends DocAbstractDto {
+    incomingDocId: number;
+    alfrescoFileId: string;
+    alfrescoFolderId: string;
+    fileType: FileType;
 }
 
 export type DateAsString = string;
@@ -120,4 +139,10 @@ export const enum DocSystemRoleEnum {
     EXPERT = "EXPERT",
     MANAGER = "MANAGER",
     STAFF = "STAFF",
+}
+
+export const enum FileType {
+    PDF = "PDF",
+    PNG = "PNG",
+    JPG = "JPG",
 }
