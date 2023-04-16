@@ -55,7 +55,7 @@ async function getIncomingDocumentById(id: number) {
 
 async function transferDocumentsToDirector(transferDocDto: TransferDocDto) {
   const response = await axios.post<IncomingDocumentDto>(
-    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-to-director`,
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-to-giam-doc`,
     transferDocDto
   );
 

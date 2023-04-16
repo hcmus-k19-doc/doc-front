@@ -240,6 +240,7 @@ const IncomingDocListPage: React.FC = () => {
             },
           };
         }}
+        rowClassName={() => 'row-hover'}
         rowSelection={{ type: 'checkbox', ...rowSelection }}
         columns={columns}
         dataSource={data?.payload}
