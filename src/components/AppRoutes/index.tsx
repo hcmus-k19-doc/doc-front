@@ -11,7 +11,7 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<App />}>
-          {!currentUser ? (
+          {currentUser ? (
             <>
               <Route path='/*' element={<PrivateRoutes />} />
               <Route index element={<Navigate to='/index' />} />

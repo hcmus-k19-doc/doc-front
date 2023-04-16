@@ -10,7 +10,7 @@ import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { IncomingDocumentDto, TransferDocDto } from 'models/doc-main-models';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilValue } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 import Footer from './components/Footer';
 import SearchForm from './components/SearchForm';
 import { TableRowDataType } from './core/models';
+import { transferDocModalState } from './core/states';
 
 import './index.css';
 
@@ -33,6 +34,7 @@ const IncomingDocListPage: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const navigate = useNavigate();
   const transferQuerySetter = useTransferQuerySetter();
+  const transferDocModalItem = useRecoilValue(transferDocModalState);
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
     try {
@@ -142,6 +144,7 @@ const IncomingDocListPage: React.FC = () => {
   };
 
   const handleOnOkModal = async () => {
+    console.log(transferDocModalItem);
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
@@ -159,25 +162,26 @@ const IncomingDocListPage: React.FC = () => {
       modalForm.submit();
       modalForm.resetFields();
       transferQuerySetter(transferDocDto);
-      try {
-        const response = await incomingDocumentService.transferDocumentsToDirector(transferDocDto);
-        if (response.status === 200) {
-          // TODO: refetch data
-          Swal.fire({
-            icon: 'success',
-            html: t('incomingDocListPage.message.transfer_success') as string,
-            showConfirmButton: false,
-            timer: 2000,
-          });
-        }
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setError(error.response?.data.message);
-          console.error(error.response?.data.message);
-        } else {
-          console.error(error);
-        }
-      }
+      console.log(transferDocDto);
+      // try {
+      //   const response = await incomingDocumentService.transferDocumentsToDirector(transferDocDto);
+      //   if (response.status === 200) {
+      //     // TODO: refetch data
+      //     Swal.fire({
+      //       icon: 'success',
+      //       html: t('incomingDocListPage.message.transfer_success') as string,
+      //       showConfirmButton: false,
+      //       timer: 2000,
+      //     });
+      //   }
+      // } catch (error) {
+      //   if (axios.isAxiosError(error)) {
+      //     setError(error.response?.data.message);
+      //     console.error(error.response?.data.message);
+      //   } else {
+      //     console.error(error);
+      //   }
+      // }
       setSelectedDocs([]);
     }
   };
