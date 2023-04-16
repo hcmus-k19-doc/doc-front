@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-05 20:20:10.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-09 10:33:17.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -16,6 +16,13 @@ export interface DocPaginationDto<T> {
     totalPages: number;
     totalElements: number;
     payload: T[];
+}
+
+export interface DocumentReminderDto extends DocAbstractDto {
+    incomingNumber: string;
+    summary: string;
+    expirationDate: DateAsString;
+    status: DocumentReminderStatusEnum;
 }
 
 export interface DocumentTypeDto extends DocAbstractDto {
@@ -126,6 +133,12 @@ export const enum Urgency {
     LOW = "LOW",
     MEDIUM = "MEDIUM",
     HIGH = "HIGH",
+}
+
+export const enum DocumentReminderStatusEnum {
+    ACTIVE = "ACTIVE",
+    CLOSE_TO_EXPIRATION = "CLOSE_TO_EXPIRATION",
+    EXPIRED = "EXPIRED",
 }
 
 export const enum ProcessingStatus {

@@ -13,7 +13,7 @@ import { useAuth } from 'components/AuthComponent';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
 
-import ReminderCalendar from './components/ReminderCalendar';
+import DocumentRemindersCalendarWrapper from './components/DocumentRemindersCalendar';
 
 import './index.css';
 
@@ -93,7 +93,7 @@ const PageHeader: React.FC = () => {
               {t('page_header.reminder')}
             </Title>
           )}
-          content={ReminderCalendar}
+          content={DocumentRemindersCalendarWrapper}
           trigger='click'
           showArrow={false}>
           <BellOutlined />

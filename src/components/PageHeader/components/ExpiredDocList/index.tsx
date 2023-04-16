@@ -25,7 +25,7 @@ const items: ExpireDocDto[] = [
   },
 ];
 
-const ExpiredDocList = () => {
+function ExpiredDocList({ isLoading }: { isLoading?: boolean }) {
   return (
     <List
       itemLayout='horizontal'
@@ -49,6 +49,6 @@ const ExpiredDocList = () => {
       )}
     />
   );
-};
+}
 
 export default ExpiredDocList;
