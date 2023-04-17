@@ -34,6 +34,11 @@ export default {
       vi: 'Tiếng Việt',
     },
     reminder: 'Thông báo',
+    document_reminder_status: {
+      active: 'Đang chờ xử lý',
+      close_to_expiration: 'Sắp hết hạn',
+      expired: 'Đã quá hạn',
+    },
     logout: {
       title: 'Đăng xuất',
       modal: {

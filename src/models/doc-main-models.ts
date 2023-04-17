@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-09 10:33:17.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-16 10:09:25.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -18,7 +18,7 @@ export interface DocPaginationDto<T> {
     payload: T[];
 }
 
-export interface DocumentReminderDto extends DocAbstractDto {
+export interface DocumentReminderDetailsDto extends DocAbstractDto {
     incomingNumber: string;
     summary: string;
     expirationDate: DateAsString;

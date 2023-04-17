@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
+  DownOutlined,
   ExclamationCircleOutlined,
   GlobalOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Space, Typography } from 'antd';
+import {
+  Badge,
+  Button,
+  Dropdown,
+  Layout,
+  Menu,
+  MenuProps,
+  Modal,
+  Popover,
+  Space,
+  Typography,
+} from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
+import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
 
@@ -24,6 +37,13 @@ const PageHeader: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { logout } = useAuth();
+  const [status, setStatus] = useState<DocumentReminderStatusEnum>(
+    DocumentReminderStatusEnum.ACTIVE
+  );
+
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    setStatus(e.key as DocumentReminderStatusEnum);
+  };
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -46,6 +66,27 @@ const PageHeader: React.FC = () => {
     },
   ];
 
+  const documentReminderStatusItems: MenuProps['items'] = [
+    {
+      label: t(
+        `page_header.document_reminder_status.${DocumentReminderStatusEnum.ACTIVE.toLowerCase()}`
+      ),
+      key: DocumentReminderStatusEnum.ACTIVE,
+    },
+    {
+      label: t(
+        `page_header.document_reminder_status.${DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION.toLowerCase()}`
+      ),
+      key: DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION,
+    },
+    {
+      label: t(
+        `page_header.document_reminder_status.${DocumentReminderStatusEnum.EXPIRED.toLowerCase()}`
+      ),
+      key: DocumentReminderStatusEnum.EXPIRED,
+    },
+  ];
+
   const confirmLogout = () => {
     modal.confirm({
       title: t('page_header.logout.modal.title'),
@@ -60,6 +101,11 @@ const PageHeader: React.FC = () => {
       },
       centered: true,
     });
+  };
+
+  const menuProps = {
+    items: documentReminderStatusItems,
+    onClick: handleMenuClick,
   };
 
   return (
@@ -89,11 +135,23 @@ const PageHeader: React.FC = () => {
           overlayInnerStyle={{ width: '700px' }}
           placement='bottomRight'
           title={() => (
-            <Title className='ml-3 mt-3' level={4}>
-              {t('page_header.reminder')}
-            </Title>
+            <div className='flex justify-between mt-3'>
+              <Title className='ml-5' level={4}>
+                {t('page_header.reminder')}
+              </Title>
+              <Dropdown trigger={['click']} className='mr-5' menu={menuProps}>
+                <Button>
+                  <Space>
+                    <div className='w-28'>
+                      {t(`page_header.document_reminder_status.${status.toLowerCase()}`)}
+                    </div>
+                    <DownOutlined />
+                  </Space>
+                </Button>
+              </Dropdown>
+            </div>
           )}
-          content={DocumentRemindersCalendarWrapper}
+          content={() => <DocumentRemindersCalendarWrapper status={status} />}
           trigger='click'
           showArrow={false}>
           <BellOutlined />

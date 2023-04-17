@@ -1,54 +1,44 @@
 import React from 'react';
 import { List, Skeleton, Typography } from 'antd';
+import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
-
-import { ExpireDocDto } from './core';
+import { DocumentReminderDetailsDto, DocumentReminderStatusEnum } from 'models/doc-main-models';
+import { useDocumentReminderDetailsRes } from 'shared/hooks/DocumentReminderQuery';
+import { DEFAULT_DATE_FORMAT } from 'utils/DateTimeUtils';
 
 const { Text } = Typography;
 
 dayjs.extend(customParseFormat);
 
-const items: ExpireDocDto[] = [
-  {
-    id: 1,
-    name: 'test',
-    summary: 'test',
-    dateExpired: dayjs(),
-  },
-  {
-    id: 2,
-    name: 'test',
-    summary: 'test',
-    dateExpired: dayjs(),
-  },
-];
+interface Props {
+  selectedStatus: DocumentReminderStatusEnum;
+}
 
-function ExpiredDocList({ isLoading }: { isLoading?: boolean }) {
+function DocumentReminderDetailsList({ selectedStatus }: Props) {
+  const { data, isLoading } = useDocumentReminderDetailsRes();
+  console.log(data);
   return (
     <List
       itemLayout='horizontal'
-      dataSource={items}
-      renderItem={(item) => (
-        <List.Item>
-          <Skeleton avatar title={false} loading={false} active>
-            <List.Item.Meta
-              title={
-                <a href='https://ant.design' className='font-bold'>
-                  {item.summary}
-                </a>
-              }
-              description='Ant Design, a design language for background applications, is refined by Ant UED Team'
-            />
-            <Text type='secondary' className='w-32 text-end'>
-              {item.dateExpired.format(DAY_MONTH_YEAR_FORMAT)}
-            </Text>
-          </Skeleton>
-        </List.Item>
-      )}
+      dataSource={data?.[selectedStatus]}
+      renderItem={(item: DocumentReminderDetailsDto) => {
+        return (
+          <List.Item>
+            <Skeleton avatar title={false} loading={isLoading} active>
+              <List.Item.Meta
+                title={<a className='font-bold'>{item.incomingNumber}</a>}
+                description={item.summary}
+              />
+              <Text type='secondary' className='w-32 text-end'>
+                {format(new Date(item.expirationDate), DEFAULT_DATE_FORMAT)}
+              </Text>
+            </Skeleton>
+          </List.Item>
+        );
+      }}
     />
   );
 }
 
-export default ExpiredDocList;
+export default DocumentReminderDetailsList;

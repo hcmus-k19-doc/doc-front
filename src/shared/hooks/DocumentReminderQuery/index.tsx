@@ -2,11 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import documentReminderService from 'services/DocumentReminderService';
-import { YEAR_MONTH_FORMAT } from 'utils/DateTimeUtils';
 
 import { DocumentReminderDateState } from './core/state';
-
-dayjs().locale('vi');
 
 const documentReminderDateState = atom<DocumentReminderDateState>({
   key: 'DOCUMENT_REMINDER_DATE_STATE',
@@ -15,20 +12,43 @@ const documentReminderDateState = atom<DocumentReminderDateState>({
   },
 });
 
+const documentReminderDetailsState = atom<DocumentReminderDateState>({
+  key: 'DOCUMENT_REMINDER_DETAILS_STATE',
+  default: {
+    date: dayjs(),
+  },
+});
+
 export const useDocumentReminderDateReq = () => useRecoilState(documentReminderDateState);
 
-export const useDocumentReminderByMonthYearRes = () => {
+export const useDocumentReminderRes = () => {
   const query = useRecoilValue<DocumentReminderDateState>(documentReminderDateState);
 
   const { data, isLoading } = useQuery({
     queryKey: ['QUERIES.DOCUMENT_REMINDER_LIST', query],
     keepPreviousData: true,
     queryFn: async () => {
-      const res = await documentReminderService.getCurrentUserDocumentReminders(
-        query.date.format(YEAR_MONTH_FORMAT)
-      );
+      const { data } = await documentReminderService.getCurrentUserDocumentReminders(query.date);
+      return data;
+    },
+  });
 
-      return res.data;
+  return { data, isLoading };
+};
+
+export const useDocumentReminderDetailsReq = () => useRecoilState(documentReminderDetailsState);
+
+export const useDocumentReminderDetailsRes = () => {
+  const query = useRecoilValue<DocumentReminderDateState>(documentReminderDetailsState);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['QUERIES.DOCUMENT_REMINDER_DETAILS', query],
+    keepPreviousData: true,
+    queryFn: async () => {
+      const { data } = await documentReminderService.getCurrentUserDocumentReminderDetails(
+        query.date
+      );
+      return data;
     },
   });
 
