@@ -33,7 +33,7 @@ const isUnprocessedDocs = (selectedDocs: IncomingDocumentDto[], t?: any) => {
 const isProcessingDocs = (selectedDocs: IncomingDocumentDto[], t?: any) => {
   const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.IN_PROGRESS'));
   if (!result) {
-    message.error(t('transfer_modal.form.only_unprocessed_docs_can_be_transferred_to_manager'));
+    message.error(t('transfer_modal.form.only_in_progress_docs_can_be_transferred_to_manager'));
     return false;
   }
   return true;
