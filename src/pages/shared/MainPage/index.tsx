@@ -30,14 +30,14 @@ const MainPage: React.FC = () => {
           key: 'in1',
           label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
           onClick: () => {
-            navigate('/index/docin');
+            navigate('/docin');
           },
         },
         {
           key: 'in2',
           label: t('MAIN_PAGE.MENU.ITEMS.PROCESSES_INCOMING_DOCUMENT'),
           onClick: () => {
-            navigate('/index/docin/process');
+            navigate('/docin/process');
           },
         },
       ],
