@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-15 22:04:09.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-18 22:23:11.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -135,10 +135,10 @@ export const enum ProcessingStatus {
 }
 
 export const enum DocSystemRoleEnum {
-    DIRECTOR = "DIRECTOR",
-    EXPERT = "EXPERT",
-    MANAGER = "MANAGER",
-    STAFF = "STAFF",
+    GIAM_DOC = "GIAM_DOC",
+    CHUYEN_VIEN = "CHUYEN_VIEN",
+    TRUONG_PHONG = "TRUONG_PHONG",
+    VAN_THU = "VAN_THU",
 }
 
 export const enum FileType {
