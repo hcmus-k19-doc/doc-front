@@ -1,10 +1,10 @@
 import React from 'react';
-import { ArrowDownOutlined, ArrowUpOutlined, InboxOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { MenuProps } from 'antd';
 import { t } from 'i18next';
 import { globalNavigate } from 'utils/RoutingUtils';
 
-const staffMenuItems: MenuProps['items'] = [
+const managerMenuItems: MenuProps['items'] = [
   {
     key: 'docin',
     icon: React.createElement(ArrowDownOutlined),
@@ -16,13 +16,6 @@ const staffMenuItems: MenuProps['items'] = [
         label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
         onClick: () => {
           globalNavigate('/docin');
-        },
-      },
-      {
-        key: 'in2',
-        label: t('MAIN_PAGE.MENU.ITEMS.PROCESSES_INCOMING_DOCUMENT'),
-        onClick: () => {
-          globalNavigate('/docin/process');
         },
       },
     ],
@@ -42,28 +35,13 @@ const staffMenuItems: MenuProps['items'] = [
       },
     ],
   },
-  {
-    key: 'docinternal',
-    icon: React.createElement(InboxOutlined),
-    label: t('MAIN_PAGE.MENU.ITEMS.INTERNAL_DOCUMENT'),
-    children: [
-      {
-        key: 'internal1',
-        label: 'Test',
-      },
-      {
-        key: 'internal2',
-        label: 'Test',
-      },
-    ],
-  },
 ];
 
-const staffMenu: MenuProps = {
+const managerMenu: MenuProps = {
   mode: 'inline',
   defaultSelectedKeys: ['in1'],
   defaultOpenKeys: ['docin'],
-  items: staffMenuItems,
+  items: managerMenuItems,
 };
 
-export default staffMenu;
+export default managerMenu;

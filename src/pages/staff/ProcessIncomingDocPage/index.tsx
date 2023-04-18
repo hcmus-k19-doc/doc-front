@@ -163,7 +163,7 @@ function ProcessIncomingDocPage() {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/index/docin');
+          navigate('/docin');
         });
       }
     } catch (error) {
@@ -178,7 +178,7 @@ function ProcessIncomingDocPage() {
   };
 
   const onCancel = () => {
-    navigate('/index/docin');
+    navigate('/docin');
   };
 
   return (
@@ -346,42 +346,6 @@ function ProcessIncomingDocPage() {
                 </Form.Item>
               </Col>
             </Row>
-
-            {/* <Row>
-              <Col span={11}>
-                <Form.Item
-                  label={t('processIncomingDocPage.form.signer')}
-                  name='signer'
-                  required
-                  rules={[
-                    {
-                      required: true,
-                      message: t('processIncomingDocPage.form.signerRequired') as string,
-                    },
-                  ]}
-                >
-                  <Select>
-                    <Select.Option value='demo'>Demo</Select.Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={11}>
-                <Form.Item
-                  label={t('processIncomingDocPage.form.signerTitle')}
-                  name='signerTitle'
-                  // required
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: t('processIncomingDocPage.form.signerTitleRequired') as string,
-                  //   },
-                  // ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row> */}
 
             <Row>
               <Col span={11}>

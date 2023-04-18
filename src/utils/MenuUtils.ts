@@ -1,8 +1,8 @@
 import { MenuProps } from 'antd';
-import directorMenu from 'components/Menu/DirectorMenu';
-import expertMenu from 'components/Menu/ExpertMenu';
-import managerMenu from 'components/Menu/ManagerMenu';
-import staffMenu from 'components/Menu/StaffMenu';
+import directorMenu from 'components/DocMenu/DirectorMenu';
+import expertMenu from 'components/DocMenu/ExpertMenu';
+import managerMenu from 'components/DocMenu/ManagerMenu';
+import staffMenu from 'components/DocMenu/StaffMenu';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
 
 export const getMenus = (role: DocSystemRoleEnum): MenuProps => {
