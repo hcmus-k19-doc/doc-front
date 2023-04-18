@@ -3,12 +3,14 @@ import App from 'App';
 import { useAuth } from 'components/AuthComponent';
 import LoginPage from 'pages/shared/LoginPage';
 import MainPage from 'pages/shared/MainPage';
+import { GlobalHistory } from 'utils/RoutingUtils';
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();
 
   return (
     <BrowserRouter>
+      <GlobalHistory />
       <Routes>
         <Route element={<App />}>
           {!currentUser ? (

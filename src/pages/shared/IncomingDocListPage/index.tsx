@@ -236,7 +236,7 @@ const IncomingDocListPage: React.FC = () => {
         onRow={(record) => {
           return {
             onClick: () => {
-              navigate(`/index/docin/detail/${record.id}`);
+              navigate(`/docin/detail/${record.id}`);
             },
           };
         }}
