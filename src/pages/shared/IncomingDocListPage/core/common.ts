@@ -39,8 +39,12 @@ const isProcessingDocs = (selectedDocs: IncomingDocumentDto[], t?: any) => {
   return true;
 };
 
-const isValidProcessingTime = (processingTime?: string, t?: any) => {
-  if (!processingTime) {
+const isValidProcessingTime = (
+  processingTime?: string,
+  isInfiniteProcessingTime?: boolean,
+  t?: any
+) => {
+  if (!isInfiniteProcessingTime && !processingTime) {
     message.error(t('transfer_modal.form.processing_time_required'));
     return false;
   }
@@ -83,7 +87,11 @@ const validateTransferDocs = (
   } else if (transferDocModalItem === 2) {
     if (
       !isProcessingDocs(selectedDocs, t) ||
-      !isValidProcessingTime(transferDocDto?.processingTime, t)
+      !isValidProcessingTime(
+        transferDocDto?.processingTime,
+        transferDocDto?.isInfiniteProcessingTime,
+        t
+      )
     ) {
       return false;
     }
