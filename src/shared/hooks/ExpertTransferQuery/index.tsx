@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { SelectProps } from 'antd';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import userService from 'services/UserService';
 
 export function useExpertTransferRes() {
   const { data } = useQuery({
-    queryKey: ['QUERIES.EXPERT_TRANSFER'],
+    queryKey: ['QUERIES.CHUYEN_VIEN_TRANSFER'],
     queryFn: () => {
-      return userService.getExperts();
+      return userService.getUsersByRole(DocSystemRoleEnum.CHUYEN_VIEN);
     },
     cacheTime: 0,
   });
