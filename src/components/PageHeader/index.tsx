@@ -3,23 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
-  DownOutlined,
   ExclamationCircleOutlined,
   GlobalOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import {
-  Badge,
-  Button,
-  Dropdown,
-  Layout,
-  Menu,
-  MenuProps,
-  Modal,
-  Popover,
-  Space,
-  Typography,
-} from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Space } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import { DocumentReminderStatusEnum } from 'models/doc-main-models';
@@ -27,11 +15,11 @@ import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
 
 import DocumentRemindersCalendarWrapper from './components/DocumentRemindersCalendar';
+import PageHeaderTitle from './components/PageHeaderTitle';
 
 import './index.css';
 
 const { Header } = Layout;
-const { Title } = Typography;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -130,28 +118,12 @@ const PageHeader: React.FC = () => {
         </Space>
       </Dropdown>
 
-      <Badge count={5} overflowCount={99} size='small' className='ml-5'>
+      <Badge overflowCount={99} size='small' className='ml-5'>
         <Popover
           overlayInnerStyle={{ width: '700px' }}
           placement='bottomRight'
-          title={() => (
-            <div className='flex justify-between mt-3'>
-              <Title className='ml-5' level={4}>
-                {t('page_header.reminder')}
-              </Title>
-              <Dropdown trigger={['click']} className='mr-5' menu={menuProps}>
-                <Button>
-                  <Space>
-                    <div className='w-28'>
-                      {t(`page_header.document_reminder_status.${status.toLowerCase()}`)}
-                    </div>
-                    <DownOutlined />
-                  </Space>
-                </Button>
-              </Dropdown>
-            </div>
-          )}
-          content={() => <DocumentRemindersCalendarWrapper status={status} />}
+          title={<PageHeaderTitle t={t} menuProps={menuProps} status={status} />}
+          content={<DocumentRemindersCalendarWrapper status={status} />}
           trigger='click'
           showArrow={false}>
           <BellOutlined />

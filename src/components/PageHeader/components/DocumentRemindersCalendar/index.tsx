@@ -1,32 +1,16 @@
 import React from 'react';
-import { Badge, BadgeProps, Calendar } from 'antd';
+import { Calendar } from 'antd';
 import { Dayjs } from 'dayjs';
+import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import {
   useDocumentReminderDateReq,
   useDocumentReminderDetailsReq,
   useDocumentReminderRes,
 } from 'shared/hooks/DocumentReminderQuery';
-import { YEAR_MONTH_DAY_FORMAT } from 'utils/DateTimeUtils';
 
-import { DocumentReminderStatusEnum } from '../../../../models/doc-main-models';
+import DateCell from '../DateCell';
 import DocumentReminderDetailsList from '../ExpiredDocList';
-
-function getMonthData(value: Dayjs) {
-  if (value.month() === 8) {
-    return 1394;
-  }
-}
-
-function MonthCellRender(value: Dayjs) {
-  const num = getMonthData(value);
-  return num ? (
-    <div className='notes-month'>
-      <section>{num}</section>
-      <span>Backlog number</span>
-    </div>
-  ) : null;
-}
 
 interface DocumentRemindersCalendarProps {
   status: DocumentReminderStatusEnum;
@@ -43,35 +27,9 @@ function DocumentRemindersCalendar({ status }: DocumentRemindersCalendarProps) {
   }
 
   function handleOnPanelChange(date: Dayjs) {
+    console.log(date);
     setDocumentReminder({ date });
     setDocumentReminderDetails({ date });
-  }
-
-  function DateCellRender(value: Dayjs) {
-    const date = value.format(YEAR_MONTH_DAY_FORMAT);
-    return (
-      <ul className='events'>
-        {data?.[date]?.map((item: string) => {
-          let type: string;
-          switch (item) {
-            case 'ACTIVE':
-              type = 'success';
-              break;
-            case 'EXPIRED':
-              type = 'error';
-              break;
-            default:
-              type = 'warning';
-          }
-
-          return (
-            <li className='flex justify-end' key={item}>
-              <Badge status={type as BadgeProps['status']} />
-            </li>
-          );
-        })}
-      </ul>
-    );
   }
 
   return (
@@ -81,8 +39,7 @@ function DocumentRemindersCalendar({ status }: DocumentRemindersCalendarProps) {
         value={documentReminder.date}
         onSelect={handleOnSelect}
         onPanelChange={handleOnPanelChange}
-        dateCellRender={DateCellRender}
-        monthCellRender={MonthCellRender}
+        dateCellRender={(value) => <DateCell value={value} data={data} />}
       />
     </>
   );

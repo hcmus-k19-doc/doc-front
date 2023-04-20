@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-16 10:09:25.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-17 21:58:17.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -23,6 +23,7 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
     summary: string;
     expirationDate: DateAsString;
     status: DocumentReminderStatusEnum;
+    processingDocumentId: number;
 }
 
 export interface DocumentTypeDto extends DocAbstractDto {
