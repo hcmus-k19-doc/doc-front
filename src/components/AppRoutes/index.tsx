@@ -11,17 +11,21 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<App />}>
-          {!currentUser ? (
-            <>
-              <Route path='/*' element={<PrivateRoutes />} />
-              <Route index element={<Navigate to='/index' />} />
-            </>
-          ) : (
-            <>
-              <Route path='/auth/*' element={<AuthRoutes />} />
-              <Route path='*' element={<Navigate to='/auth' />} />
-            </>
-          )}
+          {/*{!currentUser ? (*/}
+          {/*  <>*/}
+          {/*    <Route path='/*' element={<PrivateRoutes />} />*/}
+          {/*    <Route index element={<Navigate to='/index' />} />*/}
+          {/*  </>*/}
+          {/*) : (*/}
+          {/*  <>*/}
+          {/*    <Route path='/auth/*' element={<AuthRoutes />} />*/}
+          {/*    <Route path='*' element={<Navigate to='/auth' />} />*/}
+          {/*  </>*/}
+          {/*)}*/}
+          <>
+            <Route path='/*' element={<PrivateRoutes />} />
+            <Route index element={<Navigate to='/index' />} />
+          </>
         </Route>
       </Routes>
     </BrowserRouter>

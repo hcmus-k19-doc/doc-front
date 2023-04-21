@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
 
 import DirectorScreenComponent from './components/DirectorScreenComponent';
+import ManagerScreenComponent from './components/ManagerScreenComponent';
 import SecretaryScreenComponent from './components/SecretaryScreenComponent';
 import {
   getItem,
@@ -41,7 +42,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
       case t(i18n_director):
         return <DirectorScreenComponent form={form} selectedDocs={selectedDocs} />;
       case t(i18n_chief_of_office):
-        return <SecretaryScreenComponent form={form} selectedDocs={selectedDocs} />;
+        return <ManagerScreenComponent form={form} selectedDocs={selectedDocs} />;
       case t(i18_secretary):
         return <SecretaryScreenComponent form={form} selectedDocs={selectedDocs} />;
       default:
