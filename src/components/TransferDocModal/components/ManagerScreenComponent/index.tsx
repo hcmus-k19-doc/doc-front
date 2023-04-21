@@ -1,16 +1,16 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 'antd';
+import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
-import { DAY_MONTH_YEAR_FORMAT_2 } from '../../../../utils/DateTimeUtils';
 import {
   i18_collaborators,
   i18n_assignee,
@@ -18,10 +18,8 @@ import {
   i18n_document_number,
   i18n_implementation_date,
   i18n_is_infinite_processing_time,
-  i18n_process_method,
   i18n_processing_time,
   i18n_sender,
-  i18n_summary,
   TransferDocScreenFormProps,
   TransferDocScreenProps,
 } from '../../core/models';
@@ -30,17 +28,7 @@ dayjs.extend(customParseFormat);
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
-
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const processMethodOptions: OptionType[] = [
-  { value: 'BAO_CAO_KET_QUA_THUC_HIEN', label: 'Báo cáo kết quả thực hiện' },
-  { value: 'LUU_THAM_KHAO', label: 'Lưu tham khảo' },
-  { value: 'SOAN_VAN_BAN_TRA_LOI', label: 'Soạn văn bản trả lời' },
-];
+const itemHeight = 50;
 
 const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
   const { t } = useTranslation();
@@ -73,7 +61,6 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
           collaboratorIds: values.collaborators,
           processingTime: values.processingTime,
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
-          processMethod: values.processMethod,
         });
       }}>
       <Row>
@@ -88,31 +75,32 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
         </Col>
         <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
       </Row>
-      <div className='document-info'>
-        {selectedDocs.map((item) => {
-          return (
-            <React.Fragment key={item.id}>
-              <Row className='mt-3 mb-3'>
-                <Col span='6'>
-                  <Text strong>{t(i18n_document)}</Text>
-                </Col>
-                <Col span='18'>{t(i18n_document_number, { id: item.incomingNumber })}</Col>
-              </Row>
-              <Row className='mt-4 mb-4' align='middle'>
-                <Col span='6'>
-                  <Text strong>{t(i18n_summary)}</Text>
-                </Col>
-                <Col span='16'>
-                  <TextArea rows={4} disabled defaultValue={item.summary} />
-                </Col>
-              </Row>
-            </React.Fragment>
-          );
-        })}
-      </div>
+      <Row className='my-6'>
+        <Col span='6'>
+          <Text strong>{`${t(i18n_document)} (${selectedDocs.length})`}</Text>
+        </Col>
+        <Col span='16'>
+          <List>
+            <VirtualList
+              data={selectedDocs.sort((a, b) => a.id - b.id)}
+              height={itemHeight * 2}
+              itemHeight={itemHeight}
+              itemKey={'id'}>
+              {(item) => (
+                <List.Item key={item.id}>
+                  <div>{t(i18n_document_number, { id: item.id })}</div>
+                </List.Item>
+              )}
+            </VirtualList>
+          </List>
+        </Col>
+      </Row>
       <Row className='mt-4 mb-3'>
         <Col span='6'>
-          <Text strong>{t(i18n_assignee)}</Text>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18n_assignee)}
+          </Typography.Text>
         </Col>
         <Col span='16'>
           <Form.Item name='assignee'>
@@ -122,7 +110,10 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
       </Row>
       <Row className='mb-3'>
         <Col span='6'>
-          <Text strong>{t(i18_collaborators)}</Text>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18_collaborators)}
+          </Typography.Text>
         </Col>
         <Col span='16'>
           <Form.Item name='collaborators'>
@@ -130,19 +121,12 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
           </Form.Item>
         </Col>
       </Row>
-      <Row className='mt-4 mb-3'>
-        <Col span='6'>
-          <Text strong>{t(i18n_process_method)}</Text>
-        </Col>
-        <Col span='16'>
-          <Form.Item name='processMethod'>
-            <Select style={{ width: '100%' }} allowClear options={processMethodOptions} />
-          </Form.Item>
-        </Col>
-      </Row>
       <Row className='mb-3'>
         <Col span='6'>
-          <Text strong>{t(i18n_processing_time)}</Text>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18n_processing_time)}
+          </Typography.Text>
         </Col>
         <Form.Item name='processingTime'>
           <Space direction='vertical' size={12}>
@@ -155,7 +139,8 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
         </Form.Item>
         <Form.Item
           name='isInfiniteProcessingTime'
-          style={{ display: 'inline-block', margin: '0 16px' }}>
+          style={{ display: 'inline-block', margin: '0 16px' }}
+          valuePropName='checked'>
           <Checkbox onChange={onChooseNoneProcessingTime}>
             {t(i18n_is_infinite_processing_time)}
           </Checkbox>

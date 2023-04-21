@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
+import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
+import { useRecoilState } from 'recoil';
 
 import DirectorScreenComponent from './components/DirectorScreenComponent';
 import ManagerScreenComponent from './components/ManagerScreenComponent';
@@ -27,6 +29,8 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   const transferLabels = [t(i18n_director), t(i18n_chief_of_office), t(i18_secretary)];
   const [transferLabel, setTransferLabel] = useState(transferLabels[0]);
 
+  const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
+
   const items: MenuItem[] = [
     getItem(t(i18n_director), 1),
     getItem(t(i18n_chief_of_office), 2),
@@ -35,6 +39,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
 
   const handleMenuOnSelect = ({ selectedKeys }: MenuSelectProps) => {
     setTransferLabel(transferLabels[parseInt(selectedKeys[0]) - 1]);
+    setTransferDocModalItem(+selectedKeys[0]);
   };
 
   const handleSwitchScreen = () => {

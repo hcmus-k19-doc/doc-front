@@ -53,26 +53,28 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
         <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
       </Row>
       <div className='document-info'>
-        {selectedDocs.map((item) => {
-          return (
-            <React.Fragment key={item.id}>
-              <Row className='mt-3 mb-3'>
-                <Col span='6'>
-                  <Text strong>{t(i18n_document)}</Text>
-                </Col>
-                <Col span='18'>{t(i18n_document_number, { id: item.incomingNumber })}</Col>
-              </Row>
-              <Row className='mt-4 mb-4' align='middle'>
-                <Col span='6'>
-                  <Text strong>{t(i18n_summary)}</Text>
-                </Col>
-                <Col span='16'>
-                  <TextArea rows={4} disabled defaultValue={item.summary} />
-                </Col>
-              </Row>
-            </React.Fragment>
-          );
-        })}
+        {selectedDocs
+          .sort((a, b) => a.id - b.id)
+          .map((item) => {
+            return (
+              <React.Fragment key={item.id}>
+                <Row className='mt-3 mb-3'>
+                  <Col span='6'>
+                    <Text strong>{t(i18n_document)}</Text>
+                  </Col>
+                  <Col span='18'>{t(i18n_document_number, { id: item.incomingNumber })}</Col>
+                </Row>
+                <Row className='mt-4 mb-4' align='middle'>
+                  <Col span='6'>
+                    <Text strong>{t(i18n_summary)}</Text>
+                  </Col>
+                  <Col span='16'>
+                    <TextArea rows={4} disabled defaultValue={item.summary} />
+                  </Col>
+                </Row>
+              </React.Fragment>
+            );
+          })}
       </div>
       <Row className='mb-3'>
         <Col span='6'>
