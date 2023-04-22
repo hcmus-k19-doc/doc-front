@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Result } from 'antd';
-import { useTranslation } from 'react-i18next';
 
 const ServerErrorPage = () => {
   const navigate = useNavigate();
