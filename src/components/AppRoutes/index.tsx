@@ -3,12 +3,15 @@ import App from 'App';
 import { useAuth } from 'components/AuthComponent';
 import AuthRoutes from 'components/AuthRoute/AuthRoutes';
 import PrivateRoutes from 'components/PrivateRoutes';
+import ServerErrorPage from 'pages/error/ServerErrorPage';
+import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();
 
   return (
     <BrowserRouter>
+      <AxiosNavigation />
       <Routes>
         <Route element={<App />}>
           {currentUser ? (
@@ -23,6 +26,7 @@ const AppRoutes = () => {
             </>
           )}
         </Route>
+        <Route path='/internal-server-error' element={<ServerErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
