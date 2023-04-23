@@ -27,10 +27,17 @@ export default {
       REPORT_TO_LEADER: 'Trình lãnh đạo',
     },
   },
-  PAGE_HEADER: {
-    LANGUAGES: {
-      EN: 'Tiếng Anh',
-      VI: 'Tiếng Việt',
+  page_header: {
+    languages: {
+      title: 'Ngôn ngữ',
+      en: 'Tiếng Anh',
+      vi: 'Tiếng Việt',
+    },
+    reminder: 'Thông báo',
+    document_reminder_status: {
+      active: 'Đang chờ xử lý',
+      close_to_expiration: 'Sắp hết hạn',
+      expired: 'Đã quá hạn',
     },
     logout: {
       title: 'Đăng xuất',

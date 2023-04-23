@@ -18,6 +18,14 @@ export interface DocPaginationDto<T> {
     payload: T[];
 }
 
+export interface DocumentReminderDetailsDto extends DocAbstractDto {
+    incomingNumber: string;
+    summary: string;
+    expirationDate: DateAsString;
+    status: DocumentReminderStatusEnum;
+    processingDocumentId: number;
+}
+
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
 }
@@ -126,6 +134,12 @@ export const enum Urgency {
     LOW = "LOW",
     MEDIUM = "MEDIUM",
     HIGH = "HIGH",
+}
+
+export const enum DocumentReminderStatusEnum {
+    ACTIVE = "ACTIVE",
+    CLOSE_TO_EXPIRATION = "CLOSE_TO_EXPIRATION",
+    EXPIRED = "EXPIRED",
 }
 
 export const enum ProcessingStatus {
