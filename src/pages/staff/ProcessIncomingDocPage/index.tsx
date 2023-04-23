@@ -29,8 +29,8 @@ import {
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import DateValidator from 'shared/validators/DateValidator';
-import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
@@ -41,6 +41,7 @@ function ProcessIncomingDocPage() {
   const { TextArea } = Input;
   const navigate = useNavigate();
   const [form] = useForm();
+  const showAlert = useSweetAlert();
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
 
@@ -102,24 +103,24 @@ function ProcessIncomingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('procesIncomingDocPage.form.message.fileDuplicateError') as string);
+        message.error(t('processIncomingDocPage.form.message.fileDuplicateError') as string);
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('procesIncomingDocPage.form.message.fileMaxCountError') as string);
+        message.error(t('processIncomingDocPage.form.message.fileMaxCountError') as string);
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('procesIncomingDocPage.form.message.fileTypeError') as string);
+        message.error(t('processIncomingDocPage.form.message.fileTypeError') as string);
       }
 
       // Check file size (max 3MB)
       const isValidSize = file.size / 1024 / 1024 < 3;
       if (!isValidSize) {
-        message.error(t('procesIncomingDocPage.form.message.fileSizeError') as string);
+        message.error(t('processIncomingDocPage.form.message.fileSizeError') as string);
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
@@ -130,9 +131,11 @@ function ProcessIncomingDocPage() {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(`${info.file.name} ${t('processIncomingDocPage.message.fileSuccess')}`);
+        message.success(
+          `${info.file.name} ${t('processIncomingDocPage.form.message.fileSuccess')}`
+        );
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('processIncomingDocPage.message.fileError')}`);
+        message.error(`${info.file.name} ${t('processIncomingDocPage.form.message.fileError')}`);
       }
     },
   };
@@ -157,9 +160,9 @@ function ProcessIncomingDocPage() {
       const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
 
       if (response.status === 200) {
-        Swal.fire({
+        showAlert({
           icon: 'success',
-          html: t('processIncomingDocPage.message.success') as string,
+          html: t('processIncomingDocPage.form.message.success') as string,
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
@@ -168,9 +171,9 @@ function ProcessIncomingDocPage() {
       }
     } catch (error) {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
-      Swal.fire({
+      showAlert({
         icon: 'error',
-        html: t('processIncomingDocPage.message.error') as string,
+        html: t('processIncomingDocPage.form.message.error') as string,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });

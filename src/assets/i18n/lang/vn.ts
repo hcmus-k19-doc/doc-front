@@ -262,6 +262,11 @@ export default {
         'Chỉ có thể chuyển văn bản đang xử lý tới Trưởng phòng',
     },
   },
+  internal_server_error_page: {
+    title: 'Lỗi máy chủ',
+    message: 'Đã có lỗi xảy ra, vui lòng thử lại sau.',
+    go_back_button: 'Quay lại',
+  },
   error: {
     file: {
       file_already_existed: 'Tệp đã tồn tại',
