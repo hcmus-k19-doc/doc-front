@@ -7,14 +7,14 @@ export function useManagerTransferRes() {
   const { data } = useQuery({
     queryKey: ['QUERIES.MANAGER_TRANSFER'],
     queryFn: () => {
-      return userService.getUsersByRole(DocSystemRoleEnum.TRUONG_PHONG);
+      return userService.getUsersByRoleWithDepartment(DocSystemRoleEnum.TRUONG_PHONG);
     },
     cacheTime: 0,
   });
 
   const managers: SelectProps['options'] = data?.map((manager) => ({
     value: manager.id,
-    label: manager.fullName,
+    label: manager.fullName + ' - ' + manager.departmentName,
   }));
 
   return {

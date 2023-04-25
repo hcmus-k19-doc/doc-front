@@ -98,6 +98,7 @@ export interface TransferDocDto {
     collaboratorIds?: number[];
     processingTime?: string;
     isInfiniteProcessingTime?: boolean;
+    processMethod?: string;
 }
 
 export interface UserDto extends DocAbstractDto {
@@ -105,6 +106,10 @@ export interface UserDto extends DocAbstractDto {
     email: string;
     fullName: string;
     role: DocSystemRoleEnum;
+}
+
+export interface UserDepartmentDto extends UserDto {
+    departmentName: string;
 }
 
 export interface AttachmentDto extends DocAbstractDto {
