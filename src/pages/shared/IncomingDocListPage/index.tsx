@@ -14,8 +14,8 @@ import { RecoilRoot, useRecoilValue } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
-import Swal from 'sweetalert2';
 
 import Footer from './components/Footer';
 import SearchForm from './components/SearchForm';
@@ -28,6 +28,7 @@ import './index.css';
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const showAlert = useSweetAlert();
   const [, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
   const [modalForm] = useForm();
@@ -45,7 +46,7 @@ const IncomingDocListPage: React.FC = () => {
       );
 
       if (response.status === 204) {
-        Swal.fire({
+        showAlert({
           icon: 'error',
           html: t('incomingDocListPage.message.attachment.not_found') as string,
           confirmButtonColor: PRIMARY_COLOR,
@@ -53,7 +54,7 @@ const IncomingDocListPage: React.FC = () => {
         });
       } else if (response.status === 200) {
         attachmentService.saveZipFileToDisk(response);
-        Swal.fire({
+        showAlert({
           icon: 'success',
           html: t('incomingDocListPage.message.attachment.download_success') as string,
           showConfirmButton: false,
@@ -170,7 +171,7 @@ const IncomingDocListPage: React.FC = () => {
         console.log(response);
         if (response.status === 200) {
           // TODO: refetch data
-          Swal.fire({
+          showAlert({
             icon: 'success',
             html: t('incomingDocListPage.message.transfer_success') as string,
             showConfirmButton: false,

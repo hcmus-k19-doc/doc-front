@@ -6,11 +6,15 @@ import i18n from 'assets/i18n/i18n.config';
 import axios from 'axios';
 import AppRoutes from 'components/AppRoutes';
 import { AuthProvider } from 'components/AuthComponent';
+import dayjs from 'dayjs';
 import { setupAxios } from 'utils/AuthUtils';
+
+import 'dayjs/locale/vi';
 
 import './index.css';
 
 setupAxios(axios);
+dayjs.locale('vi');
 
 const queryClient = new QueryClient({
   defaultOptions: {
