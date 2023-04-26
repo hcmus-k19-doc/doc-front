@@ -3,7 +3,7 @@ import App from 'App';
 import { useAuth } from 'components/AuthComponent';
 import AuthRoutes from 'components/AuthRoute/AuthRoutes';
 import PrivateRoutes from 'components/PrivateRoutes';
-import ServerErrorPage from 'pages/error/ServerErrorPage';
+import ServerErrorPage from 'pages/Error/ServerErrorPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 
 const AppRoutes = () => {
