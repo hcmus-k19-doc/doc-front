@@ -243,6 +243,9 @@ export default {
       processing_time: 'Hạn xử lý',
       is_infinite_processing_time: 'Không thời hạn',
     },
+    manager_view: {
+      process_method: 'Cách thức xử lý',
+    },
     sidebar: {
       director: 'Ban giám đốc',
       chief_of_office: 'Chánh văn phòng',

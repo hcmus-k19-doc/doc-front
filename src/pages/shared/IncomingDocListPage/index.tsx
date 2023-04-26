@@ -154,10 +154,12 @@ const IncomingDocListPage: React.FC = () => {
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
+      processMethod: modalForm.getFieldValue('processMethod'),
     };
     if (validateTransferDocs(selectedDocs, transferDocModalItem, transferDocDto, t)) {
       setIsModalOpen(false);
       modalForm.submit();
+      console.log(modalForm.getFieldsValue());
       modalForm.resetFields();
       transferQuerySetter(transferDocDto);
       console.log(transferDocDto, transferDocModalItem);
@@ -226,7 +228,10 @@ const IncomingDocListPage: React.FC = () => {
               })
             : ''}
         </span>
-        <Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>
+        {/*<Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>*/}
+        {/*  {t('incomingDocDetailPage.button.transfer')}*/}
+        {/*</Button>*/}
+        <Button htmlType='button' onClick={handleOnOpenModal}>
           {t('incomingDocDetailPage.button.transfer')}
         </Button>
       </div>

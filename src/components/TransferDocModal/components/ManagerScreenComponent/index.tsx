@@ -1,6 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
+import {
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  List,
+  Row,
+  Select,
+  SelectProps,
+  Space,
+  Typography,
+} from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useAuth } from 'components/AuthComponent';
 import { format } from 'date-fns';
@@ -18,6 +29,7 @@ import {
   i18n_document_number,
   i18n_implementation_date,
   i18n_is_infinite_processing_time,
+  i18n_process_method,
   i18n_processing_time,
   i18n_sender,
   TransferDocScreenFormProps,
@@ -29,6 +41,12 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 const itemHeight = 50;
+
+const processMethodOptions: SelectProps['options'] = [
+  { value: 'Báo cáo kết quả thực hiện', label: 'Báo cáo kết quả thực hiện' },
+  { value: 'Lưu tham khảo', label: 'Lưu tham khảo' },
+  { value: 'Soạn văn bản trả lời', label: 'Soạn văn bản trả lời' },
+];
 
 const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
   const { t } = useTranslation();
@@ -61,6 +79,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
           collaboratorIds: values.collaborators,
           processingTime: values.processingTime,
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
+          processMethod: values.processMethod,
         });
       }}>
       <Row>
@@ -118,6 +137,19 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
         <Col span='16'>
           <Form.Item name='collaborators'>
             <Select mode='multiple' allowClear options={managers} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row className='mt-4 mb-3'>
+        <Col span='6'>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18n_process_method)}
+          </Typography.Text>
+        </Col>
+        <Col span='16'>
+          <Form.Item name='processMethod'>
+            <Select style={{ width: '100%' }} allowClear options={processMethodOptions} />
           </Form.Item>
         </Col>
       </Row>
