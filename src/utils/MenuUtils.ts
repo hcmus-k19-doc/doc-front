@@ -7,15 +7,13 @@ import { DocSystemRoleEnum } from 'models/doc-main-models';
 
 export const getMenus = (role: DocSystemRoleEnum): MenuProps => {
   switch (role) {
-    case DocSystemRoleEnum.DIRECTOR:
+    case DocSystemRoleEnum.GIAM_DOC:
       return directorMenu;
-    case DocSystemRoleEnum.MANAGER:
+    case DocSystemRoleEnum.TRUONG_PHONG:
       return managerMenu;
-    case DocSystemRoleEnum.EXPERT:
+    case DocSystemRoleEnum.CHUYEN_VIEN:
       return expertMenu;
-    case DocSystemRoleEnum.STAFF:
+    case DocSystemRoleEnum.VAN_THU:
       return staffMenu;
-    default:
-      return expertMenu;
   }
 };

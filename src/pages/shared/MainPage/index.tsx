@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Breadcrumb, Layout, MenuProps, theme } from 'antd';
 import { useAuth } from 'components/AuthComponent';
 import PageHeader from 'components/PageHeader';
-import { DocSystemRoleEnum, UserDto } from 'models/doc-main-models';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import SidebarPage from 'pages/shared/SidebarPage';
 import { getMenus } from 'utils/MenuUtils';
 
@@ -15,20 +15,18 @@ const MainPage: React.FC = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  // const { currentUser } = useAuth();
-  // const [menu] = React.useState<MenuProps>(getMenus(currentUser?.role as DocSystemRoleEnum));
+  const { currentUser } = useAuth();
+  const [menu] = useState<MenuProps>(getMenus(currentUser?.role as DocSystemRoleEnum));
 
-  // temporarily testing
-  const currentUser: UserDto = {
-    id: 1,
-    version: 1,
-    username: 'admin',
-    email: 'abc@gmail.com',
-    fullName: 'admin',
-    role: DocSystemRoleEnum.STAFF,
-  };
-
-  const [menu] = React.useState<MenuProps>(getMenus(currentUser?.role as DocSystemRoleEnum));
+  //for testing
+  // const currentUser: UserDto = {
+  //   id: 1,
+  //   version: 1,
+  //   username: 'admin',
+  //   email: 'abc@gmail.com',
+  //   fullName: 'admin',
+  //   role: DocSystemRoleEnum.VAN_THU,
+  // };
 
   return (
     <Layout>
@@ -43,6 +41,7 @@ const MainPage: React.FC = () => {
           <Routes>
             <Route path='/' element={<SidebarPage {...menu} />} />
             <Route path='/docin/*' element={<SidebarPage {...menu} />} />
+            <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         </Layout>
       </Content>

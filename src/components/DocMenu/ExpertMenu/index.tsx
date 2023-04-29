@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { DeliveredProcedureOutlined, InboxOutlined } from '@ant-design/icons';
 import { MenuProps } from 'antd';
 import { t } from 'i18next';
 import { globalNavigate } from 'utils/RoutingUtils';
@@ -7,7 +7,7 @@ import { globalNavigate } from 'utils/RoutingUtils';
 const expertMenuItems: MenuProps['items'] = [
   {
     key: 'docin',
-    icon: React.createElement(ArrowDownOutlined),
+    icon: <InboxOutlined />,
     label: t('MAIN_PAGE.MENU.ITEMS.LABEL'),
 
     children: [
@@ -22,7 +22,7 @@ const expertMenuItems: MenuProps['items'] = [
   },
   {
     key: 'docout',
-    icon: React.createElement(ArrowUpOutlined),
+    icon: <DeliveredProcedureOutlined />,
     label: t('MAIN_PAGE.MENU.ITEMS.OUTGOING_DOCUMENT'),
     children: [
       {

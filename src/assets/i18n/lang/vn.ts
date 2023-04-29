@@ -18,6 +18,7 @@ export default {
       ITEMS: {
         LABEL: 'Văn bản đến',
         INCOMING_DOCUMENT_LIST: 'Danh sách văn bản đến',
+        RECEIVING_INCOMING_DOCUMENT: 'Tiếp nhận văn bản đến',
         PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
         OUTGOING_DOCUMENT: 'Văn bản đi',
         INTERNAL_DOCUMENT: 'Văn bản nội bộ',
@@ -164,7 +165,7 @@ export default {
   },
 
   incomingDocDetailPage: {
-    title: 'Tiếp nhận văn bản đến',
+    title: 'Chi tiết văn bản đến',
     form: {
       docFolder: 'Sổ văn bản',
       docFolderRequired: 'Hãy chọn sổ văn bản',
