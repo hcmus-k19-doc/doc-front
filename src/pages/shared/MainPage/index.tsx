@@ -1,12 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Breadcrumb, Layout, MenuProps, theme } from 'antd';
-import { useAuth } from 'components/AuthComponent';
+import { Breadcrumb, Layout, theme } from 'antd';
 import PageHeader from 'components/PageHeader';
-import { DocSystemRoleEnum } from 'models/doc-main-models';
 import SidebarPage from 'pages/shared/SidebarPage';
-import { getMenus } from 'utils/MenuUtils';
 
 const { Content, Footer } = Layout;
 
@@ -14,20 +11,6 @@ const MainPage: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const { currentUser } = useAuth();
-  const [menu] = useState<MenuProps>(getMenus(currentUser?.role as DocSystemRoleEnum));
-
-  //for testing
-  // const currentUser: UserDto = {
-  //   id: 1,
-  //   version: 1,
-  //   username: 'admin',
-  //   email: 'abc@gmail.com',
-  //   fullName: 'admin',
-  //   role: DocSystemRoleEnum.VAN_THU,
-  // };
-
   return (
     <Layout>
       <PageHeader />
@@ -39,8 +22,8 @@ const MainPage: React.FC = () => {
         </Breadcrumb>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
           <Routes>
-            <Route path='/' element={<SidebarPage {...menu} />} />
-            <Route path='/docin/*' element={<SidebarPage {...menu} />} />
+            <Route path='/' element={<SidebarPage />} />
+            <Route path='/docin/*' element={<SidebarPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         </Layout>
