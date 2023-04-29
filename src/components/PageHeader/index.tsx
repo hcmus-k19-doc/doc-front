@@ -3,9 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
+  DatabaseOutlined,
   ExclamationCircleOutlined,
+  FundOutlined,
   GlobalOutlined,
   LogoutOutlined,
+  SnippetsOutlined,
 } from '@ant-design/icons';
 import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Space } from 'antd';
 import logo from 'assets/icons/logo.png';
@@ -35,13 +38,26 @@ const PageHeader: React.FC = () => {
 
   const [modal, contextHolder] = Modal.useModal();
 
-  const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
-    key,
-    label: `nav ${key}`,
-    onClick: () => {
-      navigate('/hello');
+  const mainNavigator: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 'Văn bản',
+      icon: <DatabaseOutlined />,
+      onClick: () => navigate('/'),
     },
-  }));
+    {
+      key: '2',
+      label: 'Công việc',
+      icon: <SnippetsOutlined />,
+      onClick: () => navigate('/'),
+    },
+    {
+      key: '3',
+      label: 'Thống kê',
+      icon: <FundOutlined />,
+      onClick: () => navigate('/'),
+    },
+  ];
 
   const languageItems: MenuProps['items'] = [
     {
@@ -109,7 +125,7 @@ const PageHeader: React.FC = () => {
         theme='light'
         mode='horizontal'
         defaultSelectedKeys={['1']}
-        items={items1}
+        items={mainNavigator}
         className='flex-auto'
       />
       <Dropdown menu={{ items: languageItems }} placement='bottomRight'>

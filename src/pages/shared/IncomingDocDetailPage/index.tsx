@@ -5,6 +5,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadProps } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import DocButtonList from 'components/DocButtonList';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -17,7 +18,6 @@ import {
   Urgency,
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
-import DocButtonList from 'shared/components/DocButtonList';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';

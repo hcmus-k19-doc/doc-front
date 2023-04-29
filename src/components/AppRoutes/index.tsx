@@ -1,32 +1,36 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
-import AuthRoutes from 'components/AuthRoute/AuthRoutes';
-import PrivateRoutes from 'components/PrivateRoutes';
-import ServerErrorPage from 'pages/Error/ServerErrorPage';
+import NotFoundPage from 'pages/error/NotFoundPage';
+import ServerErrorPage from 'pages/error/ServerErrorPage';
+import LoginPage from 'pages/shared/LoginPage';
+import MainPage from 'pages/shared/MainPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
+import { GlobalHistory } from 'utils/RoutingUtils';
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();
 
   return (
     <BrowserRouter>
+      <GlobalHistory />
       <AxiosNavigation />
       <Routes>
         <Route element={<App />}>
           {currentUser ? (
             <>
-              <Route path='/*' element={<PrivateRoutes />} />
-              <Route index element={<Navigate to='/index' />} />
+              <Route path='/login' element={<Navigate to='/' />} />
+              <Route path='/*' element={<MainPage />} />
             </>
           ) : (
             <>
-              <Route path='/auth/*' element={<AuthRoutes />} />
-              <Route path='*' element={<Navigate to='/auth' />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/*' element={<Navigate to='/login' />} />
             </>
           )}
         </Route>
-        <Route path='/internal-server-error' element={<ServerErrorPage />} />
+        <Route path='/error' element={<ServerErrorPage />} />
+        <Route path='/not-found' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

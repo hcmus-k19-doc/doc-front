@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { Dispatch, SetStateAction } from 'react';
 import { UserDto } from 'models/doc-main-models';
 import { TokenDto } from 'models/models';
@@ -5,12 +6,9 @@ import * as authUtils from 'utils/AuthUtils';
 
 export const initAuthContextPropsState = {
   auth: authUtils.getAuth(),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   saveAuth: () => {},
   currentUser: undefined,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCurrentUser: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   logout: () => {},
 };
 

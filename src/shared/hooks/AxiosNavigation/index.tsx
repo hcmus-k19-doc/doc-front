@@ -14,7 +14,7 @@ export function useAxiosNavigation() {
       (error: any) => {
         switch (error?.response?.status) {
           case 500:
-            navigationRef.current('/internal-server-error');
+            navigationRef.current('/error');
             break;
           default:
         }
