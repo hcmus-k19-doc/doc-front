@@ -3,21 +3,21 @@ import { SelectProps } from 'antd';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
 import userService from 'services/UserService';
 
-export function useSecretaryTransferRes() {
+export function useExpertTransferRes() {
   const { data } = useQuery({
-    queryKey: ['QUERIES.VAN_THU_TRANSFER'],
+    queryKey: ['QUERIES.CHUYEN_VIEN_TRANSFER'],
     queryFn: () => {
-      return userService.getUsersByRole(DocSystemRoleEnum.VAN_THU);
+      return userService.getUsersByRole(DocSystemRoleEnum.CHUYEN_VIEN);
     },
     cacheTime: 0,
   });
 
-  const secretaries: SelectProps['options'] = data?.map((secretary) => ({
-    value: secretary.id,
-    label: secretary.fullName,
+  const experts: SelectProps['options'] = data?.map((expert) => ({
+    value: expert.id,
+    label: expert.fullName,
   }));
 
   return {
-    secretaries,
+    experts,
   };
 }

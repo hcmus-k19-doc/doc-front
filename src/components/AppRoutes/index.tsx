@@ -5,6 +5,7 @@ import NotFoundPage from 'pages/error/NotFoundPage';
 import ServerErrorPage from 'pages/error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
 import MainPage from 'pages/shared/MainPage';
+import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 import { GlobalHistory } from 'utils/RoutingUtils';
 
 const AppRoutes = () => {
@@ -13,6 +14,7 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <GlobalHistory />
+      <AxiosNavigation />
       <Routes>
         <Route element={<App />}>
           {currentUser ? (

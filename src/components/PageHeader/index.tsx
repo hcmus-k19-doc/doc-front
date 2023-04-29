@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -10,11 +10,15 @@ import {
   LogoutOutlined,
   SnippetsOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Space } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Space } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
+import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
+
+import DocumentRemindersCalendarWrapper from './components/DocumentRemindersCalendar';
+import PageHeaderTitle from './components/PageHeaderTitle';
 
 import './index.css';
 
@@ -24,6 +28,13 @@ const PageHeader: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { logout } = useAuth();
+  const [status, setStatus] = useState<DocumentReminderStatusEnum>(
+    DocumentReminderStatusEnum.ACTIVE
+  );
+
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    setStatus(e.key as DocumentReminderStatusEnum);
+  };
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -48,24 +59,45 @@ const PageHeader: React.FC = () => {
     },
   ];
 
-  const items: MenuProps['items'] = [
+  const languageItems: MenuProps['items'] = [
     {
       key: '1',
-      label: t('PAGE_HEADER.LANGUAGES.EN'),
+      label: t('page_header.languages.en'),
     },
     {
       key: '2',
-      label: t('PAGE_HEADER.LANGUAGES.VI'),
+      label: t('page_header.languages.vi'),
+    },
+  ];
+
+  const documentReminderStatusItems: MenuProps['items'] = [
+    {
+      label: t(
+        `page_header.document_reminder_status.${DocumentReminderStatusEnum.ACTIVE.toLowerCase()}`
+      ),
+      key: DocumentReminderStatusEnum.ACTIVE,
+    },
+    {
+      label: t(
+        `page_header.document_reminder_status.${DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION.toLowerCase()}`
+      ),
+      key: DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION,
+    },
+    {
+      label: t(
+        `page_header.document_reminder_status.${DocumentReminderStatusEnum.EXPIRED.toLowerCase()}`
+      ),
+      key: DocumentReminderStatusEnum.EXPIRED,
     },
   ];
 
   const confirmLogout = () => {
     modal.confirm({
-      title: t('PAGE_HEADER.logout.modal.title'),
+      title: t('page_header.logout.modal.title'),
       icon: <ExclamationCircleOutlined />,
-      content: t('PAGE_HEADER.logout.modal.content'),
-      okText: t('PAGE_HEADER.logout.modal.ok_text'),
-      cancelText: t('PAGE_HEADER.logout.modal.cancel_text'),
+      content: t('page_header.logout.modal.content'),
+      okText: t('page_header.logout.modal.ok_text'),
+      cancelText: t('page_header.logout.modal.cancel_text'),
       onOk: async () => {
         const token = authUtils.getAuth();
         await securityService.logout(token?.refresh_token);
@@ -73,6 +105,11 @@ const PageHeader: React.FC = () => {
       },
       centered: true,
     });
+  };
+
+  const menuProps = {
+    items: documentReminderStatusItems,
+    onClick: handleMenuClick,
   };
 
   return (
@@ -91,14 +128,22 @@ const PageHeader: React.FC = () => {
         items={mainNavigator}
         className='flex-auto'
       />
-      <Dropdown menu={{ items }} placement='bottomRight'>
+      <Dropdown menu={{ items: languageItems }} placement='bottomRight'>
         <Space>
           <GlobalOutlined />
         </Space>
       </Dropdown>
 
-      <Badge count={5} overflowCount={99} size='small' className='ml-5'>
-        <BellOutlined />
+      <Badge overflowCount={99} size='small' className='ml-5'>
+        <Popover
+          overlayInnerStyle={{ width: '700px' }}
+          placement='bottomRight'
+          title={<PageHeaderTitle t={t} menuProps={menuProps} status={status} />}
+          content={<DocumentRemindersCalendarWrapper status={status} />}
+          trigger='click'
+          showArrow={false}>
+          <BellOutlined />
+        </Popover>
       </Badge>
 
       <LogoutOutlined className='ml-5' onClick={confirmLogout} />

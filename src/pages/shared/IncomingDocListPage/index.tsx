@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Table, Tooltip } from 'antd';
+import { Button, Divider, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
@@ -10,22 +10,25 @@ import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import { IncomingDocumentDto, TransferDocDto } from 'models/doc-main-models';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilValue } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
-import Swal from 'sweetalert2';
 
 import Footer from './components/Footer';
 import SearchForm from './components/SearchForm';
+import { getSelectedDocsMessage, validateTransferDocs } from './core/common';
 import { TableRowDataType } from './core/models';
+import { transferDocModalState } from './core/states';
 
 import './index.css';
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const showAlert = useSweetAlert();
   const [, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
   const [modalForm] = useForm();
@@ -33,6 +36,7 @@ const IncomingDocListPage: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const navigate = useNavigate();
   const transferQuerySetter = useTransferQuerySetter();
+  const transferDocModalItem = useRecoilValue(transferDocModalState);
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
     try {
@@ -42,7 +46,7 @@ const IncomingDocListPage: React.FC = () => {
       );
 
       if (response.status === 204) {
-        Swal.fire({
+        showAlert({
           icon: 'error',
           html: t('incomingDocListPage.message.attachment.not_found') as string,
           confirmButtonColor: PRIMARY_COLOR,
@@ -50,7 +54,7 @@ const IncomingDocListPage: React.FC = () => {
         });
       } else if (response.status === 200) {
         attachmentService.saveZipFileToDisk(response);
-        Swal.fire({
+        showAlert({
           icon: 'success',
           html: t('incomingDocListPage.message.attachment.download_success') as string,
           showConfirmButton: false,
@@ -150,20 +154,24 @@ const IncomingDocListPage: React.FC = () => {
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
+      processMethod: modalForm.getFieldValue('processMethod'),
     };
-    if (
-      validateAssigneeAndCollaborators(transferDocDto.assigneeId, transferDocDto.collaboratorIds) &&
-      isUnprocessedDocs(selectedDocs)
-    ) {
+    if (validateTransferDocs(selectedDocs, transferDocModalItem, transferDocDto, t)) {
       setIsModalOpen(false);
       modalForm.submit();
+      console.log(modalForm.getFieldsValue());
       modalForm.resetFields();
       transferQuerySetter(transferDocDto);
+      console.log(transferDocDto, transferDocModalItem);
       try {
-        const response = await incomingDocumentService.transferDocumentsToDirector(transferDocDto);
+        const response = await incomingDocumentService.transferDocuments(
+          transferDocDto,
+          transferDocModalItem
+        );
+        console.log(response);
         if (response.status === 200) {
           // TODO: refetch data
-          Swal.fire({
+          showAlert({
             icon: 'success',
             html: t('incomingDocListPage.message.transfer_success') as string,
             showConfirmButton: false,
@@ -181,47 +189,7 @@ const IncomingDocListPage: React.FC = () => {
       setSelectedDocs([]);
     }
   };
-
-  const validateAssigneeAndCollaborators = (assigneeId?: number, collaboratorIds?: number[]) => {
-    if (!assigneeId) {
-      message.error(t('transfer_modal.form.assignee_required'));
-      return false;
-    }
-    if (collaboratorIds?.length === 0 || !collaboratorIds) {
-      message.error(t('transfer_modal.form.collaborators_required'));
-      return false;
-    }
-    if (collaboratorIds?.includes(assigneeId as number)) {
-      message.error(t('transfer_modal.form.collaborator_can_not_has_same_value_with_assignee'));
-      return false;
-    }
-    return true;
-  };
-
-  const isUnprocessedDocs = (selectedDocs: IncomingDocumentDto[]) => {
-    const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED'));
-    if (!result) {
-      message.error(t('transfer_modal.form.only_unprocessed_docs_can_be_transferred_to_director'));
-      return false;
-    }
-    return true;
-  };
-
   const hasSelected = selectedDocs.length > 0;
-
-  const getSelectedDocsMessage = () => {
-    const unprocessedDocs = selectedDocs.filter(
-      (doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED')
-    ).length;
-    const processingDocs = selectedDocs.filter(
-      (doc) => doc.status === t('PROCESSING_STATUS.IN_PROGRESS')
-    ).length;
-    const closedDocs = selectedDocs.filter(
-      (doc) => doc.status === t('PROCESSING_STATUS.CLOSED')
-    ).length;
-
-    return { unprocessedDocs, processingDocs, closedDocs };
-  };
 
   return (
     <>
@@ -240,6 +208,7 @@ const IncomingDocListPage: React.FC = () => {
             },
           };
         }}
+        rowClassName={() => 'row-hover'}
         rowSelection={{ type: 'checkbox', ...rowSelection }}
         columns={columns}
         dataSource={data?.payload}
@@ -255,11 +224,14 @@ const IncomingDocListPage: React.FC = () => {
           {hasSelected
             ? t('incomingDocListPage.message.selected_docs.summary', {
                 count: hasSelected ? selectedDocs.length : 0,
-                ...getSelectedDocsMessage(),
+                ...getSelectedDocsMessage(selectedDocs, t),
               })
             : ''}
         </span>
-        <Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>
+        {/*<Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>*/}
+        {/*  {t('incomingDocDetailPage.button.transfer')}*/}
+        {/*</Button>*/}
+        <Button htmlType='button' onClick={handleOnOpenModal}>
           {t('incomingDocDetailPage.button.transfer')}
         </Button>
       </div>

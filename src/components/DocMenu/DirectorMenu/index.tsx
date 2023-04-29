@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { DeliveredProcedureOutlined, InboxOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
-import { globalNavigate } from 'utils/RoutingUtils';
-import { useLocation } from 'react-router-dom';
 import { mapPathToKeyDocIn } from 'utils/MenuUtils';
+import { globalNavigate } from 'utils/RoutingUtils';
 
 const DirectorMenu = () => {
   const [openKey, setOpenKey] = useState('docin');

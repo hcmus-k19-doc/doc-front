@@ -20,8 +20,8 @@ import {
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import DateValidator from 'shared/validators/DateValidator';
-import Swal from 'sweetalert2';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
@@ -32,6 +32,7 @@ function IncomingDocPage() {
   const { docId } = useParams();
   const { t } = useTranslation();
   const [form] = useForm();
+  const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -156,18 +157,18 @@ function IncomingDocPage() {
       const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
 
       if (response.status === 200) {
-        Swal.fire({
+        showAlert({
           icon: 'success',
-          html: t('incomingDocDetailPage.form.message.success') as string,
+          html: t('incomingDocDetailPage.message.success') as string,
           showConfirmButton: false,
           timer: 2000,
         });
       }
     } catch (error) {
       //Only in this case, deal to the UX, just show a popup instead of navigating to error page
-      Swal.fire({
+      showAlert({
         icon: 'error',
-        html: t('incomingDocDetailPage.form.message.error') as string,
+        html: t('incomingDocDetailPage.message.error') as string,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });

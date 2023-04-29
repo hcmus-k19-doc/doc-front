@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { SelectProps } from 'antd';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import userService from 'services/UserService';
 
 export function useDirectorTransferRes() {
   const { data } = useQuery({
-    queryKey: ['QUERIES.DIRECTOR_TRANSFER'],
+    queryKey: ['QUERIES.GIAM_DOC_TRANSFER'],
     queryFn: () => {
-      return userService.getDirectors();
+      return userService.getUsersByRole(DocSystemRoleEnum.GIAM_DOC);
     },
     cacheTime: 0,
   });
