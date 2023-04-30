@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-04-29 13:52:33.
+// Generated using typescript-generator version 3.1.1185 on 2023-04-30 15:34:24.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -106,7 +106,11 @@ export interface TransferDocDto {
     collaboratorIds?: number[];
     processingTime?: string;
     isInfiniteProcessingTime?: boolean;
-    processMethod?: string;
+    processMethod?: ProcessMethod;
+}
+
+export interface UserDepartmentDto extends UserDto {
+    departmentName: string;
 }
 
 export interface UserDto extends DocAbstractDto {
@@ -114,10 +118,6 @@ export interface UserDto extends DocAbstractDto {
     email: string;
     fullName: string;
     role: DocSystemRoleEnum;
-}
-
-export interface UserDepartmentDto extends UserDto {
-    departmentName: string;
 }
 
 export interface AttachmentDto extends DocAbstractDto {
@@ -133,6 +133,12 @@ export const enum Confidentiality {
     LOW = "LOW",
     MEDIUM = "MEDIUM",
     HIGH = "HIGH",
+}
+
+export const enum ProcessMethod {
+    BAO_CAO_KET_QUA = "BAO_CAO_KET_QUA",
+    LUU_THAM_KHAO = "LUU_THAM_KHAO",
+    SOAN_VAN_BAN = "SOAN_VAN_BAN",
 }
 
 export const enum Urgency {
