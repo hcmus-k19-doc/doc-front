@@ -17,6 +17,7 @@ import { useAuth } from 'components/AuthComponent';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { ProcessMethod } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
@@ -43,9 +44,9 @@ const { Text } = Typography;
 const itemHeight = 50;
 
 const processMethodOptions: SelectProps['options'] = [
-  { value: 'Báo cáo kết quả thực hiện', label: 'Báo cáo kết quả thực hiện' },
-  { value: 'Lưu tham khảo', label: 'Lưu tham khảo' },
-  { value: 'Soạn văn bản trả lời', label: 'Soạn văn bản trả lời' },
+  { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
+  { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },
+  { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
 ];
 
 const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
@@ -172,7 +173,8 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, select
         <Form.Item
           name='isInfiniteProcessingTime'
           style={{ display: 'inline-block', margin: '0 16px' }}
-          valuePropName='checked'>
+          valuePropName='checked'
+          initialValue={false}>
           <Checkbox onChange={onChooseNoneProcessingTime}>
             {t(i18n_is_infinite_processing_time)}
           </Checkbox>
