@@ -16,10 +16,11 @@ import incomingDocumentService from 'services/IncomingDocumentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 
 import Footer from './components/Footer';
 import SearchForm from './components/SearchForm';
-import { getSelectedDocsMessage, validateTransferDocs } from './core/common';
+import { getSelectedDocsMessage } from './core/common';
 import { TableRowDataType } from './core/models';
 import { transferDocModalState } from './core/states';
 
