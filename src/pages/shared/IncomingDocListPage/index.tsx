@@ -105,17 +105,22 @@ const IncomingDocListPage: React.FC = () => {
       title: t('incomingDocListPage.table.columns.fullText'),
       dataIndex: 'fullText',
       align: 'center',
-      render: (text, record) => {
+      render: () => {
         return (
           <Tooltip
             title={t('incomingDocListPage.table.tooltip.downloadAttachment')}
             placement='bottom'>
-            <FileZipOutlined
-              className='zip-icon'
-              onClick={() => handleDownloadAttachment(record)}
-            />
+            <FileZipOutlined className='zip-icon' />
           </Tooltip>
         );
+      },
+      onCell: (record) => {
+        return {
+          onClick: (event) => {
+            event.stopPropagation();
+            handleDownloadAttachment(record);
+          },
+        };
       },
     },
     {
