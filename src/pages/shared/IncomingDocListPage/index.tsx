@@ -161,6 +161,7 @@ const IncomingDocListPage: React.FC = () => {
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
       processMethod: modalForm.getFieldValue('processMethod'),
+      transferDocumentType: transferDocModalItem,
     };
     if (validateTransferDocs(selectedDocs, transferDocModalItem, transferDocDto, t)) {
       setIsModalOpen(false);
@@ -170,10 +171,7 @@ const IncomingDocListPage: React.FC = () => {
       transferQuerySetter(transferDocDto);
       console.log(transferDocDto, transferDocModalItem);
       try {
-        const response = await incomingDocumentService.transferDocuments(
-          transferDocDto,
-          transferDocModalItem
-        );
+        const response = await incomingDocumentService.transferDocuments(transferDocDto);
         console.log(response);
         if (response.status === 200) {
           // TODO: refetch data

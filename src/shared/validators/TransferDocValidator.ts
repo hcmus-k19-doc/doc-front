@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { IncomingDocumentDto, TransferDocDto } from 'models/doc-main-models';
+import { IncomingDocumentDto, TransferDocDto, TransferDocumentType } from 'models/doc-main-models';
 
 const validateAssigneeAndCollaborators = (
   assigneeId?: number,
@@ -53,7 +53,7 @@ const isValidProcessingTime = (
 
 const validateTransferDocs = (
   selectedDocs: IncomingDocumentDto[],
-  transferDocModalItem: number,
+  transferDocModalItem: TransferDocumentType,
   transferDocDto: TransferDocDto,
   t?: any
 ) => {
@@ -66,11 +66,14 @@ const validateTransferDocs = (
   ) {
     return false;
   }
-  if (transferDocModalItem === 1) {
+  if (transferDocModalItem === TransferDocumentType.TRANSFER_TO_GIAM_DOC) {
     if (!isUnprocessedDocs(selectedDocs, t)) {
       return false;
     }
-  } else if (transferDocModalItem === 2) {
+  } else if (
+    transferDocModalItem === TransferDocumentType.TRANSFER_TO_CHUYEN_VIEN ||
+    transferDocModalItem === TransferDocumentType.TRANSFER_TO_VAN_THU
+  ) {
     if (
       !isProcessingDocs(selectedDocs, t) ||
       !isValidProcessingTime(
