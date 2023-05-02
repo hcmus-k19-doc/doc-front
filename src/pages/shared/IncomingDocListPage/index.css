@@ -23,3 +23,12 @@
 .row-hover:hover {
   cursor: pointer;
 }
+
+.transfer-doc-btn {
+  width: 115px;
+}
+
+.transfer-doc-wrapper {
+  display: flex;
+  flex-direction: column;
+}

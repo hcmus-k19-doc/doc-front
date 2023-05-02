@@ -1,4 +1,4 @@
-import { AttachmentDto } from 'models/doc-main-models';
+import { AttachmentDto, IncomingDocumentDto } from 'models/doc-main-models';
 
 export type TableRowDataType = {
   key: number;
@@ -24,3 +24,8 @@ export type TableDataType = {
 };
 
 export const PAGE_SIZE = 10;
+
+export interface FooterProps {
+  selectedDocs: IncomingDocumentDto[];
+  setSelectedDocs: (docs: IncomingDocumentDto[]) => void;
+}

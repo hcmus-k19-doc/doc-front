@@ -262,8 +262,8 @@ export default {
         'Người tham gia không được trùng với người nhận',
       only_unprocessed_docs_can_be_transferred_to_director:
         'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc',
-      only_in_progress_docs_can_be_transferred_to_manager:
-        'Chỉ có thể chuyển văn bản đang xử lý tới Trưởng phòng',
+      only_in_progress_docs_can_be_transferred_to_manager_or_secretary:
+        'Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng hoặc Văn thư',
     },
   },
   internal_server_error_page: {

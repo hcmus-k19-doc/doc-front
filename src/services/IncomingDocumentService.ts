@@ -53,22 +53,11 @@ async function getIncomingDocumentById(id: number) {
   return response;
 }
 
-async function transferDocuments(transferDocDto: TransferDocDto, type: number) {
-  let url;
-
-  switch (type) {
-    case 1:
-      url = 'incoming-documents/transfer-to-director';
-      break;
-    case 2:
-      url = 'incoming-documents/transfer-to-manager';
-      break;
-    default:
-      url = 'incoming-documents/transfer-to-staff';
-      break;
-  }
-
-  return await axios.post<void>(`${REACT_APP_DOC_MAIN_SERVICE_URL}/${url}`, transferDocDto);
+async function transferDocuments(transferDocDto: TransferDocDto) {
+  return await axios.post<void>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-documents`,
+    transferDocDto
+  );
 }
 
 const incomingDocumentService = {

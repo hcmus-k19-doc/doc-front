@@ -7,14 +7,14 @@ export function useDirectorTransferRes() {
   const { data } = useQuery({
     queryKey: ['QUERIES.GIAM_DOC_TRANSFER'],
     queryFn: () => {
-      return userService.getUsersByRole(DocSystemRoleEnum.GIAM_DOC);
+      return userService.getUsersByRoleWithDepartment(DocSystemRoleEnum.GIAM_DOC);
     },
     cacheTime: 0,
   });
 
   const directors: SelectProps['options'] = data?.map((director) => ({
     value: director.id,
-    label: director.fullName,
+    label: director.fullName + ' - ' + director.departmentName,
   }));
 
   return {

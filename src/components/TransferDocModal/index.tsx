@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
+import { TransferDocumentType } from 'models/doc-main-models';
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 
@@ -39,7 +40,19 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
 
   const handleMenuOnSelect = ({ selectedKeys }: MenuSelectProps) => {
     setTransferLabel(transferLabels[parseInt(selectedKeys[0]) - 1]);
-    setTransferDocModalItem(+selectedKeys[0]);
+    switch (+selectedKeys[0]) {
+      case 1:
+        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_GIAM_DOC);
+        break;
+      case 2:
+        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_CHUYEN_VIEN);
+        break;
+      case 3:
+        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_VAN_THU);
+        break;
+      default:
+        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_GIAM_DOC);
+    }
   };
 
   const handleSwitchScreen = () => {

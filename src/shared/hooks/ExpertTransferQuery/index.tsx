@@ -7,14 +7,14 @@ export function useExpertTransferRes() {
   const { data } = useQuery({
     queryKey: ['QUERIES.CHUYEN_VIEN_TRANSFER'],
     queryFn: () => {
-      return userService.getUsersByRole(DocSystemRoleEnum.CHUYEN_VIEN);
+      return userService.getUsersByRoleWithDepartment(DocSystemRoleEnum.CHUYEN_VIEN);
     },
     cacheTime: 0,
   });
 
   const experts: SelectProps['options'] = data?.map((expert) => ({
     value: expert.id,
-    label: expert.fullName,
+    label: expert.fullName + ' - ' + expert.departmentName,
   }));
 
   return {

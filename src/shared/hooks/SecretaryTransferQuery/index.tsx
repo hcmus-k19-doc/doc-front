@@ -7,14 +7,14 @@ export function useSecretaryTransferRes() {
   const { data } = useQuery({
     queryKey: ['QUERIES.VAN_THU_TRANSFER'],
     queryFn: () => {
-      return userService.getUsersByRole(DocSystemRoleEnum.VAN_THU);
+      return userService.getUsersByRoleWithDepartment(DocSystemRoleEnum.VAN_THU);
     },
     cacheTime: 0,
   });
 
   const secretaries: SelectProps['options'] = data?.map((secretary) => ({
     value: secretary.id,
-    label: secretary.fullName,
+    label: secretary.fullName + ' - ' + secretary.departmentName,
   }));
 
   return {

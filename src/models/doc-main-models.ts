@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-01 15:57:27.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-02 15:08:19.
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -107,6 +107,7 @@ export interface TransferDocDto {
     processingTime?: string;
     isInfiniteProcessingTime?: boolean;
     processMethod?: ProcessMethod;
+    transferDocumentType: TransferDocumentType;
 }
 
 export interface UserDepartmentDto extends UserDto {
@@ -144,6 +145,12 @@ export const enum ProcessMethod {
     BAO_CAO_KET_QUA = "BAO_CAO_KET_QUA",
     LUU_THAM_KHAO = "LUU_THAM_KHAO",
     SOAN_VAN_BAN = "SOAN_VAN_BAN",
+}
+
+export const enum TransferDocumentType {
+    TRANSFER_TO_GIAM_DOC = "TRANSFER_TO_GIAM_DOC",
+    TRANSFER_TO_CHUYEN_VIEN = "TRANSFER_TO_CHUYEN_VIEN",
+    TRANSFER_TO_VAN_THU = "TRANSFER_TO_VAN_THU",
 }
 
 export const enum Urgency {
