@@ -1,9 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Col, Form, Row, Select, Typography } from 'antd';
+import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
@@ -14,6 +17,8 @@ import {
   i18n_document,
   i18n_document_number,
   i18n_implementation_date,
+  i18n_is_infinite_processing_time,
+  i18n_processing_time,
   i18n_sender,
   i18n_summary,
   TransferDocScreenFormProps,
@@ -21,6 +26,8 @@ import {
 } from '../../core/models';
 
 import './index.css';
+dayjs.extend(customParseFormat);
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 
@@ -29,6 +36,22 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
   const { directors } = useDirectorTransferRes();
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
+  const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
+
+  const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      form.setFieldsValue({ processingTime: '' });
+      form.setFieldsValue({ isInfiniteProcessingTime: true });
+      setIsInfiniteProcessingTime(true);
+    } else {
+      form.setFieldsValue({ isInfiniteProcessingTime: false });
+      setIsInfiniteProcessingTime(false);
+    }
+  };
+
+  const setProcessingTime = (dateString: any) => {
+    form.setFieldsValue({ processingTime: dateString });
+  };
 
   return (
     <Form
@@ -38,6 +61,8 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
           summary: values.summary,
           assigneeId: values.assignee,
           collaboratorIds: values.collaborators,
+          processingTime: values.processingTime,
+          isInfiniteProcessingTime: values.isInfiniteProcessingTime,
         });
       }}>
       <Row>
@@ -101,6 +126,32 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selec
             <Select mode='multiple' allowClear options={directors} />
           </Form.Item>
         </Col>
+      </Row>
+      <Row className='mb-3'>
+        <Col span='6'>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18n_processing_time)}
+          </Typography.Text>
+        </Col>
+        <Form.Item name='processingTime'>
+          <Space direction='vertical' size={12}>
+            <DatePicker
+              format={dateFormatList}
+              onChange={(_, dateString) => setProcessingTime(dateString)}
+              disabled={isInfiniteProcessingTime}
+            />
+          </Space>
+        </Form.Item>
+        <Form.Item
+          name='isInfiniteProcessingTime'
+          style={{ display: 'inline-block', margin: '0 16px' }}
+          valuePropName='checked'
+          initialValue={false}>
+          <Checkbox onChange={onChooseNoneProcessingTime}>
+            {t(i18n_is_infinite_processing_time)}
+          </Checkbox>
+        </Form.Item>
       </Row>
     </Form>
   );

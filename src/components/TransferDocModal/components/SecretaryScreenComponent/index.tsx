@@ -132,7 +132,10 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({ form, sele
       </Row>
       <Row className='mb-3'>
         <Col span='6'>
-          <Text strong>{t(i18n_processing_time)}</Text>
+          <Typography.Text strong>
+            <span className='asterisk'>*</span>
+            {t(i18n_processing_time)}
+          </Typography.Text>
         </Col>
         <Form.Item name='processingTime'>
           <Space direction='vertical' size={12}>

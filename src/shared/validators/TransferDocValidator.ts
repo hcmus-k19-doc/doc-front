@@ -64,6 +64,11 @@ const validateTransferDocs = (
       transferDocDto?.assigneeId,
       transferDocDto?.collaboratorIds,
       t
+    ) ||
+    !isValidProcessingTime(
+      transferDocDto?.processingTime,
+      transferDocDto?.isInfiniteProcessingTime,
+      t
     )
   ) {
     return false;
@@ -76,14 +81,7 @@ const validateTransferDocs = (
     transferDocModalItem === TransferDocumentType.TRANSFER_TO_CHUYEN_VIEN ||
     transferDocModalItem === TransferDocumentType.TRANSFER_TO_VAN_THU
   ) {
-    if (
-      !isProcessingDocs(selectedDocs, t) ||
-      !isValidProcessingTime(
-        transferDocDto?.processingTime,
-        transferDocDto?.isInfiniteProcessingTime,
-        t
-      )
-    ) {
+    if (!isProcessingDocs(selectedDocs, t)) {
       return false;
     }
   }
