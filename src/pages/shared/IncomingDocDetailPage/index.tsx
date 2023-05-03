@@ -6,6 +6,7 @@ import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadP
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import DocButtonList from 'components/DocButtonList';
+import DocComment from 'components/DocComment';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -427,6 +428,12 @@ function IncomingDocPage() {
           isEditing={isEditing}
           onFinishEditing={onFinishEditing}
         />
+      </Row>
+      <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
+      <Row>
+        <Col span={16}>
+          <DocComment docId={Number(docId)} />
+        </Col>
       </Row>
     </>
   );

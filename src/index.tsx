@@ -7,14 +7,17 @@ import axios from 'axios';
 import AppRoutes from 'components/AppRoutes';
 import { AuthProvider } from 'components/AuthComponent';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import { setupAxios } from 'utils/AuthUtils';
 
 import 'dayjs/locale/vi';
+import 'moment/locale/vi';
 
 import './index.css';
 
 setupAxios(axios);
 dayjs.locale('vi');
+moment.locale('vi');
 
 const queryClient = new QueryClient({
   defaultOptions: {

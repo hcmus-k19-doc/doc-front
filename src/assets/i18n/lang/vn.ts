@@ -228,6 +228,12 @@ export default {
       success: 'Chỉnh sửa văn bản thành công',
       error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
     },
+    comment: {
+      title: 'Góp ý văn bản',
+      button: {
+        title: 'Góp ý',
+      },
+    },
   },
   transfer_modal: {
     title: 'Luân chuyển văn bản tới',
