@@ -1,6 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-02 15:08:19.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-03 12:55:48.
+
+export interface CommentDto extends DocAbstractDto {
+    content: string;
+}
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
@@ -10,6 +14,8 @@ export interface DistributionOrganizationDto extends DocAbstractDto {
 export interface DocAbstractDto {
     id: number;
     version: number;
+    createdDate: DateAsString;
+    createdBy: string;
 }
 
 export interface DocPaginationDto<T> {
