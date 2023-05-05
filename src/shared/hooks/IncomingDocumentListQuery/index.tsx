@@ -1,13 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import {
-  PAGE_SIZE,
-  TableDataType,
-  TableRowDataType,
-} from 'pages/shared/IncomingDocListPage/core/models';
+import { TableDataType, TableRowDataType } from 'pages/shared/IncomingDocListPage/core/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
+import { PAGE_SIZE } from 'shared/models/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { DocQueryState } from './core/states';

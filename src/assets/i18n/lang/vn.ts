@@ -22,6 +22,7 @@ export default {
         PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
         OUTGOING_DOCUMENT: 'Văn bản đi',
         INTERNAL_DOCUMENT: 'Văn bản nội bộ',
+        users: 'Người dùng',
       },
     },
     BUTTON: {
@@ -50,18 +51,46 @@ export default {
       },
     },
   },
-  COMMON: {
-    PAGINATION: {
-      SHOW_TOTAL: 'Kết quả: {{total}} văn bản',
+  common: {
+    pagination: {
+      show_total: 'Kết quả: {{total}}',
     },
-    SEARCH_CRITERIA: {
-      TITLE: 'Tiêu thức tìm kiếm',
-      SEARCH: 'Tìm kiếm',
-      RESET: 'Làm mới',
+    search_criteria: {
+      title: 'Tiêu thức tìm kiếm',
+      search: 'Tìm kiếm',
+      reset: 'Làm mới',
+    },
+    button: {
+      save: 'Lưu',
+      cancel: 'Hủy',
     },
   },
-  USER: {
-    INVALID: 'Tài khoản không hợp lệ',
+  user: {
+    invalid: 'Tài khoản không hợp lệ',
+    role: {
+      GIAM_DOC: 'Giám đốc',
+      CHUYEN_VIEN: 'Chuyên viên',
+      TRUONG_PHONG: 'Trưởng phòng',
+      VAN_THU: 'Văn thư',
+      DOC_ADMIN: 'Quản trị viên',
+    },
+    detail: {
+      title: 'Thông tin người dùng',
+      id: 'ID',
+      username: 'Tên đăng nhập',
+      password: 'Mật khẩu',
+      email: 'Email',
+      full_name: 'Họ và tên',
+      role: 'Vai trò',
+      department: 'Phòng ban',
+      username_required: 'Hãy điền tên đăng nhập!',
+      password_required: 'Hãy điền mật khẩu!',
+      full_name_required: 'Hãy điền họ và tên!',
+      email_invalid: 'Email không hợp lệ!',
+    },
+    username: {
+      existed: 'Tên đăng nhập đã tồn tại',
+    },
   },
   SENDING_LEVEL: {
     CITY: 'Thành phố',
@@ -81,6 +110,13 @@ export default {
     arriving_date: 'Ngày đến',
     processing_duration: 'Thời hạn xử lý',
     summary: 'Trích yếu',
+    user_management: {
+      username: 'Tên đăng nhập',
+      email: 'Email',
+      full_name: 'Họ và tên',
+      role: 'Vai trò',
+      department: 'Phòng ban',
+    },
   },
   incomingDocListPage: {
     table: {
@@ -281,6 +317,21 @@ export default {
     file: {
       file_already_existed: 'Tệp đã tồn tại',
       file_type_not_accepted: 'Loại tệp không được hỗ trợ',
+    },
+  },
+  user_management: {
+    table: {
+      column: {
+        id: 'ID',
+        username: 'Tên người dùng',
+        email: 'Email',
+        full_name: 'Họ và tên',
+        role: 'Vai trò',
+        department: 'Phòng ban',
+      },
+    },
+    button: {
+      add_user: 'Thêm người dùng',
     },
   },
 };

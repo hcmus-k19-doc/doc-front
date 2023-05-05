@@ -23,8 +23,6 @@ export type TableDataType = {
   payload: TableRowDataType[];
 };
 
-export const PAGE_SIZE = 10;
-
 export interface FooterProps {
   selectedDocs: IncomingDocumentDto[];
   setSelectedDocs: (docs: IncomingDocumentDto[]) => void;

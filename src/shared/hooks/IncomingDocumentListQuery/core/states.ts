@@ -1,9 +1,5 @@
 import { Dayjs } from 'dayjs';
-
-type PaginationState = {
-  page: number;
-  pageSize: number;
-};
+import { PaginationState } from 'shared/models/states';
 
 export type SearchState = {
   incomingNumber?: string;

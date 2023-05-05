@@ -3,11 +3,13 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import { Layout } from 'antd';
 import { useAuth } from 'components/AuthComponent';
+import AdminMenu from 'components/DocMenu/AdminMenu';
 import DirectorMenu from 'components/DocMenu/DirectorMenu';
 import ExpertMenu from 'components/DocMenu/ExpertMenu';
 import ManagerMenu from 'components/DocMenu/ManagerMenu';
 import StaffMenu from 'components/DocMenu/StaffMenu';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
+import UserManagementPageWrapper from 'pages/admin/UserManagementPage';
 import IncomingDocDetailPage from 'pages/shared/IncomingDocDetailPage';
 import IncomingDocListPage from 'pages/shared/IncomingDocListPage';
 import ReceiveIncomingDocPage from 'pages/staff/ReceiveIncomingDocPage';
@@ -52,6 +54,13 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
+      case DocSystemRoleEnum.DOC_ADMIN:
+        return (
+          <Routes>
+            <Route path='/' element={<UserManagementPageWrapper />} />
+            <Route path='*' element={<Navigate to='/not-found' />} />
+          </Routes>
+        );
     }
   };
 
@@ -65,6 +74,8 @@ const SidebarPage: React.FC<MenuProps> = () => {
         return <ExpertMenu />;
       case DocSystemRoleEnum.VAN_THU:
         return <StaffMenu />;
+      case DocSystemRoleEnum.DOC_ADMIN:
+        return <AdminMenu />;
     }
   };
 

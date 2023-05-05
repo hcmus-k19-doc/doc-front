@@ -17,7 +17,6 @@ interface Props {
 
 function DocumentReminderDetailsList({ selectedStatus }: Props) {
   const { data, isLoading } = useDocumentReminderDetailsRes();
-  console.log(data);
   return (
     <List
       itemLayout='horizontal'
