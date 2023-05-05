@@ -13,9 +13,16 @@ interface Props {
   isModalOpen: boolean;
   handleCancel: () => void;
   handleOk: () => void;
+  isEditMode?: boolean;
 }
 
-export default function UserDetailModal({ form, isModalOpen, handleOk, handleCancel }: Props) {
+export default function UserDetailModal({
+  form,
+  isModalOpen,
+  handleOk,
+  handleCancel,
+  isEditMode,
+}: Props) {
   const { data: departments } = useSelectionDepartmentRes();
   const userMutation = useUserMutation();
 
@@ -51,9 +58,23 @@ export default function UserDetailModal({ form, isModalOpen, handleOk, handleCan
             </Form.Item>
           </Col>
           <Col>
-            <Form.Item label={t('user.detail.password')} name='password'>
-              <Input.Password />
-            </Form.Item>
+            {isEditMode ? (
+              <Form.Item label={t('user.detail.password')} name='password'>
+                <Input.Password />
+              </Form.Item>
+            ) : (
+              <Form.Item
+                label={t('user.detail.password')}
+                name='password'
+                rules={[
+                  {
+                    required: true,
+                    message: `${t('user.detail.password_required')}`,
+                  },
+                ]}>
+                <Input.Password />
+              </Form.Item>
+            )}
           </Col>
           <Col>
             <Form.Item

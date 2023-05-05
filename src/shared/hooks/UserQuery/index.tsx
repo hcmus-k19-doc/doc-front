@@ -36,8 +36,6 @@ export const useUserReq = () => useRecoilState(queryState);
 export function useUserRes() {
   const query = useRecoilValue<DocUserQueryState>(queryState);
 
-  console.log('useUserRes', query);
-
   return useQuery({
     queryKey: ['QUERIES.USER_LIST', query],
     queryFn: async () => {

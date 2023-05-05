@@ -14,7 +14,6 @@ async function searchUsers(
   page: number,
   pageSize: number
 ) {
-  console.log(searchCriteria);
   const { data } = await axios.post<DocPaginationDto<UserDto>>(
     `${ADMIN_URL}/search/users`,
     { ...searchCriteria },

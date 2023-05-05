@@ -102,6 +102,7 @@ function UserManagementPage() {
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
+        isEditMode
       />
     </>
   );
