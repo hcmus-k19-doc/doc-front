@@ -3,6 +3,7 @@ import { DocSystemRoleEnum } from 'models/doc-main-models';
 export interface UserTableRowDataType {
   key: number;
   id: number;
+  version: number;
   username: string;
   password?: string;
   email: string;

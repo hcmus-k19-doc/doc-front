@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { t } from 'i18next';
@@ -14,6 +16,7 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const userDisableMutation = useUserDeleteMutation();
+  const { refetch } = useUserRes();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedUsers([]);
@@ -47,6 +50,11 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
   return (
     <div className='flex justify-between'>
       <Space wrap>
+        <Button
+          type='primary'
+          onClick={() => refetch()}
+          icon={<FontAwesomeIcon icon={faRefresh} />}
+        />
         <Button type='primary' onClick={handleOnOpenModal}>
           {t('user_management.button.add_user')}
         </Button>

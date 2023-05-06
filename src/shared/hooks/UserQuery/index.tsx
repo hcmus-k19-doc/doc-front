@@ -49,6 +49,7 @@ export function useUserRes() {
         return {
           key: item.id,
           id: item.id,
+          version: item.version,
           username: item.username,
           email: item.email,
           fullName: item.fullName,
@@ -84,6 +85,7 @@ export function useUserMutation() {
         email: user.email,
         fullName: user.fullName,
         role: user.role,
+        version: user.version,
         department: {
           id: user.departmentId,
           departmentName: user.department,

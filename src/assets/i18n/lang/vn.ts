@@ -96,6 +96,10 @@ export default {
     email: {
       existed: 'Email đã tồn tại',
     },
+    not_found: 'Không tìm thấy người dùng',
+    password: {
+      incorrect: 'Mật khẩu không chính xác',
+    },
   },
   SENDING_LEVEL: {
     CITY: 'Thành phố',
@@ -338,6 +342,11 @@ export default {
     button: {
       add_user: 'Thêm người dùng',
       delete_user: 'Xóa người dùng',
+    },
+  },
+  doc: {
+    exception: {
+      concurrent_update: 'Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang.',
     },
   },
 };
