@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { Button, Pagination } from 'antd';
+import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { t } from 'i18next';
-import { useUserReq, useUserRes } from 'shared/hooks/UserQuery';
+import { useUserDeleteMutation, useUserReq, useUserRes } from 'shared/hooks/UserQuery';
 
 import { FooterProps } from '../core/models';
 
 import UserDetailModal from './UserDetailModal';
 
-const Footer: React.FC<FooterProps> = ({ selectedUsers, setSelectedUsers }) => {
+export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps) {
   const [userReqQuery, setUserReqQuery] = useUserReq();
   const { data } = useUserRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
+  const userDisableMutation = useUserDeleteMutation();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedUsers([]);
@@ -39,11 +40,21 @@ const Footer: React.FC<FooterProps> = ({ selectedUsers, setSelectedUsers }) => {
     }
   }
 
+  function handleOnClickDeleteUser() {
+    userDisableMutation.mutate(selectedUsers);
+  }
+
   return (
     <div className='flex justify-between'>
-      <Button type='primary' onClick={handleOnOpenModal}>
-        {t('user_management.button.add_user')}
-      </Button>
+      <Space wrap>
+        <Button type='primary' onClick={handleOnOpenModal}>
+          {t('user_management.button.add_user')}
+        </Button>
+
+        <Button type='primary' className='danger-button' danger onClick={handleOnClickDeleteUser}>
+          {t('user_management.button.delete_user')}
+        </Button>
+      </Space>
 
       <Pagination
         current={userReqQuery.page}
@@ -61,6 +72,4 @@ const Footer: React.FC<FooterProps> = ({ selectedUsers, setSelectedUsers }) => {
       />
     </div>
   );
-};
-
-export default Footer;
+}

@@ -16,7 +16,7 @@ async function searchUsers(
 ) {
   const { data } = await axios.post<DocPaginationDto<UserDto>>(
     `${ADMIN_URL}/search/users`,
-    { ...searchCriteria },
+    searchCriteria,
     {
       params: {
         page: page - 1,
@@ -43,11 +43,16 @@ async function updateUser(user: Partial<UserDto>) {
   return data;
 }
 
+async function deleteUsers(userIds: number[]) {
+  await axios.delete(`${ADMIN_URL}/users`, { data: userIds });
+}
+
 const AdminService = {
   searchUsers,
   getDepartments,
   createUser,
   updateUser,
+  deleteUsers,
 };
 
 export default AdminService;

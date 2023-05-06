@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Divider, Table } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
@@ -33,7 +32,7 @@ const columns: ColumnsType<UserTableRowDataType> = [
   },
   {
     title: t('user_management.table.column.role'),
-    dataIndex: 'role',
+    dataIndex: 'translatedRole',
   },
   {
     title: t('user_management.table.column.department'),
@@ -43,14 +42,14 @@ const columns: ColumnsType<UserTableRowDataType> = [
 
 function UserManagementPage() {
   const { isLoading, data } = useUserRes();
-  const [selectedUsers, setSelectedUsers] = useState<UserTableRowDataType[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
 
   const rowSelection = {
-    selectedRowKeys: selectedUsers.map((doc) => doc.id),
+    selectedRowKeys: selectedUsers,
     onChange: (selectedRowKeys: React.Key[], selectedRows: UserTableRowDataType[]) => {
-      setSelectedUsers(selectedRows);
+      setSelectedUsers(selectedRows.map((doc) => doc.id));
     },
   };
 

@@ -75,7 +75,7 @@ const UserSearchForm = () => {
                 <Col span={2}></Col>
                 <Col span={11}>
                   <Form.Item name='role' label={t('search_criteria_bar.user_management.role')}>
-                    <Select>
+                    <Select allowClear>
                       {ALL_SYSTEM_ROLES.map((role: DocSystemRoleEnum) => (
                         <Select.Option key={role} value={role}>
                           {t(`user.role.${role}`)}
@@ -91,7 +91,7 @@ const UserSearchForm = () => {
                   <Form.Item
                     name='departmentId'
                     label={t('search_criteria_bar.user_management.department')}>
-                    <Select>
+                    <Select allowClear>
                       {departments?.map((department) => (
                         <Select.Option key={department.id} value={department.id}>
                           {department.departmentName}

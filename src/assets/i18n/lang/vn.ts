@@ -87,9 +87,14 @@ export default {
       password_required: 'Hãy điền mật khẩu!',
       full_name_required: 'Hãy điền họ và tên!',
       email_invalid: 'Email không hợp lệ!',
+      role_required: 'Hãy chọn vai trò!',
+      department_required: 'Hãy chọn phòng ban!',
     },
     username: {
       existed: 'Tên đăng nhập đã tồn tại',
+    },
+    email: {
+      existed: 'Email đã tồn tại',
     },
   },
   SENDING_LEVEL: {
@@ -332,6 +337,7 @@ export default {
     },
     button: {
       add_user: 'Thêm người dùng',
+      delete_user: 'Xóa người dùng',
     },
   },
 };

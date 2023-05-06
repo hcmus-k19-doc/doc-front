@@ -8,6 +8,7 @@ export interface UserTableRowDataType {
   email: string;
   fullName: string;
   role: DocSystemRoleEnum;
+  translatedRole: string;
   department: string;
   departmentId: number;
 }
@@ -20,6 +21,6 @@ export interface UserTableDataType {
 }
 
 export interface FooterProps {
-  selectedUsers: UserTableRowDataType[];
-  setSelectedUsers: (users: UserTableRowDataType[]) => void;
+  selectedUsers: number[];
+  setSelectedUsers: (users: number[]) => void;
 }

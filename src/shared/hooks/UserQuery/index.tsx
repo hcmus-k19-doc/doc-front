@@ -53,6 +53,7 @@ export function useUserRes() {
           email: item.email,
           fullName: item.fullName,
           role: item.role,
+          translatedRole: t(`user.role.${item.role}`),
           department: item.department.departmentName,
           departmentId: item.department.id,
         };
@@ -111,6 +112,21 @@ export function useUserMutation() {
       } else {
         console.error(e);
       }
+    },
+  });
+}
+
+export function useUserDeleteMutation() {
+  const queryClient = useQueryClient();
+  const query = useRecoilValue<DocQueryState>(queryState);
+
+  return useMutation({
+    mutationKey: ['MUTATION.USER_DELETE'],
+    mutationFn: async (ids: number[]) => {
+      return await adminService.deleteUsers(ids);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['QUERIES.USER_LIST', query]);
     },
   });
 }
