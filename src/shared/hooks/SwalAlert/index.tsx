@@ -1,5 +1,4 @@
-import Swal from 'sweetalert2';
-import { SweetAlertIcon } from 'sweetalert2';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 interface UseSweetAlertOptions {
   html: string;
@@ -14,7 +13,7 @@ interface UseSweetAlertOptions {
 }
 
 export const useSweetAlert = () => {
-  const showAlert = (options: UseSweetAlertOptions) => {
+  return (options: UseSweetAlertOptions) => {
     return Swal.fire({
       icon: options.icon,
       html: options.html,
@@ -27,6 +26,4 @@ export const useSweetAlert = () => {
       cancelButtonColor: options.cancelButtonColor,
     });
   };
-
-  return showAlert;
 };

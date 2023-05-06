@@ -113,7 +113,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         defaultCurrent={1}
         onChange={handleOnChange}
         total={data?.totalElements}
-        showTotal={(total) => t('COMMON.PAGINATION.SHOW_TOTAL', { total })}
+        showTotal={(total) => t('common.pagination.show_total', { total })}
       />
 
       <TransferDocModal

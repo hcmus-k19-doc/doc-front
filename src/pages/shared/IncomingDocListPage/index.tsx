@@ -13,7 +13,7 @@ import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import Footer from './components/Footer';
-import SearchForm from './components/SearchForm';
+import IncomingDocumentSearchForm from './components/IncomingDocumentSearchForm';
 import { TableRowDataType } from './core/models';
 
 import './index.css';
@@ -134,7 +134,7 @@ const IncomingDocListPage: React.FC = () => {
     <>
       <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST')}</div>
 
-      <SearchForm />
+      <IncomingDocumentSearchForm />
 
       <Divider />
 

@@ -18,7 +18,7 @@ const ExpandIcon = () => {
   return <FilterFilled style={{ color: PRIMARY_COLOR }} />;
 };
 
-const SearchForm = () => {
+const IncomingDocumentSearchForm = () => {
   const { t } = useTranslation();
   const { documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
@@ -27,7 +27,7 @@ const SearchForm = () => {
 
   return (
     <Collapse bordered={false} expandIcon={ExpandIcon}>
-      <Panel header={t('COMMON.SEARCH_CRITERIA.TITLE')} key='1'>
+      <Panel header={t('common.search_criteria.title')} key='1'>
         <Form
           form={form}
           onFinish={(values: SearchState) => {
@@ -114,14 +114,14 @@ const SearchForm = () => {
 
               <Row justify='end'>
                 <Button className='px-8 mx-5' htmlType='submit' type='primary'>
-                  {t('COMMON.SEARCH_CRITERIA.SEARCH')}
+                  {t('common.search_criteria.search')}
                 </Button>
                 <Button
                   onClick={() => form.resetFields()}
                   htmlType='submit'
                   type='default'
                   className='px-8 reset-btn'>
-                  {t('COMMON.SEARCH_CRITERIA.RESET')}
+                  {t('common.search_criteria.reset')}
                 </Button>
               </Row>
             </Col>
@@ -132,4 +132,4 @@ const SearchForm = () => {
   );
 };
 
-export default SearchForm;
+export default IncomingDocumentSearchForm;
