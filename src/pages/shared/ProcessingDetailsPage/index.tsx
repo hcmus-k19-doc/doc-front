@@ -1,13 +1,11 @@
 import React from 'react';
-import { Navigate, Route, Routes, useParams } from 'react-router-dom';
-import { Breadcrumb, Layout, Table, theme } from 'antd';
+import { useParams } from 'react-router-dom';
+import { Layout, Table, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { ColumnsType } from 'antd/es/table';
+import PageHeader from 'components/PageHeader';
 import { t } from 'i18next';
 import { useProcessingDetailsRes } from 'shared/hooks/ProcessingDetailQuery';
-
-import PageHeader from '../../../components/PageHeader';
-import SidebarPage from '../SidebarPage';
 
 import { ProcessingDetailsRowDataType } from './core/models';
 

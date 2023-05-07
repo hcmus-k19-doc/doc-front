@@ -52,9 +52,14 @@ async function transferDocuments(transferDocDto: TransferDocDto) {
   return await axios.post<void>(`${INCOMING_DOCUMENTS_URL}/transfer-documents`, transferDocDto);
 }
 
-async function getProcessingDetails(incomingDocumentId: number) {
+async function getProcessingDetails(incomingDocumentId: number, onlyAssignee?: boolean) {
   return await axios.get<ProcessingDetailsDto[]>(
-    `${INCOMING_DOCUMENTS_URL}/${incomingDocumentId}/processing-details`
+    `${INCOMING_DOCUMENTS_URL}/${incomingDocumentId}/processing-details`,
+    {
+      params: {
+        onlyAssignee: onlyAssignee,
+      },
+    }
   );
 }
 
