@@ -78,7 +78,7 @@ const validateTransferDocs = (
       return false;
     }
   } else if (
-    transferDocModalItem === TransferDocumentType.TRANSFER_TO_CHUYEN_VIEN ||
+    transferDocModalItem === TransferDocumentType.TRANSFER_TO_TRUONG_PHONG ||
     transferDocModalItem === TransferDocumentType.TRANSFER_TO_VAN_THU
   ) {
     if (!isProcessingDocs(selectedDocs, t)) {

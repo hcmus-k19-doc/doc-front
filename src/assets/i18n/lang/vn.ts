@@ -298,6 +298,7 @@ export default {
       director: 'Ban giám đốc',
       chief_of_office: 'Chánh văn phòng',
       secretary: 'Văn thư',
+      expert: 'Chuyên viên',
     },
     form: {
       assignee_required: 'Hãy chọn người nhận',

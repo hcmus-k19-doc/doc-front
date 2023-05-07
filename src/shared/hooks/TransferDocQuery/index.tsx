@@ -1,6 +1,9 @@
-import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import React from 'react';
+import {useQuery} from '@tanstack/react-query';
+import {atom, useRecoilState, useSetRecoilState} from 'recoil';
+import incomingDocumentService from 'services/IncomingDocumentService';
 
-import { TransferQueryState } from './core/states';
+import {TransferQueryState} from './core/states';
 
 export const initialTransferQueryState: TransferQueryState = {
   documentIds: [],
@@ -16,6 +19,20 @@ const transferQueryState = atom<TransferQueryState>({
   key: 'TRANSFER_QUERY_STATE',
   default: initialTransferQueryState,
 });
+
+export function useTransferSettingRes() {
+  const { data: settings } = useQuery({
+    queryKey: ['QUERIES.TRANSFER_SETTING'],
+    queryFn: () => {
+      return incomingDocumentService.getTransferDocumentsSetting();
+    },
+    cacheTime: 0,
+  });
+
+  return {
+    settings,
+  };
+}
 
 export const useTransferQuery = () => useRecoilState(transferQueryState);
 

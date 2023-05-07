@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
+import {REACT_APP_DOC_MAIN_SERVICE_URL} from 'config/constant';
 import {
   DocPaginationDto,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
   SearchCriteriaDto,
   TransferDocDto,
+  TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
 
 function getIncomingDocuments(
@@ -60,12 +61,21 @@ async function transferDocuments(transferDocDto: TransferDocDto) {
   );
 }
 
+async function getTransferDocumentsSetting() {
+  const response = await axios.get<TransferDocumentModalSettingDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-documents-setting`
+  );
+
+  return response.data;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
   getIncomingDocumentById,
   updateIncomingDocument,
   transferDocuments,
+  getTransferDocumentsSetting,
 };
 
 export default incomingDocumentService;
