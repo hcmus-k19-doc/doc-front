@@ -36,6 +36,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   const { settings } = useTransferSettingRes();
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
+  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
 
   useEffect(() => {
     if (settings && settings.menuConfigs) {
@@ -44,6 +45,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
         transferDocumentType: settings.menuConfigs[0].transferDocumentType,
         isTransferToSameLevel: settings.menuConfigs[0].isTransferToSameLevel,
       });
+      setDefaultSelectedKeys([settings.menuConfigs[0].menuKey.toString()]);
     }
   }, [settings]);
 
@@ -104,7 +106,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
           <Menu
             className='h-full'
             onSelect={handleMenuOnSelect}
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={defaultSelectedKeys}
             mode='inline'
             theme='light'
             items={items}
