@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
-import { TransferDocumentType } from 'models/doc-main-models';
+import { TransferDocumentMenuConfig } from 'models/doc-main-models';
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
+import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 
 import DirectorScreenComponent from './components/DirectorScreenComponent';
+import ExpertScreenComponent from './components/ExpertScreenComponent';
 import ManagerScreenComponent from './components/ManagerScreenComponent';
 import SecretaryScreenComponent from './components/SecretaryScreenComponent';
 import {
+  ComponentMap,
   getItem,
-  i18_secretary,
-  i18n_chief_of_office,
-  i18n_director,
-  i18n_transfer_modal_title,
   MenuItem,
   MenuSelectProps,
   TransferModalProps,
 } from './core/models';
+
+const componentMap: ComponentMap = {
+  DirectorScreenComponent,
+  ExpertScreenComponent,
+  ManagerScreenComponent,
+  SecretaryScreenComponent,
+};
 
 const TransferDocModal: React.FC<TransferModalProps> = ({
   isModalOpen,
@@ -27,50 +33,69 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   selectedDocs,
 }) => {
   const { t } = useTranslation();
-  const transferLabels = [t(i18n_director), t(i18n_chief_of_office), t(i18_secretary)];
-  const [transferLabel, setTransferLabel] = useState(transferLabels[0]);
-
+  const { settings } = useTransferSettingRes();
+  const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
+  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
 
-  const items: MenuItem[] = [
-    getItem(t(i18n_director), 1),
-    getItem(t(i18n_chief_of_office), 2),
-    getItem(t(i18_secretary), 3),
-  ];
+  useEffect(() => {
+    if (settings && settings.menuConfigs) {
+      setTransferLabel(settings.menuConfigs[0].transferDocumentTypeLabel);
+      setTransferDocModalItem({
+        transferDocumentType: settings.menuConfigs[0].transferDocumentType,
+        isTransferToSameLevel: settings.menuConfigs[0].isTransferToSameLevel,
+      });
+      setDefaultSelectedKeys([settings.menuConfigs[0].menuKey.toString()]);
+    }
+  }, [settings]);
+
+  const items = settings?.menuConfigs?.reduce(
+    (acc: MenuItem[], item: TransferDocumentMenuConfig) => {
+      return [...acc, getItem(item.menuLabel, item.menuKey)];
+    },
+    []
+  );
 
   const handleMenuOnSelect = ({ selectedKeys }: MenuSelectProps) => {
-    setTransferLabel(transferLabels[parseInt(selectedKeys[0]) - 1]);
-    switch (+selectedKeys[0]) {
-      case 1:
-        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_GIAM_DOC);
-        break;
-      case 2:
-        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_CHUYEN_VIEN);
-        break;
-      case 3:
-        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_VAN_THU);
-        break;
-      default:
-        setTransferDocModalItem(TransferDocumentType.TRANSFER_TO_GIAM_DOC);
-    }
+    settings?.menuConfigs?.forEach((item) => {
+      if (item.menuKey === parseInt(selectedKeys[0])) {
+        setTransferDocModalItem({
+          transferDocumentType: item.transferDocumentType,
+          isTransferToSameLevel: item.isTransferToSameLevel,
+        });
+        setTransferLabel(item.transferDocumentTypeLabel);
+      }
+    });
   };
 
   const handleSwitchScreen = () => {
-    switch (transferLabel) {
-      case t(i18n_director):
-        return <DirectorScreenComponent form={form} selectedDocs={selectedDocs} />;
-      case t(i18n_chief_of_office):
-        return <ManagerScreenComponent form={form} selectedDocs={selectedDocs} />;
-      case t(i18_secretary):
-        return <SecretaryScreenComponent form={form} selectedDocs={selectedDocs} />;
-      default:
-        return <DirectorScreenComponent form={form} selectedDocs={selectedDocs} />;
+    const menuConfig = settings?.menuConfigs.find(
+      (item) => item.transferDocumentTypeLabel === transferLabel
+    );
+
+    if (menuConfig) {
+      const Component = componentMap[menuConfig.component];
+      return (
+        <Component
+          form={form}
+          selectedDocs={selectedDocs}
+          isTransferToSameLevel={menuConfig.isTransferToSameLevel}
+        />
+      );
     }
+
+    return (
+      <DirectorScreenComponent
+        form={form}
+        selectedDocs={selectedDocs}
+        isTransferToSameLevel={false}
+      />
+    );
   };
 
   return (
     <Modal
-      title={`${t(i18n_transfer_modal_title)} ${transferLabel}`.toUpperCase()}
+      title={`${transferLabel}`.toUpperCase()}
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -81,7 +106,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
           <Menu
             className='h-full'
             onSelect={handleMenuOnSelect}
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={defaultSelectedKeys}
             mode='inline'
             theme='light'
             items={items}
