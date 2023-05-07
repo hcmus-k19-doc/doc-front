@@ -3,7 +3,10 @@ import { atom } from 'recoil';
 
 const transferDocModalState = atom({
   key: 'transferDocModalState',
-  default: TransferDocumentType.TRANSFER_TO_GIAM_DOC,
+  default: {
+    transferDocumentType: TransferDocumentType.TRANSFER_TO_GIAM_DOC,
+    isTransferToSameLevel: false,
+  },
 });
 
 export { transferDocModalState };

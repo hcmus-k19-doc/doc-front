@@ -31,7 +31,11 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 
-const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
+const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
+  form,
+  selectedDocs,
+  isTransferToSameLevel,
+}) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
   const { currentUser } = useAuth();

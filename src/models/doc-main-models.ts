@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-07 22:59:50.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-08 00:19:24.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -121,6 +121,7 @@ export interface TransferDocDto {
     isInfiniteProcessingTime?: boolean;
     processMethod?: ProcessMethod;
     transferDocumentType: TransferDocumentType;
+    isTransferToSameLevel: boolean;
 }
 
 export interface UserDepartmentDto extends UserDto {
@@ -157,6 +158,7 @@ export interface TransferDocumentMenuConfig {
     menuLabel: string;
     menuKey: number;
     transferDocumentType: TransferDocumentType;
+    isTransferToSameLevel: boolean;
 }
 
 export interface DepartmentDto extends DocAbstractDto {

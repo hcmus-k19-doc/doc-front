@@ -1,16 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Col, Divider, Menu, Modal, Row} from 'antd';
-import {TransferDocumentMenuConfig} from 'models/doc-main-models';
-import {transferDocModalState} from 'pages/shared/IncomingDocListPage/core/states';
-import {useRecoilState} from 'recoil';
-import {useTransferSettingRes} from 'shared/hooks/TransferDocQuery';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Col, Divider, Menu, Modal, Row } from 'antd';
+import { TransferDocumentMenuConfig } from 'models/doc-main-models';
+import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
+import { useRecoilState } from 'recoil';
+import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 
 import DirectorScreenComponent from './components/DirectorScreenComponent';
 import ExpertScreenComponent from './components/ExpertScreenComponent';
 import ManagerScreenComponent from './components/ManagerScreenComponent';
 import SecretaryScreenComponent from './components/SecretaryScreenComponent';
-import {ComponentMap, getItem, MenuItem, MenuSelectProps, TransferModalProps,} from './core/models';
+import {
+  ComponentMap,
+  getItem,
+  MenuItem,
+  MenuSelectProps,
+  TransferModalProps,
+} from './core/models';
 
 const componentMap: ComponentMap = {
   DirectorScreenComponent,
@@ -34,6 +40,10 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       setTransferLabel(settings.menuConfigs[0].transferDocumentTypeLabel);
+      setTransferDocModalItem({
+        transferDocumentType: settings.menuConfigs[0].transferDocumentType,
+        isTransferToSameLevel: settings.menuConfigs[0].isTransferToSameLevel,
+      });
     }
   }, [settings]);
 
@@ -47,7 +57,10 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   const handleMenuOnSelect = ({ selectedKeys }: MenuSelectProps) => {
     settings?.menuConfigs?.forEach((item) => {
       if (item.menuKey === parseInt(selectedKeys[0])) {
-        setTransferDocModalItem(item.transferDocumentType);
+        setTransferDocModalItem({
+          transferDocumentType: item.transferDocumentType,
+          isTransferToSameLevel: item.isTransferToSameLevel,
+        });
         setTransferLabel(item.transferDocumentTypeLabel);
       }
     });
@@ -60,10 +73,22 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
 
     if (menuConfig) {
       const Component = componentMap[menuConfig.component];
-      return <Component form={form} selectedDocs={selectedDocs} />;
+      return (
+        <Component
+          form={form}
+          selectedDocs={selectedDocs}
+          isTransferToSameLevel={menuConfig.isTransferToSameLevel}
+        />
+      );
     }
 
-    return <DirectorScreenComponent form={form} selectedDocs={selectedDocs} />;
+    return (
+      <DirectorScreenComponent
+        form={form}
+        selectedDocs={selectedDocs}
+        isTransferToSameLevel={false}
+      />
+    );
   };
 
   return (

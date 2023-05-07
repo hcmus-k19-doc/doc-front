@@ -31,7 +31,11 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 
-const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
+const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
+  form,
+  selectedDocs,
+  isTransferToSameLevel,
+}) => {
   const { t } = useTranslation();
   const { experts } = useExpertTransferRes();
   const { currentUser } = useAuth();

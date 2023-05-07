@@ -47,6 +47,7 @@ export interface MenuSelectProps {
 export interface TransferDocScreenProps {
   form: FormInstance;
   selectedDocs: IncomingDocumentDto[];
+  isTransferToSameLevel: boolean;
 }
 
 export interface TransferDocScreenFormProps {
