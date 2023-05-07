@@ -5,6 +5,7 @@ import NotFoundPage from 'pages/error/NotFoundPage';
 import ServerErrorPage from 'pages/error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
 import MainPage from 'pages/shared/MainPage';
+import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 import { GlobalHistory } from 'utils/RoutingUtils';
 
@@ -20,6 +21,10 @@ const AppRoutes = () => {
           {currentUser ? (
             <>
               <Route path='/login' element={<Navigate to='/' />} />
+              <Route
+                path='/processing-details/:incomingDocumentId'
+                element={<ProcessingDetailsPageWrapper />}
+              />
               <Route path='/*' element={<MainPage />} />
             </>
           ) : (

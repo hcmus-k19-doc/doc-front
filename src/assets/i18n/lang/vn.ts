@@ -340,4 +340,21 @@ export default {
       delete_user: 'Xóa người dùng',
     },
   },
+  processing_detail_page: {
+    title: 'Chi tiết xử lý',
+    table: {
+      column: {
+        step: 'Bước',
+        incoming_number: 'Số đến',
+        full_name: 'Tên người xử lý',
+        department: 'Phòng ban',
+        role: 'Vai trò',
+      },
+    },
+  },
+  processing_user_role: {
+    REPORTER: 'Người gửi',
+    ASSIGNEE: 'Người nhận',
+    COLLABORATOR: 'Người tham gia',
+  },
 };

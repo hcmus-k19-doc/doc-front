@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-05 21:55:12.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-07 14:11:24.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -86,6 +86,19 @@ export interface IncomingDocumentPutDto extends DocAbstractDto {
     urgency: Urgency;
     confidentiality: Confidentiality;
     folder: number;
+}
+
+export interface ProcessingDetailsDto {
+    incomingNumber: string;
+    step: number;
+    processingUser: ProcessingUserDto;
+}
+
+export interface ProcessingUserDto {
+    id: number;
+    fullName: string;
+    role: ProcessingDocumentRoleEnum;
+    department: string;
 }
 
 export interface SearchCriteriaDto {
@@ -184,6 +197,12 @@ export const enum ProcessingStatus {
     UNPROCESSED = "UNPROCESSED",
     IN_PROGRESS = "IN_PROGRESS",
     CLOSED = "CLOSED",
+}
+
+export const enum ProcessingDocumentRoleEnum {
+    ASSIGNEE = "ASSIGNEE",
+    REPORTER = "REPORTER",
+    COLLABORATOR = "COLLABORATOR",
 }
 
 export const enum DocSystemRoleEnum {
