@@ -4,10 +4,13 @@ import {
   DocPaginationDto,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
+  ProcessingDetailsDto,
   SearchCriteriaDto,
   TransferDocDto,
   TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
+
+const INCOMING_DOCUMENTS_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents`;
 
 function getIncomingDocuments(
   searchCriteria: Partial<SearchCriteriaDto>,
@@ -16,7 +19,7 @@ function getIncomingDocuments(
 ): Promise<DocPaginationDto<IncomingDocumentDto>> {
   return axios
     .post<DocPaginationDto<IncomingDocumentDto>>(
-      `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/search`,
+      `${INCOMING_DOCUMENTS_URL}/search`,
       searchCriteria,
       {
         params: {
@@ -29,35 +32,35 @@ function getIncomingDocuments(
 }
 
 async function createIncomingDocument(incomingDocument: FormData) {
-  const response = await axios.post<IncomingDocumentDto>(
-    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/create`,
+  return await axios.post<IncomingDocumentDto>(
+    `${INCOMING_DOCUMENTS_URL}/create`,
     incomingDocument
   );
-
-  return response;
 }
 
 async function updateIncomingDocument(incomingDocument: IncomingDocumentPutDto) {
-  const response = await axios.put<IncomingDocumentPutDto>(
-    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/update`,
+  return await axios.put<IncomingDocumentPutDto>(
+    `${INCOMING_DOCUMENTS_URL}/update`,
     incomingDocument
   );
-
-  return response;
 }
 
 async function getIncomingDocumentById(id: number) {
-  const response = await axios.get<IncomingDocumentDto>(
-    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/${id}`
-  );
-
-  return response;
+  return await axios.get<IncomingDocumentDto>(`${INCOMING_DOCUMENTS_URL}/${id}`);
 }
 
 async function transferDocuments(transferDocDto: TransferDocDto) {
-  return await axios.post<void>(
-    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-documents`,
-    transferDocDto
+  return await axios.post<void>(`${INCOMING_DOCUMENTS_URL}/transfer-documents`, transferDocDto);
+}
+
+async function getProcessingDetails(incomingDocumentId: number, onlyAssignee?: boolean) {
+  return await axios.get<ProcessingDetailsDto[]>(
+    `${INCOMING_DOCUMENTS_URL}/${incomingDocumentId}/processing-details`,
+    {
+      params: {
+        onlyAssignee: onlyAssignee,
+      },
+    }
   );
 }
 
@@ -75,6 +78,7 @@ const incomingDocumentService = {
   getIncomingDocumentById,
   updateIncomingDocument,
   transferDocuments,
+  getProcessingDetails,
   getTransferDocumentsSetting,
 };
 

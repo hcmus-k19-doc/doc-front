@@ -250,6 +250,13 @@ export default {
       files: 'Tài liệu đính kèm',
       filesRequired: 'Hãy chọn tài liệu đính kèm',
       fileHelper: 'Bấm hoặc kéo thả tệp vào đây để tải lên',
+      select: {
+        option: {
+          HIGH: 'Cao',
+          MEDIUM: 'Trung bình',
+          LOW: 'Thấp',
+        },
+      },
     },
     button: {
       collect: 'Thu thập',
@@ -273,6 +280,21 @@ export default {
       title: 'Góp ý văn bản',
       button: {
         title: 'Góp ý',
+      },
+    },
+    processing_step: {
+      title: 'Tiến độ xử lý',
+      step_1: {
+        title: 'Giám đốc',
+        description: '{{department}} - {{fullName}}',
+      },
+      step_2: {
+        title: 'Chánh văn phòng',
+        description: '{{department}} - {{fullName}}',
+      },
+      step_3: {
+        title: 'Chuyên viên',
+        description: '{{department}} - {{fullName}}',
       },
     },
   },
@@ -341,5 +363,22 @@ export default {
       add_user: 'Thêm người dùng',
       delete_user: 'Xóa người dùng',
     },
+  },
+  processing_detail_page: {
+    title: 'Chi tiết xử lý',
+    table: {
+      column: {
+        step: 'Bước',
+        incoming_number: 'Số đến',
+        full_name: 'Tên người xử lý',
+        department: 'Phòng ban',
+        role: 'Vai trò',
+      },
+    },
+  },
+  processing_user_role: {
+    REPORTER: 'Người gửi',
+    ASSIGNEE: 'Người nhận',
+    COLLABORATOR: 'Người tham gia',
   },
 };

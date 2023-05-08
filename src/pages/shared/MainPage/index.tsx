@@ -3,6 +3,7 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Breadcrumb, Layout, theme } from 'antd';
 import PageHeader from 'components/PageHeader';
+import ProcessingDetailsPage from 'pages/shared/ProcessingDetailsPage';
 import SidebarPage from 'pages/shared/SidebarPage';
 
 const { Content, Footer } = Layout;
