@@ -7,6 +7,7 @@ import {
   ProcessingDetailsDto,
   SearchCriteriaDto,
   TransferDocDto,
+  TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
 
 const INCOMING_DOCUMENTS_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents`;
@@ -63,6 +64,14 @@ async function getProcessingDetails(incomingDocumentId: number, onlyAssignee?: b
   );
 }
 
+async function getTransferDocumentsSetting() {
+  const response = await axios.get<TransferDocumentModalSettingDto>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents/transfer-documents-setting`
+  );
+
+  return response.data;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
@@ -70,6 +79,7 @@ const incomingDocumentService = {
   updateIncomingDocument,
   transferDocuments,
   getProcessingDetails,
+  getTransferDocumentsSetting,
 };
 
 export default incomingDocumentService;

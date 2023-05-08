@@ -6,4 +6,5 @@ export interface TransferQueryState {
   processingTime?: string;
   isInfiniteProcessingTime?: boolean;
   processMethod?: string;
+  isTransferToSameLevel?: boolean;
 }

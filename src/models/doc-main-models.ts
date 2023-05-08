@@ -101,6 +101,13 @@ export interface ProcessingUserDto {
     department: string;
 }
 
+export interface TransferDocumentModalSettingDto {
+    menuConfigs: TransferDocumentMenuConfig[];
+    currentRole: DocSystemRoleEnum;
+    defaultTransferDocumentType: TransferDocumentType;
+    defaultComponent: string;
+}
+
 export interface SearchCriteriaDto {
     incomingNumber: string;
     originalSymbolNumber: string;
@@ -127,6 +134,7 @@ export interface TransferDocDto {
     isInfiniteProcessingTime?: boolean;
     processMethod?: ProcessMethod;
     transferDocumentType: TransferDocumentType;
+    isTransferToSameLevel: boolean;
 }
 
 export interface UserDepartmentDto extends UserDto {
@@ -157,6 +165,15 @@ export interface AttachmentDto extends DocAbstractDto {
     fileType: FileType;
 }
 
+export interface TransferDocumentMenuConfig {
+    transferDocumentTypeLabel: string;
+    component: string;
+    menuLabel: string;
+    menuKey: number;
+    transferDocumentType: TransferDocumentType;
+    isTransferToSameLevel: boolean;
+}
+
 export interface DepartmentDto extends DocAbstractDto {
     departmentName: string;
 }
@@ -175,10 +192,18 @@ export const enum ProcessMethod {
     SOAN_VAN_BAN = "SOAN_VAN_BAN",
 }
 
+export const enum TransferDocumentComponent {
+    TRANSFER_TO_GIAM_DOC = "TRANSFER_TO_GIAM_DOC",
+    TRANSFER_TO_TRUONG_PHONG = "TRANSFER_TO_TRUONG_PHONG",
+    TRANSFER_TO_VAN_THU = "TRANSFER_TO_VAN_THU",
+    TRANSFER_TO_CHUYEN_VIEN = "TRANSFER_TO_CHUYEN_VIEN",
+}
+
 export const enum TransferDocumentType {
     TRANSFER_TO_GIAM_DOC = "TRANSFER_TO_GIAM_DOC",
-    TRANSFER_TO_CHUYEN_VIEN = "TRANSFER_TO_CHUYEN_VIEN",
+    TRANSFER_TO_TRUONG_PHONG = "TRANSFER_TO_TRUONG_PHONG",
     TRANSFER_TO_VAN_THU = "TRANSFER_TO_VAN_THU",
+    TRANSFER_TO_CHUYEN_VIEN = "TRANSFER_TO_CHUYEN_VIEN",
 }
 
 export const enum Urgency {
