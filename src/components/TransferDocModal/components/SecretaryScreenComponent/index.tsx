@@ -30,12 +30,11 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 
-const dummyData = {
-  implementationDate: '01/01/2021',
-  document: 'Văn bản số 1',
-};
-
-const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
+const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
+  form,
+  selectedDocs,
+  isTransferToSameLevel,
+}) => {
   const { t } = useTranslation();
   const { secretaries } = useSecretaryTransferRes();
   const { currentUser } = useAuth();
@@ -117,45 +116,49 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({ form, sele
           </Form.Item>
         </Col>
       </Row>
-      <Row className='mb-3'>
-        <Col span='6'>
-          <Typography.Text strong>
-            <span className='asterisk'>*</span>
-            {t(i18_collaborators)}
-          </Typography.Text>
-        </Col>
-        <Col span='16'>
-          <Form.Item name='collaborators'>
-            <Select mode='multiple' allowClear options={secretaries} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row className='mb-3'>
-        <Col span='6'>
-          <Typography.Text strong>
-            <span className='asterisk'>*</span>
-            {t(i18n_processing_time)}
-          </Typography.Text>
-        </Col>
-        <Form.Item name='processingTime'>
-          <Space direction='vertical' size={12}>
-            <DatePicker
-              format={dateFormatList}
-              onChange={(_, dateString) => setProcessingTime(dateString)}
-              disabled={isInfiniteProcessingTime}
-            />
-          </Space>
-        </Form.Item>
-        <Form.Item
-          name='isInfiniteProcessingTime'
-          style={{ display: 'inline-block', margin: '0 16px' }}
-          valuePropName='checked'
-          initialValue={false}>
-          <Checkbox onChange={onChooseNoneProcessingTime}>
-            {t(i18n_is_infinite_processing_time)}
-          </Checkbox>
-        </Form.Item>
-      </Row>
+      {!isTransferToSameLevel && (
+        <>
+          <Row className='mb-3'>
+            <Col span='6'>
+              <Typography.Text strong>
+                <span className='asterisk'>*</span>
+                {t(i18_collaborators)}
+              </Typography.Text>
+            </Col>
+            <Col span='16'>
+              <Form.Item name='collaborators'>
+                <Select mode='multiple' allowClear options={secretaries} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row className='mb-3'>
+            <Col span='6'>
+              <Typography.Text strong>
+                <span className='asterisk'>*</span>
+                {t(i18n_processing_time)}
+              </Typography.Text>
+            </Col>
+            <Form.Item name='processingTime'>
+              <Space direction='vertical' size={12}>
+                <DatePicker
+                  format={dateFormatList}
+                  onChange={(_, dateString) => setProcessingTime(dateString)}
+                  disabled={isInfiniteProcessingTime}
+                />
+              </Space>
+            </Form.Item>
+            <Form.Item
+              name='isInfiniteProcessingTime'
+              style={{ display: 'inline-block', margin: '0 16px' }}
+              valuePropName='checked'
+              initialValue={false}>
+              <Checkbox onChange={onChooseNoneProcessingTime}>
+                {t(i18n_is_infinite_processing_time)}
+              </Checkbox>
+            </Form.Item>
+          </Row>
+        </>
+      )}
     </Form>
   );
 };

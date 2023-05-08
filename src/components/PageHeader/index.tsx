@@ -62,12 +62,12 @@ const PageHeader: React.FC = () => {
   const languageItems: MenuProps['items'] = [
     {
       key: '1',
-      label: t('page_header.languages.en'),
-    },
-    {
-      key: '2',
       label: t('page_header.languages.vi'),
     },
+    // {
+    //   key: '2',
+    //   label: t('page_header.languages.en'),
+    // },
   ];
 
   const documentReminderStatusItems: MenuProps['items'] = [
@@ -129,9 +129,7 @@ const PageHeader: React.FC = () => {
         className='flex-auto'
       />
       <Dropdown menu={{ items: languageItems }} placement='bottomRight'>
-        <Space>
-          <GlobalOutlined />
-        </Space>
+        <GlobalOutlined />
       </Dropdown>
 
       <Badge overflowCount={99} size='small' className='ml-5'>
