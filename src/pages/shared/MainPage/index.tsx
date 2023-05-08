@@ -23,7 +23,7 @@ const MainPage: React.FC = () => {
         </Breadcrumb>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
           <Routes>
-            <Route path='/' element={<SidebarPage />} />
+            <Route path='/*' element={<SidebarPage />} />
             <Route path='/docin/*' element={<SidebarPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>

@@ -132,7 +132,7 @@ const IncomingDocListPage: React.FC = () => {
 
   return (
     <>
-      <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST')}</div>
+      <div className='text-lg text-primary'>{t('main_page.menu.items.incoming_document_list')}</div>
 
       <IncomingDocumentSearchForm />
 

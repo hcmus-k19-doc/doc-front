@@ -20,7 +20,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
   const { currentUser } = useAuth();
 
   const getRoutes = () => {
-    switch (currentUser?.role as DocSystemRoleEnum) {
+    switch (currentUser?.role) {
       case DocSystemRoleEnum.VAN_THU:
         return (
           <Routes>
@@ -58,6 +58,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
         return (
           <Routes>
             <Route path='/' element={<UserManagementPageWrapper />} />
+            <Route path='/document-types' element={<UserManagementPageWrapper />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );

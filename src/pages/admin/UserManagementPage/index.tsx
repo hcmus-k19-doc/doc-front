@@ -70,7 +70,7 @@ function UserManagementPage() {
 
   return (
     <>
-      <div className='text-lg text-primary'>{t('MAIN_PAGE.MENU.ITEMS.users')}</div>
+      <div className='text-lg text-primary'>{t('main_page.menu.items.users')}</div>
 
       <UserSearchForm />
 

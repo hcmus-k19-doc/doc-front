@@ -13,16 +13,18 @@ export default {
       RULE_MESSAGE: 'Hãy điền mật khẩu!',
     },
   },
-  MAIN_PAGE: {
-    MENU: {
-      ITEMS: {
-        LABEL: 'Văn bản đến',
-        INCOMING_DOCUMENT_LIST: 'Danh sách văn bản đến',
-        RECEIVING_INCOMING_DOCUMENT: 'Tiếp nhận văn bản đến',
-        PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
-        OUTGOING_DOCUMENT: 'Văn bản đi',
-        INTERNAL_DOCUMENT: 'Văn bản nội bộ',
+  main_page: {
+    menu: {
+      items: {
+        label: 'Văn bản đến',
+        incoming_document_list: 'Danh sách văn bản đến',
+        receiving_incoming_document: 'Tiếp nhận văn bản đến',
+        processes_incoming_document: 'Xử lý văn bản đến',
+        outgoing_document: 'Văn bản đi',
+        internal_document: 'Văn bản nội bộ',
+        admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
+        document_types: 'Loại văn bản',
       },
     },
     BUTTON: {
