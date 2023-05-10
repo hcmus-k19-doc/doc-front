@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { Button } from 'antd';
 import { t } from 'i18next';
 
@@ -69,10 +70,10 @@ const DocButtonList = ({
     return buttonDisplayArr.map((item, index) => {
       if (item) {
         return (
-          <>
+          <React.Fragment key={index}>
             {buttonArr[index]}
             {index === buttonDisplayArr.length - 1 ? null : <span className='mr-5'></span>}
-          </>
+          </React.Fragment>
         );
       }
     });
