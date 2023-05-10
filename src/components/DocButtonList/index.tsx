@@ -21,17 +21,17 @@ const DocButtonList = ({
   const buttonArr: JSX.Element[] = [
     <Button
       type='primary'
-      key='2'
+      key='1'
       size='large'
       name='edit'
       onClick={isEditing ? onFinishEditing : enableEditing}>
       {isEditing ? t('incomingDocDetailPage.button.save') : t('incomingDocDetailPage.button.edit')}
     </Button>,
-    <Button type='primary' key='1' size='large' name='collect'>
+    <Button type='primary' key='2' size='large' name='collect'>
       {t('incomingDocDetailPage.button.collect')}
     </Button>,
-    <Button type='primary' key='3' size='large' name='process'>
-      {t('incomingDocDetailPage.button.process')}
+    <Button type='primary' key='3' size='large' name='report'>
+      {t('incomingDocDetailPage.button.report')}
     </Button>,
     <Button type='primary' size='large' key='4' name='transfer'>
       {t('incomingDocDetailPage.button.transfer')}
@@ -45,10 +45,10 @@ const DocButtonList = ({
     <Button type='primary' size='large' key='7' name='confirm'>
       {t('incomingDocDetailPage.button.confirm')}
     </Button>,
-    <Button type='primary' size='large' key='9' name='return'>
+    <Button type='primary' size='large' key='8' name='return'>
       {t('incomingDocDetailPage.button.return')}
     </Button>,
-    <Button type='primary' size='large' key='10' name='extend'>
+    <Button type='primary' size='large' key='9' name='extend'>
       {t('incomingDocDetailPage.button.extend')}
     </Button>,
   ];

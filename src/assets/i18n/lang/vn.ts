@@ -257,6 +257,7 @@ export default {
       collect: 'Thu thập',
       edit: 'Chỉnh sửa',
       save: 'Lưu chỉnh sửa',
+      report: 'Trình lãnh đạo',
       process: 'Xử lý văn bản',
       transfer: 'Chuyển xử lý',
       assign: 'Phân công',
