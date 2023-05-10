@@ -28,6 +28,11 @@
   width: 115px;
 }
 
+.transfer-doc-btn:disabled {
+  color: white !important;
+  background-color: lightgray !important;
+}
+
 .transfer-doc-wrapper {
   display: flex;
   flex-direction: column;

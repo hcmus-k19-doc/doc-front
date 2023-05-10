@@ -15,11 +15,7 @@ const MainPage: React.FC = () => {
     <Layout>
       <PageHeader />
       <Content style={{ padding: '0 50px', minHeight: '100vh' }}>
-        <Breadcrumb className='mt-4 mb-4'>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>MainPage</Breadcrumb.Item>
-        </Breadcrumb>
+        <div className='mt-4 mb-10'></div>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
           <Routes>
             <Route path='/' element={<SidebarPage />} />
