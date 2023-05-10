@@ -366,8 +366,8 @@ export default {
       },
     },
     button: {
-      add_user: 'Thêm người dùng',
-      delete_user: 'Xóa người dùng',
+      add: 'Thêm người dùng',
+      delete: 'Xóa người dùng',
     },
   },
   processing_detail_page: {
@@ -390,6 +390,26 @@ export default {
   doc: {
     exception: {
       concurrent_update: 'Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang.',
+    },
+  },
+  document_type_management: {
+    table: {
+      column: {
+        id: 'ID',
+        type: 'Tên loại văn bản',
+      },
+    },
+    button: {
+      add: 'Thêm loại văn bản',
+      delete: 'Xóa loại văn bản',
+    },
+    document_type: {
+      detail: {
+        title: 'Chi tiết loại văn bản',
+        id: 'ID',
+        type: 'Tên loại văn bản',
+        type_required: 'Hãy nhập tên loại văn bản',
+      },
     },
   },
 };

@@ -20,7 +20,7 @@ const ExpandIcon = () => {
 
 const IncomingDocumentSearchForm = () => {
   const { t } = useTranslation();
-  const { documentTypes } = useDocumentTypesRes();
+  const { data: documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
   const [form] = useForm();
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();

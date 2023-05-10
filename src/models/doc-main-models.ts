@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-07 14:11:24.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -14,8 +14,8 @@ export interface DistributionOrganizationDto extends DocAbstractDto {
 export interface DocAbstractDto {
     id: number;
     version: number;
-    createdDate: DateAsString;
-    createdBy: string;
+    createdDate?: DateAsString;
+    createdBy?: string;
 }
 
 export interface DocPaginationDto<T> {
@@ -34,6 +34,9 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+}
+
+export interface DocumentTypeSearchCriteria {
 }
 
 export interface FolderDto extends DocAbstractDto {
@@ -88,6 +91,13 @@ export interface IncomingDocumentPutDto extends DocAbstractDto {
     folder: number;
 }
 
+export interface TransferDocumentModalSettingDto {
+    menuConfigs: TransferDocumentMenuConfig[];
+    currentRole: DocSystemRoleEnum;
+    defaultTransferDocumentType: TransferDocumentType;
+    defaultComponent: string;
+}
+
 export interface ProcessingDetailsDto {
     incomingNumber: string;
     step: number;
@@ -99,13 +109,6 @@ export interface ProcessingUserDto {
     fullName: string;
     role: ProcessingDocumentRoleEnum;
     department: string;
-}
-
-export interface TransferDocumentModalSettingDto {
-    menuConfigs: TransferDocumentMenuConfig[];
-    currentRole: DocSystemRoleEnum;
-    defaultTransferDocumentType: TransferDocumentType;
-    defaultComponent: string;
 }
 
 export interface SearchCriteriaDto {
@@ -224,18 +227,18 @@ export const enum ProcessingStatus {
     CLOSED = "CLOSED",
 }
 
-export const enum ProcessingDocumentRoleEnum {
-    ASSIGNEE = "ASSIGNEE",
-    REPORTER = "REPORTER",
-    COLLABORATOR = "COLLABORATOR",
-}
-
 export const enum DocSystemRoleEnum {
     GIAM_DOC = "GIAM_DOC",
     CHUYEN_VIEN = "CHUYEN_VIEN",
     TRUONG_PHONG = "TRUONG_PHONG",
     VAN_THU = "VAN_THU",
     DOC_ADMIN = "DOC_ADMIN",
+}
+
+export const enum ProcessingDocumentRoleEnum {
+    ASSIGNEE = "ASSIGNEE",
+    REPORTER = "REPORTER",
+    COLLABORATOR = "COLLABORATOR",
 }
 
 export const enum FileType {

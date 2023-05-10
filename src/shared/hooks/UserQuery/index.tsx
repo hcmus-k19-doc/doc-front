@@ -9,7 +9,7 @@ import {
 } from 'pages/admin/UserManagementPage/core/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import adminService from 'services/AdminService';
-import { PAGE_SIZE } from 'shared/models/states';
+import { PaginationStateUtils } from 'shared/models/states';
 
 import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
@@ -19,8 +19,7 @@ import { DocUserQueryState } from './core/states';
 const queryState = atom<DocUserQueryState>({
   key: 'DOC_USER_QUERY_STATE',
   default: {
-    page: 1,
-    pageSize: PAGE_SIZE,
+    ...PaginationStateUtils.defaultValue,
     userSearchCriteria: {
       username: '',
       email: '',
@@ -90,8 +89,6 @@ export function useUserMutation() {
           id: user.departmentId,
           departmentName: user.department,
           version: 0,
-          createdBy: '',
-          createdDate: '',
         },
       };
       if (user.id) {

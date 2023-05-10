@@ -37,7 +37,6 @@ export default function UserDetailModal({
         <Form
           form={form}
           onFinish={(values: UserTableRowDataType) => {
-            console.log(values);
             userMutation.mutate(values);
           }}
           labelCol={{ span: 10 }}

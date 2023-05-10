@@ -1,18 +1,105 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { t } from 'i18next';
+import {
+  DocumentTypeTableDataType,
+  DocumentTypeTableRowDataType,
+} from 'pages/admin/DocumentTypeManagementPage/core/models';
+import { atom, useRecoilValue } from 'recoil';
+import adminService from 'services/AdminService';
 import documentTypeService from 'services/DocumentTypeService';
+import { PaginationStateUtils } from 'shared/models/states';
 
-const getDocumentTypes = async () => {
-  const response = await documentTypeService.getDocumentTypes();
-  return response.data;
-};
+import { PRIMARY_COLOR } from '../../../config/constant';
+import { DocumentTypeDto } from '../../../models/doc-main-models';
+import { useSweetAlert } from '../SwalAlert';
+
+import { DocDocumentTypeQueryState } from './core/states';
+
+const queryState = atom<DocDocumentTypeQueryState>({
+  key: 'DOC_DOCUMENT_TYPE_QUERY_STATE',
+  default: {
+    ...PaginationStateUtils.defaultValue,
+    searchCriteria: {
+      type: '',
+    },
+  },
+});
 
 export function useDocumentTypesRes() {
-  const { data: documentTypes } = useQuery({
+  return useQuery({
     queryKey: ['QUERIES.DOCUMENT_TYPES'],
-    queryFn: getDocumentTypes,
+    queryFn: async () => {
+      const { data } = await documentTypeService.getDocumentTypes();
+      return data;
+    },
   });
+}
 
-  return {
-    documentTypes,
-  };
+export function usePaginationDocumentTypesRes() {
+  const query = useRecoilValue<DocDocumentTypeQueryState>(queryState);
+
+  return useQuery<DocumentTypeTableDataType>({
+    queryKey: ['QUERIES.DOCUMENT_TYPES', query],
+    queryFn: async () => {
+      const res = await adminService.searchDocumentTypes(
+        query.searchCriteria,
+        query.page,
+        query.pageSize
+      );
+      const totalElements = res.totalElements;
+      const payload: DocumentTypeTableRowDataType[] = res.payload.map((item) => {
+        return {
+          key: item.id,
+          id: item.id,
+          version: item.version,
+          type: item.type,
+          translatedType: t(`document_type.${item.type}`),
+        };
+      });
+
+      return {
+        page: query.page,
+        pageSize: query.pageSize,
+        totalElements,
+        payload,
+      };
+    },
+  });
+}
+
+export function useDocumentTypeMutation() {
+  const queryClient = useQueryClient();
+  const sweetAlert = useSweetAlert();
+  const query = useRecoilValue<DocDocumentTypeQueryState>(queryState);
+
+  return useMutation({
+    mutationKey: ['MUTATION.DOCUMENT_TYPE'],
+    mutationFn: async (payload: DocumentTypeTableRowDataType) => {
+      const documentTypeDto: DocumentTypeDto = {
+        id: payload.id,
+        version: payload.version,
+        type: payload.type,
+      };
+
+      return await adminService.saveDocumentType(documentTypeDto);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['QUERIES.DOCUMENT_TYPES', query]);
+    },
+    onError: (e) => {
+      if (e instanceof AxiosError) {
+        if (e instanceof AxiosError) {
+          sweetAlert({
+            icon: 'error',
+            html: t(e.response?.data.message),
+            confirmButtonColor: PRIMARY_COLOR,
+            confirmButtonText: 'OK',
+          });
+        } else {
+          console.error(e);
+        }
+      }
+    },
+  });
 }

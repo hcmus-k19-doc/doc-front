@@ -8,6 +8,7 @@ import DirectorMenu from 'components/DocMenu/DirectorMenu';
 import ExpertMenu from 'components/DocMenu/ExpertMenu';
 import ManagerMenu from 'components/DocMenu/ManagerMenu';
 import StaffMenu from 'components/DocMenu/StaffMenu';
+import DocSuspenseComponent from 'components/DocSuspenseComponent';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
 import UserManagementPageWrapper from 'pages/admin/UserManagementPage';
 import IncomingDocDetailPage from 'pages/shared/IncomingDocDetailPage';
@@ -18,6 +19,9 @@ const { Content, Sider } = Layout;
 
 const SidebarPage: React.FC<MenuProps> = () => {
   const { currentUser } = useAuth();
+  const DocumentTypeManagementPage = React.lazy(
+    () => import('pages/admin/DocumentTypeManagementPage')
+  );
 
   const getRoutes = () => {
     switch (currentUser?.role) {
@@ -58,7 +62,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
         return (
           <Routes>
             <Route path='/' element={<UserManagementPageWrapper />} />
-            <Route path='/document-types' element={<UserManagementPageWrapper />} />
+            <Route
+              path='/document-types'
+              element={
+                <DocSuspenseComponent>
+                  <DocumentTypeManagementPage />
+                </DocSuspenseComponent>
+              }
+            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
