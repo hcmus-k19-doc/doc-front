@@ -2,19 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Row,
-  Select,
-  TimePicker,
-  Upload,
-  UploadProps,
-} from 'antd';
+import { Button, Col, Form, Input, message, Row, Select, Upload, UploadProps } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
@@ -30,8 +18,7 @@ import {
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
-import DateValidator from 'shared/validators/DateValidator';
-import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import { HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
@@ -103,12 +90,12 @@ function CreateOutgoingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('receiveIncomingDocPage.form.message.fileDuplicateError') as string);
+        message.error(t('create_outgoing_doc_page.form.message.file_duplicateError') as string);
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('receiveIncomingDocPage.form.message.fileMaxCountError') as string);
+        message.error(t('create_outgoing_doc_page.form.message.fileMaxCountError') as string);
       }
 
       // Check file type
@@ -162,7 +149,7 @@ function CreateOutgoingDocPage() {
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('receiveIncomingDocPage.message.success') as string,
+          html: t('create_outgoing_doc_page.message.success') as string,
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
@@ -173,7 +160,7 @@ function CreateOutgoingDocPage() {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
       showAlert({
         icon: 'error',
-        html: t('receiveIncomingDocPage.message.error') as string,
+        html: t('create_outgoing_doc_page.message.error') as string,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -181,42 +168,42 @@ function CreateOutgoingDocPage() {
   };
 
   const onCancel = () => {
-    navigate('/docin');
+    navigate('/docout');
   };
 
   return (
     <div>
-      <div className='text-lg text-primary'>{t('receiveIncomingDocPage.title')}</div>
+      <div className='text-lg text-primary'>{t('create_outgoing_doc_page.title')}</div>
       <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
           <Col span={16}>
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.docFolder')}
+                  label={t('create_outgoing_doc_page.form.doc_folder')}
                   name='folder'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.docFolderRequired') as string,
+                      message: t('create_outgoing_doc_page.form.doc_folder_required') as string,
                     },
                   ]}>
                   <Select onChange={(value: number) => handleFolderChange(value)}>
-                    {renderFolders()}{' '}
+                    {renderFolders()}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.documentType')}
+                  label={t('create_outgoing_doc_page.form.document_type')}
                   name='documentType'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.documentTypeRequired') as string,
+                      message: t('create_outgoing_doc_page.form.document_type_required') as string,
                     },
                   ]}>
                   <Select>{renderDocumentTypes()}</Select>
@@ -224,11 +211,11 @@ function CreateOutgoingDocPage() {
               </Col>
             </Row>
 
-            <Row>
+            {/* <Row>
               <Col span={11}>
                 <Form.Item
                   required
-                  label={t('receiveIncomingDocPage.form.incomingNumber')}
+                  label={t('create_outgoing_doc_page.form.release_number')}
                   name='incomingNumber'>
                   <Input disabled />
                 </Form.Item>
@@ -236,32 +223,25 @@ function CreateOutgoingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.originalSymbolNumber')}
-                  required
-                  name='originalSymbolNumber'
-                  rules={[
-                    {
-                      required: true,
-                      message: t(
-                        'receiveIncomingDocPage.form.originalSymbolNumberRequired'
-                      ) as string,
-                    },
-                  ]}>
-                  <Input />
+                  label={t('create_outgoing_doc_page.form.distribution_date')}
+                  name='distributionDate'>
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' disabled />
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.distributionOrg')}
+                  label={t('create_outgoing_doc_page.form.distribution_org')}
                   name='distributionOrg'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.distributionOrgRequired') as string,
+                      message: t(
+                        'create_outgoing_doc_page.form.distribution_org_required'
+                      ) as string,
                     },
                   ]}>
                   <Select>{renderDistributionOrg()}</Select>
@@ -270,32 +250,10 @@ function CreateOutgoingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.distributionDate')}
-                  name='distributionDate'
                   required
-                  rules={[
-                    {
-                      message: t(
-                        'receiveIncomingDocPage.form.distributionDateGreaterThanNowError'
-                      ) as string,
-                      validator: (_, value) => {
-                        const now = new Date();
-                        return DateValidator.validateBeforeAfter(value, now);
-                      },
-                    },
-                    {
-                      message: t('receiveIncomingDocPage.form.distributionDateInvalid') as string,
-                      validator: (_, value) => {
-                        const arrivingDate = form.getFieldValue('arrivingDate');
-                        return DateValidator.validateBeforeAfter(value, arrivingDate);
-                      },
-                    },
-                    {
-                      required: true,
-                      message: t('receiveIncomingDocPage.form.distributionDateRequired') as string,
-                    },
-                  ]}>
-                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
+                  label={t('create_outgoing_doc_page.form.receive_org')}
+                  name='receiveOrg'>
+                  <Input />
                 </Form.Item>
               </Col>
             </Row>
@@ -303,63 +261,13 @@ function CreateOutgoingDocPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.arrivingDate')}
-                  name='arrivingDate'
-                  required
-                  rules={[
-                    {
-                      message: t(
-                        'receiveIncomingDocPage.form.arrivingDateGreaterThanNowError'
-                      ) as string,
-                      validator: (_, value) => {
-                        const now = new Date();
-                        return DateValidator.validateBeforeAfter(value, now);
-                      },
-                    },
-                    {
-                      message: t('receiveIncomingDocPage.form.arrivingDateInvalid') as string,
-                      validator: (_, value) => {
-                        const distributionDate = form.getFieldValue('distributionDate');
-                        return DateValidator.validateBeforeAfter(distributionDate, value);
-                      },
-                    },
-                    {
-                      required: true,
-                      message: t('receiveIncomingDocPage.form.arrivingDateRequired') as string,
-                    },
-                  ]}>
-                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
-                </Form.Item>
-              </Col>
-
-              <Col span={2}></Col>
-
-              <Col span={11}>
-                <Form.Item
-                  label={t('receiveIncomingDocPage.form.arrivingTime')}
-                  name='arrivingTime'
-                  required
-                  rules={[
-                    {
-                      required: true,
-                      message: t('receiveIncomingDocPage.form.arrivingTimeRequired') as string,
-                    },
-                  ]}>
-                  <TimePicker className='w-full' />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col span={11}>
-                <Form.Item
-                  label={t('receiveIncomingDocPage.form.urgency')}
+                  label={t('create_outgoing_doc_page.form.urgency')}
                   name='urgency'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.urgencyRequired') as string,
+                      message: t('create_outgoing_doc_page.form.urgency_required') as string,
                     },
                   ]}>
                   <Select>
@@ -372,13 +280,15 @@ function CreateOutgoingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.confidentiality')}
+                  label={t('create_outgoing_doc_page.form.confidentiality')}
                   name='confidentiality'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.confidentialityRequired') as string,
+                      message: t(
+                        'create_outgoing_doc_page.form.confidentiality_required'
+                      ) as string,
                     },
                   ]}>
                   <Select>
@@ -391,42 +301,46 @@ function CreateOutgoingDocPage() {
             </Row>
 
             <Form.Item
-              label={t('receiveIncomingDocPage.form.summary')}
+              label={t('create_outgoing_doc_page.form.summary')}
               name='summary'
               required
               rules={[
                 {
                   required: true,
-                  message: t('receiveIncomingDocPage.form.summaryRequired') as string,
+                  message: t('create_outgoing_doc_page.form.summary_required') as string,
                 },
               ]}>
+              <TextArea rows={2} />
+            </Form.Item>
+
+            <Form.Item label={t('create_outgoing_doc_page.form.note')} name='note'>
               <TextArea rows={2} />
             </Form.Item>
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
             <Form.Item
-              label={t('receiveIncomingDocPage.form.files')}
+              label={t('create_outgoing_doc_page.form.files')}
               name='files'
               required
               rules={[
                 {
                   required: true,
-                  message: t('receiveIncomingDocPage.form.filesRequired') as string,
+                  message: t('create_outgoing_doc_page.form.files_required') as string,
                 },
               ]}>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
                 </p>
-                <p className='ant-upload-text'>{t('receiveIncomingDocPage.form.fileHelper')}</p>
+                <p className='ant-upload-text'>{t('create_outgoing_doc_page.form.file_helper')}</p>
               </Dragger>
             </Form.Item>
           </Col>
 
           <Row className='w-full justify-end '>
             <Button type='primary' size='large' htmlType='submit' className='mr-5'>
-              {t('receiveIncomingDocPage.form.button.save')}
+              {t('create_outgoing_doc_page.button.save')}
             </Button>
             <Button
               type='default'
@@ -435,7 +349,7 @@ function CreateOutgoingDocPage() {
               onClick={() => {
                 onCancel();
               }}>
-              {t('receiveIncomingDocPage.form.button.cancel')}
+              {t('create_outgoing_doc_page.button.cancel')}
             </Button>
           </Row>
         </Row>

@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 export default {
   LOGIN: {
     SUBTITLE: 'Hệ thống phê duyệt và phát hành văn thư',
@@ -279,6 +280,49 @@ export default {
       },
     },
   },
+
+  create_outgoing_doc_page: {
+    title: 'Soạn văn bản đi',
+    form: {
+      doc_folder: 'Sổ văn bản',
+      doc_folder_required: 'Hãy chọn sổ văn bản',
+      document_type: 'Loại văn bản',
+      document_type_required: 'Hãy chọn loại văn bản',
+      release_number: 'Số phát hành',
+      distribution_org: 'Phòng ban phát hành',
+      distribution_org_required: 'Hãy chọn phòng ban phát hành',
+      distribution_date: 'Ngày phát hành',
+      receive_org: 'Đơn vị nhận',
+      note: 'Ghi chú',
+      summary: 'Trích yếu',
+      summary_required: 'Hãy điền trích yếu',
+      signer: 'Người ký phát hành',
+      confidentiality: 'Độ mật',
+      confidentiality_required: 'Hãy chọn độ mật',
+      urgency: 'Độ khẩn',
+      urgency_required: 'Hãy chọn độ khẩn',
+      files: 'Tài liệu đính kèm',
+      files_required: 'Hãy chọn tài liệu đính kèm',
+      file_helper: 'Bấm hoặc kéo thả tệp vào đây để tải lên',
+    },
+    button: {
+      save: 'Lưu văn bản',
+      cancel: 'Hủy',
+    },
+    message: {
+      file_error: 'đính kèm không thành công.',
+      file_success: 'đã được đính kèm',
+      success: 'Chỉnh sửa văn bản thành công',
+      error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+    },
+    comment: {
+      title: 'Góp ý văn bản',
+      button: {
+        title: 'Góp ý',
+      },
+    },
+  },
+
   transfer_modal: {
     title: 'Luân chuyển văn bản tới',
     document_number: 'Văn bản số  {{id}}',
