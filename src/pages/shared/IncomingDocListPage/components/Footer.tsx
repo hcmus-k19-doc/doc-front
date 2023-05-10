@@ -54,6 +54,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
       processMethod: modalForm.getFieldValue('processMethod'),
       transferDocumentType: transferDocModalItem,
+      isTransferToSameLevel: false,
     };
     if (validateTransferDocs(selectedDocs, transferDocModalItem, transferDocDto, t)) {
       setIsModalOpen(false);

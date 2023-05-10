@@ -21,6 +21,8 @@ export default {
         RECEIVING_INCOMING_DOCUMENT: 'Tiếp nhận văn bản đến',
         PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
         OUTGOING_DOCUMENT: 'Văn bản đi',
+        outgoing_document_list: 'Danh sách văn bản đi',
+        create_outgoing_document: 'Tạo văn bản đi',
         INTERNAL_DOCUMENT: 'Văn bản nội bộ',
         users: 'Người dùng',
       },

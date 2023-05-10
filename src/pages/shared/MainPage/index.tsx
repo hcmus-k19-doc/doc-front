@@ -24,6 +24,7 @@ const MainPage: React.FC = () => {
           <Routes>
             <Route path='/' element={<SidebarPage />} />
             <Route path='/docin/*' element={<SidebarPage />} />
+            <Route path='/docout/*' element={<SidebarPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         </Layout>
