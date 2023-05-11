@@ -13,16 +13,18 @@ export default {
       RULE_MESSAGE: 'Hãy điền mật khẩu!',
     },
   },
-  MAIN_PAGE: {
-    MENU: {
-      ITEMS: {
-        LABEL: 'Văn bản đến',
-        INCOMING_DOCUMENT_LIST: 'Danh sách văn bản đến',
-        RECEIVING_INCOMING_DOCUMENT: 'Tiếp nhận văn bản đến',
-        PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
-        OUTGOING_DOCUMENT: 'Văn bản đi',
-        INTERNAL_DOCUMENT: 'Văn bản nội bộ',
+  main_page: {
+    menu: {
+      items: {
+        label: 'Văn bản đến',
+        incoming_document_list: 'Danh sách văn bản đến',
+        receiving_incoming_document: 'Tiếp nhận văn bản đến',
+        processes_incoming_document: 'Xử lý văn bản đến',
+        outgoing_document: 'Văn bản đi',
+        internal_document: 'Văn bản nội bộ',
+        admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
+        document_types: 'Loại văn bản',
       },
     },
     BUTTON: {
@@ -95,6 +97,10 @@ export default {
     },
     email: {
       existed: 'Email đã tồn tại',
+    },
+    not_found: 'Không tìm thấy người dùng',
+    password: {
+      incorrect: 'Mật khẩu không chính xác',
     },
   },
   SENDING_LEVEL: {
@@ -360,8 +366,8 @@ export default {
       },
     },
     button: {
-      add_user: 'Thêm người dùng',
-      delete_user: 'Xóa người dùng',
+      add: 'Thêm người dùng',
+      delete: 'Xóa người dùng',
     },
   },
   processing_detail_page: {
@@ -380,5 +386,30 @@ export default {
     REPORTER: 'Người gửi',
     ASSIGNEE: 'Người nhận',
     COLLABORATOR: 'Người tham gia',
+  },
+  doc: {
+    exception: {
+      concurrent_update: 'Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang.',
+    },
+  },
+  document_type_management: {
+    table: {
+      column: {
+        id: 'ID',
+        type: 'Tên loại văn bản',
+      },
+    },
+    button: {
+      add: 'Thêm loại văn bản',
+      delete: 'Xóa loại văn bản',
+    },
+    document_type: {
+      detail: {
+        title: 'Chi tiết loại văn bản',
+        id: 'ID',
+        type: 'Tên loại văn bản',
+        type_required: 'Hãy nhập tên loại văn bản',
+      },
+    },
   },
 };

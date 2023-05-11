@@ -5,8 +5,11 @@ import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-compo
 import logo from 'assets/icons/logo.png';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
+import { PRIMARY_COLOR } from 'config/constant';
+import { t } from 'i18next';
 import securityService from 'services/SecurityService';
 import userService from 'services/UserService';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import './index.css';
 
@@ -14,8 +17,8 @@ const I18N_PREFIX = 'LOGIN';
 
 const LoginPage: React.FC = () => {
   const { saveAuth, setCurrentUser } = useAuth();
-  const { t } = useTranslation();
   const [error, setError] = useState<string>();
+  const alert = useSweetAlert();
 
   const handleOnFinish = async (values: Record<string, string>) => {
     try {
@@ -25,6 +28,12 @@ const LoginPage: React.FC = () => {
       setCurrentUser(user);
     } catch (e) {
       if (axios.isAxiosError(e)) {
+        alert({
+          icon: 'error',
+          html: t(e.response?.data.message),
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
         setError(e.response?.data.message);
         console.error(e.response?.data.message);
       } else {

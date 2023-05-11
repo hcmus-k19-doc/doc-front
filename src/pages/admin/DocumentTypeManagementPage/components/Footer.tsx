@@ -8,9 +8,9 @@ import { useUserDeleteMutation, useUserReq, useUserRes } from 'shared/hooks/User
 
 import { FooterProps } from '../core/models';
 
-import UserDetailModal from './UserDetailModal';
+import DocumentTypeDetailModal from './DocumentTypeDetailModal';
 
-export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps) {
+export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes }: FooterProps) {
   const [userReqQuery, setUserReqQuery] = useUserReq();
   const { data } = useUserRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
   const { refetch } = useUserRes();
 
   function handleOnChange(page: number, pageSize: number) {
-    setSelectedUsers([]);
+    setSelectedDocumentTypes([]);
     setUserReqQuery({ ...userReqQuery, page, pageSize });
   }
 
@@ -44,7 +44,7 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
   }
 
   function handleOnClickDeleteUser() {
-    userDisableMutation.mutate(selectedUsers);
+    userDisableMutation.mutate(selectedDocumentTypes);
   }
 
   return (
@@ -56,11 +56,11 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
           icon={<FontAwesomeIcon icon={faRefresh} />}
         />
         <Button type='primary' onClick={handleOnOpenModal}>
-          {t('user_management.button.add')}
+          {t('document_type_management.button.add')}
         </Button>
 
         <Button type='primary' className='danger-button' danger onClick={handleOnClickDeleteUser}>
-          {t('user_management.button.delete')}
+          {t('document_type_management.button.delete')}
         </Button>
       </Space>
 
@@ -72,7 +72,7 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
         showTotal={(total) => t('common.pagination.show_total', { total })}
       />
 
-      <UserDetailModal
+      <DocumentTypeDetailModal
         form={modalForm}
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}

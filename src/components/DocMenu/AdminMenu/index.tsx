@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { DeliveredProcedureOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { EditOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
 import { mapPathToKeyDocIn } from 'utils/MenuUtils';
@@ -50,15 +50,23 @@ const AdminMenu = () => {
     {
       key: 'admin-management',
       icon: <EditOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.LABEL'),
+      label: t('main_page.menu.items.admin_management'),
 
       children: [
         {
           key: 'users',
-          label: t('MAIN_PAGE.MENU.ITEMS.users'),
+          label: t('main_page.menu.items.users'),
           icon: <UserOutlined />,
           onClick: () => {
             globalNavigate('/');
+          },
+        },
+        {
+          key: 'document-types',
+          label: t('main_page.menu.items.document_types'),
+          icon: <FileTextOutlined />,
+          onClick: () => {
+            globalNavigate('/document-types');
           },
         },
       ],

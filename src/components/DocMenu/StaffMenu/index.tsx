@@ -51,19 +51,19 @@ const ManagerMenu = () => {
     {
       key: 'docin',
       icon: <InboxOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.LABEL'),
+      label: t('main_page.menu.items.label'),
 
       children: [
         {
           key: 'inList',
-          label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
+          label: t('main_page.menu.items.incoming_document_list'),
           onClick: () => {
             globalNavigate('/docin');
           },
         },
         {
           key: 'inReceive',
-          label: t('MAIN_PAGE.MENU.ITEMS.RECEIVING_INCOMING_DOCUMENT'),
+          label: t('main_page.menu.items.receiving_incoming_document'),
           onClick: () => {
             globalNavigate('/docin/receive');
           },
@@ -73,7 +73,7 @@ const ManagerMenu = () => {
     {
       key: 'docout',
       icon: <DeliveredProcedureOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.OUTGOING_DOCUMENT'),
+      label: t('main_page.menu.items.outgoing_document'),
       children: [
         {
           key: 'out1',
