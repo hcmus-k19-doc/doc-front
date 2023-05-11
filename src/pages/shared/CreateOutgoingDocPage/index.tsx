@@ -9,17 +9,15 @@ import Dragger from 'antd/es/upload/Dragger';
 import { ALLOWED_FILE_TYPES, PRIMARY_COLOR } from 'config/constant';
 import {
   Confidentiality,
-  DistributionOrganizationDto,
+  DepartmentDto,
   DocumentTypeDto,
   FolderDto,
-  IncomingDocumentPostDto,
+  OutgoingDocumentPostDto,
   Urgency,
 } from 'models/doc-main-models';
-import incomingDocumentService from 'services/IncomingDocumentService';
+import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
-import { HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
-import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
 
@@ -30,7 +28,8 @@ function CreateOutgoingDocPage() {
   const [form] = useForm();
   const showAlert = useSweetAlert();
 
-  const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
+  const [foldersQuery, documentTypesQuery, distributionOrgsQuery, departmentsQuery] =
+    useDropDownFieldsQuery();
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -40,10 +39,10 @@ function CreateOutgoingDocPage() {
     ));
   };
 
-  const renderDistributionOrg = () => {
-    return distributionOrgsQuery.data?.map((org: DistributionOrganizationDto) => (
-      <Select.Option key={org.id} value={org.id}>
-        {org.name}
+  const renderDepartment = () => {
+    return departmentsQuery.data?.map((department: DepartmentDto) => (
+      <Select.Option key={department.id} value={department.id}>
+        {department.departmentName}
       </Select.Option>
     ));
   };
@@ -56,18 +55,11 @@ function CreateOutgoingDocPage() {
     ));
   };
 
-  const handleFolderChange = (value: any) => {
-    const folder: FolderDto =
-      foldersQuery.data?.find((folder: FolderDto) => folder.id === value) || ({} as FolderDto);
-    form.setFieldValue('incomingNumber', constructIncomingNumber(folder));
-  };
-
   useEffect(() => {
     form.setFieldsValue({
-      folder: foldersQuery.data?.[0].id,
-      incomingNumber: constructIncomingNumber(foldersQuery.data?.[0] || ({} as FolderDto)),
+      folder: foldersQuery.data?.[2].id, //Folder van ban di
       documentType: documentTypesQuery.data?.[0].id,
-      distributionOrg: distributionOrgsQuery.data?.[0].id,
+      publishingDepartment: departmentsQuery.data?.[0].id,
       urgency: Urgency.HIGH,
       confidentiality: Confidentiality.HIGH,
     });
@@ -129,31 +121,21 @@ function CreateOutgoingDocPage() {
 
   const onFinish = async (values: any) => {
     try {
-      const incomingDocument = new FormData();
-      values.files.fileList.forEach((file: any) => {
-        incomingDocument.append('attachments', file.originFileObj);
-      });
-
       delete values.files;
-
-      const incomingDocumentPostDto: IncomingDocumentPostDto = {
+      const outgoingDocumentPostDto: OutgoingDocumentPostDto = {
         ...values,
-        distributionDate: new Date(values.distributionDate),
-        arrivingDate: new Date(values.arrivingDate),
-        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
       };
-
-      incomingDocument.append('incomingDocumentPostDto', JSON.stringify(incomingDocumentPostDto));
-      const response = await incomingDocumentService.createIncomingDocument(incomingDocument);
-
+      const response = await outgoingDocumentService.createOutgoingDocument(
+        outgoingDocumentPostDto
+      );
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('create_outgoing_doc_page.message.success') as string,
+          html: t('create_outgoing_doc_page.message.create_success') as string,
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/docin');
+          navigate('/docout');
         });
       }
     } catch (error) {
@@ -182,16 +164,8 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   label={t('create_outgoing_doc_page.form.doc_folder')}
                   name='folder'
-                  required
-                  rules={[
-                    {
-                      required: true,
-                      message: t('create_outgoing_doc_page.form.doc_folder_required') as string,
-                    },
-                  ]}>
-                  <Select onChange={(value: number) => handleFolderChange(value)}>
-                    {renderFolders()}
-                  </Select>
+                  required>
+                  <Select disabled>{renderFolders()}</Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
@@ -234,7 +208,7 @@ function CreateOutgoingDocPage() {
               <Col span={11}>
                 <Form.Item
                   label={t('create_outgoing_doc_page.form.distribution_org')}
-                  name='distributionOrg'
+                  name='publishingDepartment'
                   required
                   rules={[
                     {
@@ -244,15 +218,21 @@ function CreateOutgoingDocPage() {
                       ) as string,
                     },
                   ]}>
-                  <Select>{renderDistributionOrg()}</Select>
+                  <Select>{renderDepartment()}</Select>
                 </Form.Item>
               </Col>
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
                   required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('create_outgoing_doc_page.form.receive_org_required') as string,
+                    },
+                  ]}
                   label={t('create_outgoing_doc_page.form.receive_org')}
-                  name='receiveOrg'>
+                  name='recipient'>
                   <Input />
                 </Form.Item>
               </Col>
@@ -312,23 +292,10 @@ function CreateOutgoingDocPage() {
               ]}>
               <TextArea rows={2} />
             </Form.Item>
-
-            <Form.Item label={t('create_outgoing_doc_page.form.note')} name='note'>
-              <TextArea rows={2} />
-            </Form.Item>
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item
-              label={t('create_outgoing_doc_page.form.files')}
-              name='files'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('create_outgoing_doc_page.form.files_required') as string,
-                },
-              ]}>
+            <Form.Item label={t('create_outgoing_doc_page.form.files')} name='files'>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />

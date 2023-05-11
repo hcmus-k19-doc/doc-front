@@ -1,4 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
+import departmentService from 'services/DepartmentService';
 import distributionOrgService from 'services/DistributionOrgService';
 import documentTypeService from 'services/DocumentTypeService';
 import folderService from 'services/FolderService';
@@ -15,6 +16,11 @@ const getDistributionOrgs = async () => {
 
 const getFolders = async () => {
   const response = await folderService.getFolders();
+  return response.data;
+};
+
+const getDepartments = async () => {
+  const response = await departmentService.getDepartments();
   return response.data;
 };
 
@@ -35,6 +41,11 @@ export const useDropDownFieldsQuery = () => {
         queryKey: ['distributionOrgs'],
         queryHash: 'distributionOrgs',
         queryFn: getDistributionOrgs,
+      },
+      {
+        queryKey: ['departments'],
+        queryHash: 'departments',
+        queryFn: getDepartments,
       },
     ],
   });

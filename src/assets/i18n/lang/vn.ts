@@ -293,6 +293,7 @@ export default {
       distribution_org_required: 'Hãy chọn phòng ban phát hành',
       distribution_date: 'Ngày phát hành',
       receive_org: 'Đơn vị nhận',
+      receive_org_required: 'Hãy điền đơn vị nhận',
       note: 'Ghi chú',
       summary: 'Trích yếu',
       summary_required: 'Hãy điền trích yếu',
@@ -313,6 +314,7 @@ export default {
       file_error: 'đính kèm không thành công.',
       file_success: 'đã được đính kèm',
       success: 'Chỉnh sửa văn bản thành công',
+      create_success: 'Tạo văn bản thành công',
       error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
     },
     comment: {
