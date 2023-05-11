@@ -3,12 +3,11 @@ import { useLocation } from 'react-router-dom';
 import { EditOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
-import { mapPathToKeyDocIn } from 'utils/MenuUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 
 const AdminMenu = () => {
   const [openKey, setOpenKey] = useState('docin');
-  const [current, setCurrent] = useState('inList');
+  const [current, setCurrent] = useState('in-list');
 
   const location = useLocation();
 
@@ -25,17 +24,19 @@ const AdminMenu = () => {
   const handleDocInMenuKeys = (path: string[]) => {
     setOpenKey('docin');
     if (!path[2]) {
-      setCurrent('inList');
+      setCurrent('in-list');
     } else {
-      if (path[2] === 'detail') {
-        setOpenKey('');
-      }
-      setCurrent(mapPathToKeyDocIn(path[2]));
+      setCurrent(path[2]);
     }
   };
   // TODO: handle docout menu keys
   const handleDocOutMenuKeys = (path: string[]) => {
     setOpenKey('docout');
+    if (!path[2]) {
+      setCurrent('outList');
+    } else {
+      setCurrent(path[2]);
+    }
   };
 
   const onSelect = ({ key }: { key: string }) => {
@@ -75,7 +76,7 @@ const AdminMenu = () => {
 
   const directorMenu: MenuProps = {
     mode: 'inline',
-    defaultSelectedKeys: ['inList'],
+    defaultSelectedKeys: ['in-list'],
     defaultOpenKeys: ['docin'],
     items: directorMenuItems,
   };

@@ -6,6 +6,10 @@ export interface CommentDto extends DocAbstractDto {
     content: string;
 }
 
+export interface DepartmentDto extends DocAbstractDto {
+    departmentName: string;
+}
+
 export interface DistributionOrganizationDto extends DocAbstractDto {
     name: string;
     symbol: string;
@@ -96,6 +100,29 @@ export interface TransferDocumentModalSettingDto {
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
     defaultComponent: string;
+}
+
+export interface OutgoingDocumentGetDto {
+    outgoingNumber: string;
+    recipient: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    documentType: DocumentTypeDto;
+    folder: FolderDto;
+    releaseDate: DateAsString;
+    publishingDepartment: DepartmentDto;
+}
+
+export interface OutgoingDocumentPostDto {
+    documentType: number;
+    folder: number;
+    publishingDepartment: number;
+    recipient: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    publishingDate: DateAsString;
 }
 
 export interface ProcessingDetailsDto {

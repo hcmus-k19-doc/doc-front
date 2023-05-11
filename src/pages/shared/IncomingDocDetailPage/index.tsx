@@ -41,9 +41,9 @@ function IncomingDocPage() {
 
   /* 2^9 - 1 = 511 (9 cái nút)
 
-  0 thu thập
   0 chỉnh sửa
-  0 soạn vb bc
+  0 thu thập
+  0 trình lãnh đạo
   0 chuyển xử lý
   0 phân công
   0 góp ý văn bản
@@ -51,14 +51,12 @@ function IncomingDocPage() {
   0 trả lại
   0 yêu cầu gia hạn
 
-  011100011 (theo chiều từ trên xún) --> 371 --> role = 371: chuyên viên
-
-  110100000 (theo chiều từ trên xún) --> 416 --> role = 416: chuyên viên chính
+  011100000 (theo chiều từ trên xún) --> 224 --> role = 224: chuyên viên chính
 
   Xem btn arr trong DocButtonList */
 
   const data = {
-    role: 416,
+    role: 224,
   };
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
@@ -201,7 +199,7 @@ function IncomingDocPage() {
                     },
                   ]}>
                   <Select onChange={(value: number) => handleFolderChange(value)}>
-                    {renderFolders()}{' '}
+                    {renderFolders()}
                   </Select>
                 </Form.Item>
               </Col>
