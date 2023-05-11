@@ -445,6 +445,7 @@ export default {
       column: {
         order: 'STT',
         type: 'Tên loại văn bản',
+        created_by: 'Người tạo',
       },
     },
     button: {

@@ -53,6 +53,7 @@ export function usePaginationDocumentTypesRes() {
         return {
           key: item.id,
           id: item.id,
+          createdBy: item.createdBy,
           order: index + 1,
           version: item.version,
           type: item.type,
