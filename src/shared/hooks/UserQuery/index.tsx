@@ -44,10 +44,11 @@ export function useUserRes() {
         query.pageSize
       );
       const totalElements = res.totalElements;
-      const rowsData: UserTableRowDataType[] = res.payload.map((item) => {
+      const rowsData: UserTableRowDataType[] = res.payload.map((item, index) => {
         return {
           key: item.id,
           id: item.id,
+          order: index + 1,
           version: item.version,
           username: item.username,
           email: item.email,

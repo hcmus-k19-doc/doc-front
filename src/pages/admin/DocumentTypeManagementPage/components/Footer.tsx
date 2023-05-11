@@ -4,6 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { t } from 'i18next';
+import {
+  useDocumentTypeDeleteMutation,
+  useDocumentTypesReq,
+  usePaginationDocumentTypesRes,
+} from 'shared/hooks/DocumentTypesQuery';
 import { useUserDeleteMutation, useUserReq, useUserRes } from 'shared/hooks/UserQuery';
 
 import { FooterProps } from '../core/models';
@@ -11,12 +16,11 @@ import { FooterProps } from '../core/models';
 import DocumentTypeDetailModal from './DocumentTypeDetailModal';
 
 export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes }: FooterProps) {
-  const [userReqQuery, setUserReqQuery] = useUserReq();
-  const { data } = useUserRes();
+  const [userReqQuery, setUserReqQuery] = useDocumentTypesReq();
+  const { data, refetch } = usePaginationDocumentTypesRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
-  const userDisableMutation = useUserDeleteMutation();
-  const { refetch } = useUserRes();
+  const documentTypeDeleteMutation = useDocumentTypeDeleteMutation();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedDocumentTypes([]);
@@ -44,7 +48,7 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
   }
 
   function handleOnClickDeleteUser() {
-    userDisableMutation.mutate(selectedDocumentTypes);
+    documentTypeDeleteMutation.mutate(selectedDocumentTypes);
   }
 
   return (
@@ -59,7 +63,12 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
           {t('document_type_management.button.add')}
         </Button>
 
-        <Button type='primary' className='danger-button' danger onClick={handleOnClickDeleteUser}>
+        <Button
+          type='primary'
+          className='danger-button'
+          danger
+          onClick={handleOnClickDeleteUser}
+          disabled={selectedDocumentTypes.length === 0}>
           {t('document_type_management.button.delete')}
         </Button>
       </Space>

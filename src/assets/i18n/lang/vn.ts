@@ -357,6 +357,7 @@ export default {
   user_management: {
     table: {
       column: {
+        order: 'STT',
         id: 'ID',
         username: 'Tên người dùng',
         email: 'Email',
@@ -395,7 +396,7 @@ export default {
   document_type_management: {
     table: {
       column: {
-        id: 'ID',
+        order: 'STT',
         type: 'Tên loại văn bản',
       },
     },
