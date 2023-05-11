@@ -68,9 +68,13 @@ async function searchDocumentTypes(
   return data;
 }
 
-async function createDocumentType(documentTypeDto: DocumentTypeDto) {
+async function saveDocumentType(documentTypeDto: DocumentTypeDto) {
   const { data } = await axios.post<number>(`${ADMIN_URL}/document-types`, documentTypeDto);
   return data;
+}
+
+async function deleteDocumentTypeByIds(ids: number[]) {
+  await axios.delete(`${ADMIN_URL}/document-types`, { data: ids });
 }
 
 const AdminService = {
@@ -80,7 +84,8 @@ const AdminService = {
   updateUser,
   deleteUsers,
   searchDocumentTypes,
-  saveDocumentType: createDocumentType,
+  saveDocumentType,
+  deleteDocumentTypeByIds,
 };
 
 export default AdminService;

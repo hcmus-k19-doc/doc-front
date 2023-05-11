@@ -15,6 +15,10 @@ import './index.css';
 
 const columns: ColumnsType<UserTableRowDataType> = [
   {
+    title: t('user_management.table.column.order'),
+    dataIndex: 'order',
+  },
+  {
     title: t('user_management.table.column.id'),
     dataIndex: 'id',
   },

@@ -12,11 +12,10 @@ import UserDetailModal from './UserDetailModal';
 
 export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps) {
   const [userReqQuery, setUserReqQuery] = useUserReq();
-  const { data } = useUserRes();
+  const { data, refetch } = useUserRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const userDisableMutation = useUserDeleteMutation();
-  const { refetch } = useUserRes();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedUsers([]);

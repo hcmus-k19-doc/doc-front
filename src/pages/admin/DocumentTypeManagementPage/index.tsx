@@ -14,8 +14,8 @@ import './index.css';
 
 const columns: ColumnsType<DocumentTypeTableRowDataType> = [
   {
-    title: t('document_type_management.table.column.id'),
-    dataIndex: 'id',
+    title: t('document_type_management.table.column.order'),
+    dataIndex: 'order',
   },
   {
     title: t('document_type_management.table.column.type'),
