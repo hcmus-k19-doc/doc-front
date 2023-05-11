@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 export default {
   LOGIN: {
     SUBTITLE: 'Hệ thống phê duyệt và phát hành văn thư',
@@ -14,18 +13,19 @@ export default {
       RULE_MESSAGE: 'Hãy điền mật khẩu!',
     },
   },
-  MAIN_PAGE: {
-    MENU: {
-      ITEMS: {
-        LABEL: 'Văn bản đến',
-        INCOMING_DOCUMENT_LIST: 'Danh sách văn bản đến',
-        RECEIVING_INCOMING_DOCUMENT: 'Tiếp nhận văn bản đến',
-        PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
-        OUTGOING_DOCUMENT: 'Văn bản đi',
-        outgoing_document_list: 'Danh sách văn bản đi',
+  main_page: {
+    menu: {
+      items: {
+        label: 'Văn bản đến',
+        incoming_document_list: 'Danh sách văn bản đến',
+        receiving_incoming_document: 'Tiếp nhận văn bản đến',
         create_outgoing_document: 'Tạo văn bản đi',
-        INTERNAL_DOCUMENT: 'Văn bản nội bộ',
+        processes_incoming_document: 'Xử lý văn bản đến',
+        outgoing_document: 'Văn bản đi',
+        internal_document: 'Văn bản nội bộ',
+        admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
+        document_types: 'Loại văn bản',
       },
     },
     BUTTON: {
@@ -98,6 +98,10 @@ export default {
     },
     email: {
       existed: 'Email đã tồn tại',
+    },
+    not_found: 'Không tìm thấy người dùng',
+    password: {
+      incorrect: 'Mật khẩu không chính xác',
     },
   },
   SENDING_LEVEL: {
@@ -253,6 +257,13 @@ export default {
       files: 'Tài liệu đính kèm',
       filesRequired: 'Hãy chọn tài liệu đính kèm',
       fileHelper: 'Bấm hoặc kéo thả tệp vào đây để tải lên',
+      select: {
+        option: {
+          HIGH: 'Cao',
+          MEDIUM: 'Trung bình',
+          LOW: 'Thấp',
+        },
+      },
     },
     button: {
       collect: 'Thu thập',
@@ -279,10 +290,25 @@ export default {
         title: 'Góp ý',
       },
     },
+    processing_step: {
+      title: 'Tiến độ xử lý',
+      step_1: {
+        title: 'Giám đốc',
+        description: '{{department}} - {{fullName}}',
+      },
+      step_2: {
+        title: 'Chánh văn phòng',
+        description: '{{department}} - {{fullName}}',
+      },
+      step_3: {
+        title: 'Chuyên viên',
+        description: '{{department}} - {{fullName}}',
+      },
+    },
   },
 
   create_outgoing_doc_page: {
-    title: 'Soạn văn bản đi',
+    title: 'Tạo văn bản đi',
     form: {
       doc_folder: 'Sổ văn bản',
       doc_folder_required: 'Hãy chọn sổ văn bản',
@@ -347,6 +373,7 @@ export default {
       director: 'Ban giám đốc',
       chief_of_office: 'Chánh văn phòng',
       secretary: 'Văn thư',
+      expert: 'Chuyên viên',
     },
     form: {
       assignee_required: 'Hãy chọn người nhận',
@@ -354,12 +381,13 @@ export default {
       processing_time_invalid: 'Hạn xử lý không hợp lệ',
       processing_time_infinite: 'Không thời hạn',
       collaborators_required: 'Hãy chọn người tham gia',
+      process_method_required: 'Hãy chọn cách thức xử lý',
       collaborator_can_not_has_same_value_with_assignee:
         'Người tham gia không được trùng với người nhận',
       only_unprocessed_docs_can_be_transferred_to_director:
-        'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc',
-      only_in_progress_docs_can_be_transferred_to_manager_or_secretary:
-        'Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng hoặc Văn thư',
+        'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc hoặc Văn thư cùng cấp',
+      only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert:
+        'Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng, Văn thư hoặc Chuyên viên',
     },
   },
   internal_server_error_page: {
@@ -376,6 +404,7 @@ export default {
   user_management: {
     table: {
       column: {
+        order: 'STT',
         id: 'ID',
         username: 'Tên người dùng',
         email: 'Email',
@@ -385,8 +414,50 @@ export default {
       },
     },
     button: {
-      add_user: 'Thêm người dùng',
-      delete_user: 'Xóa người dùng',
+      add: 'Thêm người dùng',
+      delete: 'Xóa người dùng',
+    },
+  },
+  processing_detail_page: {
+    title: 'Chi tiết xử lý',
+    table: {
+      column: {
+        step: 'Bước',
+        incoming_number: 'Số đến',
+        full_name: 'Tên người xử lý',
+        department: 'Phòng ban',
+        role: 'Vai trò',
+      },
+    },
+  },
+  processing_user_role: {
+    REPORTER: 'Người gửi',
+    ASSIGNEE: 'Người nhận',
+    COLLABORATOR: 'Người tham gia',
+  },
+  doc: {
+    exception: {
+      concurrent_update: 'Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang.',
+    },
+  },
+  document_type_management: {
+    table: {
+      column: {
+        order: 'STT',
+        type: 'Tên loại văn bản',
+      },
+    },
+    button: {
+      add: 'Thêm loại văn bản',
+      delete: 'Xóa loại văn bản',
+    },
+    document_type: {
+      detail: {
+        title: 'Chi tiết loại văn bản',
+        id: 'ID',
+        type: 'Tên loại văn bản',
+        type_required: 'Hãy nhập tên loại văn bản',
+      },
     },
   },
 };

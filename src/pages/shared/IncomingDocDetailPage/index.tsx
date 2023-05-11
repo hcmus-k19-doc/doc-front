@@ -26,6 +26,8 @@ import DateValidator from 'shared/validators/DateValidator';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
+import ProcessingStepComponent from '../../../components/ProcessingStepComponent';
+
 import './index.css';
 
 function IncomingDocPage() {
@@ -357,9 +359,15 @@ function IncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
-                    <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
-                    <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
+                    <Select.Option value={Urgency.HIGH}>
+                      {t(`incomingDocDetailPage.form.select.option.${Urgency.HIGH}`)}
+                    </Select.Option>
+                    <Select.Option value={Urgency.MEDIUM}>
+                      {t(`incomingDocDetailPage.form.select.option.${Urgency.MEDIUM}`)}
+                    </Select.Option>
+                    <Select.Option value={Urgency.LOW}>
+                      {t(`incomingDocDetailPage.form.select.option.${Urgency.LOW}`)}
+                    </Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -376,9 +384,15 @@ function IncomingDocPage() {
                     },
                   ]}>
                   <Select>
-                    <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
-                    <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
-                    <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
+                    <Select.Option value={Confidentiality.HIGH}>
+                      {t(`incomingDocDetailPage.form.select.option.${Confidentiality.HIGH}`)}
+                    </Select.Option>
+                    <Select.Option value={Confidentiality.MEDIUM}>
+                      {t(`incomingDocDetailPage.form.select.option.${Confidentiality.MEDIUM}`)}
+                    </Select.Option>
+                    <Select.Option value={Confidentiality.LOW}>
+                      {t(`incomingDocDetailPage.form.select.option.${Confidentiality.LOW}`)}
+                    </Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -426,6 +440,12 @@ function IncomingDocPage() {
           isEditing={isEditing}
           onFinishEditing={onFinishEditing}
         />
+      </Row>
+      <div className='text-lg text-primary'>{t('incomingDocDetailPage.processing_step.title')}</div>
+      <Row className='my-10'>
+        <Col span={16}>
+          <ProcessingStepComponent />
+        </Col>
       </Row>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
       <Row>

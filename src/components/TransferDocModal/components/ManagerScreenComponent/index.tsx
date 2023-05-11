@@ -49,7 +49,11 @@ const processMethodOptions: SelectProps['options'] = [
   { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
 ];
 
-const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({ form, selectedDocs }) => {
+const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
+  form,
+  selectedDocs,
+  isTransferToSameLevel,
+}) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
   const { currentUser } = useAuth();

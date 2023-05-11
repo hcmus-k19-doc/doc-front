@@ -3,6 +3,7 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Breadcrumb, Layout, theme } from 'antd';
 import PageHeader from 'components/PageHeader';
+import ProcessingDetailsPage from 'pages/shared/ProcessingDetailsPage';
 import SidebarPage from 'pages/shared/SidebarPage';
 
 const { Content, Footer } = Layout;
@@ -18,7 +19,7 @@ const MainPage: React.FC = () => {
         <div className='mt-4 mb-10'></div>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
           <Routes>
-            <Route path='/' element={<SidebarPage />} />
+            <Route path='/*' element={<SidebarPage />} />
             <Route path='/docin/*' element={<SidebarPage />} />
             <Route path='/docout/*' element={<SidebarPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />

@@ -7,7 +7,7 @@ import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
+import { useExpertTransferRes } from 'shared/hooks/ExpertTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
@@ -31,13 +31,13 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 
-const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
+const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
 }) => {
   const { t } = useTranslation();
-  const { directors } = useDirectorTransferRes();
+  const { experts } = useExpertTransferRes();
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
@@ -114,7 +114,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
         </Col>
         <Col span='16'>
           <Form.Item name='assignee'>
-            <Select style={{ width: '100%' }} allowClear options={directors} />
+            <Select style={{ width: '100%' }} allowClear options={experts} />
           </Form.Item>
         </Col>
       </Row>
@@ -127,7 +127,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
         </Col>
         <Col span='16'>
           <Form.Item name='collaborators'>
-            <Select mode='multiple' allowClear options={directors} />
+            <Select mode='multiple' allowClear options={experts} />
           </Form.Item>
         </Col>
       </Row>
@@ -161,4 +161,4 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
   );
 };
 
-export default DirectorScreenComponent;
+export default ExpertScreenComponent;

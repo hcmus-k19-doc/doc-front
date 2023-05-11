@@ -51,12 +51,12 @@ const ExpertMenu = () => {
     {
       key: 'docin',
       icon: <InboxOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.LABEL'),
+      label: t('main_page.menu.items.label'),
 
       children: [
         {
           key: 'in-list',
-          label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
+          label: t('main_page.menu.items.incoming_document_list'),
           onClick: () => {
             globalNavigate('/docin');
           },
@@ -66,7 +66,7 @@ const ExpertMenu = () => {
     {
       key: 'docout',
       icon: <DeliveredProcedureOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.OUTGOING_DOCUMENT'),
+      label: t('main_page.menu.items.outgoing_document'),
       children: [
         {
           key: 'out-list',

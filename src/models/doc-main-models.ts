@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-11 23:27:34.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -18,8 +18,8 @@ export interface DistributionOrganizationDto extends DocAbstractDto {
 export interface DocAbstractDto {
     id: number;
     version: number;
-    createdDate: DateAsString;
-    createdBy: string;
+    createdDate?: DateAsString;
+    createdBy?: string;
 }
 
 export interface DocPaginationDto<T> {
@@ -38,6 +38,9 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+}
+
+export interface DocumentTypeSearchCriteria {
 }
 
 export interface FolderDto extends DocAbstractDto {
@@ -199,6 +202,10 @@ export interface TransferDocumentMenuConfig {
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
+}
+
+export interface DepartmentDto extends DocAbstractDto {
+    departmentName: string;
 }
 
 export type DateAsString = string;

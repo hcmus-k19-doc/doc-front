@@ -1,5 +1,5 @@
 import React, { createContext, FC, useContext, useEffect, useRef, useState } from 'react';
-import { LoadingOutlined } from '@ant-design/icons';
+import TopBarProgress from 'react-topbar-progress-indicator';
 import { UserDto } from 'models/doc-main-models';
 import { TokenDto } from 'models/models';
 import userService from 'services/UserService';
@@ -75,7 +75,7 @@ export const AuthInit: React.FC<Props> = ({ children }) => {
 
   return showSplashScreen ? (
     <div className='flex justify-center'>
-      <LoadingOutlined style={{ fontSize: 150 }} spin />
+      <TopBarProgress />
     </div>
   ) : (
     <>{children}</>

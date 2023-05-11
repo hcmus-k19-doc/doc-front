@@ -4,56 +4,35 @@ import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import { RecoilRoot } from 'recoil';
-import { useUserRes } from 'shared/hooks/UserQuery';
+import { usePaginationDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 
+import DocumentTypeDetailModal from './components/DocumentTypeDetailModal';
 import Footer from './components/Footer';
-import UserDetailModal from './components/UserDetailModal';
-import UserSearchForm from './components/UserSearchForm';
-import { UserTableRowDataType } from './core/models';
+import { DocumentTypeTableRowDataType } from './core/models';
 
 import './index.css';
 
-const columns: ColumnsType<UserTableRowDataType> = [
+const columns: ColumnsType<DocumentTypeTableRowDataType> = [
   {
-    title: t('user_management.table.column.order'),
+    title: t('document_type_management.table.column.order'),
     dataIndex: 'order',
   },
   {
-    title: t('user_management.table.column.id'),
-    dataIndex: 'id',
-  },
-  {
-    title: t('user_management.table.column.username'),
-    dataIndex: 'username',
-  },
-  {
-    title: t('user_management.table.column.email'),
-    dataIndex: 'email',
-  },
-  {
-    title: t('user_management.table.column.full_name'),
-    dataIndex: 'fullName',
-  },
-  {
-    title: t('user_management.table.column.role'),
-    dataIndex: 'translatedRole',
-  },
-  {
-    title: t('user_management.table.column.department'),
-    dataIndex: 'department',
+    title: t('document_type_management.table.column.type'),
+    dataIndex: 'type',
   },
 ];
 
-function UserManagementPage() {
-  const { isLoading, data } = useUserRes();
-  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+function DocumentTypeManagementPage() {
+  const { isLoading, data } = usePaginationDocumentTypesRes();
+  const [selectedDocumentTypes, setSelectedDocumentTypes] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
 
   const rowSelection = {
-    selectedRowKeys: selectedUsers,
-    onChange: (selectedRowKeys: React.Key[], selectedRows: UserTableRowDataType[]) => {
-      setSelectedUsers(selectedRows.map((doc) => doc.id));
+    selectedRowKeys: selectedDocumentTypes,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DocumentTypeTableRowDataType[]) => {
+      setSelectedDocumentTypes(selectedRows.map((doc) => doc.id));
     },
   };
 
@@ -76,8 +55,6 @@ function UserManagementPage() {
     <>
       <div className='text-lg text-primary'>{t('main_page.menu.items.users')}</div>
 
-      <UserSearchForm />
-
       <Divider />
 
       <Table
@@ -97,10 +74,15 @@ function UserManagementPage() {
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
-        footer={() => <Footer selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />}
+        footer={() => (
+          <Footer
+            selectedDocumentTypes={selectedDocumentTypes}
+            setSelectedDocumentTypes={setSelectedDocumentTypes}
+          />
+        )}
       />
 
-      <UserDetailModal
+      <DocumentTypeDetailModal
         form={modalForm}
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}
@@ -111,10 +93,10 @@ function UserManagementPage() {
   );
 }
 
-export default function UserManagementPageWrapper() {
+export default function DocumentTypeManagementPageWrapper() {
   return (
     <RecoilRoot>
-      <UserManagementPage />
+      <DocumentTypeManagementPage />
     </RecoilRoot>
   );
 }

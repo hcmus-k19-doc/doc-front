@@ -53,19 +53,28 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
       processMethod: modalForm.getFieldValue('processMethod'),
-      transferDocumentType: transferDocModalItem,
-      isTransferToSameLevel: false,
+      transferDocumentType: transferDocModalItem.transferDocumentType,
+      isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
-    if (validateTransferDocs(selectedDocs, transferDocModalItem, transferDocDto, t)) {
+
+    console.log('transferDocDto', transferDocDto);
+
+    if (
+      validateTransferDocs(
+        selectedDocs,
+        transferDocModalItem.transferDocumentType,
+        transferDocDto,
+        t,
+        currentUser
+      )
+    ) {
       setIsModalOpen(false);
       modalForm.submit();
       console.log(modalForm.getFieldsValue());
       modalForm.resetFields();
       transferQuerySetter(transferDocDto);
-      console.log(transferDocDto, transferDocModalItem);
       try {
         const response = await incomingDocumentService.transferDocuments(transferDocDto);
-        console.log(response);
         if (response.status === 200) {
           // TODO: refetch data
           showAlert({
