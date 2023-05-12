@@ -121,13 +121,20 @@ function CreateOutgoingDocPage() {
 
   const onFinish = async (values: any) => {
     try {
+      const outgoingDocument = new FormData();
+      values.files.fileList.forEach((file: any) => {
+        outgoingDocument.append('attachments', file.originFileObj);
+      });
+
       delete values.files;
+
       const outgoingDocumentPostDto: OutgoingDocumentPostDto = {
         ...values,
       };
-      const response = await outgoingDocumentService.createOutgoingDocument(
-        outgoingDocumentPostDto
-      );
+
+      outgoingDocument.append('outgoingDocumentPostDto', JSON.stringify(outgoingDocumentPostDto));
+      const response = await outgoingDocumentService.createOutgoingDocument(outgoingDocument);
+
       if (response.status === 200) {
         showAlert({
           icon: 'success',
