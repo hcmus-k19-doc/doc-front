@@ -2,10 +2,14 @@ import { message } from 'antd';
 import {
   DocSystemRoleEnum,
   IncomingDocumentDto,
+  ProcessingDocumentRoleEnum,
   TransferDocDto,
   TransferDocumentType,
   UserDto,
 } from 'models/doc-main-models';
+import incomingDocumentService from 'services/IncomingDocumentService';
+
+import { GetTransferDocumentDetailRequest } from './../../models/doc-main-models';
 
 const validateAssignee = (assigneeId?: number, t?: any) => {
   if (!assigneeId) {
@@ -71,7 +75,62 @@ const isValidProcessingTime = (
   return true;
 };
 
-const validateTransferDocs = (
+const isValidUserWithRole = async (transferDocDto: TransferDocDto, t?: any) => {
+  let isValidUserWithRoleResult = true;
+  // kiem tra xem cac assignee va collaborator co dang xu ly van ban nay role hien tai hay khong
+  transferDocDto?.documentIds?.forEach(async (docId) => {
+    const assigneeRequest: GetTransferDocumentDetailRequest = {
+      incomingDocumentId: docId,
+      userId: transferDocDto.assigneeId as number,
+      role: ProcessingDocumentRoleEnum.ASSIGNEE,
+    };
+    // call the validateUserWithRoleAndDocId api
+    const assigneeResponse = await incomingDocumentService.validateUserWithRoleAndDocId(
+      assigneeRequest
+    );
+    console.log('assigneeResponse', assigneeResponse);
+
+    if (!assigneeResponse) {
+      console.log('1');
+      isValidUserWithRoleResult = false;
+      transferDocDto.collaboratorIds?.forEach(async (collaboratorId) => {
+        const collaboratorRequest: GetTransferDocumentDetailRequest = {
+          incomingDocumentId: docId,
+          userId: collaboratorId as number,
+          role: ProcessingDocumentRoleEnum.COLLABORATOR,
+        };
+        const collaboratorResponse = await incomingDocumentService.validateUserWithRoleAndDocId(
+          collaboratorRequest
+        );
+        console.log('collaboratorResponse', collaboratorResponse);
+        if (!collaboratorResponse) {
+          console.log('3');
+          isValidUserWithRoleResult = false;
+          return isValidUserWithRoleResult;
+        } else {
+          console.log('4');
+          isValidUserWithRoleResult = true;
+          return isValidUserWithRoleResult;
+        }
+      });
+      return isValidUserWithRoleResult;
+    } else {
+      console.log('2');
+      isValidUserWithRoleResult = true;
+      return isValidUserWithRoleResult;
+    }
+  });
+  console.log('isValidUserWithRoleResult', isValidUserWithRoleResult);
+
+  if (isValidUserWithRoleResult) {
+    message.error(t('transfer_modal.form.some_user_is_already_assigned_to_this_doc'));
+    return false;
+  }
+
+  return true;
+};
+
+const validateTransferDocs = async (
   selectedDocs: IncomingDocumentDto[],
   transferDocModalItem: TransferDocumentType,
   transferDocDto: TransferDocDto,
@@ -85,7 +144,10 @@ const validateTransferDocs = (
     if (!validateAssignee(transferDocDto?.assigneeId, t)) {
       return false;
     }
-    if (!isUnprocessedDocs(selectedDocs, t)) {
+    if (currentUser?.role === DocSystemRoleEnum.VAN_THU && !isUnprocessedDocs(selectedDocs, t)) {
+      return false;
+    }
+    if (currentUser?.role !== DocSystemRoleEnum.VAN_THU && !isProcessingDocs(selectedDocs, t)) {
       return false;
     }
   } else {
@@ -127,6 +189,12 @@ const validateTransferDocs = (
         return false;
       }
     }
+  }
+
+  const isValidUserWithRoleResult = await isValidUserWithRole(transferDocDto, t);
+
+  if (!isValidUserWithRoleResult) {
+    return false;
   }
 
   return true;

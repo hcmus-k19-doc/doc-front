@@ -2,6 +2,7 @@ import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DocPaginationDto,
+  GetTransferDocumentDetailRequest,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
   ProcessingDetailsDto,
@@ -72,6 +73,9 @@ async function getTransferDocumentsSetting() {
   return response.data;
 }
 
+async function validateUserWithRoleAndDocId(request: GetTransferDocumentDetailRequest) {
+  return (await axios.post<boolean>(`${INCOMING_DOCUMENTS_URL}/validate-user-role`, request)).data;
+}
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
@@ -80,6 +84,7 @@ const incomingDocumentService = {
   transferDocuments,
   getProcessingDetails,
   getTransferDocumentsSetting,
+  validateUserWithRoleAndDocId,
 };
 
 export default incomingDocumentService;
