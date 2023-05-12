@@ -4,52 +4,42 @@ import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import { RecoilRoot } from 'recoil';
-import { useUserRes } from 'shared/hooks/UserQuery';
+import { usePaginationDepartments } from 'shared/hooks/DepartmentQuery';
 
+import DepartmentDetailModal from './components/DepartmentDetailModal';
 import Footer from './components/Footer';
-import UserDetailModal from './components/UserDetailModal';
-import UserSearchForm from './components/UserSearchForm';
-import { UserTableRowDataType } from './core/models';
+import { DepartmentTableRowDataType } from './core/models';
 
 import './index.css';
 
-const columns: ColumnsType<UserTableRowDataType> = [
+const columns: ColumnsType<DepartmentTableRowDataType> = [
   {
-    title: t('user_management.table.column.order'),
+    title: t('department_management.table.column.order'),
     dataIndex: 'order',
+    align: 'center',
   },
   {
-    title: t('user_management.table.column.username'),
-    dataIndex: 'username',
+    title: t('department_management.table.column.name'),
+    dataIndex: 'departmentName',
+    align: 'center',
   },
   {
-    title: t('user_management.table.column.email'),
-    dataIndex: 'email',
-  },
-  {
-    title: t('user_management.table.column.full_name'),
-    dataIndex: 'fullName',
-  },
-  {
-    title: t('user_management.table.column.role'),
-    dataIndex: 'translatedRole',
-  },
-  {
-    title: t('user_management.table.column.department'),
-    dataIndex: 'department',
+    title: t('department_management.table.column.created_by'),
+    dataIndex: 'createdBy',
+    align: 'center',
   },
 ];
 
-function UserManagementPage() {
-  const { isLoading, data } = useUserRes();
-  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+function DepartmentManagementPage() {
+  const { isLoading, data } = usePaginationDepartments();
+  const [selectedDepartments, setSelectedDepartments] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
 
   const rowSelection = {
-    selectedRowKeys: selectedUsers,
-    onChange: (selectedRowKeys: React.Key[], selectedRows: UserTableRowDataType[]) => {
-      setSelectedUsers(selectedRows.map((doc) => doc.id));
+    selectedRowKeys: selectedDepartments,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DepartmentTableRowDataType[]) => {
+      setSelectedDepartments(selectedRows.map((doc) => doc.id));
     },
   };
 
@@ -70,9 +60,7 @@ function UserManagementPage() {
 
   return (
     <>
-      <div className='text-lg text-primary'>{t('main_page.menu.items.users')}</div>
-
-      <UserSearchForm />
+      <div className='text-lg text-primary'>{t('main_page.menu.items.departments')}</div>
 
       <Divider />
 
@@ -93,10 +81,15 @@ function UserManagementPage() {
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
-        footer={() => <Footer selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />}
+        footer={() => (
+          <Footer
+            selectedDepartments={selectedDepartments}
+            setSelectedDepartments={setSelectedDepartments}
+          />
+        )}
       />
 
-      <UserDetailModal
+      <DepartmentDetailModal
         form={modalForm}
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}
@@ -107,10 +100,10 @@ function UserManagementPage() {
   );
 }
 
-export default function UserManagementPageWrapper() {
+export default function DepartmentManagementPageWrapper() {
   return (
     <RecoilRoot>
-      <UserManagementPage />
+      <DepartmentManagementPage />
     </RecoilRoot>
   );
 }

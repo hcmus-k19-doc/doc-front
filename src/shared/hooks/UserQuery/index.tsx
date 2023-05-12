@@ -108,6 +108,7 @@ export function useUserMutation() {
           html: t(e.response?.data.message),
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
+          showConfirmButton: true,
         });
       } else {
         console.error(e);

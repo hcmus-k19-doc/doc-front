@@ -27,6 +27,8 @@ const queryState = atom<DocDocumentTypeQueryState>({
   },
 });
 
+const QUERY_PAGINATION_DOCUMENT_TYPES = 'QUERY.PAGINATION.DOCUMENT_TYPES';
+
 export function useDocumentTypesRes() {
   return useQuery({
     queryKey: ['QUERIES.DOCUMENT_TYPES'],
@@ -41,7 +43,7 @@ export function usePaginationDocumentTypesRes() {
   const query = useRecoilValue<DocDocumentTypeQueryState>(queryState);
 
   return useQuery<DocumentTypeTableDataType>({
-    queryKey: ['QUERIES.DOCUMENT_TYPES', query],
+    queryKey: [QUERY_PAGINATION_DOCUMENT_TYPES, query],
     queryFn: async () => {
       const res = await adminService.searchDocumentTypes(
         query.searchCriteria,
@@ -90,7 +92,7 @@ export function useDocumentTypeMutation() {
       return await adminService.saveDocumentType(documentTypeDto);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['QUERIES.DOCUMENT_TYPES', query]);
+      queryClient.invalidateQueries([QUERY_PAGINATION_DOCUMENT_TYPES, query]);
     },
     onError: (e) => {
       if (e instanceof AxiosError) {
@@ -100,6 +102,7 @@ export function useDocumentTypeMutation() {
             html: t(e.response?.data.message),
             confirmButtonColor: PRIMARY_COLOR,
             confirmButtonText: 'OK',
+            showConfirmButton: true,
           });
         } else {
           console.error(e);
@@ -119,7 +122,7 @@ export function useDocumentTypeDeleteMutation() {
       return await adminService.deleteDocumentTypeByIds(ids);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['QUERIES.DOCUMENT_TYPES', query]);
+      queryClient.invalidateQueries([QUERY_PAGINATION_DOCUMENT_TYPES, query]);
     },
   });
 }

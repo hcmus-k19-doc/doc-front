@@ -26,6 +26,7 @@ export default {
         admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
         document_types: 'Loại văn bản',
+        departments: 'Phòng ban',
       },
     },
     BUTTON: {
@@ -405,7 +406,6 @@ export default {
     table: {
       column: {
         order: 'STT',
-        id: 'ID',
         username: 'Tên người dùng',
         email: 'Email',
         full_name: 'Họ và tên',
@@ -459,6 +459,27 @@ export default {
         type: 'Tên loại văn bản',
         type_required: 'Hãy nhập tên loại văn bản',
       },
+    },
+  },
+  department_management: {
+    table: {
+      column: {
+        order: 'STT',
+        name: 'Tên phòng ban',
+        created_by: 'Người tạo',
+      },
+    },
+    department: {
+      detail: {
+        title: 'Chi tiết phòng ban',
+        id: 'ID',
+        name: 'Tên phòng ban',
+        name_required: 'Hãy nhập tên phòng ban',
+      },
+    },
+    button: {
+      add: 'Thêm phòng ban',
+      delete: 'Xóa phòng ban',
     },
   },
 };

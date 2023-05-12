@@ -70,6 +70,14 @@ const AdminMenu = () => {
             globalNavigate('/document-types');
           },
         },
+        {
+          key: 'departments',
+          label: t('main_page.menu.items.departments'),
+          icon: <FileTextOutlined />,
+          onClick: () => {
+            globalNavigate('/departments');
+          },
+        },
       ],
     },
   ];

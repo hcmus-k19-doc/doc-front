@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-12 15:03:47.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
 }
 
-export interface DepartmentDto extends DocAbstractDto {
+export interface DepartmentSearchCriteria {
     departmentName: string;
 }
 
