@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-14 00:15:46.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -99,7 +99,7 @@ export interface TransferDocumentModalSettingDto {
     menuConfigs: TransferDocumentMenuConfig[];
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
-    defaultComponent: string;
+    defaultComponentKey: number;
 }
 
 export interface OutgoingDocumentGetDto {
@@ -154,6 +154,27 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
+export interface GetTransferDocumentDetailRequest {
+    incomingDocumentId: number;
+    userId: number;
+    role: ProcessingDocumentRoleEnum;
+    step: number;
+}
+
+export interface GetTransferDocumentDetailResponse {
+    incomingDocumentId: number;
+    incomingNumber: string;
+    incomingSummary: string;
+    processingDocumentId: number;
+    processingStatus: ProcessingStatus;
+    processingDuration: DateAsString;
+    isInfiniteProcessingTime: boolean;
+    step: number;
+    processMethod: ProcessMethod;
+    userId: number;
+    role: ProcessingDocumentRoleEnum;
+}
+
 export interface TransferDocDto {
     documentIds?: number[];
     summary?: string;
@@ -165,6 +186,11 @@ export interface TransferDocDto {
     processMethod?: ProcessMethod;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
+}
+
+export interface ValidateTransferDocDto {
+    isValid: boolean;
+    message: string;
 }
 
 export interface UserDepartmentDto extends UserDto {
@@ -189,7 +215,7 @@ export interface UserSearchCriteria {
 }
 
 export interface AttachmentDto extends DocAbstractDto {
-    incomingDocId: number;
+    docId: number;
     alfrescoFileId: string;
     alfrescoFolderId: string;
     fileType: FileType;
@@ -197,15 +223,11 @@ export interface AttachmentDto extends DocAbstractDto {
 
 export interface TransferDocumentMenuConfig {
     transferDocumentTypeLabel: string;
-    component: string;
+    componentKey: number;
     menuLabel: string;
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
-}
-
-export interface DepartmentDto extends DocAbstractDto {
-    departmentName: string;
 }
 
 export type DateAsString = string;

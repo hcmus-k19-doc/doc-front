@@ -388,6 +388,7 @@ export default {
         'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc hoặc Văn thư cùng cấp',
       only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert:
         'Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng, Văn thư hoặc Chuyên viên',
+      some_user_is_already_assigned_to_this_doc: 'Văn bản đã được phân công cho người này',
     },
   },
   internal_server_error_page: {
