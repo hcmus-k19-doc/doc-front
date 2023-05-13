@@ -9,6 +9,7 @@ import {
   SearchCriteriaDto,
   TransferDocDto,
   TransferDocumentModalSettingDto,
+  ValidateTransferDocDto,
 } from 'models/doc-main-models';
 
 const INCOMING_DOCUMENTS_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/incoming-documents`;
@@ -74,8 +75,23 @@ async function getTransferDocumentsSetting() {
 }
 
 async function validateUserWithRoleAndDocId(request: GetTransferDocumentDetailRequest) {
-  return (await axios.post<boolean>(`${INCOMING_DOCUMENTS_URL}/validate-user-role`, request)).data;
+  return (
+    await axios.post<boolean>(
+      `${INCOMING_DOCUMENTS_URL}/is-user-working-on-document-with-specific-role`,
+      request
+    )
+  ).data;
 }
+
+async function validateTransferDocuments(transferDocDto: TransferDocDto) {
+  const response = await axios.post<ValidateTransferDocDto>(
+    `${INCOMING_DOCUMENTS_URL}/validate-transfer-documents`,
+    transferDocDto
+  );
+
+  return response.data;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
@@ -85,6 +101,7 @@ const incomingDocumentService = {
   getProcessingDetails,
   getTransferDocumentsSetting,
   validateUserWithRoleAndDocId,
+  validateTransferDocuments,
 };
 
 export default incomingDocumentService;

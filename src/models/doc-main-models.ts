@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-11 22:41:38.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-13 22:13:50.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -124,23 +124,11 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
-export interface TransferDocDto {
-    documentIds?: number[];
-    summary?: string;
-    reporterId?: number;
-    assigneeId?: number;
-    collaboratorIds?: number[];
-    processingTime?: string;
-    isInfiniteProcessingTime?: boolean;
-    processMethod?: ProcessMethod;
-    transferDocumentType: TransferDocumentType;
-    isTransferToSameLevel: boolean;
-}
-
 export interface GetTransferDocumentDetailRequest {
     incomingDocumentId: number;
     userId: number;
     role: ProcessingDocumentRoleEnum;
+    step: number;
 }
 
 export interface GetTransferDocumentDetailResponse {
@@ -155,6 +143,24 @@ export interface GetTransferDocumentDetailResponse {
     processMethod: ProcessMethod;
     userId: number;
     role: ProcessingDocumentRoleEnum;
+}
+
+export interface TransferDocDto {
+    documentIds?: number[];
+    summary?: string;
+    reporterId?: number;
+    assigneeId?: number;
+    collaboratorIds?: number[];
+    processingTime?: string;
+    isInfiniteProcessingTime?: boolean;
+    processMethod?: ProcessMethod;
+    transferDocumentType: TransferDocumentType;
+    isTransferToSameLevel: boolean;
+}
+
+export interface ValidateTransferDocDto {
+    isValid: boolean;
+    message: string;
 }
 
 export interface UserDepartmentDto extends UserDto {
