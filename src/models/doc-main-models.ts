@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-13 22:19:59.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-14 00:03:50.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -100,29 +100,6 @@ export interface TransferDocumentModalSettingDto {
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
     defaultComponent: string;
-}
-
-export interface OutgoingDocumentGetDto {
-    outgoingNumber: string;
-    recipient: string;
-    summary: string;
-    urgency: Urgency;
-    confidentiality: Confidentiality;
-    documentType: DocumentTypeDto;
-    folder: FolderDto;
-    releaseDate: DateAsString;
-    publishingDepartment: DepartmentDto;
-}
-
-export interface OutgoingDocumentPostDto {
-    documentType: number;
-    folder: number;
-    publishingDepartment: number;
-    recipient: string;
-    summary: string;
-    urgency: Urgency;
-    confidentiality: Confidentiality;
-    publishingDate: DateAsString;
 }
 
 export interface ProcessingDetailsDto {
