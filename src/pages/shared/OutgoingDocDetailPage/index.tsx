@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -31,13 +31,14 @@ import {
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
-
-import './index.css';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
-function CreateOutgoingDocPage() {
+import './index.css';
+
+function OutgoingDocDetailPage() {
+  const { docId } = useParams();
+
   const { t } = useTranslation();
-  const { TextArea } = Input;
   const navigate = useNavigate();
   const [form] = useForm();
   const showAlert = useSweetAlert();
@@ -377,4 +378,4 @@ function CreateOutgoingDocPage() {
   );
 }
 
-export default CreateOutgoingDocPage;
+export default OutgoingDocDetailPage;

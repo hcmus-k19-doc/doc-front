@@ -142,8 +142,8 @@ const IncomingDocListPage: React.FC = () => {
         loading={isLoading}
         onRow={(record) => {
           return {
-            onClick: () => {
-              navigate(`/docin/detail/${record.id}`);
+            onDoubleClick: () => {
+              navigate(`/docin/in-detail/${record.id}`);
             },
           };
         }}

@@ -33,7 +33,6 @@ import ProcessingStepComponent from '../../../components/ProcessingStepComponent
 import './index.css';
 
 function IncomingDocPage() {
-  const { TextArea } = Input;
   const { docId } = useParams();
   const { t } = useTranslation();
   const [form] = useForm();
