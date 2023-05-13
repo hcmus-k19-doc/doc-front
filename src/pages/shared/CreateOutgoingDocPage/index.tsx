@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Button, Col, Form, Input, message, Row, Select, Upload, UploadProps } from 'antd';
@@ -242,7 +242,22 @@ function CreateOutgoingDocPage() {
                       ) as string,
                     },
                   ]}
-                  label={t('create_outgoing_doc_page.form.original_symbol_number')}
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('create_outgoing_doc_page.form.original_symbol_number')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
                   name='originalSymbolNumber'>
                   <Input />
                 </Form.Item>

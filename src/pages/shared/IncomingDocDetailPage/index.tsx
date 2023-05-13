@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadProps } from 'antd';
@@ -233,7 +233,22 @@ function IncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('incomingDocDetailPage.form.originalSymbolNumber')}
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('incomingDocDetailPage.form.originalSymbolNumber')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
                   required
                   name='originalSymbolNumber'
                   rules={[

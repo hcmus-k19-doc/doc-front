@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -13,6 +13,7 @@ import {
   message,
   Row,
   Select,
+  Tooltip,
   Upload,
   UploadProps,
 } from 'antd';
@@ -210,25 +211,6 @@ function OutgoingDocDetailPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  required
-                  label={t('create_outgoing_doc_page.form.release_number')}
-                  name='incomingNumber'>
-                  <Input disabled />
-                </Form.Item>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={11}>
-                <Form.Item
-                  label={t('create_outgoing_doc_page.form.distribution_date')}
-                  name='distributionDate'>
-                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' disabled />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col span={11}>
-                <Form.Item
                   label={t('create_outgoing_doc_page.form.distribution_org')}
                   name='publishingDepartment'
                   required
@@ -255,9 +237,43 @@ function OutgoingDocDetailPage() {
                       ) as string,
                     },
                   ]}
-                  label={t('create_outgoing_doc_page.form.original_symbol_number')}
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('create_outgoing_doc_page.form.original_symbol_number')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
                   name='originalSymbolNumber'>
                   <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  required
+                  label={t('create_outgoing_doc_page.form.release_number')}
+                  name='incomingNumber'>
+                  <Input disabled />
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
+              <Col span={11}>
+                <Form.Item
+                  label={t('create_outgoing_doc_page.form.distribution_date')}
+                  name='distributionDate'>
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' disabled />
                 </Form.Item>
               </Col>
             </Row>

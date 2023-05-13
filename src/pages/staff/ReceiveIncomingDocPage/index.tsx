@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -238,7 +238,22 @@ function ReceiveIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.originalSymbolNumber')}
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('receiveIncomingDocPage.form.originalSymbolNumber')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
                   required
                   name='originalSymbolNumber'
                   rules={[
