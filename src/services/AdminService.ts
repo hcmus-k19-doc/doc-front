@@ -105,6 +105,13 @@ async function deleteDocumentTypeByIds(ids: number[]) {
   await axios.delete(`${ADMIN_URL}/document-types`, { data: ids });
 }
 
+async function isUserAlreadyTruongPhongOfAnotherDepartment(userId: number, departmentId: number) {
+  const { data } = await axios.get<boolean>(
+    `${ADMIN_URL}/already-assigned/truong-phong/${userId}/departments/${departmentId}`
+  );
+  return data;
+}
+
 const AdminService = {
   searchUsers,
   getSelectionDepartments,
@@ -117,6 +124,7 @@ const AdminService = {
   saveDocumentType,
   deleteDocumentTypeByIds,
   deleteDepartmentsByIds,
+  isUserAlreadyTruongPhongOfAnotherDepartment,
 };
 
 export default AdminService;

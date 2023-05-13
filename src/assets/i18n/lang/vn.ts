@@ -67,6 +67,13 @@ export default {
     button: {
       save: 'Lưu',
       cancel: 'Hủy',
+      refresh: 'Làm mới',
+    },
+    modal: {
+      title: 'Xác nhận',
+      ok_text: 'Đồng ý',
+      cancel_text: 'Hủy',
+      content: 'Bạn có chắc chắn muốn xóa?',
     },
   },
   user: {
@@ -466,6 +473,7 @@ export default {
       column: {
         order: 'STT',
         name: 'Tên phòng ban',
+        truong_phong: 'Trưởng phòng',
         created_by: 'Người tạo',
       },
     },
@@ -475,6 +483,13 @@ export default {
         id: 'ID',
         name: 'Tên phòng ban',
         name_required: 'Hãy nhập tên phòng ban',
+        truong_phong: 'Trưởng phòng',
+        truong_phong_required: 'Hãy chọn trưởng phòng',
+        modal: {
+          title: 'Trưởng phòng đã thuộc phòng ban khác',
+          content:
+            'Một khi đã cập nhật trưởng phòng sẽ bị chuyển sang phòng ban khác. Bạn có muốn chuyển trưởng phòng sang phòng ban này không?',
+        },
       },
     },
     button: {

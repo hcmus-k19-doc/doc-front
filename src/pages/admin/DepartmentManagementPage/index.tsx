@@ -24,6 +24,11 @@ const columns: ColumnsType<DepartmentTableRowDataType> = [
     align: 'center',
   },
   {
+    title: t('department_management.table.column.truong_phong'),
+    dataIndex: 'truongPhongFullName',
+    align: 'center',
+  },
+  {
     title: t('department_management.table.column.created_by'),
     dataIndex: 'createdBy',
     align: 'center',

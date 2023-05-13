@@ -3,6 +3,8 @@ import { DepartmentDto } from 'models/doc-main-models';
 export interface DepartmentTableRowDataType extends DepartmentDto {
   key: number;
   order: number;
+  truongPhongId: number;
+  truongPhongFullName: string;
 }
 
 export interface DepartmentTableDataType {

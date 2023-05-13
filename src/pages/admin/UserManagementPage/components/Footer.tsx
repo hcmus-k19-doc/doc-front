@@ -3,7 +3,9 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import useModal from 'antd/es/modal/useModal';
 import { t } from 'i18next';
+import { useOnClickDelete } from 'pages/admin/shared/handler';
 import { useUserDeleteMutation, useUserReq, useUserRes } from 'shared/hooks/UserQuery';
 
 import { FooterProps } from '../core/models';
@@ -16,6 +18,7 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const userDisableMutation = useUserDeleteMutation();
+  const [modal, contextHolder] = useModal();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedUsers([]);
@@ -42,23 +45,25 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
     }
   }
 
-  function handleOnClickDeleteUser() {
-    userDisableMutation.mutate(selectedUsers);
-  }
-
   return (
     <div className='flex justify-between'>
       <Space wrap>
         <Button
           type='primary'
           onClick={() => refetch()}
-          icon={<FontAwesomeIcon icon={faRefresh} />}
-        />
+          icon={<FontAwesomeIcon icon={faRefresh} />}>
+          {t('common.button.refresh')}
+        </Button>
+
         <Button type='primary' onClick={handleOnOpenModal}>
           {t('user_management.button.add')}
         </Button>
 
-        <Button type='primary' className='danger-button' danger onClick={handleOnClickDeleteUser}>
+        <Button
+          type='primary'
+          className='danger-button'
+          danger
+          onClick={() => useOnClickDelete(() => userDisableMutation.mutate(selectedUsers), modal)}>
           {t('user_management.button.delete')}
         </Button>
       </Space>
@@ -77,6 +82,8 @@ export default function Footer({ selectedUsers, setSelectedUsers }: FooterProps)
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
       />
+
+      {contextHolder}
     </div>
   );
 }

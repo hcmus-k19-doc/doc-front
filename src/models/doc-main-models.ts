@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-12 15:03:47.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-13 22:19:59.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -167,6 +167,11 @@ export interface TransferDocDto {
     isTransferToSameLevel: boolean;
 }
 
+export interface TruongPhongDto {
+    id: number;
+    fullName: string;
+}
+
 export interface UserDepartmentDto extends UserDto {
     departmentName: string;
 }
@@ -206,6 +211,7 @@ export interface TransferDocumentMenuConfig {
 
 export interface DepartmentDto extends DocAbstractDto {
     departmentName: string;
+    truongPhong?: TruongPhongDto;
 }
 
 export type DateAsString = string;

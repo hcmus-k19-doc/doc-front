@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
-import { UserDto } from 'models/doc-main-models';
+import { DocSystemRoleEnum, TruongPhongDto, UserDto } from 'models/doc-main-models';
 import {
   UserTableDataType,
   UserTableRowDataType,
@@ -11,6 +11,7 @@ import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import adminService from 'services/AdminService';
 import { PaginationStateUtils } from 'shared/models/states';
 
+import userService from '../../../services/UserService';
 import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
 
@@ -29,6 +30,8 @@ const queryState = atom<DocUserQueryState>({
     },
   },
 });
+
+const QUERY_USER_ROLE = 'QUERY.USER.ROLE';
 
 export const useUserReq = () => useRecoilState(queryState);
 
@@ -66,6 +69,21 @@ export function useUserRes() {
         totalElements,
         payload: rowsData,
       } as UserTableDataType;
+    },
+  });
+}
+
+export function useTruongPhongs() {
+  return useQuery<TruongPhongDto[]>({
+    queryKey: [QUERY_USER_ROLE],
+    queryFn: async () => {
+      const res = await userService.getUsersByRole(DocSystemRoleEnum.TRUONG_PHONG);
+      const truongPhongs: TruongPhongDto[] = res.map((item) => ({
+        id: item.id,
+        fullName: item.fullName,
+      }));
+
+      return truongPhongs;
     },
   });
 }

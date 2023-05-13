@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
-import { DepartmentDto, DocumentTypeDto } from 'models/doc-main-models';
+import { DepartmentDto } from 'models/doc-main-models';
 import {
   DepartmentTableDataType,
   DepartmentTableRowDataType,
@@ -10,8 +11,6 @@ import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import adminService from 'services/AdminService';
 import { PaginationStateUtils } from 'shared/models/states';
 
-import { PRIMARY_COLOR } from '../../../config/constant';
-import { DocumentTypeTableRowDataType } from '../../../pages/admin/DocumentTypeManagementPage/core/models';
 import { useSweetAlert } from '../SwalAlert';
 
 import { DocDepartmentQueryState } from './core/models';
@@ -58,6 +57,8 @@ export function usePaginationDepartments() {
           order: index + 1,
           version: item.version,
           departmentName: item.departmentName,
+          truongPhongFullName: item.truongPhong?.fullName || '',
+          truongPhongId: item.truongPhong?.id as number,
         };
       });
 
@@ -85,6 +86,10 @@ export function useSaveDepartmentMutation() {
         id: payload.id,
         departmentName: payload.departmentName,
         version: payload.version,
+        truongPhong: {
+          id: payload.truongPhongId,
+          fullName: payload.truongPhongFullName,
+        },
       };
 
       return await adminService.saveDepartment(departmentDto);
@@ -117,8 +122,7 @@ export function useDeleteDepartmentsMutation() {
 
   return useMutation({
     mutationKey: ['MUTATION.DELETE.DEPARTMENTS'],
-    mutationFn: async (payload: DepartmentTableRowDataType[]) => {
-      const ids = payload.map((item) => item.id);
+    mutationFn: async (ids: number[]) => {
       return await adminService.deleteDepartmentsByIds(ids);
     },
     onSuccess: () => {

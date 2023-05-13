@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
+import { DocumentTypeDto } from 'models/doc-main-models';
 import {
   DocumentTypeTableDataType,
   DocumentTypeTableRowDataType,
@@ -10,8 +12,6 @@ import adminService from 'services/AdminService';
 import documentTypeService from 'services/DocumentTypeService';
 import { PaginationStateUtils } from 'shared/models/states';
 
-import { PRIMARY_COLOR } from '../../../config/constant';
-import { DocumentTypeDto } from '../../../models/doc-main-models';
 import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
 

@@ -3,9 +3,14 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import useModal from 'antd/es/modal/useModal';
 import { t } from 'i18next';
-import { useDepartmentReq, usePaginationDepartments } from 'shared/hooks/DepartmentQuery';
-import { useDocumentTypeDeleteMutation } from 'shared/hooks/DocumentTypesQuery';
+import { useOnClickDelete } from 'pages/admin/shared/handler';
+import {
+  useDeleteDepartmentsMutation,
+  useDepartmentReq,
+  usePaginationDepartments,
+} from 'shared/hooks/DepartmentQuery';
 
 import { FooterProps } from '../core/models';
 
@@ -16,7 +21,8 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
   const { data, refetch } = usePaginationDepartments();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
-  const documentTypeDeleteMutation = useDocumentTypeDeleteMutation();
+  const departmentsDeleteMutation = useDeleteDepartmentsMutation();
+  const [modal, contextHolder] = useModal();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedDepartments([]);
@@ -43,8 +49,8 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
     }
   }
 
-  function handleOnClickDeleteUser() {
-    documentTypeDeleteMutation.mutate(selectedDepartments);
+  function handleOnDelete() {
+    useOnClickDelete(() => departmentsDeleteMutation.mutate(selectedDepartments), modal);
   }
 
   return (
@@ -53,8 +59,10 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
         <Button
           type='primary'
           onClick={() => refetch()}
-          icon={<FontAwesomeIcon icon={faRefresh} />}
-        />
+          icon={<FontAwesomeIcon icon={faRefresh} />}>
+          {t('common.button.refresh')}
+        </Button>
+
         <Button type='primary' onClick={handleOnOpenModal}>
           {t('department_management.button.add')}
         </Button>
@@ -63,7 +71,7 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
           type='primary'
           className='danger-button'
           danger
-          onClick={handleOnClickDeleteUser}
+          onClick={handleOnDelete}
           disabled={selectedDepartments.length === 0}>
           {t('department_management.button.delete')}
         </Button>
@@ -83,6 +91,8 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
       />
+
+      {contextHolder}
     </div>
   );
 }
