@@ -17,6 +17,8 @@ import ReceiveIncomingDocPage from 'pages/staff/ReceiveIncomingDocPage';
 
 import CreateOutgoingDocPage from '../CreateOutgoingDocPage';
 
+import './index.css';
+
 const { Content, Sider } = Layout;
 
 const SidebarPage: React.FC<MenuProps> = () => {

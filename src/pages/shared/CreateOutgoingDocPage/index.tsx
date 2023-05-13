@@ -20,6 +20,8 @@ import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import './index.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function CreateOutgoingDocPage() {
   const { t } = useTranslation();
@@ -287,17 +289,14 @@ function CreateOutgoingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item
-              label={t('create_outgoing_doc_page.form.summary')}
-              name='summary'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('create_outgoing_doc_page.form.summary_required') as string,
-                },
-              ]}>
-              <TextArea rows={2} />
+            <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary'>
+              <CKEditor
+                editor={ClassicEditor}
+                data={form.getFieldValue('summary')}
+                onChange={(event, editor) => {
+                  form.setFieldValue('summary', editor.getData());
+                }}
+              />
             </Form.Item>
           </Col>
           <Col span={1}></Col>

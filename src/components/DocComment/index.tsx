@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Comment } from '@ant-design/compatible';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Button, Form, List, Skeleton } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { t } from 'i18next';
@@ -30,7 +32,21 @@ function CommentList({ comments }: CommentListProps) {
       dataSource={comments}
       header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
       itemLayout='horizontal'
-      renderItem={(props) => <Comment className='comment' {...props} />}
+      renderItem={(props) => (
+        <Comment
+          className='comment'
+          {...{
+            ...props,
+            content: (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: props.content?.toLocaleString() || '',
+                }}
+              />
+            ),
+          }}
+        />
+      )}
     />
   );
 }
@@ -47,14 +63,13 @@ export default function DocComment({ docId }: DocCommentProps) {
     setSubmitting(true);
 
     commentMutation.mutate(value);
-    if (commentMutation.isIdle) {
-      setSubmitting(false);
-      setValue('');
-    }
+
+    setSubmitting(false);
+    setValue('');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
   };
 
   return (
@@ -63,12 +78,21 @@ export default function DocComment({ docId }: DocCommentProps) {
       {comments.length > 0 && <CommentList comments={comments} />}
       <Comment
         content={
-          <Editor
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-            submitting={submitting}
-            value={value}
-          />
+          <>
+            <CKEditor
+              editor={ClassicEditor}
+              data={value}
+              onChange={(event, editor) => {
+                handleChange(editor.getData());
+              }}
+            />
+
+            <Form.Item className='flex w-full flex-wrap mt-4 content-center'>
+              <Button htmlType='submit' loading={submitting} onClick={handleSubmit} type='primary'>
+                {t('incomingDocDetailPage.comment.button.title')}
+              </Button>
+            </Form.Item>
+          </>
         }
       />
     </>

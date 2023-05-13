@@ -35,6 +35,8 @@ import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function ReceiveIncomingDocPage() {
   const { t } = useTranslation();
@@ -390,17 +392,14 @@ function ReceiveIncomingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item
-              label={t('receiveIncomingDocPage.form.summary')}
-              name='summary'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('receiveIncomingDocPage.form.summaryRequired') as string,
-                },
-              ]}>
-              <TextArea rows={2} />
+            <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary'>
+              <CKEditor
+                editor={ClassicEditor}
+                data={form.getFieldValue('summary')}
+                onChange={(event, editor) => {
+                  form.setFieldValue('summary', editor.getData());
+                }}
+              />
             </Form.Item>
           </Col>
           <Col span={1}></Col>

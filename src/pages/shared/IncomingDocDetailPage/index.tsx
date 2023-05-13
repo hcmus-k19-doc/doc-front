@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadProps } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
@@ -398,17 +400,15 @@ function IncomingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item
-              label={t('incomingDocDetailPage.form.summary')}
-              name='summary'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('incomingDocDetailPage.form.summaryRequired') as string,
-                },
-              ]}>
-              <TextArea rows={2} />
+            <Form.Item label={t('incomingDocDetailPage.form.summary')} name='summary'>
+              <CKEditor
+                disabled={!isEditing}
+                editor={ClassicEditor}
+                data={form.getFieldValue('summary')}
+                onChange={(event, editor) => {
+                  form.setFieldValue('summary', editor.getData());
+                }}
+              />
             </Form.Item>
           </Col>
           <Col span={1}></Col>
