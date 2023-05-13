@@ -314,6 +314,8 @@ export default {
       doc_folder_required: 'Hãy chọn sổ văn bản',
       document_type: 'Loại văn bản',
       document_type_required: 'Hãy chọn loại văn bản',
+      original_symbol_number: 'Số ký hiệu gốc',
+      original_symbol_number_required: 'Hãy điền số ký hiệu gốc',
       release_number: 'Số phát hành',
       distribution_org: 'Phòng ban phát hành',
       distribution_org_required: 'Hãy chọn phòng ban phát hành',

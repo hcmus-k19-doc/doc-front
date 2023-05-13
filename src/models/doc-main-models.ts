@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-13 19:41:34.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -104,7 +104,9 @@ export interface TransferDocumentModalSettingDto {
 
 export interface OutgoingDocumentGetDto {
     outgoingNumber: string;
+    originalSymbolNumber: string;
     recipient: string;
+    signer: string;
     summary: string;
     urgency: Urgency;
     confidentiality: Confidentiality;
@@ -116,6 +118,7 @@ export interface OutgoingDocumentGetDto {
 
 export interface OutgoingDocumentPostDto {
     documentType: number;
+    originalSymbolNumber: string;
     folder: number;
     publishingDepartment: number;
     recipient: string;
@@ -189,7 +192,7 @@ export interface UserSearchCriteria {
 }
 
 export interface AttachmentDto extends DocAbstractDto {
-    incomingDocId: number;
+    docId: number;
     alfrescoFileId: string;
     alfrescoFolderId: string;
     fileType: FileType;
@@ -202,10 +205,6 @@ export interface TransferDocumentMenuConfig {
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
-}
-
-export interface DepartmentDto extends DocAbstractDto {
-    departmentName: string;
 }
 
 export type DateAsString = string;

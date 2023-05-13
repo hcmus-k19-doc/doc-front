@@ -4,7 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { Button, Col, Form, Input, message, Row, Select, Upload, UploadProps } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Upload,
+  UploadProps,
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
@@ -22,6 +33,7 @@ import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import './index.css';
+import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 function CreateOutgoingDocPage() {
   const { t } = useTranslation();
@@ -194,7 +206,7 @@ function CreateOutgoingDocPage() {
               </Col>
             </Row>
 
-            {/* <Row>
+            <Row>
               <Col span={11}>
                 <Form.Item
                   required
@@ -211,7 +223,7 @@ function CreateOutgoingDocPage() {
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' disabled />
                 </Form.Item>
               </Col>
-            </Row> */}
+            </Row>
 
             <Row>
               <Col span={11}>
@@ -292,6 +304,21 @@ function CreateOutgoingDocPage() {
             </Row>
 
             <Row>
+              <Col span={11}>
+                <Form.Item
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('create_outgoing_doc_page.form.receive_org_required') as string,
+                    },
+                  ]}
+                  label={t('create_outgoing_doc_page.form.receive_org')}
+                  name='recipient'>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
                   required

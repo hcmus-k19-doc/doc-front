@@ -200,7 +200,7 @@ function IncomingDocPage() {
                       message: t('incomingDocDetailPage.form.docFolderRequired') as string,
                     },
                   ]}>
-                  <Select onChange={(value: number) => handleFolderChange(value)}>
+                  <Select onChange={(value: number) => handleFolderChange(value)} disabled>
                     {renderFolders()}
                   </Select>
                 </Form.Item>
