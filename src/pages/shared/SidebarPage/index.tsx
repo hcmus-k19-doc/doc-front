@@ -8,25 +8,32 @@ import DirectorMenu from 'components/DocMenu/DirectorMenu';
 import ExpertMenu from 'components/DocMenu/ExpertMenu';
 import ManagerMenu from 'components/DocMenu/ManagerMenu';
 import StaffMenu from 'components/DocMenu/StaffMenu';
+import DocSuspenseComponent from 'components/DocSuspenseComponent';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
 import UserManagementPageWrapper from 'pages/admin/UserManagementPage';
 import IncomingDocDetailPage from 'pages/shared/IncomingDocDetailPage';
 import IncomingDocListPage from 'pages/shared/IncomingDocListPage';
 import ReceiveIncomingDocPage from 'pages/staff/ReceiveIncomingDocPage';
 
+import CreateOutgoingDocPage from '../CreateOutgoingDocPage';
+
 const { Content, Sider } = Layout;
 
 const SidebarPage: React.FC<MenuProps> = () => {
   const { currentUser } = useAuth();
+  const DocumentTypeManagementPage = React.lazy(
+    () => import('pages/admin/DocumentTypeManagementPage')
+  );
 
   const getRoutes = () => {
-    switch (currentUser?.role as DocSystemRoleEnum) {
+    switch (currentUser?.role) {
       case DocSystemRoleEnum.VAN_THU:
         return (
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
-            <Route path='/receive' element={<ReceiveIncomingDocPage />} />
+            <Route path='/in-receive' element={<ReceiveIncomingDocPage />} />
             <Route path='/detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -35,6 +42,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -43,6 +51,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -51,6 +60,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -58,6 +68,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
         return (
           <Routes>
             <Route path='/' element={<UserManagementPageWrapper />} />
+            <Route
+              path='/document-types'
+              element={
+                <DocSuspenseComponent>
+                  <DocumentTypeManagementPage />
+                </DocSuspenseComponent>
+              }
+            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );

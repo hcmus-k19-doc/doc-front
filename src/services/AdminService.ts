@@ -3,6 +3,8 @@ import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DepartmentDto,
   DocPaginationDto,
+  DocumentTypeDto,
+  DocumentTypeSearchCriteria,
   UserDto,
   UserSearchCriteria,
 } from 'models/doc-main-models';
@@ -47,12 +49,43 @@ async function deleteUsers(userIds: number[]) {
   await axios.delete(`${ADMIN_URL}/users`, { data: userIds });
 }
 
+async function searchDocumentTypes(
+  searchCriteria: Partial<DocumentTypeSearchCriteria>,
+  page: number,
+  pageSize: number
+) {
+  const { data } = await axios.post<DocPaginationDto<DocumentTypeDto>>(
+    `${ADMIN_URL}/search/document-types`,
+    searchCriteria,
+    {
+      params: {
+        page: page - 1,
+        pageSize,
+      },
+    }
+  );
+
+  return data;
+}
+
+async function saveDocumentType(documentTypeDto: DocumentTypeDto) {
+  const { data } = await axios.post<number>(`${ADMIN_URL}/document-types`, documentTypeDto);
+  return data;
+}
+
+async function deleteDocumentTypeByIds(ids: number[]) {
+  await axios.delete(`${ADMIN_URL}/document-types`, { data: ids });
+}
+
 const AdminService = {
   searchUsers,
   getDepartments,
   createUser,
   updateUser,
   deleteUsers,
+  searchDocumentTypes,
+  saveDocumentType,
+  deleteDocumentTypeByIds,
 };
 
 export default AdminService;

@@ -13,16 +13,19 @@ export default {
       RULE_MESSAGE: 'Hãy điền mật khẩu!',
     },
   },
-  MAIN_PAGE: {
-    MENU: {
-      ITEMS: {
-        LABEL: 'Văn bản đến',
-        INCOMING_DOCUMENT_LIST: 'Danh sách văn bản đến',
-        RECEIVING_INCOMING_DOCUMENT: 'Tiếp nhận văn bản đến',
-        PROCESSES_INCOMING_DOCUMENT: 'Xử lý văn bản đến',
-        OUTGOING_DOCUMENT: 'Văn bản đi',
-        INTERNAL_DOCUMENT: 'Văn bản nội bộ',
+  main_page: {
+    menu: {
+      items: {
+        label: 'Văn bản đến',
+        incoming_document_list: 'Danh sách văn bản đến',
+        receiving_incoming_document: 'Tiếp nhận văn bản đến',
+        create_outgoing_document: 'Tạo văn bản đi',
+        processes_incoming_document: 'Xử lý văn bản đến',
+        outgoing_document: 'Văn bản đi',
+        internal_document: 'Văn bản nội bộ',
+        admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
+        document_types: 'Loại văn bản',
       },
     },
     BUTTON: {
@@ -95,6 +98,10 @@ export default {
     },
     email: {
       existed: 'Email đã tồn tại',
+    },
+    not_found: 'Không tìm thấy người dùng',
+    password: {
+      incorrect: 'Mật khẩu không chính xác',
     },
   },
   SENDING_LEVEL: {
@@ -262,6 +269,7 @@ export default {
       collect: 'Thu thập',
       edit: 'Chỉnh sửa',
       save: 'Lưu chỉnh sửa',
+      report: 'Trình lãnh đạo',
       process: 'Xử lý văn bản',
       transfer: 'Chuyển xử lý',
       assign: 'Phân công',
@@ -298,6 +306,51 @@ export default {
       },
     },
   },
+
+  create_outgoing_doc_page: {
+    title: 'Tạo văn bản đi',
+    form: {
+      doc_folder: 'Sổ văn bản',
+      doc_folder_required: 'Hãy chọn sổ văn bản',
+      document_type: 'Loại văn bản',
+      document_type_required: 'Hãy chọn loại văn bản',
+      release_number: 'Số phát hành',
+      distribution_org: 'Phòng ban phát hành',
+      distribution_org_required: 'Hãy chọn phòng ban phát hành',
+      distribution_date: 'Ngày phát hành',
+      receive_org: 'Đơn vị nhận',
+      receive_org_required: 'Hãy điền đơn vị nhận',
+      note: 'Ghi chú',
+      summary: 'Trích yếu',
+      summary_required: 'Hãy điền trích yếu',
+      signer: 'Người ký phát hành',
+      confidentiality: 'Độ mật',
+      confidentiality_required: 'Hãy chọn độ mật',
+      urgency: 'Độ khẩn',
+      urgency_required: 'Hãy chọn độ khẩn',
+      files: 'Tài liệu đính kèm',
+      files_required: 'Hãy chọn tài liệu đính kèm',
+      file_helper: 'Bấm hoặc kéo thả tệp vào đây để tải lên',
+    },
+    button: {
+      save: 'Lưu văn bản',
+      cancel: 'Hủy',
+    },
+    message: {
+      file_error: 'đính kèm không thành công.',
+      file_success: 'đã được đính kèm',
+      success: 'Chỉnh sửa văn bản thành công',
+      create_success: 'Tạo văn bản thành công',
+      error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+    },
+    comment: {
+      title: 'Góp ý văn bản',
+      button: {
+        title: 'Góp ý',
+      },
+    },
+  },
+
   transfer_modal: {
     title: 'Luân chuyển văn bản tới',
     document_number: 'Văn bản số  {{id}}',
@@ -352,6 +405,7 @@ export default {
   user_management: {
     table: {
       column: {
+        order: 'STT',
         id: 'ID',
         username: 'Tên người dùng',
         email: 'Email',
@@ -361,8 +415,8 @@ export default {
       },
     },
     button: {
-      add_user: 'Thêm người dùng',
-      delete_user: 'Xóa người dùng',
+      add: 'Thêm người dùng',
+      delete: 'Xóa người dùng',
     },
   },
   processing_detail_page: {
@@ -381,5 +435,30 @@ export default {
     REPORTER: 'Người gửi',
     ASSIGNEE: 'Người nhận',
     COLLABORATOR: 'Người tham gia',
+  },
+  doc: {
+    exception: {
+      concurrent_update: 'Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang.',
+    },
+  },
+  document_type_management: {
+    table: {
+      column: {
+        order: 'STT',
+        type: 'Tên loại văn bản',
+      },
+    },
+    button: {
+      add: 'Thêm loại văn bản',
+      delete: 'Xóa loại văn bản',
+    },
+    document_type: {
+      detail: {
+        title: 'Chi tiết loại văn bản',
+        id: 'ID',
+        type: 'Tên loại văn bản',
+        type_required: 'Hãy nhập tên loại văn bản',
+      },
+    },
   },
 };

@@ -203,7 +203,7 @@ function ReceiveIncomingDocPage() {
                     },
                   ]}>
                   <Select onChange={(value: number) => handleFolderChange(value)}>
-                    {renderFolders()}{' '}
+                    {renderFolders()}
                   </Select>
                 </Form.Item>
               </Col>

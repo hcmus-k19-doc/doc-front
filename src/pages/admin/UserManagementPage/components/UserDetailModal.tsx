@@ -37,7 +37,6 @@ export default function UserDetailModal({
         <Form
           form={form}
           onFinish={(values: UserTableRowDataType) => {
-            console.log(values);
             userMutation.mutate(values);
           }}
           labelCol={{ span: 10 }}
@@ -59,9 +58,14 @@ export default function UserDetailModal({
           </Col>
           <Col>
             {isEditMode ? (
-              <Form.Item label={t('user.detail.password')} name='password'>
-                <Input.Password />
-              </Form.Item>
+              <>
+                <Form.Item label={t('user.detail.password')} name='password'>
+                  <Input.Password />
+                </Form.Item>
+                <Form.Item name='version' noStyle>
+                  <Input hidden />
+                </Form.Item>
+              </>
             ) : (
               <Form.Item
                 label={t('user.detail.password')}

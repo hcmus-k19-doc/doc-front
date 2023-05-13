@@ -25,6 +25,7 @@
     "react-i18next": "12.2.0",
     "react-router-dom": "6.8.0",
     "react-scripts": "5.0.1",
+    "react-topbar-progress-indicator": "^4.1.1",
     "recoil": "0.7.7",
     "sweetalert2": "^11.7.3",
     "sweetalert2-react-content": "^5.0.7",

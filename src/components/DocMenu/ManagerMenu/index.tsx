@@ -3,12 +3,11 @@ import { useLocation } from 'react-router-dom';
 import { DeliveredProcedureOutlined, InboxOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
-import { mapPathToKeyDocIn } from 'utils/MenuUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 
 const ManagerMenu = () => {
   const [openKey, setOpenKey] = useState('docin');
-  const [current, setCurrent] = useState('inList');
+  const [current, setCurrent] = useState('in-list');
 
   const location = useLocation();
 
@@ -25,18 +24,19 @@ const ManagerMenu = () => {
   const handleDocInMenuKeys = (path: string[]) => {
     setOpenKey('docin');
     if (!path[2]) {
-      setCurrent('inList');
+      setCurrent('in-list');
     } else {
-      if (path[2] === 'detail') {
-        setOpenKey('');
-      }
-      setCurrent(mapPathToKeyDocIn(path[2]));
+      setCurrent(path[2]);
     }
   };
-
   // TODO: handle docout menu keys
   const handleDocOutMenuKeys = (path: string[]) => {
     setOpenKey('docout');
+    if (!path[2]) {
+      setCurrent('outList');
+    } else {
+      setCurrent(path[2]);
+    }
   };
 
   const onSelect = ({ key }: { key: string }) => {
@@ -51,12 +51,12 @@ const ManagerMenu = () => {
     {
       key: 'docin',
       icon: <InboxOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.LABEL'),
+      label: t('main_page.menu.items.label'),
 
       children: [
         {
-          key: 'inList',
-          label: t('MAIN_PAGE.MENU.ITEMS.INCOMING_DOCUMENT_LIST'),
+          key: 'in-list',
+          label: t('main_page.menu.items.incoming_document_list'),
           onClick: () => {
             globalNavigate('/docin');
           },
@@ -66,15 +66,18 @@ const ManagerMenu = () => {
     {
       key: 'docout',
       icon: <DeliveredProcedureOutlined />,
-      label: t('MAIN_PAGE.MENU.ITEMS.OUTGOING_DOCUMENT'),
+      label: t('main_page.menu.items.outgoing_document'),
       children: [
         {
           key: 'out1',
           label: 'Test',
         },
         {
-          key: 'out2',
-          label: 'Test',
+          key: 'out-create',
+          label: t('main_page.menu.items.create_outgoing_document'),
+          onClick: () => {
+            globalNavigate('/docout/out-create');
+          },
         },
       ],
     },
@@ -82,7 +85,7 @@ const ManagerMenu = () => {
 
   const managerMenu: MenuProps = {
     mode: 'inline',
-    defaultSelectedKeys: ['inList'],
+    defaultSelectedKeys: ['in-list'],
     defaultOpenKeys: ['docin'],
     items: managerMenuItems,
   };
