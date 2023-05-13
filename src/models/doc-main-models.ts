@@ -1,9 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-13 22:13:50.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-14 00:03:46.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
+}
+
+export interface DepartmentDto extends DocAbstractDto {
+    departmentName: string;
 }
 
 export interface DistributionOrganizationDto extends DocAbstractDto {
@@ -14,8 +18,8 @@ export interface DistributionOrganizationDto extends DocAbstractDto {
 export interface DocAbstractDto {
     id: number;
     version: number;
-    createdDate: DateAsString;
-    createdBy: string;
+    createdDate?: DateAsString;
+    createdBy?: string;
 }
 
 export interface DocPaginationDto<T> {
@@ -34,6 +38,9 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+}
+
+export interface DocumentTypeSearchCriteria {
 }
 
 export interface FolderDto extends DocAbstractDto {
@@ -93,6 +100,29 @@ export interface TransferDocumentModalSettingDto {
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
     defaultComponentKey: number;
+}
+
+export interface OutgoingDocumentGetDto {
+    outgoingNumber: string;
+    recipient: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    documentType: DocumentTypeDto;
+    folder: FolderDto;
+    releaseDate: DateAsString;
+    publishingDepartment: DepartmentDto;
+}
+
+export interface OutgoingDocumentPostDto {
+    documentType: number;
+    folder: number;
+    publishingDepartment: number;
+    recipient: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    publishingDate: DateAsString;
 }
 
 export interface ProcessingDetailsDto {
@@ -185,7 +215,7 @@ export interface UserSearchCriteria {
 }
 
 export interface AttachmentDto extends DocAbstractDto {
-    incomingDocId: number;
+    docId: number;
     alfrescoFileId: string;
     alfrescoFolderId: string;
     fileType: FileType;
@@ -198,10 +228,6 @@ export interface TransferDocumentMenuConfig {
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
-}
-
-export interface DepartmentDto extends DocAbstractDto {
-    departmentName: string;
 }
 
 export type DateAsString = string;
