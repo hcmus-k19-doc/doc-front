@@ -74,7 +74,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
     );
 
     if (menuConfig) {
-      const Component = componentMap[menuConfig.component];
+      const Component = componentMap[menuConfig.componentKey];
       return (
         <Component
           form={form}

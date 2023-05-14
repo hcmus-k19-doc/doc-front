@@ -21,17 +21,19 @@ const columns: ColumnsType<DepartmentTableRowDataType> = [
   {
     title: t('department_management.table.column.name'),
     dataIndex: 'departmentName',
-    align: 'center',
   },
   {
     title: t('department_management.table.column.truong_phong'),
     dataIndex: 'truongPhongFullName',
-    align: 'center',
+  },
+  {
+    title: t('common.modal.description_title'),
+    dataIndex: 'description',
+    width: '35%',
   },
   {
     title: t('department_management.table.column.created_by'),
     dataIndex: 'createdBy',
-    align: 'center',
   },
 ];
 

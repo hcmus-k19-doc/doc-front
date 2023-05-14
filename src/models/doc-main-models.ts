@@ -1,9 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-14 00:03:50.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-14 10:57:22.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
+}
+
+export interface DepartmentDto extends DocAbstractDto {
+    departmentName: string;
+    truongPhong?: TruongPhongDto;
+    description?: string;
 }
 
 export interface DepartmentSearchCriteria {
@@ -38,6 +44,7 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+    description?: string;
 }
 
 export interface DocumentTypeSearchCriteria {
@@ -99,7 +106,30 @@ export interface TransferDocumentModalSettingDto {
     menuConfigs: TransferDocumentMenuConfig[];
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
-    defaultComponent: string;
+    defaultComponentKey: number;
+}
+
+export interface OutgoingDocumentGetDto {
+    outgoingNumber: string;
+    recipient: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    documentType: DocumentTypeDto;
+    folder: FolderDto;
+    releaseDate: DateAsString;
+    publishingDepartment: DepartmentDto;
+}
+
+export interface OutgoingDocumentPostDto {
+    documentType: number;
+    folder: number;
+    publishingDepartment: number;
+    recipient: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    publishingDate: DateAsString;
 }
 
 export interface ProcessingDetailsDto {
@@ -131,6 +161,27 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
+export interface GetTransferDocumentDetailRequest {
+    incomingDocumentId: number;
+    userId: number;
+    role: ProcessingDocumentRoleEnum;
+    step: number;
+}
+
+export interface GetTransferDocumentDetailResponse {
+    incomingDocumentId: number;
+    incomingNumber: string;
+    incomingSummary: string;
+    processingDocumentId: number;
+    processingStatus: ProcessingStatus;
+    processingDuration: DateAsString;
+    isInfiniteProcessingTime: boolean;
+    step: number;
+    processMethod: ProcessMethod;
+    userId: number;
+    role: ProcessingDocumentRoleEnum;
+}
+
 export interface TransferDocDto {
     documentIds?: number[];
     summary?: string;
@@ -142,6 +193,11 @@ export interface TransferDocDto {
     processMethod?: ProcessMethod;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
+}
+
+export interface ValidateTransferDocDto {
+    isValid: boolean;
+    message: string;
 }
 
 export interface TruongPhongDto {
@@ -171,7 +227,7 @@ export interface UserSearchCriteria {
 }
 
 export interface AttachmentDto extends DocAbstractDto {
-    incomingDocId: number;
+    docId: number;
     alfrescoFileId: string;
     alfrescoFolderId: string;
     fileType: FileType;
@@ -179,16 +235,11 @@ export interface AttachmentDto extends DocAbstractDto {
 
 export interface TransferDocumentMenuConfig {
     transferDocumentTypeLabel: string;
-    component: string;
+    componentKey: number;
     menuLabel: string;
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
-}
-
-export interface DepartmentDto extends DocAbstractDto {
-    departmentName: string;
-    truongPhong?: TruongPhongDto;
 }
 
 export type DateAsString = string;

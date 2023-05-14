@@ -60,6 +60,7 @@ export function usePaginationDocumentTypesRes() {
           version: item.version,
           type: item.type,
           translatedType: t(`document_type.${item.type}`),
+          description: item.description,
         };
       });
 
@@ -87,6 +88,7 @@ export function useDocumentTypeMutation() {
         id: payload.id,
         version: payload.version,
         type: payload.type,
+        description: payload.description,
       };
 
       return await adminService.saveDocumentType(documentTypeDto);

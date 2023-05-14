@@ -108,6 +108,11 @@ export default function DepartmentDetailModal({
               </Select>
             </Form.Item>
           </Col>
+          <Col>
+            <Form.Item label={t('common.modal.description_title')} name='description'>
+              <Input.TextArea />
+            </Form.Item>
+          </Col>
         </Form>
       </Row>
       {contextHolder}

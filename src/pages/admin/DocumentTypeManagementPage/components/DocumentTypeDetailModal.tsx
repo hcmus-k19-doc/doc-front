@@ -64,6 +64,11 @@ export default function DocumentTypeDetailModal({
               </Form.Item>
             )}
           </Col>
+          <Col>
+            <Form.Item name='description' label={t('common.modal.description_title')}>
+              <Input.TextArea />
+            </Form.Item>
+          </Col>
         </Form>
       </Row>
     </Modal>

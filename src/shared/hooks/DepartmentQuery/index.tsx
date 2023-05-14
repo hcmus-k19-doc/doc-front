@@ -59,6 +59,7 @@ export function usePaginationDepartments() {
           departmentName: item.departmentName,
           truongPhongFullName: item.truongPhong?.fullName || '',
           truongPhongId: item.truongPhong?.id as number,
+          description: item.description,
         };
       });
 
@@ -90,6 +91,7 @@ export function useSaveDepartmentMutation() {
           id: payload.truongPhongId,
           fullName: payload.truongPhongFullName,
         },
+        description: payload.description,
       };
 
       return await adminService.saveDepartment(departmentDto);

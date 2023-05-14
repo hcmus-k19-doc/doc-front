@@ -16,17 +16,19 @@ const columns: ColumnsType<DocumentTypeTableRowDataType> = [
   {
     title: t('document_type_management.table.column.order'),
     dataIndex: 'order',
-    align: 'center',
   },
   {
     title: t('document_type_management.table.column.type'),
     dataIndex: 'type',
-    align: 'center',
+  },
+  {
+    title: t('common.modal.description_title'),
+    dataIndex: 'description',
+    width: '35%',
   },
   {
     title: t('document_type_management.table.column.created_by'),
     dataIndex: 'createdBy',
-    align: 'center',
   },
 ];
 

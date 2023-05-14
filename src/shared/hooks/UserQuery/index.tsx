@@ -107,6 +107,7 @@ export function useUserMutation() {
         department: {
           id: user.departmentId,
           departmentName: user.department,
+          description: '',
           version: 0,
         },
       };

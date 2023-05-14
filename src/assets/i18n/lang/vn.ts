@@ -74,6 +74,7 @@ export default {
       ok_text: 'Đồng ý',
       cancel_text: 'Hủy',
       content: 'Bạn có chắc chắn muốn xóa?',
+      description_title: 'Chú thích',
     },
   },
   user: {
