@@ -19,10 +19,10 @@ import {
 } from './core/models';
 
 const componentMap: ComponentMap = {
-  DirectorScreenComponent,
-  ExpertScreenComponent,
-  ManagerScreenComponent,
-  SecretaryScreenComponent,
+  1: DirectorScreenComponent,
+  2: ManagerScreenComponent,
+  3: SecretaryScreenComponent,
+  4: ExpertScreenComponent,
 };
 
 const TransferDocModal: React.FC<TransferModalProps> = ({

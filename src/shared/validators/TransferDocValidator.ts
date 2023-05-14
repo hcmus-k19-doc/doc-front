@@ -6,6 +6,7 @@ import {
   TransferDocumentType,
   UserDto,
 } from 'models/doc-main-models';
+import incomingDocumentService from 'services/IncomingDocumentService';
 
 const validateAssignee = (assigneeId?: number, t?: any) => {
   if (!assigneeId) {
@@ -71,7 +72,7 @@ const isValidProcessingTime = (
   return true;
 };
 
-const validateTransferDocs = (
+const validateTransferDocs = async (
   selectedDocs: IncomingDocumentDto[],
   transferDocModalItem: TransferDocumentType,
   transferDocDto: TransferDocDto,
@@ -85,7 +86,10 @@ const validateTransferDocs = (
     if (!validateAssignee(transferDocDto?.assigneeId, t)) {
       return false;
     }
-    if (!isUnprocessedDocs(selectedDocs, t)) {
+    if (currentUser?.role === DocSystemRoleEnum.VAN_THU && !isUnprocessedDocs(selectedDocs, t)) {
+      return false;
+    }
+    if (currentUser?.role !== DocSystemRoleEnum.VAN_THU && !isProcessingDocs(selectedDocs, t)) {
       return false;
     }
   } else {
@@ -127,6 +131,13 @@ const validateTransferDocs = (
         return false;
       }
     }
+  }
+  const validateTransferDocs = await incomingDocumentService.validateTransferDocuments(
+    transferDocDto
+  );
+  if (!validateTransferDocs.isValid) {
+    message.error(validateTransferDocs.message);
+    return false;
   }
 
   return true;

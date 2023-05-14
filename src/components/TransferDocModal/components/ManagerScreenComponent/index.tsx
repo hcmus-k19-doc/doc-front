@@ -132,58 +132,62 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           </Form.Item>
         </Col>
       </Row>
-      <Row className='mb-3'>
-        <Col span='6'>
-          <Typography.Text strong>
-            <span className='asterisk'>*</span>
-            {t(i18_collaborators)}
-          </Typography.Text>
-        </Col>
-        <Col span='16'>
-          <Form.Item name='collaborators'>
-            <Select mode='multiple' allowClear options={managers} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row className='mt-4 mb-3'>
-        <Col span='6'>
-          <Typography.Text strong>
-            <span className='asterisk'>*</span>
-            {t(i18n_process_method)}
-          </Typography.Text>
-        </Col>
-        <Col span='16'>
-          <Form.Item name='processMethod'>
-            <Select style={{ width: '100%' }} allowClear options={processMethodOptions} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row className='mb-3'>
-        <Col span='6'>
-          <Typography.Text strong>
-            <span className='asterisk'>*</span>
-            {t(i18n_processing_time)}
-          </Typography.Text>
-        </Col>
-        <Form.Item name='processingTime'>
-          <Space direction='vertical' size={12}>
-            <DatePicker
-              format={dateFormatList}
-              onChange={(_, dateString) => setProcessingTime(dateString)}
-              disabled={isInfiniteProcessingTime}
-            />
-          </Space>
-        </Form.Item>
-        <Form.Item
-          name='isInfiniteProcessingTime'
-          style={{ display: 'inline-block', margin: '0 16px' }}
-          valuePropName='checked'
-          initialValue={false}>
-          <Checkbox onChange={onChooseNoneProcessingTime}>
-            {t(i18n_is_infinite_processing_time)}
-          </Checkbox>
-        </Form.Item>
-      </Row>
+      {!isTransferToSameLevel && (
+        <>
+          <Row className='mb-3'>
+            <Col span='6'>
+              <Typography.Text strong>
+                <span className='asterisk'>*</span>
+                {t(i18_collaborators)}
+              </Typography.Text>
+            </Col>
+            <Col span='16'>
+              <Form.Item name='collaborators'>
+                <Select mode='multiple' allowClear options={managers} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row className='mt-4 mb-3'>
+            <Col span='6'>
+              <Typography.Text strong>
+                <span className='asterisk'>*</span>
+                {t(i18n_process_method)}
+              </Typography.Text>
+            </Col>
+            <Col span='16'>
+              <Form.Item name='processMethod'>
+                <Select style={{ width: '100%' }} allowClear options={processMethodOptions} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row className='mb-3'>
+            <Col span='6'>
+              <Typography.Text strong>
+                <span className='asterisk'>*</span>
+                {t(i18n_processing_time)}
+              </Typography.Text>
+            </Col>
+            <Form.Item name='processingTime'>
+              <Space direction='vertical' size={12}>
+                <DatePicker
+                  format={dateFormatList}
+                  onChange={(_, dateString) => setProcessingTime(dateString)}
+                  disabled={isInfiniteProcessingTime}
+                />
+              </Space>
+            </Form.Item>
+            <Form.Item
+              name='isInfiniteProcessingTime'
+              style={{ display: 'inline-block', margin: '0 16px' }}
+              valuePropName='checked'
+              initialValue={false}>
+              <Checkbox onChange={onChooseNoneProcessingTime}>
+                {t(i18n_is_infinite_processing_time)}
+              </Checkbox>
+            </Form.Item>
+          </Row>
+        </>
+      )}
     </Form>
   );
 };
