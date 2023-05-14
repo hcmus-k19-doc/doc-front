@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { EditOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
+import { EditOutlined, FileTextOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
 import { globalNavigate } from 'utils/RoutingUtils';
@@ -68,6 +68,14 @@ const AdminMenu = () => {
           icon: <FileTextOutlined />,
           onClick: () => {
             globalNavigate('/document-types');
+          },
+        },
+        {
+          key: 'departments',
+          label: t('main_page.menu.items.departments'),
+          icon: <TeamOutlined />,
+          onClick: () => {
+            globalNavigate('/departments');
           },
         },
       ],

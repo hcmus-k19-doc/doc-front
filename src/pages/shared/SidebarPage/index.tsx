@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import { Layout } from 'antd';
@@ -21,9 +21,8 @@ const { Content, Sider } = Layout;
 
 const SidebarPage: React.FC<MenuProps> = () => {
   const { currentUser } = useAuth();
-  const DocumentTypeManagementPage = React.lazy(
-    () => import('pages/admin/DocumentTypeManagementPage')
-  );
+  const DocumentTypeManagementPage = lazy(() => import('pages/admin/DocumentTypeManagementPage'));
+  const DepartmentManagementPage = lazy(() => import('pages/admin/DepartmentManagementPage'));
 
   const getRoutes = () => {
     switch (currentUser?.role) {
@@ -73,6 +72,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
               element={
                 <DocSuspenseComponent>
                   <DocumentTypeManagementPage />
+                </DocSuspenseComponent>
+              }
+            />
+            <Route
+              path='/departments'
+              element={
+                <DocSuspenseComponent>
+                  <DepartmentManagementPage />
                 </DocSuspenseComponent>
               }
             />

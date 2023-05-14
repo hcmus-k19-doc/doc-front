@@ -3,13 +3,14 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import useModal from 'antd/es/modal/useModal';
 import { t } from 'i18next';
+import { useOnClickDelete } from 'pages/admin/shared/handler';
 import {
   useDocumentTypeDeleteMutation,
   useDocumentTypesReq,
   usePaginationDocumentTypesRes,
 } from 'shared/hooks/DocumentTypesQuery';
-import { useUserDeleteMutation, useUserReq, useUserRes } from 'shared/hooks/UserQuery';
 
 import { FooterProps } from '../core/models';
 
@@ -21,6 +22,7 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const documentTypeDeleteMutation = useDocumentTypeDeleteMutation();
+  const [modal, contextHolder] = useModal();
 
   function handleOnChange(page: number, pageSize: number) {
     setSelectedDocumentTypes([]);
@@ -48,7 +50,7 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
   }
 
   function handleOnClickDeleteUser() {
-    documentTypeDeleteMutation.mutate(selectedDocumentTypes);
+    useOnClickDelete(() => documentTypeDeleteMutation.mutate(selectedDocumentTypes), modal);
   }
 
   return (
@@ -57,8 +59,10 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
         <Button
           type='primary'
           onClick={() => refetch()}
-          icon={<FontAwesomeIcon icon={faRefresh} />}
-        />
+          icon={<FontAwesomeIcon icon={faRefresh} />}>
+          {t('common.button.refresh')}
+        </Button>
+
         <Button type='primary' onClick={handleOnOpenModal}>
           {t('document_type_management.button.add')}
         </Button>
@@ -87,6 +91,8 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
       />
+
+      {contextHolder}
     </div>
   );
 }

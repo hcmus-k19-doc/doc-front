@@ -1,12 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-14 00:15:46.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
 }
 
 export interface DepartmentDto extends DocAbstractDto {
+    departmentName: string;
+    truongPhong?: TruongPhongDto;
+    description?: string;
+}
+
+export interface DepartmentSearchCriteria {
     departmentName: string;
 }
 
@@ -38,6 +44,7 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+    description?: string;
 }
 
 export interface DocumentTypeSearchCriteria {
@@ -191,6 +198,11 @@ export interface TransferDocDto {
 export interface ValidateTransferDocDto {
     isValid: boolean;
     message: string;
+}
+
+export interface TruongPhongDto {
+    id: number;
+    fullName: string;
 }
 
 export interface UserDepartmentDto extends UserDto {

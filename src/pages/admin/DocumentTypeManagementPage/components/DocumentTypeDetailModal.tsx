@@ -1,12 +1,8 @@
 import React from 'react';
-import { Col, Divider, Form, FormInstance, Input, Modal, Row, Select } from 'antd';
+import { Col, Divider, Form, FormInstance, Input, Modal, Row } from 'antd';
 import { t } from 'i18next';
-import { DepartmentDto, DocSystemRoleEnum } from 'models/doc-main-models';
-import { ALL_SYSTEM_ROLES } from 'models/models';
-import { useSelectionDepartmentRes } from 'shared/hooks/DepartmentQuery';
-import { useUserMutation } from 'shared/hooks/UserQuery';
+import { useDocumentTypeMutation } from 'shared/hooks/DocumentTypesQuery';
 
-import { useDocumentTypeMutation } from '../../../../shared/hooks/DocumentTypesQuery';
 import { DocumentTypeTableRowDataType } from '../core/models';
 
 interface Props {
@@ -28,7 +24,7 @@ export default function DocumentTypeDetailModal({
 
   return (
     <Modal
-      title={t('document_type.detail.title')}
+      title={t('document_type_management.document_type.detail.title')}
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}>
@@ -67,6 +63,11 @@ export default function DocumentTypeDetailModal({
                 <Input hidden />
               </Form.Item>
             )}
+          </Col>
+          <Col>
+            <Form.Item name='description' label={t('common.modal.description_title')}>
+              <Input.TextArea />
+            </Form.Item>
           </Col>
         </Form>
       </Row>

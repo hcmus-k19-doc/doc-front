@@ -26,6 +26,7 @@ export default {
         admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
         document_types: 'Loại văn bản',
+        departments: 'Phòng ban',
       },
     },
     BUTTON: {
@@ -66,6 +67,14 @@ export default {
     button: {
       save: 'Lưu',
       cancel: 'Hủy',
+      refresh: 'Làm mới',
+    },
+    modal: {
+      title: 'Xác nhận',
+      ok_text: 'Đồng ý',
+      cancel_text: 'Hủy',
+      content: 'Bạn có chắc chắn muốn xóa?',
+      description_title: 'Chú thích',
     },
   },
   user: {
@@ -406,7 +415,6 @@ export default {
     table: {
       column: {
         order: 'STT',
-        id: 'ID',
         username: 'Tên người dùng',
         email: 'Email',
         full_name: 'Họ và tên',
@@ -446,6 +454,7 @@ export default {
       column: {
         order: 'STT',
         type: 'Tên loại văn bản',
+        created_by: 'Người tạo',
       },
     },
     button: {
@@ -459,6 +468,35 @@ export default {
         type: 'Tên loại văn bản',
         type_required: 'Hãy nhập tên loại văn bản',
       },
+    },
+  },
+  department_management: {
+    table: {
+      column: {
+        order: 'STT',
+        name: 'Tên phòng ban',
+        truong_phong: 'Trưởng phòng',
+        created_by: 'Người tạo',
+      },
+    },
+    department: {
+      detail: {
+        title: 'Chi tiết phòng ban',
+        id: 'ID',
+        name: 'Tên phòng ban',
+        name_required: 'Hãy nhập tên phòng ban',
+        truong_phong: 'Trưởng phòng',
+        truong_phong_required: 'Hãy chọn trưởng phòng',
+        modal: {
+          title: 'Trưởng phòng đã thuộc phòng ban khác',
+          content:
+            'Một khi đã cập nhật trưởng phòng sẽ bị chuyển sang phòng ban khác. Bạn có muốn chuyển trưởng phòng sang phòng ban này không?',
+        },
+      },
+    },
+    button: {
+      add: 'Thêm phòng ban',
+      delete: 'Xóa phòng ban',
     },
   },
 };
