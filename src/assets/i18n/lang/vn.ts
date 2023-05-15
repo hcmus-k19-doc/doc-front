@@ -77,6 +77,7 @@ export default {
       content: 'Bạn có chắc chắn muốn xóa?',
       description_title: 'Chú thích',
     },
+    footer: 'HCMUS © {{year}} Hệ thống phê duyệt và phát hành văn thư',
   },
   user: {
     invalid: 'Tài khoản không hợp lệ',
@@ -600,5 +601,8 @@ export default {
       add: 'Thêm phòng ban',
       delete: 'Xóa phòng ban',
     },
+  },
+  statistics: {
+    title: 'Thống kê',
   },
 };

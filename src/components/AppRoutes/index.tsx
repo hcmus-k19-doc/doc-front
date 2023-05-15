@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
@@ -9,8 +10,11 @@ import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 import { GlobalHistory } from 'utils/RoutingUtils';
 
+import DocSuspenseComponent from '../DocSuspenseComponent';
+
 const AppRoutes = () => {
   const { currentUser } = useAuth();
+  const StatisticsPage = lazy(() => import('pages/shared/StatisticsPage'));
 
   return (
     <BrowserRouter>
@@ -24,6 +28,14 @@ const AppRoutes = () => {
               <Route
                 path='/processing-details/:incomingDocumentId'
                 element={<ProcessingDetailsPageWrapper />}
+              />
+              <Route
+                path='/statistics'
+                element={
+                  <DocSuspenseComponent>
+                    <StatisticsPage />
+                  </DocSuspenseComponent>
+                }
               />
               <Route path='/*' element={<MainPage />} />
             </>
