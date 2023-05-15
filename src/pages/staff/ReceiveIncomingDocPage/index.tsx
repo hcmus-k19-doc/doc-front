@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
   Button,
   Col,
@@ -103,24 +105,24 @@ function ReceiveIncomingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('receiveIncomingDocPage.form.message.fileDuplicateError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_duplicate_error') as string);
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('receiveIncomingDocPage.form.message.fileMaxCountError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_max_count_error') as string);
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('processIncomingDocPage.form.message.fileTypeError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_type_error') as string);
       }
 
       // Check file size (max 3MB)
       const isValidSize = file.size / 1024 / 1024 < 3;
       if (!isValidSize) {
-        message.error(t('processIncomingDocPage.form.message.fileSizeError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_size_error') as string);
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
@@ -131,11 +133,9 @@ function ReceiveIncomingDocPage() {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(
-          `${info.file.name} ${t('processIncomingDocPage.form.message.fileSuccess')}`
-        );
+        message.success(`${info.file.name} ${t('receiveIncomingDocPage.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('processIncomingDocPage.form.message.fileError')}`);
+        message.error(`${info.file.name} ${t('receiveIncomingDocPage.message.file_error')}`);
       }
     },
   };
@@ -236,7 +236,22 @@ function ReceiveIncomingDocPage() {
               <Col span={2}></Col>
               <Col span={11}>
                 <Form.Item
-                  label={t('receiveIncomingDocPage.form.originalSymbolNumber')}
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('receiveIncomingDocPage.form.originalSymbolNumber')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
                   required
                   name='originalSymbolNumber'
                   rules={[
@@ -390,17 +405,14 @@ function ReceiveIncomingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item
-              label={t('receiveIncomingDocPage.form.summary')}
-              name='summary'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('receiveIncomingDocPage.form.summaryRequired') as string,
-                },
-              ]}>
-              <TextArea rows={2} />
+            <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary'>
+              <CKEditor
+                editor={ClassicEditor}
+                data={form.getFieldValue('summary')}
+                onChange={(event, editor) => {
+                  form.setFieldValue('summary', editor.getData());
+                }}
+              />
             </Form.Item>
           </Col>
           <Col span={1}></Col>

@@ -1,3 +1,7 @@
 label {
   font-weight: 600;
 }
+
+.help-icon {
+  cursor: pointer;
+}

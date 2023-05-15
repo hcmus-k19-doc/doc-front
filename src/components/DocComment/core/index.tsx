@@ -1,4 +1,5 @@
 import React from 'react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export interface CommentItem {
   id?: number;
@@ -13,7 +14,7 @@ export interface CommentListProps {
 }
 
 export interface EditorProps {
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (e: any, editor: ClassicEditor) => void;
   onSubmit: () => void;
   submitting: boolean;
   value: string;

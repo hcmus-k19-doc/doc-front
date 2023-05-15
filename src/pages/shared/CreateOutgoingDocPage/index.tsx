@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Button, Col, Form, Input, message, Row, Select, Upload, UploadProps } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
@@ -82,24 +84,24 @@ function CreateOutgoingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('create_outgoing_doc_page.form.message.file_duplicateError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('create_outgoing_doc_page.form.message.fileMaxCountError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('processIncomingDocPage.form.message.fileTypeError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
       }
 
       // Check file size (max 3MB)
       const isValidSize = file.size / 1024 / 1024 < 3;
       if (!isValidSize) {
-        message.error(t('processIncomingDocPage.form.message.fileSizeError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
@@ -110,11 +112,9 @@ function CreateOutgoingDocPage() {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(
-          `${info.file.name} ${t('processIncomingDocPage.form.message.fileSuccess')}`
-        );
+        message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('processIncomingDocPage.form.message.fileError')}`);
+        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
       }
     },
   };
@@ -161,7 +161,7 @@ function CreateOutgoingDocPage() {
   };
 
   return (
-    <div>
+    <>
       <div className='text-lg text-primary'>{t('create_outgoing_doc_page.title')}</div>
       <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
@@ -235,11 +235,28 @@ function CreateOutgoingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('create_outgoing_doc_page.form.receive_org_required') as string,
+                      message: t(
+                        'create_outgoing_doc_page.form.original_symbol_number_required'
+                      ) as string,
                     },
                   ]}
-                  label={t('create_outgoing_doc_page.form.receive_org')}
-                  name='recipient'>
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('create_outgoing_doc_page.form.original_symbol_number')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
+                  name='originalSymbolNumber'>
                   <Input />
                 </Form.Item>
               </Col>
@@ -287,17 +304,31 @@ function CreateOutgoingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item
-              label={t('create_outgoing_doc_page.form.summary')}
-              name='summary'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('create_outgoing_doc_page.form.summary_required') as string,
-                },
-              ]}>
-              <TextArea rows={2} />
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('create_outgoing_doc_page.form.receive_org_required') as string,
+                    },
+                  ]}
+                  label={t('create_outgoing_doc_page.form.receive_org')}
+                  name='recipient'>
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary'>
+              <CKEditor
+                editor={ClassicEditor}
+                data={form.getFieldValue('summary')}
+                onChange={(event, editor) => {
+                  form.setFieldValue('summary', editor.getData());
+                }}
+              />
             </Form.Item>
           </Col>
           <Col span={1}></Col>
@@ -328,7 +359,7 @@ function CreateOutgoingDocPage() {
           </Row>
         </Row>
       </Form>
-    </div>
+    </>
   );
 }
 

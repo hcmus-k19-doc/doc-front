@@ -5,6 +5,8 @@ import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
 import { globalNavigate } from 'utils/RoutingUtils';
 
+import '../menu.css';
+
 const DirectorMenu = () => {
   const [openKey, setOpenKey] = useState('docin');
   const [current, setCurrent] = useState('in-list');

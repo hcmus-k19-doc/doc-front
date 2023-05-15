@@ -42,3 +42,12 @@
     transform: rotate(360deg);
   }
 }
+
+.ck-content {
+  min-height: 100px;
+}
+
+.ck .ck-editor__main > .ck-editor__editable.ck-read-only {
+  color: rgba(0, 0, 0, 0.25) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
