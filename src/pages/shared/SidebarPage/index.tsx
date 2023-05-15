@@ -16,9 +16,9 @@ import IncomingDocListPage from 'pages/shared/IncomingDocListPage';
 import ReceiveIncomingDocPage from 'pages/staff/ReceiveIncomingDocPage';
 
 import CreateOutgoingDocPage from '../CreateOutgoingDocPage';
+import OutgoingDocDetailPage from '../OutgoingDocDetailPage';
 
 import './index.css';
-import OutgoingDocDetailPage from '../OutgoingDocDetailPage';
 
 const { Content, Sider } = Layout;
 

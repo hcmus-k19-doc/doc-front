@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
   Button,
   Col,
@@ -35,8 +37,6 @@ import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
 import './index.css';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function ReceiveIncomingDocPage() {
   const { t } = useTranslation();
@@ -105,24 +105,24 @@ function ReceiveIncomingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('receiveIncomingDocPage.form.message.fileDuplicateError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_duplicate_error') as string);
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('receiveIncomingDocPage.form.message.fileMaxCountError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_max_count_error') as string);
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('processIncomingDocPage.form.message.fileTypeError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_type_error') as string);
       }
 
       // Check file size (max 3MB)
       const isValidSize = file.size / 1024 / 1024 < 3;
       if (!isValidSize) {
-        message.error(t('processIncomingDocPage.form.message.fileSizeError') as string);
+        message.error(t('receiveIncomingDocPage.message.file_size_error') as string);
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
@@ -133,11 +133,9 @@ function ReceiveIncomingDocPage() {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(
-          `${info.file.name} ${t('processIncomingDocPage.form.message.fileSuccess')}`
-        );
+        message.success(`${info.file.name} ${t('receiveIncomingDocPage.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('processIncomingDocPage.form.message.fileError')}`);
+        message.error(`${info.file.name} ${t('receiveIncomingDocPage.message.file_error')}`);
       }
     },
   };

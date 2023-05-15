@@ -84,24 +84,24 @@ function CreateOutgoingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('create_outgoing_doc_page.form.message.file_duplicateError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('create_outgoing_doc_page.form.message.fileMaxCountError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('processIncomingDocPage.form.message.fileTypeError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
       }
 
       // Check file size (max 3MB)
       const isValidSize = file.size / 1024 / 1024 < 3;
       if (!isValidSize) {
-        message.error(t('processIncomingDocPage.form.message.fileSizeError') as string);
+        message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
@@ -112,11 +112,9 @@ function CreateOutgoingDocPage() {
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(
-          `${info.file.name} ${t('processIncomingDocPage.form.message.fileSuccess')}`
-        );
+        message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('processIncomingDocPage.form.message.fileError')}`);
+        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
       }
     },
   };
@@ -163,7 +161,7 @@ function CreateOutgoingDocPage() {
   };
 
   return (
-    <div>
+    <>
       <div className='text-lg text-primary'>{t('create_outgoing_doc_page.title')}</div>
       <Form form={form} layout='vertical' onFinish={onFinish}>
         <Row>
@@ -361,7 +359,7 @@ function CreateOutgoingDocPage() {
           </Row>
         </Row>
       </Form>
-    </div>
+    </>
   );
 }
 

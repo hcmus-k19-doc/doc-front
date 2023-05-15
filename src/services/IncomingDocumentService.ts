@@ -39,10 +39,7 @@ async function createIncomingDocument(incomingDocument: FormData) {
 }
 
 async function updateIncomingDocument(incomingDocument: IncomingDocumentPutDto) {
-  return await axios.put<IncomingDocumentPutDto>(
-    `${INCOMING_DOCUMENTS_URL}/update`,
-    incomingDocument
-  );
+  return await axios.put<IncomingDocumentDto>(`${INCOMING_DOCUMENTS_URL}/update`, incomingDocument);
 }
 
 async function getIncomingDocumentById(id: number) {
