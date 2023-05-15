@@ -6,44 +6,26 @@ import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Row,
-  Select,
-  TimePicker,
-  UploadProps,
-} from 'antd';
+import { Button, Col, DatePicker, Form, Input, message, Row, Select, UploadProps } from 'antd';
 import { Skeleton } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
-import DocComment from 'components/DocComment';
-import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
   Confidentiality,
   DepartmentDto,
-  DistributionOrganizationDto,
   DocumentTypeDto,
   FolderDto,
-  IncomingDocumentPutDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
   Urgency,
 } from 'models/doc-main-models';
-import incomingDocumentService from 'services/IncomingDocumentService';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
-import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
-import DateValidator from 'shared/validators/DateValidator';
-import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 
 import './index.css';
@@ -75,6 +57,7 @@ function OutgoingDocDetailPage() {
       recipient: outgoingDocument.recipient,
       releaseDate: outgoingDocument.releaseDate ? dayjs(outgoingDocument.releaseDate) : null,
       summary: outgoingDocument.summary,
+      signer: outgoingDocument.signer,
     });
   };
 
@@ -343,6 +326,12 @@ function OutgoingDocDetailPage() {
                       label={t('outgoing_doc_detail_page.form.receive_org')}
                       name='recipient'>
                       <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item label={t('outgoing_doc_detail_page.form.signer')} name='signer'>
+                      <Input disabled />
                     </Form.Item>
                   </Col>
                 </Row>
