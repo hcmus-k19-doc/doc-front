@@ -2,6 +2,7 @@ import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DepartmentDto,
+  DepartmentSearchCriteria,
   DocPaginationDto,
   DocumentTypeDto,
   DocumentTypeSearchCriteria,
@@ -29,9 +30,36 @@ async function searchUsers(
   return data;
 }
 
-async function getDepartments() {
+async function getSelectionDepartments() {
   const { data } = await axios.get<DepartmentDto[]>(`${ADMIN_URL}/selection/departments`);
   return data;
+}
+
+async function searchDepartments(
+  searchCriteria: Partial<DepartmentSearchCriteria>,
+  page: number,
+  pageSize: number
+) {
+  const { data } = await axios.post<DocPaginationDto<DepartmentDto>>(
+    `${ADMIN_URL}/search/departments`,
+    searchCriteria,
+    {
+      params: {
+        page: page - 1,
+        pageSize,
+      },
+    }
+  );
+  return data;
+}
+
+async function saveDepartment(department: Partial<DepartmentDto>) {
+  const { data } = await axios.post<number>(`${ADMIN_URL}/departments`, department);
+  return data;
+}
+
+async function deleteDepartmentsByIds(departmentIds: number[]) {
+  await axios.delete(`${ADMIN_URL}/departments`, { data: departmentIds });
 }
 
 async function createUser(user: Partial<UserDto>) {
@@ -77,15 +105,26 @@ async function deleteDocumentTypeByIds(ids: number[]) {
   await axios.delete(`${ADMIN_URL}/document-types`, { data: ids });
 }
 
+async function isUserAlreadyTruongPhongOfAnotherDepartment(userId: number, departmentId: number) {
+  const { data } = await axios.get<boolean>(
+    `${ADMIN_URL}/already-assigned/truong-phong/${userId}/departments/${departmentId}`
+  );
+  return data;
+}
+
 const AdminService = {
   searchUsers,
-  getDepartments,
+  getSelectionDepartments,
+  searchDepartments,
+  saveDepartment,
   createUser,
   updateUser,
   deleteUsers,
   searchDocumentTypes,
   saveDocumentType,
   deleteDocumentTypeByIds,
+  deleteDepartmentsByIds,
+  isUserAlreadyTruongPhongOfAnotherDepartment,
 };
 
 export default AdminService;

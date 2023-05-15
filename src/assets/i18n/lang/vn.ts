@@ -26,6 +26,7 @@ export default {
         admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
         document_types: 'Loại văn bản',
+        departments: 'Phòng ban',
       },
     },
     BUTTON: {
@@ -66,6 +67,14 @@ export default {
     button: {
       save: 'Lưu',
       cancel: 'Hủy',
+      refresh: 'Làm mới',
+    },
+    modal: {
+      title: 'Xác nhận',
+      ok_text: 'Đồng ý',
+      cancel_text: 'Hủy',
+      content: 'Bạn có chắc chắn muốn xóa?',
+      description_title: 'Chú thích',
     },
   },
   user: {
@@ -449,6 +458,7 @@ export default {
         'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc hoặc Văn thư cùng cấp',
       only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert:
         'Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng, Văn thư hoặc Chuyên viên',
+      some_user_is_already_assigned_to_this_doc: 'Văn bản đã được phân công cho người này',
     },
   },
   internal_server_error_page: {
@@ -466,7 +476,6 @@ export default {
     table: {
       column: {
         order: 'STT',
-        id: 'ID',
         username: 'Tên người dùng',
         email: 'Email',
         full_name: 'Họ và tên',
@@ -506,6 +515,7 @@ export default {
       column: {
         order: 'STT',
         type: 'Tên loại văn bản',
+        created_by: 'Người tạo',
       },
     },
     button: {
@@ -519,6 +529,35 @@ export default {
         type: 'Tên loại văn bản',
         type_required: 'Hãy nhập tên loại văn bản',
       },
+    },
+  },
+  department_management: {
+    table: {
+      column: {
+        order: 'STT',
+        name: 'Tên phòng ban',
+        truong_phong: 'Trưởng phòng',
+        created_by: 'Người tạo',
+      },
+    },
+    department: {
+      detail: {
+        title: 'Chi tiết phòng ban',
+        id: 'ID',
+        name: 'Tên phòng ban',
+        name_required: 'Hãy nhập tên phòng ban',
+        truong_phong: 'Trưởng phòng',
+        truong_phong_required: 'Hãy chọn trưởng phòng',
+        modal: {
+          title: 'Trưởng phòng đã thuộc phòng ban khác',
+          content:
+            'Một khi đã cập nhật trưởng phòng sẽ bị chuyển sang phòng ban khác. Bạn có muốn chuyển trưởng phòng sang phòng ban này không?',
+        },
+      },
+    },
+    button: {
+      add: 'Thêm phòng ban',
+      delete: 'Xóa phòng ban',
     },
   },
 };

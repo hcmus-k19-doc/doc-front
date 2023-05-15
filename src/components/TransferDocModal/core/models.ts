@@ -20,7 +20,7 @@ export const i18n_document_number = `${i18n_transfer_modal}.document_number`;
 export const i18n_process_method = `${i18n_transfer_modal}.manager_view.process_method`;
 
 export type ComponentMap = {
-  [key: string]: React.FC<any>;
+  [key: number]: React.FC<any>;
 };
 
 export type MenuItem = Required<MenuProps>['items'][number];

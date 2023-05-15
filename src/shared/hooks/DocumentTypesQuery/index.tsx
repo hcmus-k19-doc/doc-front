@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
+import { DocumentTypeDto } from 'models/doc-main-models';
 import {
   DocumentTypeTableDataType,
   DocumentTypeTableRowDataType,
@@ -10,8 +12,6 @@ import adminService from 'services/AdminService';
 import documentTypeService from 'services/DocumentTypeService';
 import { PaginationStateUtils } from 'shared/models/states';
 
-import { PRIMARY_COLOR } from '../../../config/constant';
-import { DocumentTypeDto } from '../../../models/doc-main-models';
 import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
 
@@ -27,6 +27,8 @@ const queryState = atom<DocDocumentTypeQueryState>({
   },
 });
 
+const QUERY_PAGINATION_DOCUMENT_TYPES = 'QUERY.PAGINATION.DOCUMENT_TYPES';
+
 export function useDocumentTypesRes() {
   return useQuery({
     queryKey: ['QUERIES.DOCUMENT_TYPES'],
@@ -41,7 +43,7 @@ export function usePaginationDocumentTypesRes() {
   const query = useRecoilValue<DocDocumentTypeQueryState>(queryState);
 
   return useQuery<DocumentTypeTableDataType>({
-    queryKey: ['QUERIES.DOCUMENT_TYPES', query],
+    queryKey: [QUERY_PAGINATION_DOCUMENT_TYPES, query],
     queryFn: async () => {
       const res = await adminService.searchDocumentTypes(
         query.searchCriteria,
@@ -53,10 +55,12 @@ export function usePaginationDocumentTypesRes() {
         return {
           key: item.id,
           id: item.id,
+          createdBy: item.createdBy,
           order: index + 1,
           version: item.version,
           type: item.type,
           translatedType: t(`document_type.${item.type}`),
+          description: item.description,
         };
       });
 
@@ -84,12 +88,13 @@ export function useDocumentTypeMutation() {
         id: payload.id,
         version: payload.version,
         type: payload.type,
+        description: payload.description,
       };
 
       return await adminService.saveDocumentType(documentTypeDto);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['QUERIES.DOCUMENT_TYPES', query]);
+      queryClient.invalidateQueries([QUERY_PAGINATION_DOCUMENT_TYPES, query]);
     },
     onError: (e) => {
       if (e instanceof AxiosError) {
@@ -99,6 +104,7 @@ export function useDocumentTypeMutation() {
             html: t(e.response?.data.message),
             confirmButtonColor: PRIMARY_COLOR,
             confirmButtonText: 'OK',
+            showConfirmButton: true,
           });
         } else {
           console.error(e);
@@ -118,7 +124,7 @@ export function useDocumentTypeDeleteMutation() {
       return await adminService.deleteDocumentTypeByIds(ids);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['QUERIES.DOCUMENT_TYPES', query]);
+      queryClient.invalidateQueries([QUERY_PAGINATION_DOCUMENT_TYPES, query]);
     },
   });
 }

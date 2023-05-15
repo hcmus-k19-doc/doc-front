@@ -1,12 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-16 00:34:26.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
 }
 
 export interface DepartmentDto extends DocAbstractDto {
+    departmentName: string;
+    truongPhong?: TruongPhongDto;
+    description?: string;
+}
+
+export interface DepartmentSearchCriteria {
     departmentName: string;
 }
 
@@ -38,6 +43,7 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
 
 export interface DocumentTypeDto extends DocAbstractDto {
     type: string;
+    description?: string;
 }
 
 export interface DocumentTypeSearchCriteria {
@@ -99,7 +105,7 @@ export interface TransferDocumentModalSettingDto {
     menuConfigs: TransferDocumentMenuConfig[];
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
-    defaultComponent: string;
+    defaultComponentKey: number;
 }
 
 export interface OutgoingDocumentGetDto {
@@ -172,6 +178,27 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
+export interface GetTransferDocumentDetailRequest {
+    incomingDocumentId: number;
+    userId: number;
+    role: ProcessingDocumentRoleEnum;
+    step: number;
+}
+
+export interface GetTransferDocumentDetailResponse {
+    incomingDocumentId: number;
+    incomingNumber: string;
+    incomingSummary: string;
+    processingDocumentId: number;
+    processingStatus: ProcessingStatus;
+    processingDuration: DateAsString;
+    isInfiniteProcessingTime: boolean;
+    step: number;
+    processMethod: ProcessMethod;
+    userId: number;
+    role: ProcessingDocumentRoleEnum;
+}
+
 export interface TransferDocDto {
     documentIds?: number[];
     summary?: string;
@@ -183,6 +210,16 @@ export interface TransferDocDto {
     processMethod?: ProcessMethod;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
+}
+
+export interface ValidateTransferDocDto {
+    isValid: boolean;
+    message: string;
+}
+
+export interface TruongPhongDto {
+    id: number;
+    fullName: string;
 }
 
 export interface UserDepartmentDto extends UserDto {
@@ -215,7 +252,7 @@ export interface AttachmentDto extends DocAbstractDto {
 
 export interface TransferDocumentMenuConfig {
     transferDocumentTypeLabel: string;
-    component: string;
+    componentKey: number;
     menuLabel: string;
     menuKey: number;
     transferDocumentType: TransferDocumentType;

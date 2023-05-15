@@ -33,6 +33,7 @@ const LoginPage: React.FC = () => {
           html: t(e.response?.data.message),
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
+          showConfirmButton: true,
         });
         setError(e.response?.data.message);
         console.error(e.response?.data.message);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button, Pagination } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import axios from 'axios';
@@ -25,6 +26,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const [modalForm] = useForm();
   const { currentUser } = useAuth();
   const [, setError] = useState<string>();
+  const queryClient = useQueryClient();
   const showAlert = useSweetAlert();
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
@@ -60,7 +62,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
     console.log('transferDocDto', transferDocDto);
 
     if (
-      validateTransferDocs(
+      await validateTransferDocs(
         selectedDocs,
         transferDocModalItem.transferDocumentType,
         transferDocDto,
@@ -76,7 +78,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       try {
         const response = await incomingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
-          // TODO: refetch data
+          queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_LIST']);
           showAlert({
             icon: 'success',
             html: t('incomingDocListPage.message.transfer_success') as string,

@@ -7,10 +7,13 @@ import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { PRIMARY_COLOR } from 'config/constant';
 import { IncomingDocumentDto } from 'models/doc-main-models';
+import moment from 'moment';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+
+import { DEFAULT_DATE_FORMAT, YEAR_MONTH_DAY_FORMAT } from '../../../utils/DateTimeUtils';
 
 import Footer from './components/Footer';
 import IncomingDocumentSearchForm from './components/IncomingDocumentSearchForm';
@@ -63,28 +66,32 @@ const IncomingDocListPage: React.FC = () => {
 
   const columns: ColumnsType<TableRowDataType> = [
     {
-      title: t('incomingDocListPage.table.columns.id'),
-      dataIndex: 'id',
-    },
-    {
       title: t('incomingDocListPage.table.columns.type'),
       dataIndex: 'type',
+      sorter: (a, b) => a.type.localeCompare(b.type),
     },
     {
       title: t('incomingDocListPage.table.columns.arriveId'),
       dataIndex: 'arriveId',
+      sorter: (a, b) => a.arriveId.localeCompare(b.arriveId),
     },
     {
       title: t('incomingDocListPage.table.columns.originId'),
       dataIndex: 'originId',
+      sorter: (a, b) => a.originId.localeCompare(b.originId),
     },
     {
       title: t('incomingDocListPage.table.columns.arriveDate'),
       dataIndex: 'arriveDate',
+      sorter: (a, b) =>
+        moment(a.arriveDate, YEAR_MONTH_DAY_FORMAT).diff(
+          moment(b.arriveDate, YEAR_MONTH_DAY_FORMAT)
+        ),
     },
     {
       title: t('incomingDocListPage.table.columns.issuePlace'),
       dataIndex: 'issuePlace',
+      sorter: (a, b) => a.issuePlace.localeCompare(b.issuePlace),
     },
     {
       title: t('incomingDocListPage.table.columns.summary'),
@@ -100,7 +107,7 @@ const IncomingDocListPage: React.FC = () => {
           <Tooltip
             title={t('incomingDocListPage.table.tooltip.downloadAttachment')}
             placement='bottom'>
-            <FileZipOutlined className='zip-icon' />
+            <FileZipOutlined className='zip-icon' style={{ color: PRIMARY_COLOR }} />
           </Tooltip>
         );
       },
@@ -116,10 +123,13 @@ const IncomingDocListPage: React.FC = () => {
     {
       title: t('incomingDocListPage.table.columns.status'),
       dataIndex: 'status',
+      sorter: (a, b) => a.status.localeCompare(b.status),
     },
     {
       title: t('incomingDocListPage.table.columns.deadline'),
       dataIndex: 'deadline',
+      sorter: (a, b) =>
+        moment(a.deadline, YEAR_MONTH_DAY_FORMAT).diff(moment(b.deadline, YEAR_MONTH_DAY_FORMAT)),
     },
   ];
 
@@ -155,26 +165,6 @@ const IncomingDocListPage: React.FC = () => {
         pagination={false}
         footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
       />
-
-      <Divider />
-
-      {/* <div className='float-right px-8'> */}
-
-      {/*<Button htmlType='button' onClick={handleOnOpenModal} disabled={!hasSelected}>*/}
-      {/*  {t('incomingDocDetailPage.button.transfer')}*/}
-      {/*</Button>*/}
-      {/* <Button htmlType='button' onClick={handleOnOpenModal}>
-          {t('incomingDocDetailPage.button.transfer')}
-        </Button> */}
-      {/* </div> */}
-
-      {/* <TransferDocModal
-        form={modalForm}
-        isModalOpen={isModalOpen}
-        handleCancel={handleOnCancelModal}
-        handleOk={handleOnOkModal}
-        selectedDocs={selectedDocs}
-      /> */}
     </>
   );
 };

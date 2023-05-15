@@ -21,6 +21,15 @@ const columns: ColumnsType<DocumentTypeTableRowDataType> = [
     title: t('document_type_management.table.column.type'),
     dataIndex: 'type',
   },
+  {
+    title: t('common.modal.description_title'),
+    dataIndex: 'description',
+    width: '35%',
+  },
+  {
+    title: t('document_type_management.table.column.created_by'),
+    dataIndex: 'createdBy',
+  },
 ];
 
 function DocumentTypeManagementPage() {
@@ -53,7 +62,7 @@ function DocumentTypeManagementPage() {
 
   return (
     <>
-      <div className='text-lg text-primary'>{t('main_page.menu.items.users')}</div>
+      <div className='text-lg text-primary'>{t('main_page.menu.items.document_types')}</div>
 
       <Divider />
 
