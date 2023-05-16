@@ -159,6 +159,8 @@ export default {
         fullText: 'Toàn văn',
         status: 'Trạng thái',
         deadline: 'Thời hạn xử lý',
+        transferDetailBtn: 'Chuyển xử lý',
+        transferDetail: 'Xem chi tiết',
       },
       tooltip: {
         downloadAttachment: 'Tải tệp đính kèm',

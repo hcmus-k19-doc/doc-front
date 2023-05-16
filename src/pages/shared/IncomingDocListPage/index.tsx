@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
 import { Divider, Table, Tooltip } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
+import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
 import { IncomingDocumentDto } from 'models/doc-main-models';
 import moment from 'moment';
@@ -13,7 +15,7 @@ import attachmentService from 'services/AttachmentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
-import { DEFAULT_DATE_FORMAT, YEAR_MONTH_DAY_FORMAT } from '../../../utils/DateTimeUtils';
+import { YEAR_MONTH_DAY_FORMAT } from '../../../utils/DateTimeUtils';
 
 import Footer from './components/Footer';
 import IncomingDocumentSearchForm from './components/IncomingDocumentSearchForm';
@@ -27,9 +29,23 @@ const IncomingDocListPage: React.FC = () => {
   const showAlert = useSweetAlert();
   const [, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
+  const [transferDocModalForm] = useForm();
+  const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
+  const [transferredDoc, setTransferredDoc] = useState<IncomingDocumentDto>();
+
+  const handleOnOpenModal = (event: any, tableRecord: TableRowDataType) => {
+    event.preventDefault();
+    setIsDetailTransferModalOpen(true);
+    setTransferredDoc(tableRecord as unknown as IncomingDocumentDto);
+  };
+
+  const handleOnCloseModal = () => {
+    setIsDetailTransferModalOpen(false);
+    transferDocModalForm.resetFields();
+  };
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
     try {
@@ -131,6 +147,20 @@ const IncomingDocListPage: React.FC = () => {
       sorter: (a, b) =>
         moment(a.deadline, YEAR_MONTH_DAY_FORMAT).diff(moment(b.deadline, YEAR_MONTH_DAY_FORMAT)),
     },
+    {
+      title: t('incomingDocListPage.table.columns.transferDetailBtn'),
+      dataIndex: 'isDocTransferred',
+      render: (_, record) => {
+        if (record.isDocTransferred) {
+          return (
+            <a onClick={(event) => handleOnOpenModal(event, record)}>
+              {t('incomingDocListPage.table.columns.transferDetail')}
+            </a>
+          );
+        }
+        return null;
+      },
+    },
   ];
 
   const rowSelection = {
@@ -158,12 +188,25 @@ const IncomingDocListPage: React.FC = () => {
           };
         }}
         rowClassName={() => 'row-hover'}
-        rowSelection={{ type: 'checkbox', ...rowSelection }}
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+          getCheckboxProps: (record) => ({
+            disabled: record.isDocTransferred,
+          }),
+        }}
         columns={columns}
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
         footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
+      />
+
+      <TransferDocModalDetail
+        form={transferDocModalForm}
+        isModalOpen={isDetailTransferModalOpen}
+        handleClose={handleOnCloseModal}
+        transferredDoc={transferredDoc as IncomingDocumentDto}
       />
     </>
   );

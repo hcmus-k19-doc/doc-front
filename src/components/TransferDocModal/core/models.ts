@@ -40,6 +40,13 @@ export interface TransferModalProps {
   selectedDocs: IncomingDocumentDto[];
 }
 
+export interface TransferModalDetailProps {
+  isModalOpen: boolean;
+  handleClose: () => void;
+  form: FormInstance;
+  transferredDoc: IncomingDocumentDto;
+}
+
 export interface MenuSelectProps {
   selectedKeys: string[];
 }

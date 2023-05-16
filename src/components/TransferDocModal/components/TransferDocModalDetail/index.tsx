@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Divider, Menu, Modal, Row } from 'antd';
+import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
 import { TransferDocumentMenuConfig } from 'models/doc-main-models';
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 
-import DirectorScreenComponent from './components/DirectorScreenComponent';
-import ExpertScreenComponent from './components/ExpertScreenComponent';
-import ManagerScreenComponent from './components/ManagerScreenComponent';
-import SecretaryScreenComponent from './components/SecretaryScreenComponent';
+import DirectorScreenComponent from '../../components/DirectorScreenComponent';
+import ExpertScreenComponent from '../../components/ExpertScreenComponent';
+import ManagerScreenComponent from '../../components/ManagerScreenComponent';
+import SecretaryScreenComponent from '../../components/SecretaryScreenComponent';
 import {
   ComponentMap,
   getItem,
   MenuItem,
   MenuSelectProps,
-  TransferModalProps,
-} from './core/models';
+  TransferModalDetailProps,
+} from '../../core/models';
 
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
@@ -24,17 +24,18 @@ const componentMap: ComponentMap = {
   4: ExpertScreenComponent,
 };
 
-const TransferDocModal: React.FC<TransferModalProps> = ({
+const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   isModalOpen,
-  handleOk,
-  handleCancel,
+  handleClose,
   form,
-  selectedDocs,
+  transferredDoc,
 }) => {
   const { settings } = useTransferSettingRes();
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
+
+  console.log('detail-settiing', settings);
 
   useEffect(() => {
     if (settings && settings.menuConfigs) {
@@ -76,7 +77,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
       return (
         <Component
           form={form}
-          selectedDocs={selectedDocs}
+          selectedDocs={[transferredDoc]}
           isTransferToSameLevel={menuConfig.isTransferToSameLevel}
         />
       );
@@ -85,7 +86,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
     return (
       <DirectorScreenComponent
         form={form}
-        selectedDocs={selectedDocs}
+        selectedDocs={[transferredDoc]}
         isTransferToSameLevel={false}
       />
     );
@@ -95,11 +96,14 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
     <Modal
       title={`${transferLabel}`.toUpperCase()}
       open={isModalOpen}
-      onOk={handleOk}
-      onCancel={handleCancel}
+      footer={[
+        <Button key='ok' type='primary' onClick={handleClose}>
+          OK
+        </Button>,
+      ]}
       width={1000}>
       <Divider />
-      <Row className='mt-5'>
+      {/* <Row className='mt-5'>
         <Col span='5'>
           <Menu
             className='h-full'
@@ -112,9 +116,9 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
         </Col>
         <Col span='1'></Col>
         <Col span='18'>{handleSwitchScreen()}</Col>
-      </Row>
+      </Row> */}
     </Modal>
   );
 };
 
-export default TransferDocModal;
+export default TransferDocModalDetail;
