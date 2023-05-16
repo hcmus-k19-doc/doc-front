@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// Generated using typescript-generator version 3.1.1185 on 2023-05-16 09:43:44.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -108,7 +109,16 @@ export interface TransferDocumentModalSettingDto {
     defaultComponentKey: number;
 }
 
-export interface OutgoingDocumentGetDto {
+export interface OutgoingDocSearchCriteriaDto {
+    outgoingNumber: string;
+    originalSymbolNumber: string;
+    documentTypeId: number;
+    releaseDateFrom: DateAsString;
+    releaseDateTo: DateAsString;
+    summary: string;
+}
+
+export interface OutgoingDocumentGetDto extends DocAbstractDto {
     outgoingNumber: string;
     originalSymbolNumber: string;
     recipient: string;
@@ -120,7 +130,7 @@ export interface OutgoingDocumentGetDto {
     folder: FolderDto;
     releaseDate: DateAsString;
     publishingDepartment: DepartmentDto;
-    status: string;
+    status: OutgoingDocumentStatusEnum;
 }
 
 export interface OutgoingDocumentPostDto {
@@ -136,6 +146,7 @@ export interface OutgoingDocumentPostDto {
 }
 
 export interface OutgoingDocumentPutDto {
+    id: number;
     outgoingNumber: string;
     originalSymbolNumber: string;
     recipient: string;
@@ -311,6 +322,14 @@ export const enum DocSystemRoleEnum {
     TRUONG_PHONG = "TRUONG_PHONG",
     VAN_THU = "VAN_THU",
     DOC_ADMIN = "DOC_ADMIN",
+}
+
+export const enum OutgoingDocumentStatusEnum {
+    UNPROCESSED = "UNPROCESSED",
+    IN_PROGRESS = "IN_PROGRESS",
+    WAITING_FOR_OUTGOING_NUMBER = "WAITING_FOR_OUTGOING_NUMBER",
+    READY_TO_RELEASE = "READY_TO_RELEASE",
+    RELEASED = "RELEASED",
 }
 
 export const enum ProcessingDocumentRoleEnum {

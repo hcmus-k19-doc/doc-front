@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
-import NotFoundPage from 'pages/error/NotFoundPage';
-import ServerErrorPage from 'pages/error/ServerErrorPage';
+import NotFoundPage from 'pages/Error/NotFoundPage';
+import ServerErrorPage from 'pages/Error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
 import MainPage from 'pages/shared/MainPage';
 import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
