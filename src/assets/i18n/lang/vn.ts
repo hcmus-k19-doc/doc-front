@@ -22,6 +22,7 @@ export default {
         create_outgoing_document: 'Tạo văn bản đi',
         processes_incoming_document: 'Xử lý văn bản đến',
         outgoing_document: 'Văn bản đi',
+        outgoing_document_list: 'Danh sách văn bản đi',
         internal_document: 'Văn bản nội bộ',
         admin_management: 'Quản lý hệ thống',
         users: 'Người dùng',
@@ -122,13 +123,18 @@ export default {
     UNPROCESSED: 'Chưa xử lý',
     IN_PROGRESS: 'Đang xử lý',
     CLOSED: 'Đã xử lý',
+    WAITING_FOR_OUTGOING_NUMBER: 'Chờ số đi',
+    READY_TO_RELEASE: 'Sẵn sàng phát hành',
+    RELEASED: 'Đã phát hành',
   },
   search_criteria_bar: {
     incoming_number: 'Số văn bản đến',
+    outgoing_number: 'Số văn bản đi',
     original_symbol_number: 'Số ký hiệu gốc',
     document_type: 'Loại văn bản',
     distribution_organization: 'Cơ quan ban hành',
     arriving_date: 'Ngày đến',
+    release_date: 'Ngày phát hành',
     processing_duration: 'Thời hạn xử lý',
     summary: 'Trích yếu',
     user_management: {
@@ -366,6 +372,41 @@ export default {
       button: {
         title: 'Góp ý',
       },
+    },
+  },
+
+  outgoingDocListPage: {
+    table: {
+      columns: {
+        id: 'STT',
+        type: 'Loại văn bản',
+        release_number: 'Số phát hành',
+        originId: 'Số ký hiệu gốc',
+        releaseDate: 'Ngày đến',
+        issuePlace: 'Nơi phát hành',
+        summary: 'Trích yếu',
+        fullText: 'Toàn văn',
+        status: 'Trạng thái',
+      },
+      tooltip: {
+        downloadAttachment: 'Tải tệp đính kèm',
+      },
+    },
+    message: {
+      attachment: {
+        not_found: 'Không có dữ liệu',
+        download_success: 'Tải tệp đính kèm thành công',
+      },
+      selected_docs: {
+        unprocessed: 'Chưa xử lý',
+        in_progress: 'Đang xử lý',
+        waiting_for_outgoing_number: 'Chờ số đi',
+        ready_to_release: 'Sẵn sàng phát hành',
+        released: 'Đã phát hành',
+        summary:
+          'Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{waitingOutgoingNumberDocs}} Chờ số đi, {{readyReleaseDocs}} sẵn sàng phát hành, {{releasedDocs}} đã phát hành)',
+      },
+      transfer_success: 'Chuyển văn bản thành công',
     },
   },
 

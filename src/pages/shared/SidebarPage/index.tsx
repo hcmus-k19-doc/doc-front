@@ -17,6 +17,7 @@ import ReceiveIncomingDocPage from 'pages/staff/ReceiveIncomingDocPage';
 
 import CreateOutgoingDocPage from '../CreateOutgoingDocPage';
 import OutgoingDocDetailPage from '../OutgoingDocDetailPage';
+import OutgoingDocListPage from '../OutgoingDocListPage';
 
 import './index.css';
 
@@ -35,6 +36,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/in-receive' element={<ReceiveIncomingDocPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
@@ -45,6 +47,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
@@ -55,6 +58,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
@@ -65,6 +69,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
           <Routes>
             <Route path='/' element={<IncomingDocListPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
+            <Route path='/list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             <Route path='/out-create' element={<CreateOutgoingDocPage />} />
             <Route path='*' element={<Navigate to='/not-found' />} />
