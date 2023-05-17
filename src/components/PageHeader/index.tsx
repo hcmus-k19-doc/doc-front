@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
   DatabaseOutlined,
@@ -10,7 +10,7 @@ import {
   LogoutOutlined,
   SnippetsOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Space } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import { DocumentReminderStatusEnum } from 'models/doc-main-models';
@@ -28,6 +28,8 @@ const PageHeader: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { logout } = useAuth();
+  const location = useLocation();
+
   const [status, setStatus] = useState<DocumentReminderStatusEnum>(
     DocumentReminderStatusEnum.ACTIVE
   );
@@ -40,22 +42,16 @@ const PageHeader: React.FC = () => {
 
   const mainNavigator: MenuProps['items'] = [
     {
-      key: '1',
+      key: '/',
       label: 'Văn bản',
       icon: <DatabaseOutlined />,
       onClick: () => navigate('/'),
     },
     {
-      key: '2',
-      label: 'Công việc',
-      icon: <SnippetsOutlined />,
-      onClick: () => navigate('/'),
-    },
-    {
-      key: '3',
+      key: '/statistics',
       label: 'Thống kê',
       icon: <FundOutlined />,
-      onClick: () => navigate('/'),
+      onClick: () => navigate('/statistics'),
     },
   ];
 
@@ -64,10 +60,6 @@ const PageHeader: React.FC = () => {
       key: '1',
       label: t('page_header.languages.vi'),
     },
-    // {
-    //   key: '2',
-    //   label: t('page_header.languages.en'),
-    // },
   ];
 
   const documentReminderStatusItems: MenuProps['items'] = [
@@ -124,10 +116,11 @@ const PageHeader: React.FC = () => {
       <Menu
         theme='light'
         mode='horizontal'
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={[location.pathname]}
         items={mainNavigator}
         className='flex-auto'
       />
+
       <Dropdown menu={{ items: languageItems }} placement='bottomRight'>
         <GlobalOutlined />
       </Dropdown>

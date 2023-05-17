@@ -71,7 +71,7 @@ export default function ProcessingDetailsPageWrapper() {
         </Layout>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-        HCMUS &copy; 2023 Hệ thống phê duyệt và phát hành văn thư
+        {t('common.footer', { year: new Date().getFullYear() })}
       </Footer>
     </Layout>
   );
