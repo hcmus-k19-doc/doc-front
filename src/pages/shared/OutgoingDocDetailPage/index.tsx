@@ -32,7 +32,6 @@ import { globalNavigate } from 'utils/RoutingUtils';
 const { confirm } = Modal;
 
 import './index.css';
-import React from 'react';
 
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
