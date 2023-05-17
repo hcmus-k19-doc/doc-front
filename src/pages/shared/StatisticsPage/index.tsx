@@ -8,15 +8,15 @@ import { ProcessingStatus } from 'models/doc-main-models';
 import { useStatisticsRes } from 'shared/hooks/StatisticsQuery';
 
 function StatisticsPage() {
-  const { data, isLoading } = useStatisticsRes();
-  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = data || {};
+  const { data: statisticsDto, isLoading } = useStatisticsRes();
+  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto || {};
 
   const incomingPieChartOptions = {
     title: {
       text: t('statistics.incoming_document_pie_chart_title'),
       subtext: t('statistics.quarter', {
-        quarter: incomingDocumentStatisticsDto?.quarter,
-        year: incomingDocumentStatisticsDto?.year,
+        quarter: statisticsDto?.quarter,
+        year: statisticsDto?.year,
       }),
       x: 'center',
     },
@@ -68,7 +68,10 @@ function StatisticsPage() {
 
   const processingDocumentTypeBarChartOptions = {
     title: {
-      text: t('statistics.document_type_processed_title'),
+      text: t('statistics.document_type_processed_title', {
+        quarter: statisticsDto?.quarter,
+        year: statisticsDto?.year,
+      }),
       x: 'center',
     },
     tooltip: {},

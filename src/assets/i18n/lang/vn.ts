@@ -603,8 +603,9 @@ export default {
     },
   },
   statistics: {
-    incoming_document_pie_chart_title: 'TỈ LỆ VĂN BẢN ĐẾN',
-    document_type_processed_title: 'SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ',
+    incoming_document_pie_chart_title: 'TỈ LỆ XỬ LÝ VĂN BẢN ĐẾN',
+    document_type_processed_title:
+      'SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ QUÝ {{quarter}} NĂM {{year}}',
     quarter: 'Quý {{quarter}} năm {{year}}',
     legend: {
       document_type: 'Loại văn bản',

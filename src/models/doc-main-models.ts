@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-10 21:54:17.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-17 22:14:52.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -123,8 +123,6 @@ export interface IncomingDocumentStatisticsDto {
     numberOfUnprocessedDocument: number;
     numberOfProcessingDocument: number;
     numberOfProcessedDocument: number;
-    quarter: number;
-    year: number;
 }
 
 export interface OutgoingDocSearchCriteriaDto {
@@ -219,6 +217,8 @@ export interface SendingLevelDto extends DocAbstractDto {
 export interface StatisticsWrapperDto {
     incomingDocumentStatisticsDto: IncomingDocumentStatisticsDto;
     documentTypeStatisticsWrapperDto: DocumentTypeStatisticsWrapperDto;
+    quarter: number;
+    year: number;
 }
 
 export interface GetTransferDocumentDetailRequest {
