@@ -6,12 +6,9 @@ import { Divider, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
 import { OutgoingDocumentGetDto } from 'models/doc-main-models';
-import moment from 'moment';
 import { RecoilRoot } from 'recoil';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
-
-import { YEAR_MONTH_DAY_FORMAT } from '../../../utils/DateTimeUtils';
 
 import Footer from './components/Footer';
 import OutgoingDocumentSearchForm from './components/OutgoingDocumentSearchForm';
@@ -69,32 +66,31 @@ const OutgoingDocListPage: React.FC = () => {
       sorter: (a, b) => a.type.localeCompare(b.type),
     },
     {
+      title: t('outgoingDocListPage.table.columns.status'),
+      dataIndex: 'status',
+      sorter: (a, b) => a.status.localeCompare(b.status),
+    },
+    {
+      title: t('outgoingDocListPage.table.columns.originId'),
+      dataIndex: 'originId',
+    },
+    {
       title: t('outgoingDocListPage.table.columns.release_number'),
       dataIndex: 'releaseNumber',
       sorter: (a, b) => a.releaseNumber.localeCompare(b.releaseNumber),
     },
     {
-      title: t('outgoingDocListPage.table.columns.originId'),
-      dataIndex: 'originId',
-      sorter: (a, b) => a.originId.localeCompare(b.originId),
-    },
-    {
-      title: t('outgoingDocListPage.table.columns.releaseDate'),
-      dataIndex: 'releaseDate',
-      sorter: (a, b) =>
-        moment(a.releaseDate, YEAR_MONTH_DAY_FORMAT).diff(
-          moment(b.releaseDate, YEAR_MONTH_DAY_FORMAT)
-        ),
+      title: t('outgoingDocListPage.table.columns.summary'),
+      dataIndex: 'summary',
+      width: '20%',
+      render: (text) => {
+        return <div dangerouslySetInnerHTML={{ __html: text }} />;
+      },
     },
     {
       title: t('outgoingDocListPage.table.columns.issuePlace'),
       dataIndex: 'issuePlace',
       sorter: (a, b) => a.issuePlace.localeCompare(b.issuePlace),
-    },
-    {
-      title: t('outgoingDocListPage.table.columns.summary'),
-      dataIndex: 'summary',
-      width: '25%',
     },
     {
       title: t('outgoingDocListPage.table.columns.fullText'),
@@ -117,11 +113,6 @@ const OutgoingDocListPage: React.FC = () => {
           },
         };
       },
-    },
-    {
-      title: t('outgoingDocListPage.table.columns.status'),
-      dataIndex: 'status',
-      sorter: (a, b) => a.status.localeCompare(b.status),
     },
   ];
 
