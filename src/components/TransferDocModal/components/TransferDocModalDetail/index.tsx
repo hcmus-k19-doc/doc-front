@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
-import { TransferDocumentMenuConfig } from 'models/doc-main-models';
+import {
+  TransferDocumentMenuConfig,
+  TransferDocumentModalSettingDto,
+} from 'models/doc-main-models';
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
@@ -34,21 +37,39 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
+  const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
 
-  console.log('detail-settiing', settings);
+  // only get the menuConfigs that isTransferToSameLevel === false
+  // const detailModalSetting = {
+  //   ...settings,
+  //   menuConfigs: settings?.menuConfigs?.filter((item) => {
+  //     return item.isTransferToSameLevel === false;
+  //   }),
+  // };
 
   useEffect(() => {
     if (settings && settings.menuConfigs) {
-      setTransferLabel(settings.menuConfigs[0].transferDocumentTypeLabel);
+      const newSetting = {
+        ...settings,
+        menuConfigs:
+          settings?.menuConfigs?.filter((item) => {
+            return item.isTransferToSameLevel === false;
+          }) || [],
+      };
+      console.log('newSetting', newSetting);
+      setDetailModalSetting(newSetting);
+      setTransferLabel(newSetting.menuConfigs[0].transferDocumentTypeLabel);
       setTransferDocModalItem({
-        transferDocumentType: settings.menuConfigs[0].transferDocumentType,
-        isTransferToSameLevel: settings.menuConfigs[0].isTransferToSameLevel,
+        transferDocumentType: newSetting.menuConfigs[0].transferDocumentType,
+        isTransferToSameLevel: newSetting.menuConfigs[0].isTransferToSameLevel,
       });
-      setDefaultSelectedKeys([settings.menuConfigs[0].menuKey.toString()]);
+      setDefaultSelectedKeys([newSetting.menuConfigs[0].menuKey.toString()]);
     }
   }, [settings]);
-
-  const items = settings?.menuConfigs?.reduce(
+  console.log('settngs', settings);
+  console.log('detail-settiing', detailModalSetting);
+  console.log('transferredDoc', transferredDoc);
+  const items = detailModalSetting?.menuConfigs?.reduce(
     (acc: MenuItem[], item: TransferDocumentMenuConfig) => {
       return [...acc, getItem(item.menuLabel, item.menuKey)];
     },
@@ -56,7 +77,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   );
 
   const handleMenuOnSelect = ({ selectedKeys }: MenuSelectProps) => {
-    settings?.menuConfigs?.forEach((item) => {
+    detailModalSetting?.menuConfigs?.forEach((item) => {
       if (item.menuKey === parseInt(selectedKeys[0])) {
         setTransferDocModalItem({
           transferDocumentType: item.transferDocumentType,
@@ -68,7 +89,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   };
 
   const handleSwitchScreen = () => {
-    const menuConfig = settings?.menuConfigs.find(
+    const menuConfig = detailModalSetting?.menuConfigs.find(
       (item) => item.transferDocumentTypeLabel === transferLabel
     );
 
@@ -103,7 +124,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
       ]}
       width={1000}>
       <Divider />
-      {/* <Row className='mt-5'>
+      <Row className='mt-5'>
         <Col span='5'>
           <Menu
             className='h-full'
@@ -116,7 +137,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         </Col>
         <Col span='1'></Col>
         <Col span='18'>{handleSwitchScreen()}</Col>
-      </Row> */}
+      </Row>
     </Modal>
   );
 };

@@ -39,6 +39,7 @@ const IncomingDocListPage: React.FC = () => {
   const handleOnOpenModal = (event: any, tableRecord: TableRowDataType) => {
     event.preventDefault();
     setIsDetailTransferModalOpen(true);
+    console.log('tableRecord', tableRecord);
     setTransferredDoc(tableRecord as unknown as IncomingDocumentDto);
   };
 
