@@ -4,13 +4,20 @@ import { Content, Footer } from 'antd/es/layout/layout';
 import PageHeader from 'components/PageHeader';
 import ReactECharts from 'echarts-for-react';
 import { t } from 'i18next';
-import * as dateTimeUtils from 'utils/DateTimeUtils';
+import { ProcessingStatus } from 'models/doc-main-models';
+import { useStatisticsRes } from 'shared/hooks/StatisticsQuery';
 
 function StatisticsPage() {
-  const option = {
+  const { data, isLoading } = useStatisticsRes();
+  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = data || {};
+
+  const incomingPieChartOptions = {
     title: {
-      text: t('statistics.title'),
-      subtext: dateTimeUtils.getCurrentQuarter(),
+      text: t('statistics.incoming_document_pie_chart_title'),
+      subtext: t('statistics.quarter', {
+        quarter: incomingDocumentStatisticsDto?.quarter,
+        year: incomingDocumentStatisticsDto?.year,
+      }),
       x: 'center',
     },
     tooltip: {
@@ -20,36 +27,86 @@ function StatisticsPage() {
     legend: {
       orient: 'vertical',
       left: 'left',
-      data: ['huhu', 'hihi', 'hehe', 'hoho', 'haha'],
+      data: [
+        t(`statistics.series.data.${ProcessingStatus.UNPROCESSED}`),
+        t(`statistics.series.data.${ProcessingStatus.IN_PROGRESS}`),
+        t(`statistics.series.data.${ProcessingStatus.CLOSED}`),
+      ],
     },
     series: [
       {
-        name: '访问来源',
+        name: t('statistics.series.name'),
         type: 'pie',
         radius: '55%',
         center: ['50%', '60%'],
         data: [
-          { value: 335, name: 'huhu' },
-          { value: 310, name: 'hihi' },
-          { value: 234, name: 'hehe' },
-          { value: 135, name: 'hoho' },
-          { value: 1548, name: 'haha' },
+          {
+            value: incomingDocumentStatisticsDto?.numberOfUnprocessedDocument,
+            name: t(`statistics.series.data.${ProcessingStatus.UNPROCESSED}`),
+          },
+          {
+            value: incomingDocumentStatisticsDto?.numberOfProcessingDocument,
+            name: t(`statistics.series.data.${ProcessingStatus.IN_PROGRESS}`),
+          },
+          {
+            value: incomingDocumentStatisticsDto?.numberOfProcessedDocument,
+            name: t(`statistics.series.data.${ProcessingStatus.CLOSED}`),
+          },
         ],
-        itemStyle: {
-          emphasis: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)',
+        emphasis: {
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
           },
         },
       },
     ],
   };
 
+  const processingDocumentTypeBarChartOptions = {
+    title: {
+      text: t('statistics.document_type_processed_title'),
+      x: 'center',
+    },
+    tooltip: {},
+    legend: {
+      data: documentTypeStatisticsWrapperDto?.seriesData.map((xAxisData) => xAxisData.name),
+      orient: 'vertical',
+      right: 'right',
+    },
+    xAxis: {},
+    yAxis: {},
+    series: documentTypeStatisticsWrapperDto?.seriesData.map((seriesData) => {
+      return {
+        name: seriesData.name,
+        type: 'bar',
+        data: [seriesData.value],
+        showBackground: true,
+        backgroundStyle: {
+          color: 'rgba(180, 180, 180, 0.2)',
+        },
+      };
+    }),
+  };
+
   return (
-    <>
-      <ReactECharts option={option} style={{ height: 400 }} />
-    </>
+    <div className='flex justify-between'>
+      <ReactECharts
+        showLoading={isLoading}
+        option={incomingPieChartOptions}
+        style={{ height: 400, width: '50%' }}
+        opts={{ renderer: 'svg' }}
+      />
+      <ReactECharts
+        showLoading={isLoading}
+        option={processingDocumentTypeBarChartOptions}
+        style={{ height: 400, width: '50%' }}
+        opts={{ renderer: 'svg' }}
+      />
+    </div>
   );
 }
 
@@ -65,7 +122,6 @@ export default function StatisticsPageWrapper() {
         style={{
           padding: '0 50px',
           minHeight: '100vh',
-          maxWidth: '50%',
         }}
         className='mt-12'>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>

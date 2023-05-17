@@ -603,6 +603,19 @@ export default {
     },
   },
   statistics: {
-    title: 'Thống kê',
+    incoming_document_pie_chart_title: 'TỈ LỆ VĂN BẢN ĐẾN',
+    document_type_processed_title: 'SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ',
+    quarter: 'Quý {{quarter}} năm {{year}}',
+    legend: {
+      document_type: 'Loại văn bản',
+    },
+    series: {
+      name: 'Số lượng văn bản theo quý',
+      data: {
+        UNPROCESSED: 'Chưa xử lý',
+        IN_PROGRESS: 'Đang xử lý',
+        CLOSED: 'Đã xử lý',
+      },
+    },
   },
 };

@@ -9,9 +9,9 @@ import {
 } from 'pages/admin/UserManagementPage/core/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import adminService from 'services/AdminService';
+import userService from 'services/UserService';
 import { PaginationStateUtils } from 'shared/models/states';
 
-import userService from '../../../services/UserService';
 import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
 
