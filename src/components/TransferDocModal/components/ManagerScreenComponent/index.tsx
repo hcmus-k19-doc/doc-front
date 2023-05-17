@@ -1,23 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  List,
-  Row,
-  Select,
-  SelectProps,
-  Space,
-  Typography,
-} from 'antd';
+import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useAuth } from 'components/AuthComponent';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { ProcessMethod } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
@@ -33,6 +21,7 @@ import {
   i18n_process_method,
   i18n_processing_time,
   i18n_sender,
+  processMethodOptions,
   TransferDocScreenFormProps,
   TransferDocScreenProps,
 } from '../../core/models';
@@ -42,12 +31,6 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 const { Text } = Typography;
 const itemHeight = 50;
-
-const processMethodOptions: SelectProps['options'] = [
-  { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
-  { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },
-  { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
-];
 
 const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,

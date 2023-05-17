@@ -1,6 +1,6 @@
 import { DocSystemRoleEnum, UserDto } from 'models/doc-main-models';
 
-export const getStep = (reporter: UserDto, assignee: UserDto, isCreate: boolean) => {
+export const getStep = (reporter: UserDto, assignee: UserDto | null, isCreate: boolean) => {
   let step = 1;
   switch (reporter.role) {
     case DocSystemRoleEnum.VAN_THU:

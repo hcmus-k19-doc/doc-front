@@ -1,6 +1,10 @@
 import React from 'react';
-import { FormInstance, MenuProps } from 'antd';
-import { IncomingDocumentDto } from 'models/doc-main-models';
+import { FormInstance, MenuProps, SelectProps } from 'antd';
+import {
+  GetTransferDocumentDetailCustomResponse,
+  IncomingDocumentDto,
+  ProcessMethod,
+} from 'models/doc-main-models';
 
 export const i18n_transfer_modal = 'transfer_modal';
 export const i18n_transfer_modal_title = `${i18n_transfer_modal}.title`;
@@ -45,6 +49,7 @@ export interface TransferModalDetailProps {
   handleClose: () => void;
   form: FormInstance;
   transferredDoc: IncomingDocumentDto;
+  transferDocumentDetail: GetTransferDocumentDetailCustomResponse;
 }
 
 export interface MenuSelectProps {
@@ -65,3 +70,9 @@ export interface TransferDocScreenFormProps {
   isInfiniteProcessingTime: boolean;
   processMethod: string;
 }
+
+export const processMethodOptions: SelectProps['options'] = [
+  { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
+  { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },
+  { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
+];

@@ -179,6 +179,7 @@ export default {
           'Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{closedDocs}} đã xử lý)',
       },
       transfer_success: 'Chuyển văn bản thành công',
+      get_transfer_document_detail_error: 'Lấy thông tin văn bản chuyển xử lý thất bại',
     },
   },
   receiveIncomingDocPage: {

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
+import { useAuth } from 'components/AuthComponent';
 import {
+  DocSystemRoleEnum,
   TransferDocumentMenuConfig,
   TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
-import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
+import { transferDocDetailModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 
@@ -32,31 +34,27 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   handleClose,
   form,
   transferredDoc,
+  transferDocumentDetail,
 }) => {
   const { settings } = useTransferSettingRes();
   const [transferLabel, setTransferLabel] = useState<string>('');
-  const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
+  const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
-
-  // only get the menuConfigs that isTransferToSameLevel === false
-  // const detailModalSetting = {
-  //   ...settings,
-  //   menuConfigs: settings?.menuConfigs?.filter((item) => {
-  //     return item.isTransferToSameLevel === false;
-  //   }),
-  // };
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       const newSetting = {
         ...settings,
         menuConfigs:
-          settings?.menuConfigs?.filter((item) => {
-            return item.isTransferToSameLevel === false;
-          }) || [],
+          currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN
+            ? settings?.menuConfigs?.filter((item) => {
+                return item.isTransferToSameLevel === false;
+              }) || []
+            : settings?.menuConfigs || [],
       };
-      console.log('newSetting', newSetting);
+
       setDetailModalSetting(newSetting);
       setTransferLabel(newSetting.menuConfigs[0].transferDocumentTypeLabel);
       setTransferDocModalItem({
@@ -66,9 +64,31 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
       setDefaultSelectedKeys([newSetting.menuConfigs[0].menuKey.toString()]);
     }
   }, [settings]);
-  console.log('settngs', settings);
-  console.log('detail-settiing', detailModalSetting);
-  console.log('transferredDoc', transferredDoc);
+
+  useEffect(() => {
+    if (transferDocumentDetail) {
+      const { baseInfo, assigneeId, collaboratorIds } = transferDocumentDetail;
+      form.setFieldsValue({
+        summary: baseInfo.incomingSummary,
+        assignee: assigneeId,
+        collaborators: collaboratorIds,
+        processingTime: baseInfo.processingDuration,
+        isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
+        processMethod: baseInfo.processMethod,
+      });
+      form.setFieldsValue((prevValues: any) => {
+        const updatedValues = { ...prevValues };
+        Object.keys(updatedValues).forEach((key) => {
+          updatedValues[key] = {
+            ...updatedValues[key],
+            disabled: true,
+          };
+        });
+        return updatedValues;
+      });
+    }
+  }, [transferDocumentDetail]);
+
   const items = detailModalSetting?.menuConfigs?.reduce(
     (acc: MenuItem[], item: TransferDocumentMenuConfig) => {
       return [...acc, getItem(item.menuLabel, item.menuKey)];
@@ -113,10 +133,13 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     );
   };
 
+  console.log('transferDocDetail', transferDocumentDetail);
+
   return (
     <Modal
       title={`${transferLabel}`.toUpperCase()}
       open={isModalOpen}
+      onCancel={handleClose}
       footer={[
         <Button key='ok' type='primary' onClick={handleClose}>
           OK

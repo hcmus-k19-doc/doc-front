@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-16 21:36:27.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-17 23:33:51.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -190,6 +190,12 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
+export interface GetTransferDocumentDetailCustomResponse {
+    baseInfo: GetTransferDocumentDetailResponse;
+    assigneeId: number;
+    collaboratorIds: number[];
+}
+
 export interface GetTransferDocumentDetailRequest {
     incomingDocumentId: number;
     userId: number;
@@ -202,6 +208,7 @@ export interface GetTransferDocumentDetailResponse {
     incomingNumber: string;
     incomingSummary: string;
     processingDocumentId: number;
+    transferDate: DateAsString;
     processingStatus: ProcessingStatus;
     processingDuration: DateAsString;
     isInfiniteProcessingTime: boolean;
