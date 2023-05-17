@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -8,8 +7,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Col, DatePicker, Form, Input, message, Row, Select, UploadProps } from 'antd';
 import { Skeleton } from 'antd';
+import { Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import { useAuth } from 'components/AuthComponent';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -28,10 +29,14 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 
+const { confirm } = Modal;
+
 import './index.css';
+import React from 'react';
 
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
+  const { currentUser } = useAuth();
 
   const { docId } = useParams();
   const { t } = useTranslation();
@@ -39,6 +44,8 @@ function OutgoingDocDetailPage() {
   const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
+
+  const [isReviewing, setIsReviewing] = useState(false);
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery, departmentsQuery] =
     useDropDownFieldsQuery();
@@ -63,18 +70,26 @@ function OutgoingDocDetailPage() {
 
   const onCancel = () => {
     setIsEditing(false);
+    setIsReviewing(false);
     form.resetFields();
+    fetchForm();
   };
 
-  if (!isLoading) {
-    if (data?.data) {
-      const outgoingDocument: OutgoingDocumentGetDto = data?.data;
+  const fetchForm = () => {
+    if (!isLoading) {
+      if (data?.data) {
+        const outgoingDocument: OutgoingDocumentGetDto = data?.data;
 
-      initForm(outgoingDocument);
-    } else {
-      globalNavigate('error');
+        initForm(outgoingDocument);
+      } else {
+        globalNavigate('error');
+      }
     }
-  }
+  };
+
+  useEffect(() => {
+    fetchForm();
+  }, [isLoading]);
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -156,6 +171,50 @@ function OutgoingDocDetailPage() {
     }
   };
 
+  const getReleaseNumberFromFolder = () => {
+    const folder = foldersQuery.data?.find(
+      (folder: FolderDto) => folder.id === form.getFieldValue('folder')
+    );
+    const nextNumber = folder?.nextNumber;
+    const year = folder?.year;
+
+    if (!nextNumber || !year) {
+      return null;
+    }
+
+    if (nextNumber < 10) {
+      return `0${nextNumber}/${year}`;
+    }
+
+    return `${nextNumber}/${year}`;
+  };
+
+  const onPublishReview = () => {
+    const data = {
+      ...form.getFieldsValue(),
+      outgoingNumber: getReleaseNumberFromFolder(),
+      signer: currentUser?.fullName,
+      releaseDate: dayjs(),
+    };
+    setIsReviewing(true);
+    form.setFieldsValue(data);
+  };
+
+  const onPublishConfirm = () => {
+    confirm({
+      icon: <QuestionCircleOutlined style={{ color: PRIMARY_COLOR }} />,
+      content: <div className='mt-3'>{t('outgoing_doc_detail_page.message.confirm_publish')}</div>,
+      okText: t('outgoing_doc_detail_page.button.publish_modal'),
+      cancelText: t('outgoing_doc_detail_page.button.cancel'),
+
+      onOk() {
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'));
+      },
+    });
+  };
+
   return (
     <>
       {isLoading ? (
@@ -203,39 +262,9 @@ function OutgoingDocDetailPage() {
                       <Input disabled />
                     </Form.Item>
                   </Col>
-                  <Col span={2}></Col>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('outgoing_doc_detail_page.form.distribution_date')}
-                      name='releaseDate'>
-                      <DatePicker
-                        format={DAY_MONTH_YEAR_FORMAT}
-                        className='w-full'
-                        disabled
-                        placeholder='dd/mm/yyyy'
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
 
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('outgoing_doc_detail_page.form.distribution_org')}
-                      name='publishingDepartment'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t(
-                            'outgoing_doc_detail_page.form.distribution_org_required'
-                          ) as string,
-                        },
-                      ]}>
-                      <Select>{renderDepartments()}</Select>
-                    </Form.Item>
-                  </Col>
                   <Col span={2}></Col>
+
                   <Col span={11}>
                     <Form.Item
                       required
@@ -265,6 +294,38 @@ function OutgoingDocDetailPage() {
                       }
                       name='originalSymbolNumber'>
                       <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col span={11}>
+                    <Form.Item
+                      label={t('outgoing_doc_detail_page.form.distribution_org')}
+                      name='publishingDepartment'
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: t(
+                            'outgoing_doc_detail_page.form.distribution_org_required'
+                          ) as string,
+                        },
+                      ]}>
+                      <Select>{renderDepartments()}</Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      label={t('outgoing_doc_detail_page.form.distribution_date')}
+                      name='releaseDate'>
+                      <DatePicker
+                        format={DAY_MONTH_YEAR_FORMAT}
+                        className='w-full'
+                        disabled
+                        placeholder='dd/mm/yyyy'
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -364,27 +425,15 @@ function OutgoingDocDetailPage() {
           </Form>
 
           <Row className='w-full justify-end '>
-            {isEditing ? (
-              <React.Fragment>
-                <Button
-                  type='default'
-                  size='large'
-                  htmlType='button'
-                  className='mr-5'
-                  onClick={onCancel}>
-                  {t('outgoing_doc_detail_page.button.cancel')}
-                </Button>
-                <Button
-                  type='primary'
-                  size='large'
-                  htmlType='button'
-                  className='mr-5'
-                  onClick={() => {
-                    form.submit();
-                  }}>
-                  {t('outgoing_doc_detail_page.button.save')}
-                </Button>
-              </React.Fragment>
+            {isEditing || isReviewing ? (
+              <Button
+                type='default'
+                size='large'
+                htmlType='button'
+                className='mr-5'
+                onClick={() => onCancel()}>
+                {t('outgoing_doc_detail_page.button.cancel')}
+              </Button>
             ) : (
               <Button
                 type='primary'
@@ -398,9 +447,39 @@ function OutgoingDocDetailPage() {
               </Button>
             )}
 
-            <Button type='primary' size='large' htmlType='button' className='mr-5'>
-              {t('outgoing_doc_detail_page.button.publish')}
-            </Button>
+            {isEditing && (
+              <Button
+                type='primary'
+                size='large'
+                htmlType='button'
+                className='mr-5'
+                onClick={() => {
+                  form.submit();
+                }}>
+                {t('outgoing_doc_detail_page.button.save')}
+              </Button>
+            )}
+
+            {isReviewing ? (
+              <Button
+                type='primary'
+                size='large'
+                htmlType='button'
+                className='mr-5'
+                onClick={onPublishConfirm}>
+                {t('outgoing_doc_detail_page.button.publish')}
+              </Button>
+            ) : (
+              <Button
+                type='primary'
+                size='large'
+                htmlType='button'
+                className='mr-5'
+                onClick={onPublishReview}>
+                {t('outgoing_doc_detail_page.button.review')}
+              </Button>
+            )}
+
             <Button type='primary' size='large' htmlType='button'>
               {t('outgoing_doc_detail_page.button.report')}
             </Button>

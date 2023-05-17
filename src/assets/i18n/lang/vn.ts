@@ -440,7 +440,9 @@ export default {
     button: {
       edit: 'Chỉnh sửa văn bản',
       save: 'Lưu chỉnh sửa',
+      review: 'Xem trước văn bản phát hành',
       publish: 'Phát hành văn bản',
+      publish_modal: 'Phát hành',
       report: 'Trình lãnh đạo',
       cancel: 'Hủy',
     },
@@ -453,6 +455,7 @@ export default {
       file_duplicate_error: 'Tệp đã được đính kèm',
       edit_success: 'Chỉnh sửa văn bản thành công',
       error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
+      confirm_publish: 'Phát hành văn bản này? Văn bản đã phát hành không thể chỉnh sửa.',
     },
     comment: {
       title: 'Góp ý văn bản',
