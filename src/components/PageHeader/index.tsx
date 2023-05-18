@@ -8,7 +8,6 @@ import {
   FundOutlined,
   GlobalOutlined,
   LogoutOutlined,
-  SnippetsOutlined,
 } from '@ant-design/icons';
 import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
@@ -121,7 +120,7 @@ const PageHeader: React.FC = () => {
         className='flex-auto'
       />
 
-      <Dropdown menu={{ items: languageItems }} placement='bottomRight'>
+      <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
         <GlobalOutlined />
       </Dropdown>
 
