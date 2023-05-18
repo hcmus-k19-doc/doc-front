@@ -412,6 +412,7 @@
   "outgoing_doc_detail_page": {
     "title": "Chi tiết văn bản đi",
     "status": {
+      "note": "Below properties are uppercase to match with document status",
       "UNPROCESSED": "Chưa xử lý",
       "IN_PROGRESS": "Đang xử lý",
       "RELEASED": "Đã phát hành"
