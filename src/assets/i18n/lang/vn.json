@@ -408,8 +408,15 @@
       "transfer_success": "Chuyển văn bản thành công"
     }
   },
+
   "outgoing_doc_detail_page": {
     "title": "Chi tiết văn bản đi",
+    "status": {
+      "note": "Below properties are uppercase to match with document status",
+      "UNPROCESSED": "Chưa xử lý",
+      "IN_PROGRESS": "Đang xử lý",
+      "RELEASED": "Đã phát hành"
+    },
     "form": {
       "doc_folder": "Sổ văn bản",
       "doc_folder_required": "Hãy chọn sổ văn bản",
@@ -438,7 +445,9 @@
     "button": {
       "edit": "Chỉnh sửa văn bản",
       "save": "Lưu chỉnh sửa",
+      "review": "Xem trước văn bản phát hành",
       "publish": "Phát hành văn bản",
+      "publish_modal": "Phát hành",
       "report": "Trình lãnh đạo",
       "cancel": "Hủy"
     },
@@ -450,7 +459,7 @@
       "file_size_error": "Kích thước tệp không được vượt quá 3MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "edit_success": "Chỉnh sửa văn bản thành công",
-      "error": "Đã có lỗi xảy ra, vui lòng thử lại."
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại"
     },
     "comment": {
       "title": "Góp ý văn bản",
@@ -459,6 +468,7 @@
       }
     }
   },
+
   "transfer_modal": {
     "title": "Luân chuyển văn bản tới",
     "document_number": "Văn bản số  {{id}}",

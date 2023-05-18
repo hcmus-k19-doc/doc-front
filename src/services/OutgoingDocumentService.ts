@@ -5,6 +5,7 @@ import {
   OutgoingDocSearchCriteriaDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
+  PublishDocumentDto,
   TransferDocDto,
 } from 'models/doc-main-models';
 
@@ -26,6 +27,13 @@ async function getOutgoingDocumentById(id: number) {
 async function updateOutgoingDocument(outgoingDocument: OutgoingDocumentPutDto) {
   return await axios.put<OutgoingDocumentGetDto>(
     `${OUTGOING_DOCUMENTS_URL}/update`,
+    outgoingDocument
+  );
+}
+
+async function publishOutgoingDocument(outgoingDocument: PublishDocumentDto) {
+  return await axios.post<OutgoingDocumentGetDto>(
+    `${OUTGOING_DOCUMENTS_URL}/release`,
     outgoingDocument
   );
 }
@@ -60,6 +68,7 @@ const outgoingDocumentService = {
   updateOutgoingDocument,
   getOutgoingDocuments,
   transferDocuments,
+  publishOutgoingDocument,
 };
 
 export default outgoingDocumentService;

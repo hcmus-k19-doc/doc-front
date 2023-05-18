@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -8,8 +7,11 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Col, DatePicker, Form, Input, message, Row, Select, UploadProps } from 'antd';
 import { Skeleton } from 'antd';
+import { Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import { useAuth } from 'components/AuthComponent';
+import DocStatus from 'components/DocStatus';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -19,6 +21,8 @@ import {
   FolderDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
+  OutgoingDocumentStatusEnum,
+  PublishDocumentDto,
   Urgency,
 } from 'models/doc-main-models';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
@@ -30,8 +34,11 @@ import { globalNavigate } from 'utils/RoutingUtils';
 
 import './index.css';
 
+const { confirm } = Modal;
+
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
+  const { currentUser } = useAuth();
 
   const { docId } = useParams();
   const { t } = useTranslation();
@@ -39,6 +46,8 @@ function OutgoingDocDetailPage() {
   const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [isReleased, setIsReleased] = useState(false);
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery, departmentsQuery] =
     useDropDownFieldsQuery();
@@ -63,18 +72,32 @@ function OutgoingDocDetailPage() {
 
   const onCancel = () => {
     setIsEditing(false);
+    setIsReviewing(false);
     form.resetFields();
+    fetchForm();
   };
 
-  if (!isLoading) {
-    if (data?.data) {
-      const outgoingDocument: OutgoingDocumentGetDto = data?.data;
+  const fetchForm = () => {
+    if (!isLoading) {
+      if (data?.data) {
+        const outgoingDocument: OutgoingDocumentGetDto = data?.data;
 
-      initForm(outgoingDocument);
-    } else {
-      globalNavigate('error');
+        initForm(outgoingDocument);
+
+        console.log(outgoingDocument);
+
+        if (outgoingDocument.status === OutgoingDocumentStatusEnum.RELEASED) {
+          removeButtons();
+        }
+      } else {
+        globalNavigate('error');
+      }
     }
-  }
+  };
+
+  useEffect(() => {
+    fetchForm();
+  }, [isLoading, isReleased]);
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -146,7 +169,6 @@ function OutgoingDocDetailPage() {
         await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
-      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
       showAlert({
         icon: 'error',
         html: t('outgoing_doc_detail_page.message.error') as string,
@@ -156,6 +178,87 @@ function OutgoingDocDetailPage() {
     }
   };
 
+  const getReleaseNumberFromFolder = () => {
+    const folder = foldersQuery.data?.find(
+      (folder: FolderDto) => folder.id === form.getFieldValue('folder')
+    );
+    const nextNumber = folder?.nextNumber;
+    const year = folder?.year;
+
+    if (!nextNumber || !year) {
+      return null;
+    }
+
+    if (nextNumber < 10) {
+      return `0${nextNumber}/${year}`;
+    }
+
+    return `${nextNumber}/${year}`;
+  };
+
+  const onPublishReview = () => {
+    const data = {
+      ...form.getFieldsValue(),
+      outgoingNumber: getReleaseNumberFromFolder(),
+      signer: currentUser?.fullName,
+      releaseDate: dayjs(),
+    };
+    setIsReviewing(true);
+    form.setFieldsValue(data);
+  };
+
+  const removeButtons = () => {
+    setIsEditing(false);
+    setIsReviewing(false);
+    setIsReleased(true);
+  };
+
+  const publishDocument = async () => {
+    try {
+      const formValues = form.getFieldsValue();
+
+      delete formValues.files;
+
+      const document: PublishDocumentDto = {
+        id: +(docId || 0),
+        ...formValues,
+      };
+
+      const response = await outgoingDocumentService.publishOutgoingDocument(document);
+
+      if (response.status === 200) {
+        showAlert({
+          icon: 'success',
+          html: t('outgoing_doc_detail_page.message.publish_success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
+        await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
+
+        removeButtons();
+      }
+    } catch (error) {
+      showAlert({
+        icon: 'error',
+        html: t('outgoing_doc_detail_page.message.error') as string,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
+  const onPublishConfirm = () => {
+    confirm({
+      icon: <QuestionCircleOutlined style={{ color: PRIMARY_COLOR }} />,
+      content: <div className='mt-3'>{t('outgoing_doc_detail_page.message.confirm_publish')}</div>,
+      okText: t('outgoing_doc_detail_page.button.publish_modal'),
+      cancelText: t('outgoing_doc_detail_page.button.cancel'),
+
+      onOk: publishDocument,
+    });
+  };
+
   return (
     <>
       {isLoading ? (
@@ -163,6 +266,9 @@ function OutgoingDocDetailPage() {
       ) : (
         <>
           <div className='text-lg text-primary'>{t('outgoing_doc_detail_page.title')}</div>
+
+          {isReleased && <DocStatus status={OutgoingDocumentStatusEnum.RELEASED} />}
+
           <Form form={form} layout='vertical' disabled={!isEditing} onFinish={saveChange}>
             <Row>
               <Col span={16}>
@@ -203,39 +309,9 @@ function OutgoingDocDetailPage() {
                       <Input disabled />
                     </Form.Item>
                   </Col>
-                  <Col span={2}></Col>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('outgoing_doc_detail_page.form.distribution_date')}
-                      name='releaseDate'>
-                      <DatePicker
-                        format={DAY_MONTH_YEAR_FORMAT}
-                        className='w-full'
-                        disabled
-                        placeholder='dd/mm/yyyy'
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
 
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('outgoing_doc_detail_page.form.distribution_org')}
-                      name='publishingDepartment'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t(
-                            'outgoing_doc_detail_page.form.distribution_org_required'
-                          ) as string,
-                        },
-                      ]}>
-                      <Select>{renderDepartments()}</Select>
-                    </Form.Item>
-                  </Col>
                   <Col span={2}></Col>
+
                   <Col span={11}>
                     <Form.Item
                       required
@@ -265,6 +341,38 @@ function OutgoingDocDetailPage() {
                       }
                       name='originalSymbolNumber'>
                       <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col span={11}>
+                    <Form.Item
+                      label={t('outgoing_doc_detail_page.form.distribution_org')}
+                      name='publishingDepartment'
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: t(
+                            'outgoing_doc_detail_page.form.distribution_org_required'
+                          ) as string,
+                        },
+                      ]}>
+                      <Select>{renderDepartments()}</Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      label={t('outgoing_doc_detail_page.form.distribution_date')}
+                      name='releaseDate'>
+                      <DatePicker
+                        format={DAY_MONTH_YEAR_FORMAT}
+                        className='w-full'
+                        disabled
+                        placeholder='dd/mm/yyyy'
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -363,17 +471,31 @@ function OutgoingDocDetailPage() {
             </Row>
           </Form>
 
-          <Row className='w-full justify-end '>
-            {isEditing ? (
-              <React.Fragment>
+          {!isReleased && (
+            <Row className='w-full justify-end '>
+              {isEditing || isReviewing ? (
                 <Button
                   type='default'
                   size='large'
                   htmlType='button'
                   className='mr-5'
-                  onClick={onCancel}>
+                  onClick={() => onCancel()}>
                   {t('outgoing_doc_detail_page.button.cancel')}
                 </Button>
+              ) : (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}>
+                  {t('outgoing_doc_detail_page.button.edit')}
+                </Button>
+              )}
+
+              {isEditing && (
                 <Button
                   type='primary'
                   size='large'
@@ -384,27 +506,33 @@ function OutgoingDocDetailPage() {
                   }}>
                   {t('outgoing_doc_detail_page.button.save')}
                 </Button>
-              </React.Fragment>
-            ) : (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={() => {
-                  setIsEditing(true);
-                }}>
-                {t('outgoing_doc_detail_page.button.edit')}
-              </Button>
-            )}
+              )}
 
-            <Button type='primary' size='large' htmlType='button' className='mr-5'>
-              {t('outgoing_doc_detail_page.button.publish')}
-            </Button>
-            <Button type='primary' size='large' htmlType='button'>
-              {t('outgoing_doc_detail_page.button.report')}
-            </Button>
-          </Row>
+              {isReviewing ? (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={onPublishConfirm}>
+                  {t('outgoing_doc_detail_page.button.publish')}
+                </Button>
+              ) : (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={onPublishReview}>
+                  {t('outgoing_doc_detail_page.button.review')}
+                </Button>
+              )}
+
+              <Button type='primary' size='large' htmlType='button'>
+                {t('outgoing_doc_detail_page.button.report')}
+              </Button>
+            </Row>
+          )}
         </>
       )}
     </>
