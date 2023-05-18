@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-18 07:06:36.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-18 08:40:09.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -127,15 +127,6 @@ export interface IncomingDocumentStatisticsDto {
 }
 
 export interface OutgoingDocSearchCriteriaDto {
-    outgoingNumber: string;
-    originalSymbolNumber: string;
-    documentTypeId: number;
-    releaseDateFrom: DateAsString;
-    releaseDateTo: DateAsString;
-    summary: string;
-}
-
-export interface OutgoingDocumentGetDto {
     outgoingNumber: string;
     originalSymbolNumber: string;
     documentTypeId: number;
