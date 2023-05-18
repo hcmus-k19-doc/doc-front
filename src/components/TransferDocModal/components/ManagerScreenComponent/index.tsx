@@ -3,13 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useAuth } from 'components/AuthComponent';
-import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
-import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import {
   i18_collaborators,
@@ -36,6 +34,8 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isReadOnlyMode,
+  transferDate,
 }) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
@@ -69,7 +69,8 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
           processMethod: values.processMethod,
         });
-      }}>
+      }}
+      disabled={isReadOnlyMode}>
       <Row>
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
@@ -80,7 +81,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_implementation_date)}</Text>
         </Col>
-        <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
+        <Col span='6'>{transferDate}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -155,7 +156,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                 <DatePicker
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
-                  disabled={isInfiniteProcessingTime}
+                  disabled={isInfiniteProcessingTime || isReadOnlyMode}
                 />
               </Space>
             </Form.Item>

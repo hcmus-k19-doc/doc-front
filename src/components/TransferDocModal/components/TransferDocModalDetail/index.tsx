@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
 import { useAuth } from 'components/AuthComponent';
+import format from 'date-fns/format';
 import {
   DocSystemRoleEnum,
   TransferDocumentMenuConfig,
@@ -9,6 +10,7 @@ import {
 import { transferDocDetailModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
+import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import DirectorScreenComponent from '../../components/DirectorScreenComponent';
 import ExpertScreenComponent from '../../components/ExpertScreenComponent';
@@ -21,7 +23,6 @@ import {
   MenuSelectProps,
   TransferModalDetailProps,
 } from '../../core/models';
-
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
   2: ManagerScreenComponent,
@@ -43,6 +44,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
 
+  const [transferDate, setTransferDate] = useState<string>('');
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       const newSetting = {
@@ -76,16 +78,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
         processMethod: baseInfo.processMethod,
       });
-      form.setFieldsValue((prevValues: any) => {
-        const updatedValues = { ...prevValues };
-        Object.keys(updatedValues).forEach((key) => {
-          updatedValues[key] = {
-            ...updatedValues[key],
-            disabled: true,
-          };
-        });
-        return updatedValues;
-      });
+      setTransferDate(format(new Date(baseInfo.transferDate), DAY_MONTH_YEAR_FORMAT_2));
     }
   }, [transferDocumentDetail]);
 
@@ -120,6 +113,8 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           form={form}
           selectedDocs={[transferredDoc]}
           isTransferToSameLevel={menuConfig.isTransferToSameLevel}
+          isReadOnlyMode={true}
+          transferDate={transferDate}
         />
       );
     }
@@ -129,6 +124,8 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         form={form}
         selectedDocs={[transferredDoc]}
         isTransferToSameLevel={false}
+        isReadOnlyMode={true}
+        transferDate={transferDate}
       />
     );
   };

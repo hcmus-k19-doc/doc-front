@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
+import { format } from 'date-fns';
 import { TransferDocumentMenuConfig } from 'models/doc-main-models';
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
+import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import DirectorScreenComponent from './components/DirectorScreenComponent';
 import ExpertScreenComponent from './components/ExpertScreenComponent';
@@ -36,6 +38,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
 
+  const transferDate = format(new Date(), DAY_MONTH_YEAR_FORMAT_2);
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       setTransferLabel(settings.menuConfigs[0].transferDocumentTypeLabel);
@@ -78,6 +81,8 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
           form={form}
           selectedDocs={selectedDocs}
           isTransferToSameLevel={menuConfig.isTransferToSameLevel}
+          isReadOnlyMode={false}
+          transferDate={transferDate}
         />
       );
     }
@@ -87,6 +92,8 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
         form={form}
         selectedDocs={selectedDocs}
         isTransferToSameLevel={false}
+        isReadOnlyMode={false}
+        transferDate={transferDate}
       />
     );
   };

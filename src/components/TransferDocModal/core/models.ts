@@ -60,6 +60,8 @@ export interface TransferDocScreenProps {
   form: FormInstance;
   selectedDocs: IncomingDocumentDto[];
   isTransferToSameLevel: boolean;
+  isReadOnlyMode: boolean;
+  transferDate: string;
 }
 
 export interface TransferDocScreenFormProps {
