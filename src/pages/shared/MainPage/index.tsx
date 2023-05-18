@@ -3,6 +3,7 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Breadcrumb, Layout, theme } from 'antd';
 import PageHeader from 'components/PageHeader';
+import { t } from 'i18next';
 import ProcessingDetailsPage from 'pages/shared/ProcessingDetailsPage';
 import SidebarPage from 'pages/shared/SidebarPage';
 
@@ -27,7 +28,7 @@ const MainPage: React.FC = () => {
         </Layout>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-        HCMUS &copy; 2023 Hệ thống phê duyệt và phát hành văn thư
+        {t('common.footer', { year: new Date().getFullYear() })}
       </Footer>
     </Layout>
   );

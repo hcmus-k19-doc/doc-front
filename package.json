@@ -17,6 +17,8 @@
     "axios": "1.2.6",
     "date-fns": "2.29.3",
     "dayjs": "^1.11.7",
+    "echarts": "5.4.2",
+    "echarts-for-react": "3.0.2",
     "i18next": "22.4.11",
     "i18next-browser-languagedetector": "7.0.1",
     "moment": "2.29.4",
@@ -72,7 +74,7 @@
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
-    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "lint-staged": "13.1.2",
     "prettier": "2.8.3",
     "typescript": "4.9.5"

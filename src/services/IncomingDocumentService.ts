@@ -2,11 +2,13 @@ import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DocPaginationDto,
+  GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
   ProcessingDetailsDto,
   SearchCriteriaDto,
+  StatisticsWrapperDto,
   TransferDocDto,
   TransferDocumentModalSettingDto,
   ValidateTransferDocDto,
@@ -89,6 +91,22 @@ async function validateTransferDocuments(transferDocDto: TransferDocDto) {
   return response.data;
 }
 
+async function getStatistics() {
+  const { data } = await axios.get<StatisticsWrapperDto>(`${INCOMING_DOCUMENTS_URL}/statistics`);
+  return data;
+}
+
+async function getTransferDocumentDetail(
+  getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest
+) {
+  const response = await axios.post<GetTransferDocumentDetailCustomResponse>(
+    `${INCOMING_DOCUMENTS_URL}/get-transfer-documents-detail`,
+    getTransferDocumentDetailRequest
+  );
+
+  return response.data;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
@@ -99,6 +117,8 @@ const incomingDocumentService = {
   getTransferDocumentsSetting,
   validateUserWithRoleAndDocId,
   validateTransferDocuments,
+  getStatistics,
+  getTransferDocumentDetail,
 };
 
 export default incomingDocumentService;

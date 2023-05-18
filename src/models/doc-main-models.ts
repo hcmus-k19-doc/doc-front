@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-18 21:36:02.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-18 21:01:06.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -50,6 +50,16 @@ export interface DocumentTypeDto extends DocAbstractDto {
 export interface DocumentTypeSearchCriteria {
 }
 
+export interface DocumentTypeStatisticsDto {
+    name: string;
+    value: number;
+}
+
+export interface DocumentTypeStatisticsWrapperDto {
+    seriesData: DocumentTypeStatisticsDto[];
+    xaxisData: string[];
+}
+
 export interface FolderDto extends DocAbstractDto {
     folderName: string;
     nextNumber: number;
@@ -72,6 +82,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     attachments: AttachmentDto[];
     urgency: Urgency;
     confidentiality: Confidentiality;
+    isDocTransferred: boolean;
 }
 
 export interface IncomingDocumentPostDto {
@@ -107,6 +118,12 @@ export interface TransferDocumentModalSettingDto {
     currentRole: DocSystemRoleEnum;
     defaultTransferDocumentType: TransferDocumentType;
     defaultComponentKey: number;
+}
+
+export interface IncomingDocumentStatisticsDto {
+    numberOfUnprocessedDocument: number;
+    numberOfProcessingDocument: number;
+    numberOfProcessedDocument: number;
 }
 
 export interface OutgoingDocSearchCriteriaDto {
@@ -202,6 +219,19 @@ export interface SendingLevelDto extends DocAbstractDto {
     level: string;
 }
 
+export interface StatisticsWrapperDto {
+    incomingDocumentStatisticsDto: IncomingDocumentStatisticsDto;
+    documentTypeStatisticsWrapperDto: DocumentTypeStatisticsWrapperDto;
+    quarter: number;
+    year: number;
+}
+
+export interface GetTransferDocumentDetailCustomResponse {
+    baseInfo: GetTransferDocumentDetailResponse;
+    assigneeId: number;
+    collaboratorIds: number[];
+}
+
 export interface GetTransferDocumentDetailRequest {
     incomingDocumentId: number;
     userId: number;
@@ -214,6 +244,7 @@ export interface GetTransferDocumentDetailResponse {
     incomingNumber: string;
     incomingSummary: string;
     processingDocumentId: number;
+    transferDate: DateAsString;
     processingStatus: ProcessingStatus;
     processingDuration: DateAsString;
     isInfiniteProcessingTime: boolean;
