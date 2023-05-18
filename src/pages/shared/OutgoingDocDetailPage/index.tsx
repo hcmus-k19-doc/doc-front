@@ -11,6 +11,7 @@ import { Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import { useAuth } from 'components/AuthComponent';
+import DocStatus from 'components/DocStatus';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -20,6 +21,8 @@ import {
   FolderDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
+  OutgoingDocumentStatusEnum,
+  PublishDocumentDto,
   Urgency,
 } from 'models/doc-main-models';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
@@ -29,9 +32,9 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 
-const { confirm } = Modal;
-
 import './index.css';
+
+const { confirm } = Modal;
 
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
@@ -43,8 +46,8 @@ function OutgoingDocDetailPage() {
   const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
-
   const [isReviewing, setIsReviewing] = useState(false);
+  const [isReleased, setIsReleased] = useState(false);
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery, departmentsQuery] =
     useDropDownFieldsQuery();
@@ -80,6 +83,12 @@ function OutgoingDocDetailPage() {
         const outgoingDocument: OutgoingDocumentGetDto = data?.data;
 
         initForm(outgoingDocument);
+
+        console.log(outgoingDocument);
+
+        if (outgoingDocument.status === OutgoingDocumentStatusEnum.RELEASED) {
+          removeButtons();
+        }
       } else {
         globalNavigate('error');
       }
@@ -88,7 +97,7 @@ function OutgoingDocDetailPage() {
 
   useEffect(() => {
     fetchForm();
-  }, [isLoading]);
+  }, [isLoading, isReleased]);
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -160,7 +169,6 @@ function OutgoingDocDetailPage() {
         await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
-      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
       showAlert({
         icon: 'error',
         html: t('outgoing_doc_detail_page.message.error') as string,
@@ -199,6 +207,47 @@ function OutgoingDocDetailPage() {
     form.setFieldsValue(data);
   };
 
+  const removeButtons = () => {
+    setIsEditing(false);
+    setIsReviewing(false);
+    setIsReleased(true);
+  };
+
+  const publishDocument = async () => {
+    try {
+      const formValues = form.getFieldsValue();
+
+      delete formValues.files;
+
+      const document: PublishDocumentDto = {
+        id: +(docId || 0),
+        ...formValues,
+      };
+
+      const response = await outgoingDocumentService.publishOutgoingDocument(document);
+
+      if (response.status === 200) {
+        showAlert({
+          icon: 'success',
+          html: t('outgoing_doc_detail_page.message.publish_success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
+        await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
+
+        removeButtons();
+      }
+    } catch (error) {
+      showAlert({
+        icon: 'error',
+        html: t('outgoing_doc_detail_page.message.error') as string,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
   const onPublishConfirm = () => {
     confirm({
       icon: <QuestionCircleOutlined style={{ color: PRIMARY_COLOR }} />,
@@ -206,11 +255,7 @@ function OutgoingDocDetailPage() {
       okText: t('outgoing_doc_detail_page.button.publish_modal'),
       cancelText: t('outgoing_doc_detail_page.button.cancel'),
 
-      onOk() {
-        return new Promise((resolve, reject) => {
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'));
-      },
+      onOk: publishDocument,
     });
   };
 
@@ -221,6 +266,9 @@ function OutgoingDocDetailPage() {
       ) : (
         <>
           <div className='text-lg text-primary'>{t('outgoing_doc_detail_page.title')}</div>
+
+          {isReleased && <DocStatus status={OutgoingDocumentStatusEnum.RELEASED} />}
+
           <Form form={form} layout='vertical' disabled={!isEditing} onFinish={saveChange}>
             <Row>
               <Col span={16}>
@@ -423,66 +471,68 @@ function OutgoingDocDetailPage() {
             </Row>
           </Form>
 
-          <Row className='w-full justify-end '>
-            {isEditing || isReviewing ? (
-              <Button
-                type='default'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={() => onCancel()}>
-                {t('outgoing_doc_detail_page.button.cancel')}
-              </Button>
-            ) : (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={() => {
-                  setIsEditing(true);
-                }}>
-                {t('outgoing_doc_detail_page.button.edit')}
-              </Button>
-            )}
+          {!isReleased && (
+            <Row className='w-full justify-end '>
+              {isEditing || isReviewing ? (
+                <Button
+                  type='default'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={() => onCancel()}>
+                  {t('outgoing_doc_detail_page.button.cancel')}
+                </Button>
+              ) : (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}>
+                  {t('outgoing_doc_detail_page.button.edit')}
+                </Button>
+              )}
 
-            {isEditing && (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={() => {
-                  form.submit();
-                }}>
-                {t('outgoing_doc_detail_page.button.save')}
-              </Button>
-            )}
+              {isEditing && (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={() => {
+                    form.submit();
+                  }}>
+                  {t('outgoing_doc_detail_page.button.save')}
+                </Button>
+              )}
 
-            {isReviewing ? (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={onPublishConfirm}>
-                {t('outgoing_doc_detail_page.button.publish')}
-              </Button>
-            ) : (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={onPublishReview}>
-                {t('outgoing_doc_detail_page.button.review')}
-              </Button>
-            )}
+              {isReviewing ? (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={onPublishConfirm}>
+                  {t('outgoing_doc_detail_page.button.publish')}
+                </Button>
+              ) : (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={onPublishReview}>
+                  {t('outgoing_doc_detail_page.button.review')}
+                </Button>
+              )}
 
-            <Button type='primary' size='large' htmlType='button'>
-              {t('outgoing_doc_detail_page.button.report')}
-            </Button>
-          </Row>
+              <Button type='primary' size='large' htmlType='button'>
+                {t('outgoing_doc_detail_page.button.report')}
+              </Button>
+            </Row>
+          )}
         </>
       )}
     </>

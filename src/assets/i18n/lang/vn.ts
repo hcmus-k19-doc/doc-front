@@ -412,6 +412,12 @@ export default {
 
   outgoing_doc_detail_page: {
     title: 'Chi tiết văn bản đi',
+    status: {
+      //Uppercase to map with document status
+      UNPROCESSED: 'Chưa xử lý',
+      IN_PROGRESS: 'Đang xử lý',
+      RELEASED: 'Đã phát hành',
+    },
     form: {
       doc_folder: 'Sổ văn bản',
       doc_folder_required: 'Hãy chọn sổ văn bản',
@@ -456,6 +462,7 @@ export default {
       edit_success: 'Chỉnh sửa văn bản thành công',
       error: 'Đã có lỗi xảy ra, vui lòng thử lại.',
       confirm_publish: 'Phát hành văn bản này? Văn bản đã phát hành không thể chỉnh sửa.',
+      publish_success: 'Phát hành văn bản thành công',
     },
     comment: {
       title: 'Góp ý văn bản',
