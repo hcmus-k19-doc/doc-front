@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-17 22:14:52.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-18 08:40:09.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -82,6 +82,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     attachments: AttachmentDto[];
     urgency: Urgency;
     confidentiality: Confidentiality;
+    isDocTransferred: boolean;
 }
 
 export interface IncomingDocumentPostDto {
@@ -126,15 +127,6 @@ export interface IncomingDocumentStatisticsDto {
 }
 
 export interface OutgoingDocSearchCriteriaDto {
-    outgoingNumber: string;
-    originalSymbolNumber: string;
-    documentTypeId: number;
-    releaseDateFrom: DateAsString;
-    releaseDateTo: DateAsString;
-    summary: string;
-}
-
-export interface OutgoingDocumentGetDto {
     outgoingNumber: string;
     originalSymbolNumber: string;
     documentTypeId: number;
@@ -221,6 +213,12 @@ export interface StatisticsWrapperDto {
     year: number;
 }
 
+export interface GetTransferDocumentDetailCustomResponse {
+    baseInfo: GetTransferDocumentDetailResponse;
+    assigneeId: number;
+    collaboratorIds: number[];
+}
+
 export interface GetTransferDocumentDetailRequest {
     incomingDocumentId: number;
     userId: number;
@@ -233,6 +231,7 @@ export interface GetTransferDocumentDetailResponse {
     incomingNumber: string;
     incomingSummary: string;
     processingDocumentId: number;
+    transferDate: DateAsString;
     processingStatus: ProcessingStatus;
     processingDuration: DateAsString;
     isInfiniteProcessingTime: boolean;

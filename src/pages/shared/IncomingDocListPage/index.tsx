@@ -3,17 +3,28 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
 import { Divider, Table, Tooltip } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
+import { useAuth } from 'components/AuthComponent';
+import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
-import { IncomingDocumentDto } from 'models/doc-main-models';
+import {
+  GetTransferDocumentDetailCustomResponse,
+  GetTransferDocumentDetailRequest,
+  IncomingDocumentDto,
+  ProcessingDocumentRoleEnum,
+  UserDto,
+} from 'models/doc-main-models';
 import moment from 'moment';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
+import incomingDocumentService from 'services/IncomingDocumentService';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import { getStep } from 'utils/TransferDocUtils';
 
-import { DEFAULT_DATE_FORMAT, YEAR_MONTH_DAY_FORMAT } from '../../../utils/DateTimeUtils';
+import { YEAR_MONTH_DAY_FORMAT } from '../../../utils/DateTimeUtils';
 
 import Footer from './components/Footer';
 import IncomingDocumentSearchForm from './components/IncomingDocumentSearchForm';
@@ -23,13 +34,52 @@ import './index.css';
 
 const IncomingDocListPage: React.FC = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
 
   const showAlert = useSweetAlert();
   const [, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
+  const [transferDocModalForm] = useForm();
+  const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
+  const [transferredDoc, setTransferredDoc] = useState<IncomingDocumentDto>();
+  const [transferDocumentDetail, setTransferDocumentDetail] =
+    useState<GetTransferDocumentDetailCustomResponse>();
+
+  const handleOnOpenDetailModal = async (event: any, tableRecord: TableRowDataType) => {
+    event.preventDefault();
+    setIsDetailTransferModalOpen(true);
+
+    setTransferredDoc(tableRecord as unknown as IncomingDocumentDto);
+    const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
+      incomingDocumentId: tableRecord.id,
+      userId: currentUser?.id as number,
+      role: ProcessingDocumentRoleEnum.REPORTER,
+      step: getStep(currentUser as UserDto, null, true),
+    };
+
+    try {
+      const response = await incomingDocumentService.getTransferDocumentDetail(
+        getTransferDocumentDetailRequest
+      );
+
+      setTransferDocumentDetail(response);
+    } catch (error) {
+      showAlert({
+        icon: 'error',
+        html: t('incomingDocListPage.message.get_transfer_document_detail_error') as string,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
+  const handleOnCloseDetailModal = () => {
+    setIsDetailTransferModalOpen(false);
+    transferDocModalForm.resetFields();
+  };
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
     try {
@@ -131,6 +181,20 @@ const IncomingDocListPage: React.FC = () => {
       sorter: (a, b) =>
         moment(a.deadline, YEAR_MONTH_DAY_FORMAT).diff(moment(b.deadline, YEAR_MONTH_DAY_FORMAT)),
     },
+    {
+      title: t('incomingDocListPage.table.columns.transferDetailBtn'),
+      dataIndex: 'isDocTransferred',
+      render: (_, record) => {
+        if (record.isDocTransferred) {
+          return (
+            <a onClick={(event) => handleOnOpenDetailModal(event, record)}>
+              {t('incomingDocListPage.table.columns.transferDetail')}
+            </a>
+          );
+        }
+        return null;
+      },
+    },
   ];
 
   const rowSelection = {
@@ -158,12 +222,26 @@ const IncomingDocListPage: React.FC = () => {
           };
         }}
         rowClassName={() => 'row-hover'}
-        rowSelection={{ type: 'checkbox', ...rowSelection }}
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+          getCheckboxProps: (record) => ({
+            disabled: record.isDocTransferred,
+          }),
+        }}
         columns={columns}
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
         footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
+      />
+
+      <TransferDocModalDetail
+        form={transferDocModalForm}
+        isModalOpen={isDetailTransferModalOpen}
+        handleClose={handleOnCloseDetailModal}
+        transferredDoc={transferredDoc as IncomingDocumentDto}
+        transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
       />
     </>
   );

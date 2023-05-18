@@ -2,6 +2,7 @@ import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DocPaginationDto,
+  GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
@@ -95,6 +96,17 @@ async function getStatistics() {
   return data;
 }
 
+async function getTransferDocumentDetail(
+  getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest
+) {
+  const response = await axios.post<GetTransferDocumentDetailCustomResponse>(
+    `${INCOMING_DOCUMENTS_URL}/get-transfer-documents-detail`,
+    getTransferDocumentDetailRequest
+  );
+
+  return response.data;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
@@ -106,6 +118,7 @@ const incomingDocumentService = {
   validateUserWithRoleAndDocId,
   validateTransferDocuments,
   getStatistics,
+  getTransferDocumentDetail,
 };
 
 export default incomingDocumentService;
