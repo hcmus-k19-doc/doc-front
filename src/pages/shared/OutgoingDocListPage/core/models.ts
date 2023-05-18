@@ -11,6 +11,7 @@ export type TableRowDataType = {
   summary: string;
   fullText: string;
   status: string;
+  objType: string;
 };
 
 export type TableDataType = {

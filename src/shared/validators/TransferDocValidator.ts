@@ -73,74 +73,81 @@ const isValidProcessingTime = (
 };
 
 const validateTransferDocs = async (
-  selectedDocs: IncomingDocumentDto[],
+  selectedDocs: any,
   transferDocModalItem: TransferDocumentType,
   transferDocDto: TransferDocDto,
   t?: any,
   currentUser?: UserDto
 ) => {
-  if (transferDocDto?.isTransferToSameLevel) {
-    /*
-     - neu chuyen cung cap thi van ban phai la van ban chua xu ly doi voi van thu va check assignee
-    */
-    if (!validateAssignee(transferDocDto?.assigneeId, t)) {
-      return false;
-    }
-    if (currentUser?.role === DocSystemRoleEnum.VAN_THU && !isUnprocessedDocs(selectedDocs, t)) {
-      return false;
-    }
-    if (currentUser?.role !== DocSystemRoleEnum.VAN_THU && !isProcessingDocs(selectedDocs, t)) {
-      return false;
-    }
+  if (isOutgoingDocArray(selectedDocs)) {
+    return true;
   } else {
-    /*
-     - neu chuyen khac cap thi van ban phai la van ban dang xu ly, check assignee va collaborator, processing time
-    */
-    if (
-      !validateAssignee(transferDocDto?.assigneeId, t) ||
-      !validateCollaborators(transferDocDto?.assigneeId, transferDocDto?.collaboratorIds, t)
-    ) {
-      return false;
-    }
-
-    if (transferDocModalItem === TransferDocumentType.TRANSFER_TO_TRUONG_PHONG) {
-      if (!isValidProcessMethod(transferDocDto.processMethod, t)) {
+    if (transferDocDto?.isTransferToSameLevel) {
+      /*
+       - neu chuyen cung cap thi van ban phai la van ban chua xu ly doi voi van thu va check assignee
+      */
+      if (!validateAssignee(transferDocDto?.assigneeId, t)) {
         return false;
       }
-    }
-
-    if (
-      !isValidProcessingTime(
-        transferDocDto?.processingTime,
-        transferDocDto?.isInfiniteProcessingTime,
-        t
-      )
-    ) {
-      return false;
-    }
-
-    if (
-      transferDocModalItem === TransferDocumentType.TRANSFER_TO_GIAM_DOC &&
-      currentUser?.role === DocSystemRoleEnum.VAN_THU
-    ) {
-      if (!isUnprocessedDocs(selectedDocs, t)) {
+      if (currentUser?.role === DocSystemRoleEnum.VAN_THU && !isUnprocessedDocs(selectedDocs, t)) {
+        return false;
+      }
+      if (currentUser?.role !== DocSystemRoleEnum.VAN_THU && !isProcessingDocs(selectedDocs, t)) {
         return false;
       }
     } else {
-      if (!isProcessingDocs(selectedDocs, t)) {
+      /*
+       - neu chuyen khac cap thi van ban phai la van ban dang xu ly, check assignee va collaborator, processing time
+      */
+      if (
+        !validateAssignee(transferDocDto?.assigneeId, t) ||
+        !validateCollaborators(transferDocDto?.assigneeId, transferDocDto?.collaboratorIds, t)
+      ) {
         return false;
       }
-    }
-  }
-  const validateTransferDocs = await incomingDocumentService.validateTransferDocuments(
-    transferDocDto
-  );
-  if (!validateTransferDocs.isValid) {
-    message.error(validateTransferDocs.message);
-    return false;
-  }
 
-  return true;
+      if (transferDocModalItem === TransferDocumentType.TRANSFER_TO_TRUONG_PHONG) {
+        if (!isValidProcessMethod(transferDocDto.processMethod, t)) {
+          return false;
+        }
+      }
+
+      if (
+        !isValidProcessingTime(
+          transferDocDto?.processingTime,
+          transferDocDto?.isInfiniteProcessingTime,
+          t
+        )
+      ) {
+        return false;
+      }
+
+      if (
+        transferDocModalItem === TransferDocumentType.TRANSFER_TO_GIAM_DOC &&
+        currentUser?.role === DocSystemRoleEnum.VAN_THU
+      ) {
+        if (!isUnprocessedDocs(selectedDocs, t)) {
+          return false;
+        }
+      } else {
+        if (!isProcessingDocs(selectedDocs, t)) {
+          return false;
+        }
+      }
+    }
+    const validateTransferDocs = await incomingDocumentService.validateTransferDocuments(
+      transferDocDto
+    );
+    if (!validateTransferDocs.isValid) {
+      message.error(validateTransferDocs.message);
+      return false;
+    }
+    return true;
+  }
+};
+
+const isOutgoingDocArray = (doc: any) => {
+  return Array.isArray(doc) && 'objType' in doc[0] && doc[0].objType === 'OutgoingDocument';
 };
 
 export {

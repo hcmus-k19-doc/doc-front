@@ -11,6 +11,7 @@ import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
+import { IncomingDocumentDto } from '../../../../models/doc-main-models';
 import {
   i18_collaborators,
   i18n_assignee,
@@ -83,8 +84,8 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
       </Row>
       <div className='document-info'>
         {selectedDocs
-          .sort((a, b) => a.id - b.id)
-          .map((item) => {
+          .sort((a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id)
+          .map((item: IncomingDocumentDto) => {
             return (
               <React.Fragment key={item.id}>
                 <Row className='mt-3 mb-3'>

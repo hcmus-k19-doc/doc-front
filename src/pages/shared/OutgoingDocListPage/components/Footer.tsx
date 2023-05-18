@@ -61,41 +61,41 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
 
     console.log('transferDocDto', transferDocDto);
 
-    // if (
-    //   await validateTransferDocs(
-    //     selectedDocs,
-    //     transferDocModalItem.transferDocumentType,
-    //     transferDocDto,
-    //     t,
-    //     currentUser
-    //   )
-    // ) {
-    //   setIsModalOpen(false);
-    //   modalForm.submit();
-    //   console.log(modalForm.getFieldsValue());
-    //   modalForm.resetFields();
-    //   transferQuerySetter(transferDocDto);
-    //   try {
-    //     const response = await outgoingDocumentService.transferDocuments(transferDocDto);
-    //     if (response.status === 200) {
-    //       queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
-    //       showAlert({
-    //         icon: 'success',
-    //         html: t('outgoingDocListPage.message.transfer_success') as string,
-    //         showConfirmButton: false,
-    //         timer: 2000,
-    //       });
-    //     }
-    //   } catch (error) {
-    //     if (axios.isAxiosError(error)) {
-    //       setError(error.response?.data.message);
-    //       console.error(error.response?.data.message);
-    //     } else {
-    //       console.error(error);
-    //     }
-    //   }
-    //   setSelectedDocs([]);
-    // }
+    if (
+      await validateTransferDocs(
+        selectedDocs,
+        transferDocModalItem.transferDocumentType,
+        transferDocDto,
+        t,
+        currentUser
+      )
+    ) {
+      setIsModalOpen(false);
+      modalForm.submit();
+      console.log(modalForm.getFieldsValue());
+      modalForm.resetFields();
+      transferQuerySetter(transferDocDto);
+      try {
+        const response = await outgoingDocumentService.transferDocuments(transferDocDto);
+        if (response.status === 200) {
+          queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
+          showAlert({
+            icon: 'success',
+            html: t('outgoingDocListPage.message.transfer_success') as string,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data.message);
+          console.error(error.response?.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+      setSelectedDocs([]);
+    }
   };
   const hasSelected = selectedDocs.length > 0;
 
@@ -107,7 +107,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           onClick={handleOnOpenModal}
           className='transfer-doc-btn'
           disabled={!hasSelected}>
-          {t('outgoing_doc_detail_page.button.report')}
+          {t('incomingDocDetailPage.button.transfer')}
         </Button>
 
         <span style={{ marginTop: 8 }}>
@@ -128,13 +128,13 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         showTotal={(total) => t('common.pagination.show_total', { total })}
       />
 
-      {/*<TransferDocModal*/}
-      {/*  form={modalForm}*/}
-      {/*  isModalOpen={isModalOpen}*/}
-      {/*  handleCancel={handleOnCancelModal}*/}
-      {/*  handleOk={handleOnOkModal}*/}
-      {/*  selectedDocs={selectedDocs}*/}
-      {/*/>*/}
+      <TransferDocModal
+        form={modalForm}
+        isModalOpen={isModalOpen}
+        handleCancel={handleOnCancelModal}
+        handleOk={handleOnOkModal}
+        selectedDocs={selectedDocs}
+      />
     </div>
   );
 };

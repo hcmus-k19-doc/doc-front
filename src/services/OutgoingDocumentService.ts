@@ -50,8 +50,7 @@ function getOutgoingDocuments(
 }
 
 async function transferDocuments(transferDocDto: TransferDocDto) {
-  // return await axios.post<void>(`${OUTGOING_DOCUMENTS_URL}/transfer-documents`, transferDocDto);
-  return null;
+  return await axios.post<void>(`${OUTGOING_DOCUMENTS_URL}/transfer-documents`, transferDocDto);
 }
 
 const outgoingDocumentService = {

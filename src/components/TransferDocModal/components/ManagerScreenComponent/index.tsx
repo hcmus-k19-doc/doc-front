@@ -17,7 +17,7 @@ import { useAuth } from 'components/AuthComponent';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { ProcessMethod } from 'models/doc-main-models';
+import { IncomingDocumentDto, ProcessMethod } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
@@ -106,7 +106,9 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='16'>
           <List>
             <VirtualList
-              data={selectedDocs.sort((a, b) => a.id - b.id)}
+              data={selectedDocs.sort(
+                (a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id
+              )}
               height={itemHeight * 2}
               itemHeight={itemHeight}
               itemKey={'id'}>
