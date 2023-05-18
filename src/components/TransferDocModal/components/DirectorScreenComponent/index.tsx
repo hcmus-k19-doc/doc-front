@@ -4,12 +4,10 @@ import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
-import format from 'date-fns/format';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
-import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import { IncomingDocumentDto } from '../../../../models/doc-main-models';
 import {
@@ -36,6 +34,8 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isReadOnlyMode,
+  transferDate,
 }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
@@ -69,7 +69,8 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
           processingTime: values.processingTime,
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
         });
-      }}>
+      }}
+      disabled={isReadOnlyMode}>
       <Row>
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
@@ -80,7 +81,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_implementation_date)}</Text>
         </Col>
-        <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
+        <Col span='6'>{transferDate}</Col>
       </Row>
       <div className='document-info'>
         {selectedDocs
@@ -146,7 +147,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
                 <DatePicker
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
-                  disabled={isInfiniteProcessingTime}
+                  disabled={isInfiniteProcessingTime || isReadOnlyMode}
                 />
               </Space>
             </Form.Item>

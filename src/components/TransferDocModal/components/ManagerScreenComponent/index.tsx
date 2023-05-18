@@ -1,27 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  List,
-  Row,
-  Select,
-  SelectProps,
-  Space,
-  Typography,
-} from 'antd';
+import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useAuth } from 'components/AuthComponent';
-import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { IncomingDocumentDto, ProcessMethod } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
-import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import {
   i18_collaborators,
@@ -33,6 +19,7 @@ import {
   i18n_process_method,
   i18n_processing_time,
   i18n_sender,
+  processMethodOptions,
   TransferDocScreenFormProps,
   TransferDocScreenProps,
 } from '../../core/models';
@@ -43,16 +30,12 @@ const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 const { Text } = Typography;
 const itemHeight = 50;
 
-const processMethodOptions: SelectProps['options'] = [
-  { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
-  { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },
-  { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
-];
-
 const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isReadOnlyMode,
+  transferDate,
 }) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
@@ -86,7 +69,8 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
           processMethod: values.processMethod,
         });
-      }}>
+      }}
+      disabled={isReadOnlyMode}>
       <Row>
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
@@ -97,7 +81,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_implementation_date)}</Text>
         </Col>
-        <Col span='6'>{format(new Date(), DAY_MONTH_YEAR_FORMAT_2)}</Col>
+        <Col span='6'>{transferDate}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -106,9 +90,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='16'>
           <List>
             <VirtualList
-              data={selectedDocs.sort(
-                (a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id
-              )}
+              data={selectedDocs.sort((a, b) => a.id - b.id)}
               height={itemHeight * 2}
               itemHeight={itemHeight}
               itemKey={'id'}>
@@ -174,7 +156,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                 <DatePicker
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
-                  disabled={isInfiniteProcessingTime}
+                  disabled={isInfiniteProcessingTime || isReadOnlyMode}
                 />
               </Space>
             </Form.Item>
