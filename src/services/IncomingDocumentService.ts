@@ -8,6 +8,7 @@ import {
   IncomingDocumentPutDto,
   ProcessingDetailsDto,
   SearchCriteriaDto,
+  StatisticsWrapperDto,
   TransferDocDto,
   TransferDocumentModalSettingDto,
   ValidateTransferDocDto,
@@ -90,6 +91,11 @@ async function validateTransferDocuments(transferDocDto: TransferDocDto) {
   return response.data;
 }
 
+async function getStatistics() {
+  const { data } = await axios.get<StatisticsWrapperDto>(`${INCOMING_DOCUMENTS_URL}/statistics`);
+  return data;
+}
+
 async function getTransferDocumentDetail(
   getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest
 ) {
@@ -111,6 +117,7 @@ const incomingDocumentService = {
   getTransferDocumentsSetting,
   validateUserWithRoleAndDocId,
   validateTransferDocuments,
+  getStatistics,
   getTransferDocumentDetail,
 };
 

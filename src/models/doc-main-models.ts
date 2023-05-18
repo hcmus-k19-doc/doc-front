@@ -50,6 +50,16 @@ export interface DocumentTypeDto extends DocAbstractDto {
 export interface DocumentTypeSearchCriteria {
 }
 
+export interface DocumentTypeStatisticsDto {
+    name: string;
+    value: number;
+}
+
+export interface DocumentTypeStatisticsWrapperDto {
+    seriesData: DocumentTypeStatisticsDto[];
+    xaxisData: string[];
+}
+
 export interface FolderDto extends DocAbstractDto {
     folderName: string;
     nextNumber: number;
@@ -110,7 +120,22 @@ export interface TransferDocumentModalSettingDto {
     defaultComponentKey: number;
 }
 
+export interface IncomingDocumentStatisticsDto {
+    numberOfUnprocessedDocument: number;
+    numberOfProcessingDocument: number;
+    numberOfProcessedDocument: number;
+}
+
 export interface OutgoingDocSearchCriteriaDto {
+    outgoingNumber: string;
+    originalSymbolNumber: string;
+    documentTypeId: number;
+    releaseDateFrom: DateAsString;
+    releaseDateTo: DateAsString;
+    summary: string;
+}
+
+export interface OutgoingDocumentGetDto {
     outgoingNumber: string;
     originalSymbolNumber: string;
     documentTypeId: number;
@@ -188,6 +213,13 @@ export interface SearchCriteriaDto {
 
 export interface SendingLevelDto extends DocAbstractDto {
     level: string;
+}
+
+export interface StatisticsWrapperDto {
+    incomingDocumentStatisticsDto: IncomingDocumentStatisticsDto;
+    documentTypeStatisticsWrapperDto: DocumentTypeStatisticsWrapperDto;
+    quarter: number;
+    year: number;
 }
 
 export interface GetTransferDocumentDetailCustomResponse {
