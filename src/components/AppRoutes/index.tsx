@@ -14,7 +14,9 @@ import DocSuspenseComponent from '../DocSuspenseComponent';
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();
+
   const StatisticsPage = lazy(() => import('pages/shared/StatisticsPage'));
+  const ProfilePage = lazy(() => import('pages/shared/ProfilePage'));
 
   return (
     <BrowserRouter>
@@ -34,6 +36,14 @@ const AppRoutes = () => {
                 element={
                   <DocSuspenseComponent>
                     <StatisticsPage />
+                  </DocSuspenseComponent>
+                }
+              />
+              <Route
+                path='/profile'
+                element={
+                  <DocSuspenseComponent>
+                    <ProfilePage />
                   </DocSuspenseComponent>
                 }
               />

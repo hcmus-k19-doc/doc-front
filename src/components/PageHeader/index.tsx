@@ -8,6 +8,7 @@ import {
   FundOutlined,
   GlobalOutlined,
   LogoutOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
@@ -18,6 +19,7 @@ import * as authUtils from 'utils/AuthUtils';
 
 import DocumentRemindersCalendarWrapper from './components/DocumentRemindersCalendar';
 import PageHeaderTitle from './components/PageHeaderTitle';
+import { documentReminderStatusItems, languageItems } from './core';
 
 import './index.css';
 
@@ -28,6 +30,7 @@ const PageHeader: React.FC = () => {
   const { t } = useTranslation();
   const { logout } = useAuth();
   const location = useLocation();
+  const { currentUser } = useAuth();
 
   const [status, setStatus] = useState<DocumentReminderStatusEnum>(
     DocumentReminderStatusEnum.ACTIVE
@@ -54,31 +57,18 @@ const PageHeader: React.FC = () => {
     },
   ];
 
-  const languageItems: MenuProps['items'] = [
+  const profileNavigator: MenuProps['items'] = [
     {
-      key: '1',
-      label: t('page_header.languages.vi'),
-    },
-  ];
-
-  const documentReminderStatusItems: MenuProps['items'] = [
-    {
-      label: t(
-        `page_header.document_reminder_status.${DocumentReminderStatusEnum.ACTIVE.toLowerCase()}`
-      ),
-      key: DocumentReminderStatusEnum.ACTIVE,
+      key: '/profile',
+      label: 'Thông tin cá nhân',
+      icon: <UserOutlined />,
+      onClick: () => navigate('/profile'),
     },
     {
-      label: t(
-        `page_header.document_reminder_status.${DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION.toLowerCase()}`
-      ),
-      key: DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION,
-    },
-    {
-      label: t(
-        `page_header.document_reminder_status.${DocumentReminderStatusEnum.EXPIRED.toLowerCase()}`
-      ),
-      key: DocumentReminderStatusEnum.EXPIRED,
+      key: '/logout',
+      label: 'Đăng xuất',
+      icon: <LogoutOutlined />,
+      onClick: () => confirmLogout(),
     },
   ];
 
@@ -120,23 +110,28 @@ const PageHeader: React.FC = () => {
         className='flex-auto'
       />
 
-      <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
-        <GlobalOutlined />
-      </Dropdown>
+      <div className='flex justify-between w-[78px]'>
+        <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
+          <GlobalOutlined />
+        </Dropdown>
 
-      <Badge overflowCount={99} size='small' className='ml-5'>
-        <Popover
-          overlayInnerStyle={{ width: '700px' }}
-          placement='bottomRight'
-          title={<PageHeaderTitle t={t} menuProps={menuProps} status={status} />}
-          content={<DocumentRemindersCalendarWrapper status={status} />}
-          trigger='click'
-          showArrow={false}>
-          <BellOutlined />
-        </Popover>
-      </Badge>
+        <Badge overflowCount={99} size='small'>
+          <Popover
+            overlayInnerStyle={{ width: '700px' }}
+            placement='bottomRight'
+            title={<PageHeaderTitle t={t} menuProps={menuProps} status={status} />}
+            content={<DocumentRemindersCalendarWrapper status={status} />}
+            trigger='click'
+            showArrow={false}>
+            <BellOutlined />
+          </Popover>
+        </Badge>
 
-      <LogoutOutlined className='ml-5' onClick={confirmLogout} />
+        <Dropdown menu={{ items: profileNavigator }} placement='bottomRight' trigger={['click']}>
+          <UserOutlined title={currentUser?.username} />
+        </Dropdown>
+      </div>
+
       {contextHolder}
     </Header>
   );

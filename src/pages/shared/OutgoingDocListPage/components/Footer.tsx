@@ -3,16 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Pagination } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
-import TransferDocModal from 'components/TransferDocModal';
 import { TransferDocDto } from 'models/doc-main-models';
 import { useRecoilValue } from 'recoil';
-import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocReq, useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
-import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
@@ -58,8 +54,6 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       transferDocumentType: transferDocModalItem.transferDocumentType,
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
-
-    console.log('transferDocDto', transferDocDto);
 
     // if (
     //   await validateTransferDocs(

@@ -27,7 +27,6 @@ function DocumentRemindersCalendar({ status }: DocumentRemindersCalendarProps) {
   }
 
   function handleOnPanelChange(date: Dayjs) {
-    console.log(date);
     setDocumentReminder({ date });
     setDocumentReminderDetails({ date });
   }

@@ -59,8 +59,6 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
 
-    console.log('transferDocDto', transferDocDto);
-
     if (
       await validateTransferDocs(
         selectedDocs,
@@ -72,7 +70,6 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
     ) {
       setIsModalOpen(false);
       modalForm.submit();
-      console.log(modalForm.getFieldsValue());
       modalForm.resetFields();
       transferQuerySetter(transferDocDto);
       try {
