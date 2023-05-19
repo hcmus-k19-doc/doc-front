@@ -79,7 +79,7 @@ const validateTransferDocs = async (
   t?: any,
   currentUser?: UserDto
 ) => {
-  if (isOutgoingDocArray(selectedDocs)) {
+  if (Array.isArray(selectedDocs) && isOutgoingDoc(selectedDocs[0])) {
     return true;
   } else {
     if (transferDocDto?.isTransferToSameLevel) {
@@ -146,8 +146,8 @@ const validateTransferDocs = async (
   }
 };
 
-const isOutgoingDocArray = (doc: any) => {
-  return Array.isArray(doc) && 'objType' in doc[0] && doc[0].objType === 'OutgoingDocument';
+const isOutgoingDoc = (doc: any) => {
+  return 'objType' in doc && doc.objType === 'OutgoingDocument';
 };
 
 export {
@@ -156,4 +156,5 @@ export {
   isUnprocessedDocs,
   isProcessingDocs,
   validateTransferDocs,
+  isOutgoingDoc,
 };

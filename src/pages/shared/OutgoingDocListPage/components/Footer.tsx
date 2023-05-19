@@ -14,9 +14,9 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 
+import { transferDocModalState } from '../../IncomingDocListPage/core/states';
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
-import { transferDocModalState } from '../core/states';
 
 const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const { t } = useTranslation();
@@ -78,8 +78,8 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       try {
         const response = await outgoingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
-          queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
-          showAlert({
+          await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
+          await showAlert({
             icon: 'success',
             html: t('outgoingDocListPage.message.transfer_success') as string,
             showConfirmButton: false,
@@ -134,6 +134,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
         selectedDocs={selectedDocs}
+        type={'OutgoingDocument'}
       />
     </div>
   );

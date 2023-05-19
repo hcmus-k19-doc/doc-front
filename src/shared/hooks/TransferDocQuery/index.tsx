@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { atom, useRecoilState, useSetRecoilState } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
+import outgoingDocumentService from 'services/OutgoingDocumentService';
 
 import { TransferQueryState } from './core/states';
 
@@ -21,11 +22,12 @@ const transferQueryState = atom<TransferQueryState>({
   default: initialTransferQueryState,
 });
 
-export function useTransferSettingRes() {
+export function useTransferSettingRes(type: string) {
   const { data: settings } = useQuery({
     queryKey: ['QUERIES.TRANSFER_SETTING'],
     queryFn: () => {
-      return incomingDocumentService.getTransferDocumentsSetting();
+      if (type === 'IncomingDocument') return incomingDocumentService.getTransferDocumentsSetting();
+      else return outgoingDocumentService.getTransferOutgoingDocumentsSetting();
     },
     cacheTime: 0,
   });

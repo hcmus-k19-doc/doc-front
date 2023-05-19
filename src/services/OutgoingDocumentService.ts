@@ -6,6 +6,7 @@ import {
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
   TransferDocDto,
+  TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
 
 const OUTGOING_DOCUMENTS_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/outgoing-documents`;
@@ -28,6 +29,13 @@ async function updateOutgoingDocument(outgoingDocument: OutgoingDocumentPutDto) 
     `${OUTGOING_DOCUMENTS_URL}/update`,
     outgoingDocument
   );
+}
+
+async function getTransferOutgoingDocumentsSetting() {
+  const response = await axios.get<TransferDocumentModalSettingDto>(
+    `${OUTGOING_DOCUMENTS_URL}/transfer-outgoing-documents-setting`
+  );
+  return response.data;
 }
 
 function getOutgoingDocuments(
@@ -59,6 +67,7 @@ const outgoingDocumentService = {
   updateOutgoingDocument,
   getOutgoingDocuments,
   transferDocuments,
+  getTransferOutgoingDocumentsSetting,
 };
 
 export default outgoingDocumentService;

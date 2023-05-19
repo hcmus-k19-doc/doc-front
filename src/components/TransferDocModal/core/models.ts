@@ -42,6 +42,7 @@ export interface TransferModalProps {
   handleCancel: () => void;
   form: FormInstance;
   selectedDocs: any;
+  type: string;
 }
 
 export interface TransferModalDetailProps {

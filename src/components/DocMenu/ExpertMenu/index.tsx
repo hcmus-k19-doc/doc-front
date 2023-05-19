@@ -79,7 +79,7 @@ const ExpertMenu = () => {
         },
         {
           key: 'out-create',
-          label: t('MAIN_PAGE.MENU.ITEMS.create_outgoing_document'),
+          label: t('main_page.menu.items.create_outgoing_document'),
           onClick: () => {
             globalNavigate('/docout/out-create');
           },
