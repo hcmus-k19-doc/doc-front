@@ -23,6 +23,7 @@ import {
   MenuSelectProps,
   TransferModalDetailProps,
 } from '../../core/models';
+
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
   2: ManagerScreenComponent,
@@ -129,8 +130,6 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
       />
     );
   };
-
-  console.log('transferDocDetail', transferDocumentDetail);
 
   return (
     <Modal

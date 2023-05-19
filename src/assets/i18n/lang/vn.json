@@ -6,11 +6,11 @@
     },
     "USERNAME": {
       "PLACEHOLDER": "Tên đăng nhập",
-      "RULE_MESSAGE": "Hãy điền tên đăng nhập!"
+      "RULE_MESSAGE": "Hãy điền tên đăng nhập"
     },
     "PASSWORD": {
       "PLACEHOLDER": "Mật khẩu",
-      "RULE_MESSAGE": "Hãy điền mật khẩu!"
+      "RULE_MESSAGE": "Hãy điền mật khẩu"
     }
   },
   "main_page": {
@@ -97,12 +97,18 @@
       "full_name": "Họ và tên",
       "role": "Vai trò",
       "department": "Phòng ban",
-      "username_required": "Hãy điền tên đăng nhập!",
-      "password_required": "Hãy điền mật khẩu!",
-      "full_name_required": "Hãy điền họ và tên!",
-      "email_invalid": "Email không hợp lệ!",
-      "role_required": "Hãy chọn vai trò!",
-      "department_required": "Hãy chọn phòng ban!"
+      "username_required": "Hãy điền tên đăng nhập",
+      "password_required": "Hãy điền mật khẩu",
+      "full_name_required": "Hãy điền họ và tên",
+      "email_invalid": "Email không hợp lệ",
+      "role_required": "Hãy chọn vai trò",
+      "department_required": "Hãy chọn phòng ban",
+      "old_password": "Mật khẩu cũ",
+      "confirm_password": "Xác nhận mật khẩu",
+      "new_password": "Mật khẩu mới",
+      "change_password": "Đổi mật khẩu",
+      "password_not_match": "Mật khẩu không khớp",
+      "change_password_success": "Đổi mật khẩu thành công"
     },
     "username": {
       "existed": "Tên đăng nhập đã tồn tại"
@@ -408,7 +414,6 @@
       "transfer_success": "Chuyển văn bản thành công"
     }
   },
-
   "outgoing_doc_detail_page": {
     "title": "Chi tiết văn bản đi",
     "status": {
@@ -468,7 +473,6 @@
       }
     }
   },
-
   "transfer_modal": {
     "title": "Luân chuyển văn bản tới",
     "document_number": "Văn bản số  {{id}}",
@@ -618,6 +622,19 @@
         "IN_PROGRESS": "Đang xử lý",
         "CLOSED": "Đã xử lý"
       }
+    }
+  },
+  "profile": {
+    "user": {
+      "info": "Thông tin người dùng",
+      "id": "ID",
+      "username": "Tên người dùng",
+      "email": "Email",
+      "role": "Chức vụ",
+      "department": "Phòng ban"
+    },
+    "log": {
+      "title": "Lịch sử thay đổi"
     }
   }
 }

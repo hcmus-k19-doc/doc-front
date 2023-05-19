@@ -68,7 +68,6 @@ async function createUser(user: Partial<UserDto>) {
 }
 
 async function updateUser(user: Partial<UserDto>) {
-  console.log(user);
   const { data } = await axios.put<number>(`${ADMIN_URL}/users/${user.id}`, user);
   return data;
 }
