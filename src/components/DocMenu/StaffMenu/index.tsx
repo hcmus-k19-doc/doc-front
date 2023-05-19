@@ -80,7 +80,7 @@ const ManagerMenu = () => {
           key: 'out-list',
           label: t('main_page.menu.items.outgoing_document_list'),
           onClick: () => {
-            globalNavigate('/docout/list');
+            globalNavigate('/docout/out-list');
           },
         },
         {

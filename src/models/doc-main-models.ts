@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-18 08:40:09.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-18 21:01:06.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -150,7 +150,7 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     status: OutgoingDocumentStatusEnum;
 }
 
-export interface OutgoingDocumentPostDto {
+export interface OutgoingDocumentPostDto extends DocAbstractDto {
     documentType: number;
     originalSymbolNumber: string;
     folder: number;
@@ -162,8 +162,7 @@ export interface OutgoingDocumentPostDto {
     publishingDate: DateAsString;
 }
 
-export interface OutgoingDocumentPutDto {
-    id: number;
+export interface OutgoingDocumentPutDto extends DocAbstractDto {
     outgoingNumber: string;
     originalSymbolNumber: string;
     recipient: string;
@@ -172,6 +171,20 @@ export interface OutgoingDocumentPutDto {
     urgency: Urgency;
     releaseDate: DateAsString;
     confidentiality: Confidentiality;
+    documentType: number;
+    folder: number;
+    publishingDepartment: number;
+}
+
+export interface PublishDocumentDto extends DocAbstractDto {
+    outgoingNumber: string;
+    originalSymbolNumber: string;
+    recipient: string;
+    signer: string;
+    summary: string;
+    urgency: Urgency;
+    confidentiality: Confidentiality;
+    releaseDate: DateAsString;
     documentType: number;
     folder: number;
     publishingDepartment: number;

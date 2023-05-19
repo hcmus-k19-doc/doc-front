@@ -4,8 +4,18 @@ import { useParams } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { Col, DatePicker, Form, Input, message, Row, Select, TimePicker, UploadProps } from 'antd';
-import { Skeleton } from 'antd';
+import {
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Skeleton,
+  TimePicker,
+  UploadProps,
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import DocButtonList from 'components/DocButtonList';
@@ -157,306 +167,290 @@ function IncomingDocPage() {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <Skeleton />
-      ) : (
-        <>
-          <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
-          <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
+    <Skeleton loading={isLoading} active>
+      <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
+      <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
+        <Row>
+          <Col span={16}>
             <Row>
-              <Col span={16}>
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.docFolder')}
-                      name='folder'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t('incomingDocDetailPage.form.docFolderRequired') as string,
-                        },
-                      ]}>
-                      <Select disabled>{renderFolders()}</Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={2}></Col>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.documentType')}
-                      name='documentType'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t('incomingDocDetailPage.form.documentTypeRequired') as string,
-                        },
-                      ]}>
-                      <Select>{renderDocumentTypes()}</Select>
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      required
-                      label={t('incomingDocDetailPage.form.incomingNumber')}
-                      name='incomingNumber'>
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                  <Col span={2}></Col>
-                  <Col span={11}>
-                    <Form.Item
-                      label={
-                        <>
-                          <div className='mr-2'>
-                            {t('incomingDocDetailPage.form.originalSymbolNumber')}
-                          </div>
-                          <a
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
-                            <QuestionCircleOutlined
-                              style={{ color: PRIMARY_COLOR }}
-                              className='help-icon'
-                            />
-                          </a>
-                        </>
-                      }
-                      required
-                      name='originalSymbolNumber'
-                      rules={[
-                        {
-                          required: true,
-                          message: t(
-                            'incomingDocDetailPage.form.originalSymbolNumberRequired'
-                          ) as string,
-                        },
-                      ]}>
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.distributionOrg')}
-                      name='distributionOrg'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t(
-                            'incomingDocDetailPage.form.distributionOrgRequired'
-                          ) as string,
-                        },
-                      ]}>
-                      <Select>{renderDistributionOrg()}</Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={2}></Col>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.distributionDate')}
-                      name='distributionDate'
-                      required
-                      rules={[
-                        {
-                          message: t(
-                            'incomingDocDetailPage.form.distributionDateGreaterThanNowError'
-                          ) as string,
-                          validator: (_, value) => {
-                            const now = new Date();
-                            return DateValidator.validateBeforeAfter(value, now);
-                          },
-                        },
-                        {
-                          message: t(
-                            'incomingDocDetailPage.form.distributionDateInvalid'
-                          ) as string,
-                          validator: (_, value) => {
-                            const arrivingDate = form.getFieldValue('arrivingDate');
-                            return DateValidator.validateBeforeAfter(value, arrivingDate);
-                          },
-                        },
-                        {
-                          required: true,
-                          message: t(
-                            'incomingDocDetailPage.form.distributionDateRequired'
-                          ) as string,
-                        },
-                      ]}>
-                      <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.arrivingDate')}
-                      name='arrivingDate'
-                      required
-                      rules={[
-                        {
-                          message: t(
-                            'incomingDocDetailPage.form.arrivingDateGreaterThanNowError'
-                          ) as string,
-                          validator: (_, value) => {
-                            const now = new Date();
-                            return DateValidator.validateBeforeAfter(value, now);
-                          },
-                        },
-                        {
-                          message: t('incomingDocDetailPage.form.arrivingDateInvalid') as string,
-                          validator: (_, value) => {
-                            const distributionDate = form.getFieldValue('distributionDate');
-                            return DateValidator.validateBeforeAfter(distributionDate, value);
-                          },
-                        },
-                        {
-                          required: true,
-                          message: t('incomingDocDetailPage.form.arrivingDateRequired') as string,
-                        },
-                      ]}>
-                      <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={2}></Col>
-
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.arrivingTime')}
-                      name='arrivingTime'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t('incomingDocDetailPage.form.arrivingTimeRequired') as string,
-                        },
-                      ]}>
-                      <TimePicker className='w-full' />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.urgency')}
-                      name='urgency'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t('incomingDocDetailPage.form.urgencyRequired') as string,
-                        },
-                      ]}>
-                      <Select>
-                        <Select.Option value={Urgency.HIGH}>
-                          {t(`incomingDocDetailPage.form.select.option.${Urgency.HIGH}`)}
-                        </Select.Option>
-                        <Select.Option value={Urgency.MEDIUM}>
-                          {t(`incomingDocDetailPage.form.select.option.${Urgency.MEDIUM}`)}
-                        </Select.Option>
-                        <Select.Option value={Urgency.LOW}>
-                          {t(`incomingDocDetailPage.form.select.option.${Urgency.LOW}`)}
-                        </Select.Option>
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={2}></Col>
-                  <Col span={11}>
-                    <Form.Item
-                      label={t('incomingDocDetailPage.form.confidentiality')}
-                      name='confidentiality'
-                      required
-                      rules={[
-                        {
-                          required: true,
-                          message: t(
-                            'incomingDocDetailPage.form.confidentialityRequired'
-                          ) as string,
-                        },
-                      ]}>
-                      <Select>
-                        <Select.Option value={Confidentiality.HIGH}>
-                          {t(`incomingDocDetailPage.form.select.option.${Confidentiality.HIGH}`)}
-                        </Select.Option>
-                        <Select.Option value={Confidentiality.MEDIUM}>
-                          {t(`incomingDocDetailPage.form.select.option.${Confidentiality.MEDIUM}`)}
-                        </Select.Option>
-                        <Select.Option value={Confidentiality.LOW}>
-                          {t(`incomingDocDetailPage.form.select.option.${Confidentiality.LOW}`)}
-                        </Select.Option>
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Form.Item label={t('incomingDocDetailPage.form.summary')} name='summary'>
-                  <CKEditor
-                    disabled={!isEditing}
-                    editor={ClassicEditor}
-                    data={form.getFieldValue('summary')}
-                    onChange={(event, editor) => {
-                      form.setFieldValue('summary', editor.getData());
-                    }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={1}></Col>
-              <Col span={7}>
+              <Col span={11}>
                 <Form.Item
-                  label={t('incomingDocDetailPage.form.files')}
-                  name='files'
+                  label={t('incomingDocDetailPage.form.docFolder')}
+                  name='folder'
                   required
                   rules={[
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.files_required') as string,
+                      message: t('incomingDocDetailPage.form.docFolderRequired') as string,
                     },
                   ]}>
-                  <Dragger {...fileProps}>
-                    <p className='ant-upload-drag-icon'>
-                      <InboxOutlined />
-                    </p>
-                    <p className='ant-upload-text'>{t('incomingDocDetailPage.form.file_helper')}</p>
-                  </Dragger>
+                  <Select disabled>{renderFolders()}</Select>
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.documentType')}
+                  name='documentType'
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.documentTypeRequired') as string,
+                    },
+                  ]}>
+                  <Select>{renderDocumentTypes()}</Select>
                 </Form.Item>
               </Col>
             </Row>
-          </Form>
-          <Row className='w-full justify-end '>
-            <DocButtonList
-              roleNumber={roleData.role}
-              enableEditing={enableEditing}
-              isEditing={isEditing}
-              onFinishEditing={onFinishEditing}
-            />
-          </Row>
-          <div className='text-lg text-primary'>
-            {t('incomingDocDetailPage.processing_step.title')}
-          </div>
-          <Row className='my-10'>
-            <Col span={16}>
-              <ProcessingStepComponent />
-            </Col>
-          </Row>
-          <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
-          <Row>
-            <Col span={16}>
-              <DocComment docId={Number(docId)} />
-            </Col>
-          </Row>
-        </>
-      )}
-    </>
+
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  required
+                  label={t('incomingDocDetailPage.form.incomingNumber')}
+                  name='incomingNumber'>
+                  <Input disabled />
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
+              <Col span={11}>
+                <Form.Item
+                  label={
+                    <>
+                      <div className='mr-2'>
+                        {t('incomingDocDetailPage.form.originalSymbolNumber')}
+                      </div>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/thoi-su-phap-luat/tu-van-phap-luat/30698/cach-ghi-so-hieu-van-ban-hanh-chinh-dung-chuan-phap-luat'>
+                        <QuestionCircleOutlined
+                          style={{ color: PRIMARY_COLOR }}
+                          className='help-icon'
+                        />
+                      </a>
+                    </>
+                  }
+                  required
+                  name='originalSymbolNumber'
+                  rules={[
+                    {
+                      required: true,
+                      message: t(
+                        'incomingDocDetailPage.form.originalSymbolNumberRequired'
+                      ) as string,
+                    },
+                  ]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.distributionOrg')}
+                  name='distributionOrg'
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.distributionOrgRequired') as string,
+                    },
+                  ]}>
+                  <Select>{renderDistributionOrg()}</Select>
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.distributionDate')}
+                  name='distributionDate'
+                  required
+                  rules={[
+                    {
+                      message: t(
+                        'incomingDocDetailPage.form.distributionDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('incomingDocDetailPage.form.distributionDateInvalid') as string,
+                      validator: (_, value) => {
+                        const arrivingDate = form.getFieldValue('arrivingDate');
+                        return DateValidator.validateBeforeAfter(value, arrivingDate);
+                      },
+                    },
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.distributionDateRequired') as string,
+                    },
+                  ]}>
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.arrivingDate')}
+                  name='arrivingDate'
+                  required
+                  rules={[
+                    {
+                      message: t(
+                        'incomingDocDetailPage.form.arrivingDateGreaterThanNowError'
+                      ) as string,
+                      validator: (_, value) => {
+                        const now = new Date();
+                        return DateValidator.validateBeforeAfter(value, now);
+                      },
+                    },
+                    {
+                      message: t('incomingDocDetailPage.form.arrivingDateInvalid') as string,
+                      validator: (_, value) => {
+                        const distributionDate = form.getFieldValue('distributionDate');
+                        return DateValidator.validateBeforeAfter(distributionDate, value);
+                      },
+                    },
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.arrivingDateRequired') as string,
+                    },
+                  ]}>
+                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
+                </Form.Item>
+              </Col>
+
+              <Col span={2}></Col>
+
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.arrivingTime')}
+                  name='arrivingTime'
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.arrivingTimeRequired') as string,
+                    },
+                  ]}>
+                  <TimePicker className='w-full' />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.urgency')}
+                  name='urgency'
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.urgencyRequired') as string,
+                    },
+                  ]}>
+                  <Select>
+                    <Select.Option value={Urgency.HIGH}>
+                      {t(`incomingDocDetailPage.form.select.option.${Urgency.HIGH}`)}
+                    </Select.Option>
+                    <Select.Option value={Urgency.MEDIUM}>
+                      {t(`incomingDocDetailPage.form.select.option.${Urgency.MEDIUM}`)}
+                    </Select.Option>
+                    <Select.Option value={Urgency.LOW}>
+                      {t(`incomingDocDetailPage.form.select.option.${Urgency.LOW}`)}
+                    </Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.confidentiality')}
+                  name='confidentiality'
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.confidentialityRequired') as string,
+                    },
+                  ]}>
+                  <Select>
+                    <Select.Option value={Confidentiality.HIGH}>
+                      {t(`incomingDocDetailPage.form.select.option.${Confidentiality.HIGH}`)}
+                    </Select.Option>
+                    <Select.Option value={Confidentiality.MEDIUM}>
+                      {t(`incomingDocDetailPage.form.select.option.${Confidentiality.MEDIUM}`)}
+                    </Select.Option>
+                    <Select.Option value={Confidentiality.LOW}>
+                      {t(`incomingDocDetailPage.form.select.option.${Confidentiality.LOW}`)}
+                    </Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Form.Item label={t('incomingDocDetailPage.form.summary')} name='summary'>
+              <CKEditor
+                disabled={!isEditing}
+                editor={ClassicEditor}
+                data={form.getFieldValue('summary')}
+                onChange={(event, editor) => {
+                  form.setFieldValue('summary', editor.getData());
+                }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={1}></Col>
+          <Col span={7}>
+            <Form.Item
+              label={t('incomingDocDetailPage.form.files')}
+              name='files'
+              required
+              rules={[
+                {
+                  required: true,
+                  message: t('incomingDocDetailPage.form.files_required') as string,
+                },
+              ]}>
+              <Dragger {...fileProps}>
+                <p className='ant-upload-drag-icon'>
+                  <InboxOutlined />
+                </p>
+                <p className='ant-upload-text'>{t('incomingDocDetailPage.form.fileHelper')}</p>
+              </Dragger>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+      <Row className='w-full justify-end '>
+        <DocButtonList
+          roleNumber={roleData.role}
+          enableEditing={enableEditing}
+          isEditing={isEditing}
+          onFinishEditing={onFinishEditing}
+        />
+      </Row>
+      <div className='text-lg text-primary'>{t('incomingDocDetailPage.processing_step.title')}</div>
+      <Row className='my-10'>
+        <Col span={16}>
+          <ProcessingStepComponent />
+        </Col>
+      </Row>
+      <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
+      <Row>
+        <Col span={16}>
+          <DocComment docId={Number(docId)} />
+        </Col>
+      </Row>
+    </Skeleton>
   );
 }
 
