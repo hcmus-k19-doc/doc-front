@@ -300,6 +300,7 @@
       "confirm": "Xác nhận đã xem",
       "return": "Trả lại",
       "extend": "Yêu cầu gia hạn",
+      "end": "Kết thúc",
       "transer_detail": "Xem chi tiết chuyển xử lý"
     },
     "message": {
@@ -310,7 +311,8 @@
       "file_size_error": "Kích thước tệp không được vượt quá 3MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tiếp nhận văn bản thành công",
-      "error": "Đã có lỗi xảy ra, vui lòng thử lại."
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại.",
+      "closed_successfully": "Văn bản đã được kết thúc"
     },
     "comment": {
       "title": "Góp ý văn bản",
@@ -637,5 +639,9 @@
     "log": {
       "title": "Lịch sử thay đổi"
     }
+  },
+  "processing_document": {
+    "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
+    "illegal_step": "Không thể thực hiện thao tác này"
   }
 }

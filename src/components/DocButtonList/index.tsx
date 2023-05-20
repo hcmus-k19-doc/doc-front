@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button } from 'antd';
+import { AxiosError } from 'axios';
 import { t } from 'i18next';
+import incomingDocumentService from 'services/IncomingDocumentService';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
+
+import { DocSystemRoleEnum } from '../../models/doc-main-models';
+import { useAuth } from '../AuthComponent';
 import { IncomingDocumentDto } from 'models/doc-main-models';
 
 export interface DocButtonListProps {
@@ -22,6 +28,28 @@ const DocButtonList = ({
   onOpenTransferModal,
 }: DocButtonListProps) => {
   const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>([]);
+  const { currentUser } = useAuth();
+  const { docId } = useParams();
+  const showAlert = useSweetAlert();
+
+  async function onFinishDocument() {
+    try {
+      const message = await incomingDocumentService.closeDocument(Number(docId));
+      showAlert({
+        icon: 'success',
+        html: t(message),
+        showConfirmButton: true,
+      });
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        showAlert({
+          icon: 'error',
+          html: t(e.response?.data.message),
+          showConfirmButton: true,
+        });
+      }
+    }
+  }
 
   const buttonArr: JSX.Element[] = [
     <Button
@@ -55,7 +83,10 @@ const DocButtonList = ({
     <Button type='primary' size='large' key='8' name='return'>
       {t('incomingDocDetailPage.button.return')}
     </Button>,
-    <Button type='primary' size='large' key='9' name='extend'>
+  ];
+
+  const shareButtonArr: JSX.Element[] = [
+    <Button type='primary' size='large' key='9' name='extend' className='mr-5'>
       {t('incomingDocDetailPage.button.extend')}
     </Button>,
   ];
@@ -76,7 +107,7 @@ const DocButtonList = ({
   };
 
   const renderButtons = () => {
-    return buttonDisplayArr.map((item, index) => {
+    const displayArr = buttonDisplayArr.map((item, index) => {
       if (item) {
         return (
           <React.Fragment key={index}>
@@ -86,6 +117,22 @@ const DocButtonList = ({
         );
       }
     });
+
+    return [
+      ...displayArr,
+      ...shareButtonArr,
+      currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && (
+        <Button
+          type='primary'
+          size='large'
+          key='10'
+          name='end'
+          className='mr-5'
+          onClick={onFinishDocument}>
+          {t('incomingDocDetailPage.button.end')}
+        </Button>
+      ),
+    ];
   };
 
   useEffect(() => {

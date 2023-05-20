@@ -25,7 +25,6 @@ export const useOutgoingDocRes = () => {
 
   return useQuery({
     queryKey: ['QUERIES.OUTGOING_DOCUMENT_LIST', query],
-    keepPreviousData: true,
     queryFn: () => {
       return outgoingDocumentService
         .getOutgoingDocuments(
