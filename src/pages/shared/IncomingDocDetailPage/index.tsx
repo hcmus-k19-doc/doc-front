@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -25,6 +25,7 @@ import DocButtonList from 'components/DocButtonList';
 import DocComment from 'components/DocComment';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
+import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -32,10 +33,14 @@ import {
   DistributionOrganizationDto,
   DocumentTypeDto,
   FolderDto,
+  GetTransferDocumentDetailCustomResponse,
+  GetTransferDocumentDetailRequest,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
+  ProcessingDocumentRoleEnum,
   TransferDocDto,
   Urgency,
+  UserDto,
 } from 'models/doc-main-models';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
@@ -47,6 +52,7 @@ import DateValidator from 'shared/validators/DateValidator';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
+import { getStep } from 'utils/TransferDocUtils';
 
 import { transferDocModalState } from './core/states';
 
@@ -71,6 +77,7 @@ function IncomingDocPage() {
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const incomingDocument = {
@@ -86,9 +93,35 @@ function IncomingDocPage() {
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [, setError] = useState<string>();
+  const [transferDocumentDetail, setTransferDocumentDetail] =
+    useState<GetTransferDocumentDetailCustomResponse>();
 
-  const handleOnOpenModal = () => {
+  const handleOnOpenModal = async () => {
     setIsModalOpen(true);
+
+    if (selectedDocs[0].isDocTransferred) {
+      const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
+        incomingDocumentId: +(docId || 1),
+        userId: currentUser?.id as number,
+        role: ProcessingDocumentRoleEnum.REPORTER,
+        step: getStep(currentUser as UserDto, null, true),
+      };
+
+      try {
+        const response = await incomingDocumentService.getTransferDocumentDetail(
+          getTransferDocumentDetailRequest
+        );
+
+        setTransferDocumentDetail(response);
+      } catch (error) {
+        showAlert({
+          icon: 'error',
+          html: t('incomingDocListPage.message.get_transfer_document_detail_error'),
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
+      }
+    }
   };
 
   const handleOnCancelModal = () => {
@@ -128,7 +161,10 @@ function IncomingDocPage() {
       try {
         const response = await incomingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
-          queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', docId]);
+          queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 1)]);
+          if (transferDocDto.isTransferToSameLevel) {
+            navigate('/docin/in-list');
+          }
           showAlert({
             icon: 'success',
             html: t('incomingDocListPage.message.transfer_success') as string,
@@ -144,7 +180,6 @@ function IncomingDocPage() {
           console.error(error);
         }
       }
-      // setSelectedDocs([]);
     }
   };
 
@@ -545,14 +580,13 @@ function IncomingDocPage() {
         </Col>
       </Row>
       {data?.data?.isDocTransferred === true ? (
-        //   <TransferDocModalDetail
-        //   form={transferDocDetailModalForm}
-        //   isModalOpen={isDetailTransferModalOpen}
-        //   handleClose={handleOnCloseDetailModal}
-        //   transferredDoc={transferredDoc as IncomingDocumentDto}
-        //   transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
-        // />
-        <h1> ahihi</h1>
+        <TransferDocModalDetail
+          form={modalForm}
+          isModalOpen={isModalOpen}
+          handleClose={handleOnCancelModal}
+          transferredDoc={selectedDocs[0]}
+          transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
+        />
       ) : (
         <TransferDocModal
           form={modalForm}
