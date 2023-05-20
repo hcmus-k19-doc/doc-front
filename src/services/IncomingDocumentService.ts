@@ -107,6 +107,13 @@ async function getTransferDocumentDetail(
   return response.data;
 }
 
+async function closeDocument(incomingDocumentId: number) {
+  const { data } = await axios.put<string>(
+    `${INCOMING_DOCUMENTS_URL}/close-document/${incomingDocumentId}`
+  );
+  return data;
+}
+
 const incomingDocumentService = {
   getIncomingDocuments,
   createIncomingDocument,
@@ -119,6 +126,7 @@ const incomingDocumentService = {
   validateTransferDocuments,
   getStatistics,
   getTransferDocumentDetail,
+  closeDocument,
 };
 
 export default incomingDocumentService;
