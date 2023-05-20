@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { Button } from 'antd';
 import { AxiosError } from 'axios';
 import { t } from 'i18next';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import { DocSystemRoleEnum } from '../../models/doc-main-models';
 import { useAuth } from '../AuthComponent';
-import { IncomingDocumentDto } from 'models/doc-main-models';
 
 export interface DocButtonListProps {
   roleNumber: number;
