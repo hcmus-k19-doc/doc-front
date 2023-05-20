@@ -299,7 +299,8 @@
       "comment": "Góp ý văn bản",
       "confirm": "Xác nhận đã xem",
       "return": "Trả lại",
-      "extend": "Yêu cầu gia hạn"
+      "extend": "Yêu cầu gia hạn",
+      "transer_detail": "Xem chi tiết chuyển xử lý"
     },
     "message": {
       "file_error": "đính kèm không thành công.",

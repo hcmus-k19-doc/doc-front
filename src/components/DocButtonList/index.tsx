@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { Button } from 'antd';
 import { t } from 'i18next';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 
 export interface DocButtonListProps {
   roleNumber: number;
   isEditing: boolean;
   enableEditing: () => void;
   onFinishEditing: () => void;
+  documentDetail?: IncomingDocumentDto;
+  onOpenTransferModal?: () => void;
 }
 
 const DocButtonList = ({
@@ -15,6 +18,8 @@ const DocButtonList = ({
   roleNumber,
   isEditing,
   onFinishEditing,
+  documentDetail,
+  onOpenTransferModal,
 }: DocButtonListProps) => {
   const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>([]);
 
@@ -33,8 +38,10 @@ const DocButtonList = ({
     <Button type='primary' key='3' size='large' name='report'>
       {t('incomingDocDetailPage.button.report')}
     </Button>,
-    <Button type='primary' size='large' key='4' name='transfer'>
-      {t('incomingDocDetailPage.button.transfer')}
+    <Button type='primary' size='large' key='4' name='transfer' onClick={onOpenTransferModal}>
+      {documentDetail?.isDocTransferred
+        ? t('incomingDocDetailPage.button.transer_detail')
+        : t('incomingDocDetailPage.button.transfer')}
     </Button>,
     <Button type='primary' size='large' key='5' name='assign'>
       {t('incomingDocDetailPage.button.assign')}
@@ -62,6 +69,8 @@ const DocButtonList = ({
         arr.push(false);
       }
     }
+
+    arr[2] = false;
 
     setButtonDisplayArr(arr);
   };

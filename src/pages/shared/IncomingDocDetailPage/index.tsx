@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Col,
   DatePicker,
@@ -18,9 +19,12 @@ import {
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import axios from 'axios';
+import { useAuth } from 'components/AuthComponent';
 import DocButtonList from 'components/DocButtonList';
 import DocComment from 'components/DocComment';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
+import TransferDocModal from 'components/TransferDocModal';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -28,16 +32,23 @@ import {
   DistributionOrganizationDto,
   DocumentTypeDto,
   FolderDto,
+  IncomingDocumentDto,
   IncomingDocumentPutDto,
+  TransferDocDto,
   Urgency,
 } from 'models/doc-main-models';
+import { RecoilRoot, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import DateValidator from 'shared/validators/DateValidator';
+import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
+
+import { transferDocModalState } from './core/states';
 
 import './index.css';
 
@@ -45,6 +56,7 @@ function IncomingDocPage() {
   const { docId } = useParams();
   const { t } = useTranslation();
   const [form] = useForm();
+
   const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -55,6 +67,86 @@ function IncomingDocPage() {
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data } = useIncomingDocumentDetailQuery(+(docId || 1));
+  console.log('data-detail', data?.data);
+  const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
+  const transferDocModalItem = useRecoilValue(transferDocModalState);
+  const transferQuerySetter = useTransferQuerySetter();
+
+  useEffect(() => {
+    const incomingDocument = {
+      ...data?.data,
+      status: t(`PROCESSING_STATUS.${data?.data.status}`),
+    };
+    setSelectedDocs([incomingDocument as unknown as IncomingDocumentDto]);
+  }, [data?.data]);
+
+  // Transfer Doc Modal
+  const queryClient = useQueryClient();
+  const { currentUser } = useAuth();
+  const [modalForm] = useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, setError] = useState<string>();
+
+  const handleOnOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOnCancelModal = () => {
+    setIsModalOpen(false);
+    modalForm.resetFields();
+    transferQuerySetter(initialTransferQueryState);
+  };
+
+  const handleOnOkModal = async () => {
+    const transferDocDto: TransferDocDto = {
+      documentIds: selectedDocs.map((doc) => doc.id),
+      summary: modalForm.getFieldValue('summary'),
+      reporterId: currentUser?.id as number,
+      assigneeId: modalForm.getFieldValue('assignee') as number,
+      collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
+      processingTime: modalForm.getFieldValue('processingTime'),
+      isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
+      processMethod: modalForm.getFieldValue('processMethod'),
+      transferDocumentType: transferDocModalItem.transferDocumentType,
+      isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
+    };
+    console.log('transferDocDto', transferDocDto, selectedDocs);
+
+    if (
+      await validateTransferDocs(
+        selectedDocs,
+        transferDocModalItem.transferDocumentType,
+        transferDocDto,
+        t,
+        currentUser
+      )
+    ) {
+      setIsModalOpen(false);
+      modalForm.submit();
+      modalForm.resetFields();
+      transferQuerySetter(transferDocDto);
+      try {
+        const response = await incomingDocumentService.transferDocuments(transferDocDto);
+        if (response.status === 200) {
+          queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', docId]);
+          showAlert({
+            icon: 'success',
+            html: t('incomingDocListPage.message.transfer_success') as string,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data.message);
+          console.error(error.response?.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+      // setSelectedDocs([]);
+    }
+  };
 
   if (!isLoading) {
     if (data?.data) {
@@ -436,6 +528,8 @@ function IncomingDocPage() {
           enableEditing={enableEditing}
           isEditing={isEditing}
           onFinishEditing={onFinishEditing}
+          documentDetail={data?.data}
+          onOpenTransferModal={handleOnOpenModal}
         />
       </Row>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.processing_step.title')}</div>
@@ -450,8 +544,31 @@ function IncomingDocPage() {
           <DocComment docId={Number(docId)} />
         </Col>
       </Row>
+      {data?.data?.isDocTransferred === true ? (
+        //   <TransferDocModalDetail
+        //   form={transferDocDetailModalForm}
+        //   isModalOpen={isDetailTransferModalOpen}
+        //   handleClose={handleOnCloseDetailModal}
+        //   transferredDoc={transferredDoc as IncomingDocumentDto}
+        //   transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
+        // />
+        <h1> ahihi</h1>
+      ) : (
+        <TransferDocModal
+          form={modalForm}
+          isModalOpen={isModalOpen}
+          handleCancel={handleOnCancelModal}
+          handleOk={handleOnOkModal}
+          selectedDocs={selectedDocs}
+        />
+      )}
     </Skeleton>
   );
 }
 
-export default IncomingDocPage;
+const IncomingDocPageWrapper = () => (
+  <RecoilRoot>
+    <IncomingDocPage />
+  </RecoilRoot>
+);
+export default IncomingDocPageWrapper;
