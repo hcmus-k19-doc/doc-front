@@ -37,7 +37,6 @@ const IncomingDocListPage: React.FC = () => {
   const showAlert = useSweetAlert();
   const [_, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
-  console.log('data list', data);
   const [transferDocDetailModalForm] = useForm();
   const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 

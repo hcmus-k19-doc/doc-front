@@ -73,7 +73,6 @@ function IncomingDocPage() {
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data } = useIncomingDocumentDetailQuery(+(docId || 1));
-  console.log('data-detail', data?.data);
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
@@ -143,7 +142,6 @@ function IncomingDocPage() {
       transferDocumentType: transferDocModalItem.transferDocumentType,
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
-    console.log('transferDocDto', transferDocDto, selectedDocs);
 
     if (
       await validateTransferDocs(
