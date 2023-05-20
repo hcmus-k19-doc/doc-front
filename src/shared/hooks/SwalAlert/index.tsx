@@ -1,5 +1,7 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
+import { PRIMARY_COLOR } from '../../../config/constant';
+
 interface UseSweetAlertOptions {
   html: string;
   timer?: number;
@@ -20,9 +22,9 @@ export const useSweetAlert = () => {
       timer: options.timer,
       showConfirmButton: options.showConfirmButton,
       showCancelButton: options.showCancelButton,
-      confirmButtonText: options.confirmButtonText,
+      confirmButtonText: options.confirmButtonText || 'OK',
       cancelButtonText: options.cancelButtonText,
-      confirmButtonColor: options.confirmButtonColor,
+      confirmButtonColor: options.confirmButtonColor || PRIMARY_COLOR,
       cancelButtonColor: options.cancelButtonColor,
     });
   };

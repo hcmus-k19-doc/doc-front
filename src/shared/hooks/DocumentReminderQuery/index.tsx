@@ -26,7 +26,6 @@ export const useDocumentReminderRes = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['QUERIES.DOCUMENT_REMINDER_LIST', query],
-    keepPreviousData: true,
     queryFn: async () => {
       const { data } = await documentReminderService.getCurrentUserDocumentReminders(query.date);
       return data;
@@ -43,7 +42,6 @@ export const useDocumentReminderDetailsRes = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['QUERIES.DOCUMENT_REMINDER_DETAILS', query],
-    keepPreviousData: true,
     queryFn: async () => {
       const { data } = await documentReminderService.getCurrentUserDocumentReminderDetails(
         query.date
