@@ -300,7 +300,8 @@
       "confirm": "Xác nhận đã xem",
       "return": "Trả lại",
       "extend": "Yêu cầu gia hạn",
-      "end": "Kết thúc"
+      "end": "Kết thúc",
+      "transer_detail": "Xem chi tiết chuyển xử lý"
     },
     "message": {
       "file_error": "đính kèm không thành công.",

@@ -37,7 +37,7 @@ const IncomingDocListPage: React.FC = () => {
   const showAlert = useSweetAlert();
   const [_, setError] = useState<string>();
   const { isLoading, data } = useIncomingDocRes();
-  const [transferDocModalForm] = useForm();
+  const [transferDocDetailModalForm] = useForm();
   const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const IncomingDocListPage: React.FC = () => {
 
   const handleOnCloseDetailModal = () => {
     setIsDetailTransferModalOpen(false);
-    transferDocModalForm.resetFields();
+    transferDocDetailModalForm.resetFields();
   };
 
   const handleDownloadAttachment = async (record: TableRowDataType) => {
@@ -255,7 +255,7 @@ const IncomingDocListPage: React.FC = () => {
       />
 
       <TransferDocModalDetail
-        form={transferDocModalForm}
+        form={transferDocDetailModalForm}
         isModalOpen={isDetailTransferModalOpen}
         handleClose={handleOnCloseDetailModal}
         transferredDoc={transferredDoc as IncomingDocumentDto}

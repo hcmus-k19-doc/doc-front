@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from 'antd';
 import { AxiosError } from 'axios';
 import { t } from 'i18next';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
@@ -14,6 +15,8 @@ export interface DocButtonListProps {
   isEditing: boolean;
   enableEditing: () => void;
   onFinishEditing: () => void;
+  documentDetail?: IncomingDocumentDto;
+  onOpenTransferModal?: () => void;
 }
 
 const DocButtonList = ({
@@ -21,6 +24,8 @@ const DocButtonList = ({
   roleNumber,
   isEditing,
   onFinishEditing,
+  documentDetail,
+  onOpenTransferModal,
 }: DocButtonListProps) => {
   const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>([]);
   const { currentUser } = useAuth();
@@ -61,8 +66,10 @@ const DocButtonList = ({
     <Button type='primary' key='3' size='large' name='report'>
       {t('incomingDocDetailPage.button.report')}
     </Button>,
-    <Button type='primary' size='large' key='4' name='transfer'>
-      {t('incomingDocDetailPage.button.transfer')}
+    <Button type='primary' size='large' key='4' name='transfer' onClick={onOpenTransferModal}>
+      {documentDetail?.isDocTransferred
+        ? t('incomingDocDetailPage.button.transer_detail')
+        : t('incomingDocDetailPage.button.transfer')}
     </Button>,
     <Button type='primary' size='large' key='5' name='assign'>
       {t('incomingDocDetailPage.button.assign')}
@@ -93,6 +100,8 @@ const DocButtonList = ({
         arr.push(false);
       }
     }
+
+    arr[2] = false;
 
     setButtonDisplayArr(arr);
   };
