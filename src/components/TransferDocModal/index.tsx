@@ -81,8 +81,10 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
           form={form}
           selectedDocs={selectedDocs}
           isTransferToSameLevel={menuConfig.isTransferToSameLevel}
+          isDocCollaborator={false}
           isReadOnlyMode={false}
           transferDate={transferDate}
+          senderName={''}
         />
       );
     }
@@ -92,8 +94,10 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
         form={form}
         selectedDocs={selectedDocs}
         isTransferToSameLevel={false}
+        isDocCollaborator={false}
         isReadOnlyMode={false}
         transferDate={transferDate}
+        senderName={''}
       />
     );
   };

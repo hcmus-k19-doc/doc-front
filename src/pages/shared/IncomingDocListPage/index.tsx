@@ -58,6 +58,11 @@ const IncomingDocListPage: React.FC = () => {
       step: getStep(currentUser as UserDto, null, true),
     };
 
+    if (tableRecord.isDocCollaborator) {
+      getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
+      getTransferDocumentDetailRequest.step = getStep(currentUser as UserDto, null, false);
+    }
+
     try {
       const response = await incomingDocumentService.getTransferDocumentDetail(
         getTransferDocumentDetailRequest
@@ -203,7 +208,7 @@ const IncomingDocListPage: React.FC = () => {
       title: t('incomingDocListPage.table.columns.transferDetailBtn'),
       dataIndex: 'isDocTransferred',
       render: (_, record) => {
-        if (record.isDocTransferred) {
+        if (record.isDocTransferred || record.isDocCollaborator) {
           return (
             <a onClick={(event) => handleOnOpenDetailModal(event, record)}>
               {t('incomingDocListPage.table.columns.transferDetail')}
@@ -244,7 +249,7 @@ const IncomingDocListPage: React.FC = () => {
           type: 'checkbox',
           ...rowSelection,
           getCheckboxProps: (record) => ({
-            disabled: record.isDocTransferred,
+            disabled: record.isDocTransferred || record.isDocCollaborator,
           }),
         }}
         columns={columns}

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-20 23:22:02.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-21 19:56:52.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -83,6 +83,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     urgency: Urgency;
     confidentiality: Confidentiality;
     isDocTransferred: boolean;
+    isDocCollaborator: boolean;
 }
 
 export interface IncomingDocumentPostDto {
@@ -230,6 +231,7 @@ export interface GetTransferDocumentDetailCustomResponse {
     baseInfo: GetTransferDocumentDetailResponse;
     assigneeId: number;
     collaboratorIds: number[];
+    senderName: string;
 }
 
 export interface GetTransferDocumentDetailRequest {
