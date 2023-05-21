@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'antd';
 import { AxiosError } from 'axios';
-import { t } from 'i18next';
 import { IncomingDocumentDto } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import { validateDocBeforeClose } from 'shared/validators/TransferDocValidator';
 
 import { DocSystemRoleEnum } from '../../models/doc-main-models';
 import { useAuth } from '../AuthComponent';
@@ -31,22 +33,27 @@ const DocButtonList = ({
   const { currentUser } = useAuth();
   const { docId } = useParams();
   const showAlert = useSweetAlert();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   async function onFinishDocument() {
-    try {
-      const message = await incomingDocumentService.closeDocument(Number(docId));
-      showAlert({
-        icon: 'success',
-        html: t(message),
-        showConfirmButton: true,
-      });
-    } catch (e) {
-      if (e instanceof AxiosError) {
+    if (validateDocBeforeClose(documentDetail, currentUser, t)) {
+      try {
+        const message = await incomingDocumentService.closeDocument(Number(docId));
+        queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', Number(docId)]);
         showAlert({
-          icon: 'error',
-          html: t(e.response?.data.message),
+          icon: 'success',
+          html: t(message),
           showConfirmButton: true,
         });
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          showAlert({
+            icon: 'error',
+            html: t(e.response?.data.message),
+            showConfirmButton: true,
+          });
+        }
       }
     }
   }

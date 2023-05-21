@@ -566,7 +566,7 @@ function IncomingDocPage() {
           enableEditing={enableEditing}
           isEditing={isEditing}
           onFinishEditing={onFinishEditing}
-          documentDetail={data?.data}
+          documentDetail={selectedDocs[0]}
           onOpenTransferModal={handleOnOpenModal}
         />
       </Row>
