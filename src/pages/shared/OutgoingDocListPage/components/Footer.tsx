@@ -6,7 +6,7 @@ import { useForm } from 'antd/es/form/Form';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
-import { TransferDocDto } from 'models/doc-main-models';
+import { DocSystemRoleEnum, TransferDocDto } from 'models/doc-main-models';
 import { useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocReq, useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
@@ -106,6 +106,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           type='primary'
           onClick={handleOnOpenModal}
           className='transfer-doc-btn'
+          style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
           disabled={!hasSelected}>
           {t('incomingDocDetailPage.button.transfer')}
         </Button>

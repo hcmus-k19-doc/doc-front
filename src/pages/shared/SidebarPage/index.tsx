@@ -39,7 +39,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
-            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
+            {/*<Route path='/out-create' element={<CreateOutgoingDocPage />} />*/}
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -63,7 +63,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
-            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
+            {/*<Route path='/out-create' element={<CreateOutgoingDocPage />} />*/}
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -75,7 +75,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
-            <Route path='/out-create' element={<CreateOutgoingDocPage />} />
+            {/*<Route path='/out-create' element={<CreateOutgoingDocPage />} />*/}
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );

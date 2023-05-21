@@ -130,7 +130,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     );
   };
 
-  console.log('transferDocDetail', transferDocumentDetail);
+  // console.log('transferDocDetail', transferDocumentDetail);
 
   return (
     <Modal

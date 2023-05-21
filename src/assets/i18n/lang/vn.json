@@ -503,6 +503,8 @@
       "collaborator_can_not_has_same_value_with_assignee": "Người tham gia không được trùng với người nhận",
       "only_unprocessed_docs_can_be_transferred_to_director": "Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc hoặc Văn thư cùng cấp",
       "only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert": "Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng, Văn thư hoặc Chuyên viên",
+      "only_unprocessed_docs_can_be_transferred_to_manager": "Chỉ có thể chuyển văn bản chưa xử lý tới Chánh văn phòng ",
+      "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Chỉ có thể chuyển văn bản đang xử lý tới Ban Giám đốc hoặc Văn thư",
       "some_user_is_already_assigned_to_this_doc": "Văn bản đã được phân công cho người này"
     }
   },
