@@ -143,10 +143,36 @@ const validateTransferDocs = async (
   return true;
 };
 
+const validateDocBeforeClose = (
+  documentDetail?: IncomingDocumentDto,
+  currentUser?: UserDto,
+  t?: any
+) => {
+  if (currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN) {
+    message.error(t('incomingDocDetailPage.close_document.only_chuyen_vien_can_close_document'));
+    return false;
+  }
+
+  if (documentDetail?.isDocCollaborator) {
+    message.error(
+      t('incomingDocDetailPage.close_document.you_dont_have_permission_to_close_this_document')
+    );
+    return false;
+  }
+
+  if (documentDetail?.status !== t('PROCESSING_STATUS.IN_PROGRESS')) {
+    message.error(t('incomingDocDetailPage.close_document.only_in_progress_docs_can_be_closed'));
+    return false;
+  }
+
+  return true;
+};
+
 export {
   validateAssignee,
   validateCollaborators,
   isUnprocessedDocs,
   isProcessingDocs,
   validateTransferDocs,
+  validateDocBeforeClose,
 };
