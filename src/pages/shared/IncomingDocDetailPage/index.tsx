@@ -98,13 +98,18 @@ function IncomingDocPage() {
   const handleOnOpenModal = async () => {
     setIsModalOpen(true);
 
-    if (selectedDocs[0].isDocTransferred) {
+    if (selectedDocs[0].isDocTransferred || selectedDocs[0].isDocCollaborator) {
       const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
         incomingDocumentId: +(docId || 1),
         userId: currentUser?.id as number,
         role: ProcessingDocumentRoleEnum.REPORTER,
         step: getStep(currentUser as UserDto, null, true),
       };
+
+      if (selectedDocs[0].isDocCollaborator) {
+        getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
+        getTransferDocumentDetailRequest.step = getStep(currentUser as UserDto, null, false);
+      }
 
       try {
         const response = await incomingDocumentService.getTransferDocumentDetail(
@@ -577,7 +582,7 @@ function IncomingDocPage() {
           <DocComment docId={Number(docId)} />
         </Col>
       </Row>
-      {data?.data?.isDocTransferred === true ? (
+      {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
         <TransferDocModalDetail
           form={modalForm}
           isModalOpen={isModalOpen}

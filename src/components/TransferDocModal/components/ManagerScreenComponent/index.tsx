@@ -34,14 +34,24 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isDocCollaborator,
   isReadOnlyMode,
   transferDate,
+  senderName,
 }) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
   const { currentUser } = useAuth();
   const setManagerTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
+
+  if (!isDocCollaborator) {
+    managers?.map((manager) => {
+      if (manager.value === currentUser?.id) {
+        managers?.splice(managers.indexOf(manager), 1);
+      }
+    });
+  }
 
   const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
     if (e.target.checked) {
@@ -75,7 +85,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
         </Col>
-        <Col span='6'>{currentUser?.fullName}</Col>
+        <Col span='6'>{isDocCollaborator ? senderName : currentUser?.fullName}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -116,7 +126,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           </Form.Item>
         </Col>
       </Row>
-      {!isTransferToSameLevel && (
+      {(!isTransferToSameLevel || isDocCollaborator) && (
         <>
           <Row className='mb-3'>
             <Col span='6'>

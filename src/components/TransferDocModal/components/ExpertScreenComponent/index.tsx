@@ -33,14 +33,24 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isDocCollaborator,
   isReadOnlyMode,
   transferDate,
+  senderName,
 }) => {
   const { t } = useTranslation();
   const { experts } = useExpertTransferRes();
   const { currentUser } = useAuth();
   const setDirectorTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
+
+  if (!isDocCollaborator) {
+    experts?.map((expert) => {
+      if (expert.value === currentUser?.id) {
+        experts?.splice(experts.indexOf(expert), 1);
+      }
+    });
+  }
 
   const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
     if (e.target.checked) {
@@ -74,7 +84,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
         </Col>
-        <Col span='6'>{currentUser?.fullName}</Col>
+        <Col span='6'>{isDocCollaborator ? senderName : currentUser?.fullName}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -119,7 +129,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
           </Form.Item>
         </Col>
       </Row>
-      {!isTransferToSameLevel && (
+      {(!isTransferToSameLevel || isDocCollaborator) && (
         <>
           <Row className='mt-3 mb-3'>
             <Col span='6'>

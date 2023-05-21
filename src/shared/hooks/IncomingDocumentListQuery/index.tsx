@@ -57,6 +57,7 @@ export const useIncomingDocRes = () => {
               attachments: item.attachments,
               incomingNumber: item.incomingNumber,
               isDocTransferred: item.isDocTransferred,
+              isDocCollaborator: item.isDocCollaborator,
             };
           });
 

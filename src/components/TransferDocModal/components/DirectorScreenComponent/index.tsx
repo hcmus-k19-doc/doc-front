@@ -33,12 +33,24 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isDocCollaborator,
   isReadOnlyMode,
   transferDate,
+  senderName,
 }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
+
   const { currentUser } = useAuth();
+
+  if (!isDocCollaborator) {
+    directors?.map((director) => {
+      if (director.value === currentUser?.id) {
+        directors?.splice(directors.indexOf(director), 1);
+      }
+    });
+  }
+
   const setDirectorTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
 
@@ -74,7 +86,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
         </Col>
-        <Col span='6'>{currentUser?.fullName}</Col>
+        <Col span='6'>{isDocCollaborator ? senderName : currentUser?.fullName}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -119,7 +131,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
           </Form.Item>
         </Col>
       </Row>
-      {!isTransferToSameLevel && (
+      {(!isTransferToSameLevel || isDocCollaborator) && (
         <>
           <Row className='mt-3 mb-3'>
             <Col span='6'>

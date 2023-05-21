@@ -67,7 +67,7 @@ const DocButtonList = ({
       {t('incomingDocDetailPage.button.report')}
     </Button>,
     <Button type='primary' size='large' key='4' name='transfer' onClick={onOpenTransferModal}>
-      {documentDetail?.isDocTransferred
+      {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
         ? t('incomingDocDetailPage.button.transer_detail')
         : t('incomingDocDetailPage.button.transfer')}
     </Button>,
