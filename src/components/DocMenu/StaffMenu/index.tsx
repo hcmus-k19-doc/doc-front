@@ -83,13 +83,13 @@ const ManagerMenu = () => {
             globalNavigate('/docout/out-list');
           },
         },
-        {
-          key: 'out-create',
-          label: t('main_page.menu.items.create_outgoing_document'),
-          onClick: () => {
-            globalNavigate('/docout/out-create');
-          },
-        },
+        // {
+        //   key: 'out-create',
+        //   label: t('main_page.menu.items.create_outgoing_document'),
+        //   onClick: () => {
+        //     globalNavigate('/docout/out-create');
+        //   },
+        // },
       ],
     },
   ];

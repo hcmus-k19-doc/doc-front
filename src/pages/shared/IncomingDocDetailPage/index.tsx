@@ -597,6 +597,7 @@ function IncomingDocPage() {
           handleCancel={handleOnCancelModal}
           handleOk={handleOnOkModal}
           selectedDocs={selectedDocs}
+          type={'IncomingDocument'}
         />
       )}
     </Skeleton>

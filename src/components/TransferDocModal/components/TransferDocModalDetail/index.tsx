@@ -38,7 +38,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   transferredDoc,
   transferDocumentDetail,
 }) => {
-  const { settings } = useTransferSettingRes();
+  const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);

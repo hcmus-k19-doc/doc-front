@@ -9,6 +9,7 @@ import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
+import { IncomingDocumentDto } from '../../../../models/doc-main-models';
 import {
   i18_collaborators,
   i18n_assignee,
@@ -100,7 +101,9 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='16'>
           <List>
             <VirtualList
-              data={selectedDocs.sort((a, b) => a.id - b.id)}
+              data={selectedDocs.sort(
+                (a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id
+              )}
               height={itemHeight * 2}
               itemHeight={itemHeight}
               itemKey={'id'}>

@@ -131,6 +131,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
         selectedDocs={selectedDocs}
+        type={'IncomingDocument'}
       />
     </div>
   );

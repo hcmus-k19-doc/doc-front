@@ -32,8 +32,9 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
   handleCancel,
   form,
   selectedDocs,
+  type,
 }) => {
-  const { settings } = useTransferSettingRes();
+  const { settings } = useTransferSettingRes(type);
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);

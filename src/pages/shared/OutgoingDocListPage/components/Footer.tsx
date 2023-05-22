@@ -3,16 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Pagination } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
-import { TransferDocDto } from 'models/doc-main-models';
+import TransferDocModal from 'components/TransferDocModal';
+import { DocSystemRoleEnum, TransferDocDto } from 'models/doc-main-models';
 import { useRecoilValue } from 'recoil';
+import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocReq, useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 
+import { transferDocModalState } from '../../IncomingDocListPage/core/states';
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
-import { transferDocModalState } from '../core/states';
 
 const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const { t } = useTranslation();
@@ -55,41 +59,43 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
 
-    // if (
-    //   await validateTransferDocs(
-    //     selectedDocs,
-    //     transferDocModalItem.transferDocumentType,
-    //     transferDocDto,
-    //     t,
-    //     currentUser
-    //   )
-    // ) {
-    //   setIsModalOpen(false);
-    //   modalForm.submit();
-    //   console.log(modalForm.getFieldsValue());
-    //   modalForm.resetFields();
-    //   transferQuerySetter(transferDocDto);
-    //   try {
-    //     const response = await outgoingDocumentService.transferDocuments(transferDocDto);
-    //     if (response.status === 200) {
-    //       queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
-    //       showAlert({
-    //         icon: 'success',
-    //         html: t('outgoingDocListPage.message.transfer_success') as string,
-    //         showConfirmButton: false,
-    //         timer: 2000,
-    //       });
-    //     }
-    //   } catch (error) {
-    //     if (axios.isAxiosError(error)) {
-    //       setError(error.response?.data.message);
-    //       console.error(error.response?.data.message);
-    //     } else {
-    //       console.error(error);
-    //     }
-    //   }
-    //   setSelectedDocs([]);
-    // }
+    console.log('transferDocDto', transferDocDto);
+
+    if (
+      await validateTransferDocs(
+        selectedDocs,
+        transferDocModalItem.transferDocumentType,
+        transferDocDto,
+        t,
+        currentUser
+      )
+    ) {
+      setIsModalOpen(false);
+      modalForm.submit();
+      console.log(modalForm.getFieldsValue());
+      modalForm.resetFields();
+      transferQuerySetter(transferDocDto);
+      try {
+        const response = await outgoingDocumentService.transferDocuments(transferDocDto);
+        if (response.status === 200) {
+          await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
+          await showAlert({
+            icon: 'success',
+            html: t('outgoingDocListPage.message.transfer_success') as string,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data.message);
+          console.error(error.response?.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+      setSelectedDocs([]);
+    }
   };
   const hasSelected = selectedDocs.length > 0;
 
@@ -100,8 +106,9 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           type='primary'
           onClick={handleOnOpenModal}
           className='transfer-doc-btn'
+          style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
           disabled={!hasSelected}>
-          {t('outgoing_doc_detail_page.button.report')}
+          {t('incomingDocDetailPage.button.transfer')}
         </Button>
 
         <span style={{ marginTop: 8 }}>
@@ -122,13 +129,14 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         showTotal={(total) => t('common.pagination.show_total', { total })}
       />
 
-      {/*<TransferDocModal*/}
-      {/*  form={modalForm}*/}
-      {/*  isModalOpen={isModalOpen}*/}
-      {/*  handleCancel={handleOnCancelModal}*/}
-      {/*  handleOk={handleOnOkModal}*/}
-      {/*  selectedDocs={selectedDocs}*/}
-      {/*/>*/}
+      <TransferDocModal
+        form={modalForm}
+        isModalOpen={isModalOpen}
+        handleCancel={handleOnCancelModal}
+        handleOk={handleOnOkModal}
+        selectedDocs={selectedDocs}
+        type={'OutgoingDocument'}
+      />
     </div>
   );
 };

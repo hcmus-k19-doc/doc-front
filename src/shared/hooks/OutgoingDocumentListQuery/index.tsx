@@ -50,7 +50,7 @@ export const useOutgoingDocRes = () => {
               summary: item.summary,
               fullText: '',
               status: t(`PROCESSING_STATUS.${item.status}`),
-              outgoingNumber: item.outgoingNumber,
+              objType: 'OutgoingDocument',
             };
           });
 

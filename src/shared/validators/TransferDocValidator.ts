@@ -2,11 +2,14 @@ import { message } from 'antd';
 import {
   DocSystemRoleEnum,
   IncomingDocumentDto,
+  OutgoingDocumentGetDto,
   TransferDocDto,
   TransferDocumentType,
   UserDto,
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
+
+import outgoingDocumentService from '../../services/OutgoingDocumentService';
 
 const validateAssignee = (assigneeId?: number, t?: any) => {
   if (!assigneeId) {
@@ -51,6 +54,25 @@ const isProcessingDocs = (selectedDocs: IncomingDocumentDto[], t?: any) => {
   }
   return true;
 };
+const isUnprocessedOutgoingDocs = (selectedDocs: OutgoingDocumentGetDto[], t?: any) => {
+  const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED'));
+  if (!result) {
+    message.error(t('transfer_modal.form.only_unprocessed_docs_can_be_transferred_to_manager'));
+    return false;
+  }
+  return true;
+};
+
+const isProcessingOutgoingDocs = (selectedDocs: OutgoingDocumentGetDto[], t?: any) => {
+  const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.IN_PROGRESS'));
+  if (!result) {
+    message.error(
+      t('transfer_modal.form.only_in_progress_docs_can_be_transferred_to_director_or_secretary')
+    );
+    return false;
+  }
+  return true;
+};
 
 const isValidProcessMethod = (processMethod?: string, t?: any) => {
   if (!processMethod) {
@@ -73,16 +95,18 @@ const isValidProcessingTime = (
 };
 
 const validateTransferDocs = async (
-  selectedDocs: IncomingDocumentDto[],
+  selectedDocs: any,
   transferDocModalItem: TransferDocumentType,
   transferDocDto: TransferDocDto,
   t?: any,
   currentUser?: UserDto
 ) => {
+  let validateTransferDocs;
+
   if (transferDocDto?.isTransferToSameLevel) {
     /*
-     - neu chuyen cung cap thi van ban phai la van ban chua xu ly doi voi van thu va check assignee
-    */
+       - neu chuyen cung cap thi van ban phai la van ban chua xu ly doi voi van thu va check assignee
+      */
     if (!validateAssignee(transferDocDto?.assigneeId, t)) {
       return false;
     }
@@ -92,10 +116,11 @@ const validateTransferDocs = async (
     if (currentUser?.role !== DocSystemRoleEnum.VAN_THU && !isProcessingDocs(selectedDocs, t)) {
       return false;
     }
+    validateTransferDocs = await incomingDocumentService.validateTransferDocuments(transferDocDto);
   } else {
     /*
-     - neu chuyen khac cap thi van ban phai la van ban dang xu ly, check assignee va collaborator, processing time
-    */
+       - neu chuyen khac cap thi van ban phai la van ban dang xu ly, check assignee va collaborator, processing time
+      */
     if (
       !validateAssignee(transferDocDto?.assigneeId, t) ||
       !validateCollaborators(transferDocDto?.assigneeId, transferDocDto?.collaboratorIds, t)
@@ -119,28 +144,50 @@ const validateTransferDocs = async (
       return false;
     }
 
-    if (
-      transferDocModalItem === TransferDocumentType.TRANSFER_TO_GIAM_DOC &&
-      currentUser?.role === DocSystemRoleEnum.VAN_THU
-    ) {
-      if (!isUnprocessedDocs(selectedDocs, t)) {
-        return false;
+    if (Array.isArray(selectedDocs) && isOutgoingDoc(selectedDocs[0])) {
+      if (
+        transferDocModalItem === TransferDocumentType.TRANSFER_TO_TRUONG_PHONG &&
+        currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN
+      ) {
+        if (!isUnprocessedOutgoingDocs(selectedDocs, t)) {
+          return false;
+        }
+      } else {
+        if (!isProcessingOutgoingDocs(selectedDocs, t)) {
+          return false;
+        }
       }
+      validateTransferDocs = await outgoingDocumentService.validateTransferDocuments(
+        transferDocDto
+      );
     } else {
-      if (!isProcessingDocs(selectedDocs, t)) {
-        return false;
+      if (
+        transferDocModalItem === TransferDocumentType.TRANSFER_TO_GIAM_DOC &&
+        currentUser?.role === DocSystemRoleEnum.VAN_THU
+      ) {
+        if (!isUnprocessedDocs(selectedDocs, t)) {
+          return false;
+        }
+      } else {
+        if (!isProcessingDocs(selectedDocs, t)) {
+          return false;
+        }
       }
+      validateTransferDocs = await incomingDocumentService.validateTransferDocuments(
+        transferDocDto
+      );
     }
   }
-  const validateTransferDocs = await incomingDocumentService.validateTransferDocuments(
-    transferDocDto
-  );
+
   if (!validateTransferDocs.isValid) {
     message.error(validateTransferDocs.message);
     return false;
   }
-
   return true;
+};
+
+const isOutgoingDoc = (doc: any) => {
+  return 'objType' in doc && doc.objType === 'OutgoingDocument';
 };
 
 const validateDocBeforeClose = (
@@ -174,5 +221,6 @@ export {
   isUnprocessedDocs,
   isProcessingDocs,
   validateTransferDocs,
+  isOutgoingDoc,
   validateDocBeforeClose,
 };

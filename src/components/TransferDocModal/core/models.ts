@@ -41,7 +41,8 @@ export interface TransferModalProps {
   handleOk: () => void;
   handleCancel: () => void;
   form: FormInstance;
-  selectedDocs: IncomingDocumentDto[];
+  selectedDocs: any;
+  type: string;
 }
 
 export interface TransferModalDetailProps {
@@ -58,7 +59,7 @@ export interface MenuSelectProps {
 
 export interface TransferDocScreenProps {
   form: FormInstance;
-  selectedDocs: IncomingDocumentDto[];
+  selectedDocs: any;
   isTransferToSameLevel: boolean;
   isDocCollaborator: boolean;
   isReadOnlyMode: boolean;

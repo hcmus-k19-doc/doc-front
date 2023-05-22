@@ -122,11 +122,13 @@ function CreateOutgoingDocPage() {
   const onFinish = async (values: any) => {
     try {
       const outgoingDocument = new FormData();
-      values.files.fileList.forEach((file: any) => {
-        outgoingDocument.append('attachments', file.originFileObj);
-      });
+      if (values.files !== undefined) {
+        values.files.fileList.forEach((file: any) => {
+          outgoingDocument.append('attachments', file.originFileObj);
+        });
 
-      delete values.files;
+        delete values.files;
+      }
 
       const outgoingDocumentPostDto: OutgoingDocumentPostDto = {
         ...values,
@@ -138,11 +140,11 @@ function CreateOutgoingDocPage() {
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('create_outgoing_doc_page.message.create_success') as string,
+          html: t('create_outgoing_doc_page.message.success') as string,
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/docout');
+          navigate('/docout/out-list');
         });
       }
     } catch (error) {
