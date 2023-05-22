@@ -25,7 +25,6 @@ export const useIncomingDocRes = () => {
 
   return useQuery({
     queryKey: ['QUERIES.INCOMING_DOCUMENT_LIST', query],
-    keepPreviousData: true,
     queryFn: () => {
       return incomingDocumentService
         .getIncomingDocuments(
@@ -58,6 +57,7 @@ export const useIncomingDocRes = () => {
               attachments: item.attachments,
               incomingNumber: item.incomingNumber,
               isDocTransferred: item.isDocTransferred,
+              isDocCollaborator: item.isDocCollaborator,
             };
           });
 

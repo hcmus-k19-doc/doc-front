@@ -5,9 +5,19 @@ import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, Col, DatePicker, Form, Input, message, Row, Select, UploadProps } from 'antd';
-import { Skeleton } from 'antd';
-import { Modal } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Skeleton,
+  UploadProps,
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import { useAuth } from 'components/AuthComponent';
@@ -83,8 +93,6 @@ function OutgoingDocDetailPage() {
         const outgoingDocument: OutgoingDocumentGetDto = data?.data;
 
         initForm(outgoingDocument);
-
-        console.log(outgoingDocument);
 
         if (outgoingDocument.status === OutgoingDocumentStatusEnum.RELEASED) {
           removeButtons();

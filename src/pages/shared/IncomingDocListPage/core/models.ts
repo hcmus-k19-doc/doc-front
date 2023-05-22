@@ -15,6 +15,7 @@ export type TableRowDataType = {
   deadline: string;
   attachments: AttachmentDto[];
   isDocTransferred: boolean;
+  isDocCollaborator: boolean;
 };
 
 export type TableDataType = {

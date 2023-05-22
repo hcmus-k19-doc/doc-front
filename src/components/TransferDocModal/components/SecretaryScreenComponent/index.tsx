@@ -33,14 +33,24 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
   form,
   selectedDocs,
   isTransferToSameLevel,
+  isDocCollaborator,
   isReadOnlyMode,
   transferDate,
+  senderName,
 }) => {
   const { t } = useTranslation();
   const { secretaries } = useSecretaryTransferRes();
   const { currentUser } = useAuth();
   const setSecretaryTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
+
+  if (!isDocCollaborator) {
+    secretaries?.map((secretarie) => {
+      if (secretarie.value === currentUser?.id) {
+        secretaries?.splice(secretaries.indexOf(secretarie), 1);
+      }
+    });
+  }
 
   const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
     if (e.target.checked) {
@@ -73,7 +83,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
         <Col span='6'>
           <Text strong>{t(i18n_sender)}</Text>
         </Col>
-        <Col span='6'>{currentUser?.fullName}</Col>
+        <Col span='6'>{isDocCollaborator ? senderName : currentUser?.fullName}</Col>
       </Row>
       <Row className='my-6'>
         <Col span='6'>
@@ -118,7 +128,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
           </Form.Item>
         </Col>
       </Row>
-      {!isTransferToSameLevel && (
+      {(!isTransferToSameLevel || isDocCollaborator) && (
         <>
           <Row className='mb-3'>
             <Col span='6'>

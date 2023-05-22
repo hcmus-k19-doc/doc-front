@@ -1,13 +1,24 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'antd';
-import { t } from 'i18next';
+import { AxiosError } from 'axios';
+import { IncomingDocumentDto } from 'models/doc-main-models';
+import incomingDocumentService from 'services/IncomingDocumentService';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import { validateDocBeforeClose } from 'shared/validators/TransferDocValidator';
+
+import { DocSystemRoleEnum } from '../../models/doc-main-models';
+import { useAuth } from '../AuthComponent';
 
 export interface DocButtonListProps {
   roleNumber: number;
   isEditing: boolean;
   enableEditing: () => void;
   onFinishEditing: () => void;
+  documentDetail?: IncomingDocumentDto;
+  onOpenTransferModal?: () => void;
 }
 
 const DocButtonList = ({
@@ -15,8 +26,37 @@ const DocButtonList = ({
   roleNumber,
   isEditing,
   onFinishEditing,
+  documentDetail,
+  onOpenTransferModal,
 }: DocButtonListProps) => {
   const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>([]);
+  const { currentUser } = useAuth();
+  const { docId } = useParams();
+  const showAlert = useSweetAlert();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  async function onFinishDocument() {
+    if (validateDocBeforeClose(documentDetail, currentUser, t)) {
+      try {
+        const message = await incomingDocumentService.closeDocument(Number(docId));
+        queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', Number(docId)]);
+        showAlert({
+          icon: 'success',
+          html: t(message),
+          showConfirmButton: true,
+        });
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          showAlert({
+            icon: 'error',
+            html: t(e.response?.data.message),
+            showConfirmButton: true,
+          });
+        }
+      }
+    }
+  }
 
   const buttonArr: JSX.Element[] = [
     <Button
@@ -33,8 +73,10 @@ const DocButtonList = ({
     <Button type='primary' key='3' size='large' name='report'>
       {t('incomingDocDetailPage.button.report')}
     </Button>,
-    <Button type='primary' size='large' key='4' name='transfer'>
-      {t('incomingDocDetailPage.button.transfer')}
+    <Button type='primary' size='large' key='4' name='transfer' onClick={onOpenTransferModal}>
+      {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
+        ? t('incomingDocDetailPage.button.transer_detail')
+        : t('incomingDocDetailPage.button.transfer')}
     </Button>,
     <Button type='primary' size='large' key='5' name='assign'>
       {t('incomingDocDetailPage.button.assign')}
@@ -48,7 +90,10 @@ const DocButtonList = ({
     <Button type='primary' size='large' key='8' name='return'>
       {t('incomingDocDetailPage.button.return')}
     </Button>,
-    <Button type='primary' size='large' key='9' name='extend'>
+  ];
+
+  const shareButtonArr: JSX.Element[] = [
+    <Button type='primary' size='large' key='9' name='extend' className='mr-5'>
       {t('incomingDocDetailPage.button.extend')}
     </Button>,
   ];
@@ -63,11 +108,13 @@ const DocButtonList = ({
       }
     }
 
+    arr[2] = false;
+
     setButtonDisplayArr(arr);
   };
 
   const renderButtons = () => {
-    return buttonDisplayArr.map((item, index) => {
+    const displayArr = buttonDisplayArr.map((item, index) => {
       if (item) {
         return (
           <React.Fragment key={index}>
@@ -77,6 +124,22 @@ const DocButtonList = ({
         );
       }
     });
+
+    return [
+      ...displayArr,
+      ...shareButtonArr,
+      currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && (
+        <Button
+          type='primary'
+          size='large'
+          key='10'
+          name='end'
+          className='mr-5'
+          onClick={onFinishDocument}>
+          {t('incomingDocDetailPage.button.end')}
+        </Button>
+      ),
+    ];
   };
 
   useEffect(() => {

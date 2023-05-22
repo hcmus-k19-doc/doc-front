@@ -23,6 +23,7 @@ import {
   MenuSelectProps,
   TransferModalDetailProps,
 } from '../../core/models';
+
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
   2: ManagerScreenComponent,
@@ -52,6 +53,9 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         menuConfigs:
           currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN
             ? settings?.menuConfigs?.filter((item) => {
+                if (transferredDoc?.isDocCollaborator) {
+                  return item.isTransferToSameLevel === true;
+                }
                 return item.isTransferToSameLevel === false;
               }) || []
             : settings?.menuConfigs || [],
@@ -65,7 +69,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
       });
       setDefaultSelectedKeys([newSetting.menuConfigs[0].menuKey.toString()]);
     }
-  }, [settings]);
+  }, [settings, transferredDoc]);
 
   useEffect(() => {
     if (transferDocumentDetail) {
@@ -113,8 +117,10 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           form={form}
           selectedDocs={[transferredDoc]}
           isTransferToSameLevel={menuConfig.isTransferToSameLevel}
+          isDocCollaborator={transferredDoc?.isDocCollaborator}
           isReadOnlyMode={true}
           transferDate={transferDate}
+          senderName={transferDocumentDetail?.senderName}
         />
       );
     }
@@ -124,13 +130,13 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         form={form}
         selectedDocs={[transferredDoc]}
         isTransferToSameLevel={false}
+        isDocCollaborator={transferredDoc?.isDocCollaborator}
         isReadOnlyMode={true}
         transferDate={transferDate}
+        senderName={transferDocumentDetail?.senderName}
       />
     );
   };
-
-  // console.log('transferDocDetail', transferDocumentDetail);
 
   return (
     <Modal
