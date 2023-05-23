@@ -149,6 +149,9 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     releaseDate: DateAsString;
     publishingDepartment: DepartmentDto;
     status: OutgoingDocumentStatusEnum;
+    isDocTransferred: boolean;
+    isDocCollaborator: boolean;
+    attachments: AttachmentDto[];
 }
 
 export interface OutgoingDocumentPostDto extends DocAbstractDto {
@@ -235,16 +238,16 @@ export interface GetTransferDocumentDetailCustomResponse {
 }
 
 export interface GetTransferDocumentDetailRequest {
-    incomingDocumentId: number;
+    documentId: number;
     userId: number;
     role: ProcessingDocumentRoleEnum;
     step: number;
 }
 
 export interface GetTransferDocumentDetailResponse {
-    incomingDocumentId: number;
-    incomingNumber: string;
-    incomingSummary: string;
+    documentId: number;
+    documentNumber: string;
+    summary: string;
     processingDocumentId: number;
     transferDate: DateAsString;
     processingStatus: ProcessingStatus;

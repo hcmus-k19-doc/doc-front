@@ -3,6 +3,7 @@ import { FormInstance, MenuProps, SelectProps } from 'antd';
 import {
   GetTransferDocumentDetailCustomResponse,
   IncomingDocumentDto,
+  OutgoingDocumentGetDto,
   ProcessMethod,
 } from 'models/doc-main-models';
 
@@ -49,7 +50,7 @@ export interface TransferModalDetailProps {
   isModalOpen: boolean;
   handleClose: () => void;
   form: FormInstance;
-  transferredDoc: IncomingDocumentDto;
+  transferredDoc: IncomingDocumentDto | OutgoingDocumentGetDto;
   transferDocumentDetail: GetTransferDocumentDetailCustomResponse;
 }
 

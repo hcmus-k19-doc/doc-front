@@ -33,3 +33,33 @@ export const getStep = (reporter: UserDto, assignee: UserDto | null, isCreate: b
   }
   return step;
 };
+
+export const getStepOutgoingDocument = (reporter: UserDto, isCreate: boolean) => {
+  let step: number;
+  switch (reporter.role) {
+    case DocSystemRoleEnum.CHUYEN_VIEN:
+      step = 1;
+      break;
+    case DocSystemRoleEnum.TRUONG_PHONG:
+      if (isCreate) {
+        step = 2;
+      } else {
+        step = 1;
+      }
+      break;
+    case DocSystemRoleEnum.GIAM_DOC:
+      if (isCreate) {
+        step = 3;
+      } else {
+        step = 2;
+      }
+      break;
+    case DocSystemRoleEnum.VAN_THU:
+      step = 3;
+      break;
+    default:
+      step = 1;
+      break;
+  }
+  return step;
+};

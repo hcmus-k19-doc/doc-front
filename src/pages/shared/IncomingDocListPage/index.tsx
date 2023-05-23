@@ -52,7 +52,7 @@ const IncomingDocListPage: React.FC = () => {
 
     setTransferredDoc(tableRecord as unknown as IncomingDocumentDto);
     const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
-      incomingDocumentId: tableRecord.id,
+      documentId: tableRecord.id,
       userId: currentUser?.id as number,
       role: ProcessingDocumentRoleEnum.REPORTER,
       step: getStep(currentUser as UserDto, null, true),
