@@ -1,4 +1,4 @@
-import { OutgoingDocumentGetDto } from 'models/doc-main-models';
+import { AttachmentDto, OutgoingDocumentGetDto } from 'models/doc-main-models';
 
 export type TableRowDataType = {
   key: number;
@@ -12,6 +12,9 @@ export type TableRowDataType = {
   fullText: string;
   status: string;
   objType: string;
+  attachments: AttachmentDto[];
+  isDocTransferred: boolean;
+  isDocCollaborator: boolean;
 };
 
 export type TableDataType = {

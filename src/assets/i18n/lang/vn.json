@@ -400,7 +400,9 @@
         "issuePlace": "Nơi phát hành",
         "summary": "Trích yếu",
         "fullText": "Toàn văn",
-        "status": "Trạng thái"
+        "status": "Trạng thái",
+        "transferDetailBtn": "Chuyển xử lý",
+        "transferDetail": "Xem chi tiết"
       },
       "tooltip": {
         "downloadAttachment": "Tải tệp đính kèm"

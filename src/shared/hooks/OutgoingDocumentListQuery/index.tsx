@@ -51,6 +51,9 @@ export const useOutgoingDocRes = () => {
               fullText: '',
               status: t(`PROCESSING_STATUS.${item.status}`),
               objType: 'OutgoingDocument',
+              attachments: item.attachments,
+              isDocTransferred: item.isDocTransferred,
+              isDocCollaborator: item.isDocCollaborator,
             };
           });
 

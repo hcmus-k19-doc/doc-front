@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
-import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
 import {
-  DocSystemRoleEnum,
   TransferDocumentMenuConfig,
   TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
@@ -38,27 +36,18 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   transferredDoc,
   transferDocumentDetail,
 }) => {
-  const { settings } = useTransferSettingRes('IncomingDocument');
+  const { settings } = useTransferSettingRes('OutgoingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
-  const { currentUser } = useAuth();
 
   const [transferDate, setTransferDate] = useState<string>('');
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       const newSetting = {
         ...settings,
-        menuConfigs:
-          currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN
-            ? settings?.menuConfigs?.filter((item) => {
-                if (transferredDoc?.isDocCollaborator) {
-                  return item.isTransferToSameLevel === true;
-                }
-                return item.isTransferToSameLevel === false;
-              }) || []
-            : settings?.menuConfigs || [],
+        menuConfigs: settings?.menuConfigs || [],
       };
 
       setDetailModalSetting(newSetting);

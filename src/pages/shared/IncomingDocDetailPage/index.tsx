@@ -100,7 +100,7 @@ function IncomingDocPage() {
 
     if (selectedDocs[0].isDocTransferred || selectedDocs[0].isDocCollaborator) {
       const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
-        incomingDocumentId: +(docId || 1),
+        documentId: +(docId || 1),
         userId: currentUser?.id as number,
         role: ProcessingDocumentRoleEnum.REPORTER,
         step: getStep(currentUser as UserDto, null, true),

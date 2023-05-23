@@ -2,6 +2,8 @@ import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DocPaginationDto,
+  GetTransferDocumentDetailCustomResponse,
+  GetTransferDocumentDetailRequest,
   OutgoingDocSearchCriteriaDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
@@ -79,6 +81,17 @@ async function validateTransferDocuments(transferDocDto: TransferDocDto) {
   return response.data;
 }
 
+async function getTransferDocumentDetail(
+  getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest
+) {
+  const response = await axios.post<GetTransferDocumentDetailCustomResponse>(
+    `${OUTGOING_DOCUMENTS_URL}/get-transfer-documents-detail`,
+    getTransferDocumentDetailRequest
+  );
+
+  return response.data;
+}
+
 const outgoingDocumentService = {
   createOutgoingDocument,
   getOutgoingDocumentById,
@@ -88,6 +101,7 @@ const outgoingDocumentService = {
   publishOutgoingDocument,
   getTransferOutgoingDocumentsSetting,
   validateTransferDocuments,
+  getTransferDocumentDetail,
 };
 
 export default outgoingDocumentService;

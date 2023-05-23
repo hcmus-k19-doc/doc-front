@@ -3,12 +3,25 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
 import { Divider, Table, Tooltip } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { PRIMARY_COLOR } from 'config/constant';
-import { OutgoingDocumentGetDto } from 'models/doc-main-models';
+import { t } from 'i18next';
+import {
+  GetTransferDocumentDetailCustomResponse,
+  GetTransferDocumentDetailRequest,
+  OutgoingDocumentGetDto,
+  ProcessingDocumentRoleEnum,
+  UserDto,
+} from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+
+import { useAuth } from '../../../components/AuthComponent';
+import TransferOutgoingDocModalDetail from '../../../components/TransferDocModal/components/TransferOutgoingDocModalDetail';
+import outgoingDocumentService from '../../../services/OutgoingDocumentService';
+import { getStepOutgoingDocument } from '../../../utils/TransferDocUtils';
 
 import Footer from './components/Footer';
 import OutgoingDocumentSearchForm from './components/OutgoingDocumentSearchForm';
@@ -18,13 +31,60 @@ import './index.css';
 
 const OutgoingDocListPage: React.FC = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
 
   const showAlert = useSweetAlert();
   const [, setError] = useState<string>();
   const { isLoading, data } = useOutgoingDocRes();
+  const [transferDocDetailModalForm] = useForm();
+  const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const [selectedDocs, setSelectedDocs] = useState<OutgoingDocumentGetDto[]>([]);
+  const [transferredDoc, setTransferredDoc] = useState<OutgoingDocumentGetDto>();
+  const [transferDocumentDetail, setTransferDocumentDetail] =
+    useState<GetTransferDocumentDetailCustomResponse>();
+
+  const handleOnOpenDetailModal = async (event: any, tableRecord: TableRowDataType) => {
+    event.preventDefault();
+    setIsDetailTransferModalOpen(true);
+
+    setTransferredDoc(tableRecord as unknown as OutgoingDocumentGetDto);
+    const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
+      documentId: tableRecord.id,
+      userId: currentUser?.id as number,
+      role: ProcessingDocumentRoleEnum.REPORTER,
+      step: getStepOutgoingDocument(currentUser as UserDto, true),
+    };
+
+    if (tableRecord.isDocCollaborator) {
+      getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
+      getTransferDocumentDetailRequest.step = getStepOutgoingDocument(
+        currentUser as UserDto,
+        false
+      );
+    }
+
+    try {
+      const response = await outgoingDocumentService.getTransferDocumentDetail(
+        getTransferDocumentDetailRequest
+      );
+
+      setTransferDocumentDetail(response);
+    } catch (error) {
+      await showAlert({
+        icon: 'error',
+        html: t('incomingDocListPage.message.get_transfer_document_detail_error'),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
+  const handleOnCloseDetailModal = () => {
+    setIsDetailTransferModalOpen(false);
+    transferDocDetailModalForm.resetFields();
+  };
 
   // const handleDownloadAttachment = async (record: TableRowDataType) => {
   //   try {
@@ -114,6 +174,20 @@ const OutgoingDocListPage: React.FC = () => {
         };
       },
     },
+    {
+      title: t('outgoingDocListPage.table.columns.transferDetailBtn'),
+      dataIndex: 'isDocTransferred',
+      render: (_, record) => {
+        if (record.isDocTransferred || record.isDocCollaborator) {
+          return (
+            <a onClick={(event) => handleOnOpenDetailModal(event, record)}>
+              {t('outgoingDocListPage.table.columns.transferDetail')}
+            </a>
+          );
+        }
+        return null;
+      },
+    },
   ];
 
   const rowSelection = {
@@ -141,12 +215,26 @@ const OutgoingDocListPage: React.FC = () => {
           };
         }}
         rowClassName={() => 'row-hover'}
-        rowSelection={{ type: 'checkbox', ...rowSelection }}
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+          getCheckboxProps: (record) => ({
+            disabled: record.isDocTransferred || record.isDocCollaborator,
+          }),
+        }}
         columns={columns}
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
         footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
+      />
+
+      <TransferOutgoingDocModalDetail
+        form={transferDocDetailModalForm}
+        isModalOpen={isDetailTransferModalOpen}
+        handleClose={handleOnCloseDetailModal}
+        transferredDoc={transferredDoc as OutgoingDocumentGetDto}
+        transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
       />
     </>
   );
