@@ -53,7 +53,7 @@ export default function UserDetailModal({
               label={t('user.detail.username')}
               name='username'
               rules={[{ required: true, message: `${t('user.detail.username_required')}` }]}>
-              <Input />
+              <Input disabled={isEditMode} />
             </Form.Item>
           </Col>
           <Col>

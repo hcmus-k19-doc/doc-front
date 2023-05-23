@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -13,13 +13,11 @@ import {
 import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
-import { DocumentReminderStatusEnum } from 'models/doc-main-models';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
 
-import DocumentRemindersCalendarWrapper from './components/DocumentRemindersCalendar';
-import PageHeaderTitle from './components/PageHeaderTitle';
-import { documentReminderStatusItems, languageItems } from './core';
+import { languageItems } from './core';
 
 import './index.css';
 
@@ -31,14 +29,6 @@ const PageHeader: React.FC = () => {
   const { logout } = useAuth();
   const location = useLocation();
   const { currentUser } = useAuth();
-
-  const [status, setStatus] = useState<DocumentReminderStatusEnum>(
-    DocumentReminderStatusEnum.ACTIVE
-  );
-
-  const handleMenuClick: MenuProps['onClick'] = (e) => {
-    setStatus(e.key as DocumentReminderStatusEnum);
-  };
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -88,27 +78,25 @@ const PageHeader: React.FC = () => {
     });
   };
 
-  const menuProps = {
-    items: documentReminderStatusItems,
-    onClick: handleMenuClick,
-  };
-
   return (
     <Header
-      className='header flex items-center justify-center border-b-2'
+      className='header flex items-center justify-between border-b-2'
       style={{ backgroundColor: 'white' }}>
       <div className='logo flex-none w-40'>
         <Link to='/'>
           <img src={logo} style={{ width: '50%' }} alt='doc' />
         </Link>
       </div>
-      <Menu
-        theme='light'
-        mode='horizontal'
-        defaultSelectedKeys={[location.pathname]}
-        items={mainNavigator}
-        className='flex-auto'
-      />
+
+      {currentUser?.role !== DocSystemRoleEnum.DOC_ADMIN && (
+        <Menu
+          theme='light'
+          mode='horizontal'
+          defaultSelectedKeys={[location.pathname]}
+          items={mainNavigator}
+          className='flex-auto'
+        />
+      )}
 
       <div className='flex justify-between w-[78px]'>
         <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
@@ -119,8 +107,6 @@ const PageHeader: React.FC = () => {
           <Popover
             overlayInnerStyle={{ width: '700px' }}
             placement='bottomRight'
-            title={<PageHeaderTitle t={t} menuProps={menuProps} status={status} />}
-            content={<DocumentRemindersCalendarWrapper status={status} />}
             trigger='click'
             showArrow={false}>
             <BellOutlined />
@@ -131,7 +117,6 @@ const PageHeader: React.FC = () => {
           <UserOutlined title={currentUser?.username} />
         </Dropdown>
       </div>
-
       {contextHolder}
     </Header>
   );
