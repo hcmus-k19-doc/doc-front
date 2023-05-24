@@ -27,7 +27,8 @@
         "admin_management": "Quản lý hệ thống",
         "users": "Người dùng",
         "document_types": "Loại văn bản",
-        "departments": "Phòng ban"
+        "departments": "Phòng ban",
+        "calendar": "Lịch làm việc"
       }
     },
     "BUTTON": {
@@ -39,12 +40,6 @@
       "title": "Ngôn ngữ",
       "en": "Tiếng Anh",
       "vi": "Tiếng Việt"
-    },
-    "reminder": "Thông báo",
-    "document_reminder_status": {
-      "active": "Đang chờ xử lý",
-      "close_to_expiration": "Sắp hết hạn",
-      "expired": "Đã quá hạn"
     },
     "logout": {
       "title": "Đăng xuất",
@@ -652,5 +647,12 @@
   "processing_document": {
     "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
     "illegal_step": "Không thể thực hiện thao tác này"
+  },
+  "calendar": {
+    "reminder_status": {
+      "active": "Đang chờ xử lý",
+      "close_to_expiration": "Sắp hết hạn",
+      "expired": "Đã quá hạn"
+    }
   }
 }

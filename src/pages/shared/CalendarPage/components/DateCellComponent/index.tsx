@@ -1,4 +1,3 @@
-import React from 'react';
 import { Badge, BadgeProps } from 'antd';
 import { Dayjs } from 'dayjs';
 import { YEAR_MONTH_DAY_FORMAT } from 'utils/DateTimeUtils';

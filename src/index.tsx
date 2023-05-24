@@ -8,6 +8,7 @@ import AppRoutes from 'components/AppRoutes';
 import { AuthProvider } from 'components/AuthComponent';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { RecoilRoot } from 'recoil';
 import { setupAxios } from 'utils/AuthUtils';
 
 import 'dayjs/locale/vi';
@@ -33,7 +34,9 @@ root.render(
     <AuthProvider>
       <I18nextProvider i18n={i18n}>
         <QueryClientProvider client={queryClient}>
-          <AppRoutes />
+          <RecoilRoot>
+            <AppRoutes />
+          </RecoilRoot>
         </QueryClientProvider>
       </I18nextProvider>
     </AuthProvider>

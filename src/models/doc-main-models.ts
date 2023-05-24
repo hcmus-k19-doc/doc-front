@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-21 21:46:25.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-24 21:27:54.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -39,7 +39,7 @@ export interface DocumentReminderDetailsDto extends DocAbstractDto {
     summary: string;
     expirationDate: DateAsString;
     status: DocumentReminderStatusEnum;
-    processingDocumentId: number;
+    incomingDocumentId: number;
 }
 
 export interface DocumentTypeDto extends DocAbstractDto {
@@ -58,6 +58,16 @@ export interface DocumentTypeStatisticsDto {
 export interface DocumentTypeStatisticsWrapperDto {
     seriesData: DocumentTypeStatisticsDto[];
     xaxisData: string[];
+}
+
+export interface ExtendRequestDto extends DocAbstractDto {
+    processingUserId: number;
+    oldDeadline: DateAsString;
+    status: ExtendRequestStatus;
+    documentToExtendId: number;
+    newDeadline: DateAsString;
+    reason: string;
+    validatorId?: number;
 }
 
 export interface FolderDto extends DocAbstractDto {
@@ -149,9 +159,9 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     releaseDate: DateAsString;
     publishingDepartment: DepartmentDto;
     status: OutgoingDocumentStatusEnum;
+    attachments: AttachmentDto[];
     isDocTransferred: boolean;
     isDocCollaborator: boolean;
-    attachments: AttachmentDto[];
 }
 
 export interface OutgoingDocumentPostDto extends DocAbstractDto {
@@ -357,6 +367,12 @@ export const enum DocumentReminderStatusEnum {
     ACTIVE = "ACTIVE",
     CLOSE_TO_EXPIRATION = "CLOSE_TO_EXPIRATION",
     EXPIRED = "EXPIRED",
+}
+
+export const enum ExtendRequestStatus {
+    PENDING = "PENDING",
+    APPROVED = "APPROVED",
+    REJECTED = "REJECTED",
 }
 
 export const enum ProcessingStatus {
