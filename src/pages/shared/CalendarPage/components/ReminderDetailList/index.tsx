@@ -3,18 +3,13 @@ import { DownOutlined } from '@ant-design/icons';
 import { Button, Dropdown, List, MenuProps, Space, Typography } from 'antd';
 import { documentReminderStatusItems } from 'components/PageHeader/core';
 import { format } from 'date-fns';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { t } from 'i18next';
 import { DocumentReminderDetailsDto, DocumentReminderStatusEnum } from 'models/doc-main-models';
 import { useDocumentReminderDetailsRes } from 'shared/hooks/DocumentReminderQuery';
 import { DEFAULT_DATE_FORMAT } from 'utils/DateTimeUtils';
-
-import { globalNavigate } from '../../../../../utils/RoutingUtils';
+import { globalNavigate } from 'utils/RoutingUtils';
 
 const { Text } = Typography;
-
-dayjs.extend(customParseFormat);
 
 function ReminderDetailList() {
   const { data, isLoading } = useDocumentReminderDetailsRes();
