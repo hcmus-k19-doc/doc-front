@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Comment } from '@ant-design/compatible';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import EventInfo from '@ckeditor/ckeditor5-utils/src/eventinfo';
 import { Button, Form, List, Skeleton } from 'antd';
 import { t } from 'i18next';
+import { CommentDto } from 'models/doc-main-models';
 import { useCommentMutation, useCommentsRes } from 'shared/hooks/DocComment';
 
 import { CommentListProps, DocCommentProps, EditorProps } from './core';
@@ -49,25 +51,25 @@ function CommentList({ comments }: CommentListProps) {
   );
 }
 
-export default function DocComment({ docId }: DocCommentProps) {
+export default function DocComment({ docId, processingDocumentType }: DocCommentProps) {
   const [submitting, setSubmitting] = useState(false);
-  const [value, setValue] = useState('');
-  const { comments, isFetching } = useCommentsRes(docId);
-  const commentMutation = useCommentMutation(docId);
+  const [value, setValue] = useState<Partial<CommentDto>>({ content: '', processingDocumentType });
+  const { comments, isFetching } = useCommentsRes(processingDocumentType, docId);
+  const commentMutation = useCommentMutation(processingDocumentType, docId);
 
   const handleSubmit = () => {
-    if (!value) return;
+    if (!value.content) return;
 
     setSubmitting(true);
 
     commentMutation.mutate(value);
 
     setSubmitting(false);
-    setValue('');
+    setValue({ content: '', processingDocumentType });
   };
 
-  const handleChange = (e: any, editor: ClassicEditor) => {
-    setValue(editor.getData());
+  const handleChange = (event: EventInfo<string, unknown>, editor: ClassicEditor) => {
+    setValue({ ...value, content: editor.getData() });
   };
 
   return (
@@ -81,7 +83,7 @@ export default function DocComment({ docId }: DocCommentProps) {
             onChange={handleChange}
             onSubmit={handleSubmit}
             submitting={submitting}
-            value={value}
+            value={value.content || ''}
           />
         }
       />

@@ -84,7 +84,7 @@ const AdminMenu = () => {
     },
   ];
 
-  const directorMenu: MenuProps = {
+  const adminMenuProps: MenuProps = {
     mode: 'inline',
     defaultSelectedKeys: ['in-list'],
     defaultOpenKeys: ['docin'],
@@ -93,12 +93,12 @@ const AdminMenu = () => {
 
   return (
     <Menu
-      mode={directorMenu.mode}
+      mode={adminMenuProps.mode}
       openKeys={[openKey]}
       selectedKeys={[current]}
       onSelect={onSelect}
       onOpenChange={onOpenChange}
-      items={directorMenu.items}
+      items={adminMenuProps.items}
     />
   );
 };

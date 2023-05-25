@@ -38,6 +38,7 @@ import {
   IncomingDocumentDto,
   IncomingDocumentPutDto,
   ProcessingDocumentRoleEnum,
+  ProcessingDocumentTypeEnum,
   TransferDocDto,
   Urgency,
   UserDto,
@@ -579,7 +580,10 @@ function IncomingDocPage() {
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
       <Row>
         <Col span={16}>
-          <DocComment docId={Number(docId)} />
+          <DocComment
+            docId={Number(docId)}
+            processingDocumentType={ProcessingDocumentTypeEnum.INCOMING_DOCUMENT}
+          />
         </Col>
       </Row>
       {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
