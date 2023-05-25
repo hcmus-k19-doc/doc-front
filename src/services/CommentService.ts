@@ -1,21 +1,22 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
-import { CommentDto } from 'models/doc-main-models';
+import { CommentDto, ProcessingDocumentTypeEnum } from 'models/doc-main-models';
 
 const COMMENT_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/comments`;
 
-async function getCommentsByIncomingDocumentId(documentId: number) {
-  return await axios.get<CommentDto[]>(`${COMMENT_URL}/incoming-documents/${documentId}`);
+async function getCommentsByTypeAndDocumentId(
+  processingDocumentType: ProcessingDocumentTypeEnum,
+  documentId: number
+) {
+  return await axios.get<CommentDto[]>(`${COMMENT_URL}/${processingDocumentType}/${documentId}`);
 }
 
-async function createComment(content: string, incomingDocumentId: number) {
-  return await axios.post<CommentDto>(`${COMMENT_URL}/incoming-documents/${incomingDocumentId}`, {
-    content,
-  });
+async function createComment(commentDto: Partial<CommentDto>, documentId: number) {
+  return await axios.post<CommentDto>(`${COMMENT_URL}/${documentId}`, commentDto);
 }
 
 const commentService = {
-  getCommentsByIncomingDocumentId,
+  getCommentsByTypeAndDocumentId,
   createComment,
 };
 
