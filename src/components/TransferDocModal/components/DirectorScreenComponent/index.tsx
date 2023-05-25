@@ -38,6 +38,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
   isReadOnlyMode,
   transferDate,
   senderName,
+  processingDuration,
 }) => {
   const { t } = useTranslation();
   const { directors } = useDirectorTransferRes();
@@ -70,6 +71,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
     form.setFieldsValue({ processingTime: dateString });
   };
 
+  console.log('processingDuration', processingDuration, form.getFieldsValue());
   return (
     <Form
       form={form}
@@ -160,6 +162,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
                   disabled={isInfiniteProcessingTime || isReadOnlyMode}
+                  defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
                 />
               </Space>
             </Form.Item>

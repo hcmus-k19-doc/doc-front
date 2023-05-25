@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
 import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
+import dayjs from 'dayjs';
 import {
   DocSystemRoleEnum,
   TransferDocumentMenuConfig,
@@ -45,7 +46,9 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
 
+  console.log('transferDocumentDetail', transferDocumentDetail);
   const [transferDate, setTransferDate] = useState<string>('');
+  const [processingDuration, setProcessingDuration] = useState<string>('');
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       const newSetting = {
@@ -74,15 +77,17 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   useEffect(() => {
     if (transferDocumentDetail) {
       const { baseInfo, assigneeId, collaboratorIds } = transferDocumentDetail;
+
       form.setFieldsValue({
         summary: baseInfo.summary,
         assignee: assigneeId,
         collaborators: collaboratorIds,
-        processingTime: baseInfo.processingDuration,
+        processingTime: dayjs(baseInfo.processingDuration),
         isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
         processMethod: baseInfo.processMethod,
       });
       setTransferDate(format(new Date(baseInfo.transferDate), DAY_MONTH_YEAR_FORMAT_2));
+      setProcessingDuration(baseInfo.processingDuration);
     }
   }, [transferDocumentDetail]);
 
@@ -121,6 +126,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           isReadOnlyMode={true}
           transferDate={transferDate}
           senderName={transferDocumentDetail?.senderName}
+          processingDuration={processingDuration}
         />
       );
     }
@@ -134,6 +140,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isReadOnlyMode={true}
         transferDate={transferDate}
         senderName={transferDocumentDetail?.senderName}
+        processingDuration={processingDuration}
       />
     );
   };
