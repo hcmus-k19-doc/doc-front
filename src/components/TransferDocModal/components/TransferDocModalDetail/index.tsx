@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
 import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
@@ -41,6 +42,9 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
 }) => {
   const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
+  const [processingDuration, setProcessingDuration] = useState<string>('');
+  const { t } = useTranslation();
+
   const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
@@ -84,8 +88,15 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
         processMethod: baseInfo.processMethod,
       });
-      console.log('processingDuration-1', form.getFieldValue('processingTime'));
       setTransferDate(format(new Date(baseInfo.transferDate), DAY_MONTH_YEAR_FORMAT_2));
+      if (baseInfo.isInfiniteProcessingTime) {
+        const value = t('transfer_modal.secretary_view.is_infinite_processing_time');
+        setProcessingDuration(value);
+      } else {
+        setProcessingDuration(
+          format(new Date(baseInfo.processingDuration), DAY_MONTH_YEAR_FORMAT_2)
+        );
+      }
     }
   }, [transferDocumentDetail]);
 
@@ -124,7 +135,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           isReadOnlyMode={true}
           transferDate={transferDate}
           senderName={transferDocumentDetail?.senderName}
-          processingDuration={transferDocumentDetail?.baseInfo?.processingDuration}
+          processingDuration={processingDuration}
         />
       );
     }
@@ -138,7 +149,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isReadOnlyMode={true}
         transferDate={transferDate}
         senderName={transferDocumentDetail?.senderName}
-        processingDuration={transferDocumentDetail?.baseInfo?.processingDuration}
+        processingDuration={processingDuration}
       />
     );
   };
