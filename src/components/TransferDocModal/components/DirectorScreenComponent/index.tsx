@@ -72,7 +72,7 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
     form.setFieldsValue({ processingTime: dateString });
   };
 
-  console.log('processingDuration', processingDuration, form.getFieldsValue());
+  console.log('processingDuration-2', form.getFieldValue('processingTime'));
   return (
     <Form
       form={form}
@@ -157,13 +157,13 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
                 {t(i18n_processing_time)}
               </Typography.Text>
             </Col>
-            <Form.Item name='processingTime'>
+            <Form.Item name='processingTime' initialValue={dayjs(processingDuration)}>
               <Space direction='vertical' size={12}>
                 <DatePicker
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
                   disabled={isInfiniteProcessingTime || isReadOnlyMode}
-                  defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
+                  // defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
                 />
               </Space>
             </Form.Item>

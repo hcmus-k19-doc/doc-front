@@ -39,6 +39,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
   isReadOnlyMode,
   transferDate,
   senderName,
+  processingDuration,
 }) => {
   const { t } = useTranslation();
   const { experts } = useExpertTransferRes();
@@ -159,7 +160,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
                   disabled={isInfiniteProcessingTime || isReadOnlyMode}
-                  // defaultValue={dayjs('2015-01-01')}
+                  defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
                 />
               </Space>
             </Form.Item>

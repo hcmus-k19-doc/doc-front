@@ -46,9 +46,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
 
-  console.log('transferDocumentDetail', transferDocumentDetail);
   const [transferDate, setTransferDate] = useState<string>('');
-  const [processingDuration, setProcessingDuration] = useState<string>('');
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       const newSetting = {
@@ -86,8 +84,8 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
         processMethod: baseInfo.processMethod,
       });
+      console.log('processingDuration-1', form.getFieldValue('processingTime'));
       setTransferDate(format(new Date(baseInfo.transferDate), DAY_MONTH_YEAR_FORMAT_2));
-      setProcessingDuration(baseInfo.processingDuration);
     }
   }, [transferDocumentDetail]);
 
@@ -126,7 +124,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           isReadOnlyMode={true}
           transferDate={transferDate}
           senderName={transferDocumentDetail?.senderName}
-          processingDuration={processingDuration}
+          processingDuration={transferDocumentDetail?.baseInfo?.processingDuration}
         />
       );
     }
@@ -140,7 +138,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isReadOnlyMode={true}
         transferDate={transferDate}
         senderName={transferDocumentDetail?.senderName}
-        processingDuration={processingDuration}
+        processingDuration={transferDocumentDetail?.baseInfo?.processingDuration}
       />
     );
   };

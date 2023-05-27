@@ -39,6 +39,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   isReadOnlyMode,
   transferDate,
   senderName,
+  processingDuration,
 }) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
@@ -170,6 +171,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                   format={dateFormatList}
                   onChange={(_, dateString) => setProcessingTime(dateString)}
                   disabled={isInfiniteProcessingTime || isReadOnlyMode}
+                  defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
                 />
               </Space>
             </Form.Item>
