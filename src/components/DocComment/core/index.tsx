@@ -1,7 +1,6 @@
 import React from 'react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
-import { ProcessingDocumentTypeEnum } from '../../../models/doc-main-models';
+import { ProcessingDocumentTypeEnum } from 'models/doc-main-models';
 
 export interface CommentItem {
   id?: number;

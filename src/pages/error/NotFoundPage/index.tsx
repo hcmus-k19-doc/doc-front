@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Result } from 'antd';
-
-import { globalNavigate } from '../../../utils/RoutingUtils';
+import { globalNavigate } from 'utils/RoutingUtils';
 
 const NotFoundPage: React.FC = () => (
   <Result

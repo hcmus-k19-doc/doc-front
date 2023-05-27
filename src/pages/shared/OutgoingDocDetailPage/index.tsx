@@ -23,6 +23,7 @@ import Dragger from 'antd/es/upload/Dragger';
 import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
+import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -61,8 +62,7 @@ function OutgoingDocDetailPage() {
   const [isReviewing, setIsReviewing] = useState(false);
   const [isReleased, setIsReleased] = useState(false);
 
-  const [foldersQuery, documentTypesQuery, distributionOrgsQuery, departmentsQuery] =
-    useDropDownFieldsQuery();
+  const [foldersQuery, documentTypesQuery, , departmentsQuery] = useDropDownFieldsQuery();
 
   const { isLoading, data } = useOutgoingDocumentDetailQuery(+(docId || 1));
 
@@ -171,7 +171,7 @@ function OutgoingDocDetailPage() {
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('outgoing_doc_detail_page.message.edit_success') as string,
+          html: `${t('outgoing_doc_detail_page.message.edit_success')}`,
           showConfirmButton: false,
           timer: 2000,
         });
@@ -181,7 +181,7 @@ function OutgoingDocDetailPage() {
     } catch (error) {
       showAlert({
         icon: 'error',
-        html: t('outgoing_doc_detail_page.message.error') as string,
+        html: `${t('outgoing_doc_detail_page.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -239,7 +239,7 @@ function OutgoingDocDetailPage() {
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('outgoing_doc_detail_page.message.publish_success') as string,
+          html: `${t('outgoing_doc_detail_page.message.publish_success')}`,
           showConfirmButton: false,
           timer: 2000,
         });
@@ -251,7 +251,7 @@ function OutgoingDocDetailPage() {
     } catch (error) {
       showAlert({
         icon: 'error',
-        html: t('outgoing_doc_detail_page.message.error') as string,
+        html: `${t('outgoing_doc_detail_page.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -297,9 +297,7 @@ function OutgoingDocDetailPage() {
                     rules={[
                       {
                         required: true,
-                        message: t(
-                          'outgoing_doc_detail_page.form.document_type_required'
-                        ) as string,
+                        message: `${t('outgoing_doc_detail_page.form.document_type_required')}`,
                       },
                     ]}>
                     <Select>{renderDocumentTypes()}</Select>
@@ -325,9 +323,9 @@ function OutgoingDocDetailPage() {
                     rules={[
                       {
                         required: true,
-                        message: t(
+                        message: `${t(
                           'outgoing_doc_detail_page.form.original_symbol_number_required'
-                        ) as string,
+                        )}`,
                       },
                     ]}
                     label={
@@ -361,9 +359,7 @@ function OutgoingDocDetailPage() {
                     rules={[
                       {
                         required: true,
-                        message: t(
-                          'outgoing_doc_detail_page.form.distribution_org_required'
-                        ) as string,
+                        message: `${t('outgoing_doc_detail_page.form.distribution_org_required')}`,
                       },
                     ]}>
                     <Select>{renderDepartments()}</Select>
@@ -393,7 +389,7 @@ function OutgoingDocDetailPage() {
                     rules={[
                       {
                         required: true,
-                        message: t('outgoing_doc_detail_page.form.urgency_required') as string,
+                        message: `${t('outgoing_doc_detail_page.form.urgency_required')}`,
                       },
                     ]}>
                     <Select>
@@ -412,9 +408,7 @@ function OutgoingDocDetailPage() {
                     rules={[
                       {
                         required: true,
-                        message: t(
-                          'outgoing_doc_detail_page.form.confidentiality_required'
-                        ) as string,
+                        message: `${t('outgoing_doc_detail_page.form.confidentiality_required')}`,
                       },
                     ]}>
                     <Select>
@@ -433,7 +427,7 @@ function OutgoingDocDetailPage() {
                     rules={[
                       {
                         required: true,
-                        message: t('outgoing_doc_detail_page.form.receive_org_required') as string,
+                        message: `${t('outgoing_doc_detail_page.form.receive_org_required')}`,
                       },
                     ]}
                     label={t('outgoing_doc_detail_page.form.receive_org')}
@@ -538,7 +532,15 @@ function OutgoingDocDetailPage() {
             </Button>
           </Row>
         )}
-        <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
+        <div className='text-lg text-primary'>{t('common.processing_step.title')}</div>
+        <Row className='my-10'>
+          <Col span={16}>
+            <ProcessingStepComponent
+              processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
+            />
+          </Col>
+        </Row>
+        <div className='text-lg text-primary'>{t('common.comment.title')}</div>
         <Row>
           <Col span={16}>
             <DocComment
