@@ -571,13 +571,15 @@ function IncomingDocPage() {
           onOpenTransferModal={handleOnOpenModal}
         />
       </Row>
-      <div className='text-lg text-primary'>{t('incomingDocDetailPage.processing_step.title')}</div>
+      <div className='text-lg text-primary'>{t('common.processing_step.title')}</div>
       <Row className='my-10'>
         <Col span={16}>
-          <ProcessingStepComponent />
+          <ProcessingStepComponent
+            processingDocumentType={ProcessingDocumentTypeEnum.INCOMING_DOCUMENT}
+          />
         </Col>
       </Row>
-      <div className='text-lg text-primary'>{t('incomingDocDetailPage.comment.title')}</div>
+      <div className='text-lg text-primary'>{t('common.comment.title')}</div>
       <Row>
         <Col span={16}>
           <DocComment

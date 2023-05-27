@@ -7,6 +7,7 @@ import {
   IncomingDocumentDto,
   IncomingDocumentPutDto,
   ProcessingDetailsDto,
+  ProcessingDocumentTypeEnum,
   SearchCriteriaDto,
   StatisticsWrapperDto,
   TransferDocDto,
@@ -54,9 +55,13 @@ async function transferDocuments(transferDocDto: TransferDocDto) {
   return await axios.post<void>(`${INCOMING_DOCUMENTS_URL}/transfer-documents`, transferDocDto);
 }
 
-async function getProcessingDetails(incomingDocumentId: number, onlyAssignee?: boolean) {
+async function getProcessingDetails(
+  processingDocumentType: ProcessingDocumentTypeEnum,
+  documentId: number,
+  onlyAssignee?: boolean
+) {
   return await axios.get<ProcessingDetailsDto[]>(
-    `${INCOMING_DOCUMENTS_URL}/${incomingDocumentId}/processing-details`,
+    `${INCOMING_DOCUMENTS_URL}/${processingDocumentType}/${documentId}/processing-details`,
     {
       params: {
         onlyAssignee: onlyAssignee,

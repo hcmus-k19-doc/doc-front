@@ -6,10 +6,10 @@ import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 import { useDirectorTransferRes } from 'shared/hooks/DirectorTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
-import { IncomingDocumentDto } from '../../../../models/doc-main-models';
 import {
   i18_collaborators,
   i18n_assignee,
@@ -25,6 +25,7 @@ import {
 } from '../../core/models';
 
 import './index.css';
+
 dayjs.extend(customParseFormat);
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 

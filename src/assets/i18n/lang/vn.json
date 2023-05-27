@@ -72,7 +72,28 @@
       "content": "Bạn có chắc chắn muốn xóa?",
       "description_title": "Chú thích"
     },
-    "footer": "HCMUS © {{year}} Hệ thống phê duyệt và phát hành văn thư"
+    "footer": "HCMUS © {{year}} Hệ thống phê duyệt và phát hành văn thư",
+    "comment": {
+      "title": "Góp ý văn bản",
+      "button": {
+        "title": "Góp ý"
+      }
+    },
+    "processing_step": {
+      "title": "Tiến độ xử lý",
+      "step_1": {
+        "title": "Giám đốc",
+        "description": "{{department}} - {{fullName}}"
+      },
+      "step_2": {
+        "title": "Chánh văn phòng",
+        "description": "{{department}} - {{fullName}}"
+      },
+      "step_3": {
+        "title": "Chuyên viên",
+        "description": "{{department}} - {{fullName}}"
+      }
+    }
   },
   "user": {
     "invalid": "Tài khoản không hợp lệ",
@@ -469,7 +490,9 @@
       "file_size_error": "Kích thước tệp không được vượt quá 3MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "edit_success": "Chỉnh sửa văn bản thành công",
-      "error": "Đã có lỗi xảy ra, vui lòng thử lại"
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại",
+      "confirm_publish": "Bạn có chắc chắn muốn phát hành văn bản này?",
+      "publish_success": "Phát hành văn bản thành công"
     },
     "comment": {
       "title": "Góp ý văn bản",

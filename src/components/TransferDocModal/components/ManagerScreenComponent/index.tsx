@@ -5,11 +5,11 @@ import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useAuth } from 'components/AuthComponent';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { IncomingDocumentDto } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
-import { IncomingDocumentDto } from '../../../../models/doc-main-models';
 import {
   i18_collaborators,
   i18n_assignee,
