@@ -1,22 +1,18 @@
 import React from 'react';
 import { Calendar } from 'antd';
 import { Dayjs } from 'dayjs';
-import { DocumentReminderStatusEnum } from 'models/doc-main-models';
-import { RecoilRoot } from 'recoil';
 import {
   useDocumentReminderDateReq,
   useDocumentReminderDetailsReq,
   useDocumentReminderRes,
 } from 'shared/hooks/DocumentReminderQuery';
 
-import DateCell from '../DateCell';
-import DocumentReminderDetailsList from '../ExpiredDocList';
+import DateCell from './components/DateCellComponent';
+import ReminderDetailList from './components/ReminderDetailList';
 
-interface DocumentRemindersCalendarProps {
-  status: DocumentReminderStatusEnum;
-}
+import './index.css';
 
-function DocumentRemindersCalendar({ status }: DocumentRemindersCalendarProps) {
+export default function CalendarPage() {
   const [documentReminder, setDocumentReminder] = useDocumentReminderDateReq();
   const [documentReminderDetails, setDocumentReminderDetails] = useDocumentReminderDetailsReq();
   const { data } = useDocumentReminderRes();
@@ -33,7 +29,7 @@ function DocumentRemindersCalendar({ status }: DocumentRemindersCalendarProps) {
 
   return (
     <>
-      <DocumentReminderDetailsList selectedStatus={status} />
+      <ReminderDetailList />
       <Calendar
         value={documentReminder.date}
         onSelect={handleOnSelect}
@@ -43,13 +39,3 @@ function DocumentRemindersCalendar({ status }: DocumentRemindersCalendarProps) {
     </>
   );
 }
-
-function DocumentRemindersCalendarWrapper({ status }: DocumentRemindersCalendarProps) {
-  return (
-    <RecoilRoot>
-      <DocumentRemindersCalendar status={status} />
-    </RecoilRoot>
-  );
-}
-
-export default DocumentRemindersCalendarWrapper;

@@ -41,6 +41,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   isReadOnlyMode,
   transferDate,
   senderName,
+  processingDuration,
   type,
 }) => {
   const { t } = useTranslation();
@@ -216,22 +217,29 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
             </Col>
             <Form.Item name='processingTime'>
               <Space direction='vertical' size={12}>
-                <DatePicker
-                  format={dateFormatList}
-                  onChange={(_, dateString) => setProcessingTime(dateString)}
-                  disabled={isInfiniteProcessingTime || isReadOnlyMode}
-                />
+                {isReadOnlyMode === true ? (
+                  <Text>{processingDuration}</Text>
+                ) : (
+                  <DatePicker
+                    format={dateFormatList}
+                    onChange={(_, dateString) => setProcessingTime(dateString)}
+                    disabled={isInfiniteProcessingTime || isReadOnlyMode}
+                    // defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
+                  />
+                )}
               </Space>
             </Form.Item>
-            <Form.Item
-              name='isInfiniteProcessingTime'
-              style={{ display: 'inline-block', margin: '0 16px' }}
-              valuePropName='checked'
-              initialValue={false}>
-              <Checkbox onChange={onChooseNoneProcessingTime}>
-                {t(i18n_is_infinite_processing_time)}
-              </Checkbox>
-            </Form.Item>
+            {!isReadOnlyMode && (
+              <Form.Item
+                name='isInfiniteProcessingTime'
+                style={{ display: 'inline-block', margin: '0 16px' }}
+                valuePropName='checked'
+                initialValue={false}>
+                <Checkbox onChange={onChooseNoneProcessingTime}>
+                  {t(i18n_is_infinite_processing_time)}
+                </Checkbox>
+              </Form.Item>
+            )}
           </Row>
         </>
       )}

@@ -5,8 +5,9 @@ import { FileZipOutlined } from '@ant-design/icons';
 import { Divider, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
+import { useAuth } from 'components/AuthComponent';
+import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
-import { t } from 'i18next';
 import {
   GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
@@ -15,13 +16,10 @@ import {
   UserDto,
 } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
+import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
-
-import { useAuth } from '../../../components/AuthComponent';
-import TransferOutgoingDocModalDetail from '../../../components/TransferDocModal/components/TransferOutgoingDocModalDetail';
-import outgoingDocumentService from '../../../services/OutgoingDocumentService';
-import { getStepOutgoingDocument } from '../../../utils/TransferDocUtils';
+import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 
 import Footer from './components/Footer';
 import OutgoingDocumentSearchForm from './components/OutgoingDocumentSearchForm';

@@ -25,6 +25,7 @@ import {
 } from '../../core/models';
 
 import './index.css';
+
 dayjs.extend(customParseFormat);
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
@@ -39,6 +40,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
   transferDate,
   senderName,
   type,
+  processingDuration,
 }) => {
   const { t } = useTranslation();
   const { experts } = useExpertTransferRes();
@@ -178,23 +180,29 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
             </Col>
             <Form.Item name='processingTime'>
               <Space direction='vertical' size={12}>
-                <DatePicker
-                  format={dateFormatList}
-                  onChange={(_, dateString) => setProcessingTime(dateString)}
-                  disabled={isInfiniteProcessingTime || isReadOnlyMode}
-                  // defaultValue={dayjs('2015-01-01')}
-                />
+                {isReadOnlyMode === true ? (
+                  <Text>{processingDuration}</Text>
+                ) : (
+                  <DatePicker
+                    format={dateFormatList}
+                    onChange={(_, dateString) => setProcessingTime(dateString)}
+                    disabled={isInfiniteProcessingTime || isReadOnlyMode}
+                    // defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
+                  />
+                )}
               </Space>
             </Form.Item>
-            <Form.Item
-              name='isInfiniteProcessingTime'
-              style={{ display: 'inline-block', margin: '0 16px' }}
-              valuePropName='checked'
-              initialValue={false}>
-              <Checkbox onChange={onChooseNoneProcessingTime}>
-                {t(i18n_is_infinite_processing_time)}
-              </Checkbox>
-            </Form.Item>
+            {!isReadOnlyMode && (
+              <Form.Item
+                name='isInfiniteProcessingTime'
+                style={{ display: 'inline-block', margin: '0 16px' }}
+                valuePropName='checked'
+                initialValue={false}>
+                <Checkbox onChange={onChooseNoneProcessingTime}>
+                  {t(i18n_is_infinite_processing_time)}
+                </Checkbox>
+              </Form.Item>
+            )}
           </Row>
         </>
       )}

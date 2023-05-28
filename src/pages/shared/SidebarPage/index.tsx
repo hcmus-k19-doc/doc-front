@@ -27,6 +27,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
   const { currentUser } = useAuth();
   const DocumentTypeManagementPage = lazy(() => import('pages/admin/DocumentTypeManagementPage'));
   const DepartmentManagementPage = lazy(() => import('pages/admin/DepartmentManagementPage'));
+  const CalendarPage = lazy(() => import('pages/shared/CalendarPage'));
 
   const getRoutes = () => {
     switch (currentUser?.role) {
@@ -40,6 +41,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             {/*<Route path='/out-create' element={<CreateOutgoingDocPage />} />*/}
+            <Route
+              path='/calendar'
+              element={
+                <DocSuspenseComponent>
+                  <CalendarPage />
+                </DocSuspenseComponent>
+              }
+            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -52,6 +61,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             <Route path='/out-create' element={<CreateOutgoingDocPage />} />
+            <Route
+              path='/calendar'
+              element={
+                <DocSuspenseComponent>
+                  <CalendarPage />
+                </DocSuspenseComponent>
+              }
+            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -64,6 +81,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             {/*<Route path='/out-create' element={<CreateOutgoingDocPage />} />*/}
+            <Route
+              path='/calendar'
+              element={
+                <DocSuspenseComponent>
+                  <CalendarPage />
+                </DocSuspenseComponent>
+              }
+            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -76,6 +101,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='/out-list' element={<OutgoingDocListPage />} />
             <Route path='/out-detail/:docId' element={<OutgoingDocDetailPage />} />
             {/*<Route path='/out-create' element={<CreateOutgoingDocPage />} />*/}
+            <Route
+              path='/calendar'
+              element={
+                <DocSuspenseComponent>
+                  <CalendarPage />
+                </DocSuspenseComponent>
+              }
+            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
@@ -96,6 +129,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
               element={
                 <DocSuspenseComponent>
                   <DepartmentManagementPage />
+                </DocSuspenseComponent>
+              }
+            />
+            <Route
+              path='/calendar'
+              element={
+                <DocSuspenseComponent>
+                  <CalendarPage />
                 </DocSuspenseComponent>
               }
             />

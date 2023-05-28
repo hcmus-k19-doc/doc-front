@@ -1,9 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-25 09:51:56.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-27 22:24:52.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
+    processingDocumentType: ProcessingDocumentTypeEnum;
 }
 
 export interface DepartmentDto extends DocAbstractDto {
@@ -361,6 +362,11 @@ export const enum Urgency {
     LOW = "LOW",
     MEDIUM = "MEDIUM",
     HIGH = "HIGH",
+}
+
+export const enum ProcessingDocumentTypeEnum {
+    INCOMING_DOCUMENT = "INCOMING_DOCUMENT",
+    OUTGOING_DOCUMENT = "OUTGOING_DOCUMENT",
 }
 
 export const enum DocumentReminderStatusEnum {

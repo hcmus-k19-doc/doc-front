@@ -12,21 +12,17 @@ export const languageItems: MenuProps['items'] = [
 
 export const documentReminderStatusItems: MenuProps['items'] = [
   {
-    label: t(
-      `page_header.document_reminder_status.${DocumentReminderStatusEnum.ACTIVE.toLowerCase()}`
-    ),
+    label: t(`calendar.reminder_status.${DocumentReminderStatusEnum.ACTIVE.toLowerCase()}`),
     key: DocumentReminderStatusEnum.ACTIVE,
   },
   {
     label: t(
-      `page_header.document_reminder_status.${DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION.toLowerCase()}`
+      `calendar.reminder_status.${DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION.toLowerCase()}`
     ),
     key: DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION,
   },
   {
-    label: t(
-      `page_header.document_reminder_status.${DocumentReminderStatusEnum.EXPIRED.toLowerCase()}`
-    ),
+    label: t(`calendar.reminder_status.${DocumentReminderStatusEnum.EXPIRED.toLowerCase()}`),
     key: DocumentReminderStatusEnum.EXPIRED,
   },
 ];

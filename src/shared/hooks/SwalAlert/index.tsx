@@ -1,6 +1,5 @@
+import { PRIMARY_COLOR } from 'config/constant';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
-
-import { PRIMARY_COLOR } from '../../../config/constant';
 
 interface UseSweetAlertOptions {
   html: string;

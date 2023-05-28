@@ -5,6 +5,7 @@ import { Content, Footer } from 'antd/es/layout/layout';
 import { ColumnsType } from 'antd/es/table';
 import PageHeader from 'components/PageHeader';
 import { t } from 'i18next';
+import { ProcessingDocumentTypeEnum } from 'models/doc-main-models';
 import { useProcessingDetailsRes } from 'shared/hooks/ProcessingDetailQuery';
 
 import { ProcessingDetailsRowDataType } from './core/models';
@@ -39,7 +40,10 @@ const columns: ColumnsType<ProcessingDetailsRowDataType> = [
 
 function ProcessingDetailsPage() {
   const { incomingDocumentId } = useParams();
-  const { data, isFetching } = useProcessingDetailsRes(Number(incomingDocumentId));
+  const { data, isFetching } = useProcessingDetailsRes(
+    ProcessingDocumentTypeEnum.INCOMING_DOCUMENT,
+    Number(incomingDocumentId)
+  );
 
   return (
     <div className='mx-12'>
