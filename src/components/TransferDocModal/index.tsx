@@ -86,6 +86,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
           isReadOnlyMode={false}
           transferDate={transferDate}
           senderName={''}
+          type={type}
         />
       );
     }
@@ -99,6 +100,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
         isReadOnlyMode={false}
         transferDate={transferDate}
         senderName={''}
+        type={type}
       />
     );
   };
@@ -119,7 +121,7 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
             defaultSelectedKeys={defaultSelectedKeys}
             mode='inline'
             theme='light'
-            items={items}
+            items={type === 'IncomingDocument' ? items : items?.slice(0, 1)}
           />
         </Col>
         <Col span='1'></Col>

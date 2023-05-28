@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -9,7 +10,7 @@ import VirtualList from 'rc-virtual-list';
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
-import { IncomingDocumentDto } from '../../../../models/doc-main-models';
+import { IncomingDocumentDto, OutgoingDocumentGetDto } from '../../../../models/doc-main-models';
 import {
   i18_collaborators,
   i18n_assignee,
@@ -20,6 +21,7 @@ import {
   i18n_process_method,
   i18n_processing_time,
   i18n_sender,
+  i18n_summary,
   processMethodOptions,
   TransferDocScreenFormProps,
   TransferDocScreenProps,
@@ -39,6 +41,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   isReadOnlyMode,
   transferDate,
   senderName,
+  type,
 }) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
@@ -94,28 +97,75 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
         </Col>
         <Col span='6'>{transferDate}</Col>
       </Row>
-      <Row className='my-6'>
-        <Col span='6'>
-          <Text strong>{`${t(i18n_document)} (${selectedDocs.length})`}</Text>
-        </Col>
-        <Col span='16'>
-          <List>
-            <VirtualList
-              data={selectedDocs.sort(
-                (a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id
-              )}
-              height={itemHeight * 2}
-              itemHeight={itemHeight}
-              itemKey={'id'}>
-              {(item) => (
-                <List.Item key={item.id}>
-                  <div>{t(i18n_document_number, { id: item.id })}</div>
-                </List.Item>
-              )}
-            </VirtualList>
-          </List>
-        </Col>
-      </Row>
+      <div className='document-info'>
+        {type === 'IncomingDocument'
+          ? selectedDocs
+              .sort((a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id)
+              .map((item: IncomingDocumentDto) => {
+                return (
+                  <React.Fragment key={item.id}>
+                    <Row className='mt-3 mb-3'>
+                      <Col span='6'>
+                        <Text strong>{t(i18n_document)}</Text>
+                      </Col>
+                      <Col span='18'>{t(i18n_document_number, { id: item.incomingNumber })}</Col>
+                    </Row>
+                    <Row className='mt-4 mb-4' align='middle'>
+                      <Col span='6'>
+                        <Text strong>{t(i18n_summary)}</Text>
+                      </Col>
+                      <Col span='16'>
+                        <TextArea rows={4} disabled defaultValue={item.summary} />
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                );
+              })
+          : selectedDocs
+              .sort((a: OutgoingDocumentGetDto, b: OutgoingDocumentGetDto) => a.id - b.id)
+              .map((item: OutgoingDocumentGetDto) => {
+                return (
+                  <React.Fragment key={item.id}>
+                    <Row className='mt-3 mb-3'>
+                      <Col span='6'>
+                        <Text strong>{t(i18n_document)}</Text>
+                      </Col>
+                      <Col span='18'>{t(i18n_document_number, { id: item.outgoingNumber })}</Col>
+                    </Row>
+                    <Row className='mt-4 mb-4' align='middle'>
+                      <Col span='6'>
+                        <Text strong>{t(i18n_summary)}</Text>
+                      </Col>
+                      <Col span='16'>
+                        <TextArea rows={4} disabled defaultValue={item.summary} />
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                );
+              })}
+      </div>
+      {/*<Row className='my-6'>*/}
+      {/*  <Col span='6'>*/}
+      {/*    <Text strong>{`${t(i18n_document)} (${selectedDocs.length})`}</Text>*/}
+      {/*  </Col>*/}
+      {/*  <Col span='16'>*/}
+      {/*    <List>*/}
+      {/*      <VirtualList*/}
+      {/*        data={selectedDocs.sort(*/}
+      {/*          (a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id*/}
+      {/*        )}*/}
+      {/*        height={itemHeight * 2}*/}
+      {/*        itemHeight={itemHeight}*/}
+      {/*        itemKey={'id'}>*/}
+      {/*        {(item) => (*/}
+      {/*          <List.Item style={{ padding: '0px' }} key={item.id}>*/}
+      {/*            <div>{t(i18n_document_number, { id: item.id })}</div>*/}
+      {/*          </List.Item>*/}
+      {/*        )}*/}
+      {/*      </VirtualList>*/}
+      {/*    </List>*/}
+      {/*  </Col>*/}
+      {/*</Row>*/}
       <Row className='mt-4 mb-3'>
         <Col span='6'>
           <Typography.Text strong>

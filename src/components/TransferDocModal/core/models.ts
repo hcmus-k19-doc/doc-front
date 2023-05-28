@@ -52,6 +52,7 @@ export interface TransferModalDetailProps {
   form: FormInstance;
   transferredDoc: IncomingDocumentDto | OutgoingDocumentGetDto;
   transferDocumentDetail: GetTransferDocumentDetailCustomResponse;
+  type: string;
 }
 
 export interface MenuSelectProps {
@@ -66,6 +67,7 @@ export interface TransferDocScreenProps {
   isReadOnlyMode: boolean;
   transferDate: string;
   senderName: string;
+  type: string;
 }
 
 export interface TransferDocScreenFormProps {

@@ -35,6 +35,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   form,
   transferredDoc,
   transferDocumentDetail,
+  type,
 }) => {
   const { settings } = useTransferSettingRes('OutgoingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
@@ -110,6 +111,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           isReadOnlyMode={true}
           transferDate={transferDate}
           senderName={transferDocumentDetail?.senderName}
+          type={type}
         />
       );
     }
@@ -123,6 +125,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isReadOnlyMode={true}
         transferDate={transferDate}
         senderName={transferDocumentDetail?.senderName}
+        type={type}
       />
     );
   };
