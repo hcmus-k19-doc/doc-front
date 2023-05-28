@@ -105,7 +105,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           className='transfer-doc-btn'
           style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
           disabled={!hasSelected}>
-          {t('incomingDocDetailPage.button.transfer')}
+          {t('outgoing_doc_detail_page.button.report')}
         </Button>
 
         <span style={{ marginTop: 8 }}>

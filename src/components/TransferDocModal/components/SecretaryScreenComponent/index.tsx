@@ -177,7 +177,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
             </Col>
             <Form.Item name='processingTime'>
               <Space direction='vertical' size={12}>
-                {isReadOnlyMode === true ? (
+                {isReadOnlyMode ? (
                   <Text>{processingDuration}</Text>
                 ) : (
                   <DatePicker
