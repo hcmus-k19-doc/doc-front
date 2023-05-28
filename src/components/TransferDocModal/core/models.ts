@@ -66,6 +66,7 @@ export interface TransferDocScreenProps {
   isReadOnlyMode: boolean;
   transferDate: string;
   senderName: string;
+  processingDuration?: string;
 }
 
 export interface TransferDocScreenFormProps {
