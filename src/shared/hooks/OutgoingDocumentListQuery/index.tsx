@@ -54,6 +54,7 @@ export const useOutgoingDocRes = () => {
               attachments: item.attachments,
               isDocTransferred: item.isDocTransferred,
               isDocCollaborator: item.isDocCollaborator,
+              outgoingNumber: item.outgoingNumber,
             };
           });
 

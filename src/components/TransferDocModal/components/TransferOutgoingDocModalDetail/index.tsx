@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
 import format from 'date-fns/format';
 import {
+  DocSystemRoleEnum,
   TransferDocumentMenuConfig,
   TransferDocumentModalSettingDto,
 } from 'models/doc-main-models';
@@ -11,6 +12,7 @@ import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
+import { useAuth } from '../../../AuthComponent';
 import DirectorScreenComponent from '../../components/DirectorScreenComponent';
 import ExpertScreenComponent from '../../components/ExpertScreenComponent';
 import ManagerScreenComponent from '../../components/ManagerScreenComponent';
@@ -36,6 +38,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   form,
   transferredDoc,
   transferDocumentDetail,
+  type,
 }) => {
   const { settings } = useTransferSettingRes('OutgoingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
@@ -44,13 +47,23 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
+  const { currentUser } = useAuth();
 
   const [transferDate, setTransferDate] = useState<string>('');
   useEffect(() => {
     if (settings && settings.menuConfigs) {
       const newSetting = {
         ...settings,
-        menuConfigs: settings?.menuConfigs || [],
+        menuConfigs:
+          currentUser?.role === DocSystemRoleEnum.TRUONG_PHONG ||
+          currentUser?.role === DocSystemRoleEnum.GIAM_DOC
+            ? settings?.menuConfigs?.filter((item) => {
+                if (transferredDoc?.isDocCollaborator) {
+                  return item.isTransferToSameLevel === true;
+                }
+                return item.isTransferToSameLevel === false;
+              }) || []
+            : settings?.menuConfigs || [],
       };
 
       setDetailModalSetting(newSetting);
@@ -122,6 +135,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           transferDate={transferDate}
           senderName={transferDocumentDetail?.senderName}
           processingDuration={processingDuration}
+          type={type}
         />
       );
     }
@@ -135,6 +149,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         isReadOnlyMode={true}
         transferDate={transferDate}
         senderName={transferDocumentDetail?.senderName}
+        type={type}
         processingDuration={processingDuration}
       />
     );

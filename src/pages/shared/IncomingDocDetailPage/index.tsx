@@ -595,6 +595,7 @@ function IncomingDocPage() {
           handleClose={handleOnCancelModal}
           transferredDoc={selectedDocs[0]}
           transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
+          type={'IncomingDocument'}
         />
       ) : (
         <TransferDocModal

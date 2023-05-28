@@ -265,6 +265,7 @@ const IncomingDocListPage: React.FC = () => {
         handleClose={handleOnCloseDetailModal}
         transferredDoc={transferredDoc as IncomingDocumentDto}
         transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
+        type={'IncomingDocument'}
       />
     </>
   );
