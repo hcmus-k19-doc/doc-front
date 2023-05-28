@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -13,6 +13,7 @@ import {
 import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
+import NotificationHistory from 'components/NotificationHistory';
 import { DocSystemRoleEnum } from 'models/doc-main-models';
 import securityService from 'services/SecurityService';
 import * as authUtils from 'utils/AuthUtils';
@@ -78,6 +79,22 @@ const PageHeader: React.FC = () => {
     });
   };
 
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const handleNotificationClick = () => {
+    setShowNotifications(true);
+  };
+
+  const handleNotificationClose = () => {
+    setShowNotifications(false);
+  };
+
+  const content = (
+    <div>
+      <NotificationHistory />
+    </div>
+  );
+
   return (
     <Header
       className='header flex items-center justify-between border-b-2'
@@ -103,13 +120,16 @@ const PageHeader: React.FC = () => {
           <GlobalOutlined />
         </Dropdown>
 
-        <Badge overflowCount={99} size='small'>
+        <Badge count={99} overflowCount={10} size='small'>
           <Popover
             overlayInnerStyle={{ width: '700px' }}
             placement='bottomRight'
             trigger='click'
+            open={showNotifications}
+            onOpenChange={setShowNotifications}
+            content={content}
             showArrow={false}>
-            <BellOutlined />
+            <BellOutlined onClick={handleNotificationClick} />
           </Popover>
         </Badge>
 
