@@ -36,7 +36,6 @@ const LoginPage: React.FC = () => {
           showConfirmButton: true,
         });
         setError(e.response?.data.message);
-        console.error(e.response?.data.message);
       } else {
         console.error(e);
       }

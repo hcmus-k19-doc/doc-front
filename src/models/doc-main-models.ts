@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-27 22:24:52.
+// Generated using typescript-generator version 3.1.1185 on 2023-05-31 10:20:55.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;

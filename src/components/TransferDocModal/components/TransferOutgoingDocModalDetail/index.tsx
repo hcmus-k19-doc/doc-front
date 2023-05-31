@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
 import format from 'date-fns/format';
+import dayjs from 'dayjs';
 import {
   DocSystemRoleEnum,
   TransferDocumentMenuConfig,
@@ -32,7 +33,7 @@ const componentMap: ComponentMap = {
   4: ExpertScreenComponent,
 };
 
-const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
+const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
   isModalOpen,
   handleClose,
   form,
@@ -83,7 +84,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         summary: baseInfo.summary,
         assignee: assigneeId,
         collaborators: collaboratorIds,
-        processingTime: baseInfo.processingDuration,
+        processingTime: dayjs(baseInfo.processingDuration),
         isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
         processMethod: baseInfo.processMethod,
       });
@@ -185,4 +186,4 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   );
 };
 
-export default TransferDocModalDetail;
+export default TransferOutgoingDocModalDetail;
