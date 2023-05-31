@@ -76,12 +76,19 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         const response = await outgoingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
           await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
-          await showAlert({
-            icon: 'success',
-            html: t('outgoingDocListPage.message.transfer_success') as string,
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          currentUser?.role !== DocSystemRoleEnum.GIAM_DOC
+            ? await showAlert({
+                icon: 'success',
+                html: t('outgoing_doc_detail_page.message.report_success') as string,
+                showConfirmButton: false,
+                timer: 2000,
+              })
+            : await showAlert({
+                icon: 'success',
+                html: t('outgoing_doc_detail_page.message.transfer_secretary_success') as string,
+                showConfirmButton: false,
+                timer: 2000,
+              });
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -105,7 +112,9 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           className='transfer-doc-btn'
           style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
           disabled={!hasSelected}>
-          {t('outgoing_doc_detail_page.button.report')}
+          {currentUser?.role === DocSystemRoleEnum.GIAM_DOC
+            ? t('outgoing_doc_detail_page.button.transfer_secretary')
+            : t('outgoing_doc_detail_page.button.report')}
         </Button>
 
         <span style={{ marginTop: 8 }}>

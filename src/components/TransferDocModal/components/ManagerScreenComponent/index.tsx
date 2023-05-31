@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { RangePickerProps } from 'antd/es/date-picker';
 import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import dayjs from 'dayjs';
@@ -59,18 +60,15 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   }
 
   const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
-    if (e.target.checked) {
-      form.setFieldsValue({ processingTime: '' });
-      form.setFieldsValue({ isInfiniteProcessingTime: true });
-      setIsInfiniteProcessingTime(true);
-    } else {
-      form.setFieldsValue({ isInfiniteProcessingTime: false });
-      setIsInfiniteProcessingTime(false);
-    }
+    e.target.checked ? setIsInfiniteProcessingTime(true) : setIsInfiniteProcessingTime(false);
   };
 
   const setProcessingTime = (dateString: any) => {
     form.setFieldsValue({ processingTime: dateString });
+  };
+
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+    return current && current < dayjs().endOf('day');
   };
 
   return (
@@ -224,6 +222,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                     format={dateFormatList}
                     onChange={(_, dateString) => setProcessingTime(dateString)}
                     disabled={isInfiniteProcessingTime || isReadOnlyMode}
+                    disabledDate={disabledDate}
                     // defaultValue={isReadOnlyMode ? dayjs(processingDuration) : undefined}
                   />
                 )}
@@ -235,7 +234,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                 style={{ display: 'inline-block', margin: '0 16px' }}
                 valuePropName='checked'
                 initialValue={false}>
-                <Checkbox onChange={onChooseNoneProcessingTime}>
+                <Checkbox onChange={onChooseNoneProcessingTime} value={isInfiniteProcessingTime}>
                   {t(i18n_is_infinite_processing_time)}
                 </Checkbox>
               </Form.Item>
