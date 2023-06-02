@@ -2,7 +2,6 @@ import { message } from 'antd';
 import {
   DocSystemRoleEnum,
   IncomingDocumentDto,
-  OutgoingDocumentGetDto,
   TransferDocDto,
   TransferDocumentType,
   UserDto,
@@ -49,25 +48,6 @@ const isProcessingDocs = (selectedDocs: IncomingDocumentDto[], t?: any) => {
       t(
         'transfer_modal.form.only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert'
       )
-    );
-    return false;
-  }
-  return true;
-};
-const isUnprocessedOutgoingDocs = (selectedDocs: OutgoingDocumentGetDto[], t?: any) => {
-  const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.UNPROCESSED'));
-  if (!result) {
-    message.error(t('transfer_modal.form.only_unprocessed_docs_can_be_transferred_to_manager'));
-    return false;
-  }
-  return true;
-};
-
-const isProcessingOutgoingDocs = (selectedDocs: OutgoingDocumentGetDto[], t?: any) => {
-  const result = selectedDocs.every((doc) => doc.status === t('PROCESSING_STATUS.IN_PROGRESS'));
-  if (!result) {
-    message.error(
-      t('transfer_modal.form.only_in_progress_docs_can_be_transferred_to_director_or_secretary')
     );
     return false;
   }
@@ -145,18 +125,6 @@ const validateTransferDocs = async (
     }
 
     if (Array.isArray(selectedDocs) && isOutgoingDoc(selectedDocs[0])) {
-      if (
-        transferDocModalItem === TransferDocumentType.TRANSFER_TO_TRUONG_PHONG &&
-        currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN
-      ) {
-        if (!isUnprocessedOutgoingDocs(selectedDocs, t)) {
-          return false;
-        }
-      } else {
-        if (!isProcessingOutgoingDocs(selectedDocs, t)) {
-          return false;
-        }
-      }
       validateTransferDocs = await outgoingDocumentService.validateTransferDocuments(
         transferDocDto
       );
