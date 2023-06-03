@@ -55,7 +55,7 @@ import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 import { getStep } from 'utils/TransferDocUtils';
 
-import { transferDocModalState } from './core/states';
+import { transferDocModalState } from '../IncomingDocListPage/core/states';
 
 import './index.css';
 
@@ -595,6 +595,7 @@ function IncomingDocPage() {
           handleClose={handleOnCancelModal}
           transferredDoc={selectedDocs[0]}
           transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
+          type={'IncomingDocument'}
         />
       ) : (
         <TransferDocModal

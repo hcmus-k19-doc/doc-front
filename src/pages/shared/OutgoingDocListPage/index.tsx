@@ -67,7 +67,6 @@ const OutgoingDocListPage: React.FC = () => {
       const response = await outgoingDocumentService.getTransferDocumentDetail(
         getTransferDocumentDetailRequest
       );
-
       setTransferDocumentDetail(response);
     } catch (error) {
       await showAlert({
@@ -233,6 +232,7 @@ const OutgoingDocListPage: React.FC = () => {
         handleClose={handleOnCloseDetailModal}
         transferredDoc={transferredDoc as OutgoingDocumentGetDto}
         transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
+        type={'OutgoingDocument'}
       />
     </>
   );

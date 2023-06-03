@@ -437,7 +437,8 @@
         "released": "Đã phát hành",
         "summary": "Đã chọn {{count}} văn bản ({{unprocessedDocs}} chưa xử lý, {{processingDocs}} đang xử lý, {{waitingOutgoingNumberDocs}} Chờ số đi, {{readyReleaseDocs}} sẵn sàng phát hành, {{releasedDocs}} đã phát hành)"
       },
-      "transfer_success": "Chuyển văn bản thành công"
+      "transfer_success": "Chuyển văn bản thành công",
+      "get_transfer_document_detail_error": "Lấy thông tin văn bản trình lãnh đạo thất bại"
     }
   },
   "outgoing_doc_detail_page": {
@@ -480,7 +481,9 @@
       "publish": "Phát hành văn bản",
       "publish_modal": "Phát hành",
       "report": "Trình lãnh đạo",
-      "cancel": "Hủy"
+      "cancel": "Hủy",
+      "transfer_secretary": "Chuyển văn thư",
+      "view_transfer_detail": "Xem chi tiết luân chuyển"
     },
     "message": {
       "file_error": "đính kèm không thành công.",
@@ -492,7 +495,9 @@
       "edit_success": "Chỉnh sửa văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại",
       "confirm_publish": "Bạn có chắc chắn muốn phát hành văn bản này?",
-      "publish_success": "Phát hành văn bản thành công"
+      "publish_success": "Phát hành văn bản thành công",
+      "report_success": "Trình lãnh đạo thành công",
+      "transfer_secretary_success": "Chuyển văn thư thành công"
     },
     "comment": {
       "title": "Góp ý văn bản",

@@ -52,6 +52,7 @@ export interface TransferModalDetailProps {
   form: FormInstance;
   transferredDoc: IncomingDocumentDto | OutgoingDocumentGetDto;
   transferDocumentDetail: GetTransferDocumentDetailCustomResponse;
+  type: string;
 }
 
 export interface MenuSelectProps {
@@ -67,6 +68,7 @@ export interface TransferDocScreenProps {
   transferDate: string;
   senderName: string;
   processingDuration?: string;
+  type: string;
 }
 
 export interface TransferDocScreenFormProps {

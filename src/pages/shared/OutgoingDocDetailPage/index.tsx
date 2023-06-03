@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -20,6 +20,7 @@ import {
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
+import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
@@ -29,21 +30,38 @@ import dayjs from 'dayjs';
 import {
   Confidentiality,
   DepartmentDto,
+  DocSystemRoleEnum,
   DocumentTypeDto,
   FolderDto,
+  GetTransferDocumentDetailCustomResponse,
+  GetTransferDocumentDetailRequest,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
   OutgoingDocumentStatusEnum,
+  ProcessingDocumentRoleEnum,
   ProcessingDocumentTypeEnum,
   PublishDocumentDto,
+  TransferDocDto,
   Urgency,
+  UserDto,
 } from 'models/doc-main-models';
+import { RecoilRoot, useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
+
+import TransferDocModal from '../../../components/TransferDocModal';
+import TransferOutgoingDocModalDetail from '../../../components/TransferDocModal/components/TransferOutgoingDocModalDetail';
+import {
+  initialTransferQueryState,
+  useTransferQuerySetter,
+} from '../../../shared/hooks/TransferDocQuery';
+import { validateTransferDocs } from '../../../shared/validators/TransferDocValidator';
+import { getStepOutgoingDocument } from '../../../utils/TransferDocUtils';
+import { transferDocModalState } from '../IncomingDocListPage/core/states';
 
 import './index.css';
 
@@ -65,6 +83,42 @@ function OutgoingDocDetailPage() {
   const [foldersQuery, documentTypesQuery, , departmentsQuery] = useDropDownFieldsQuery();
 
   const { isLoading, data } = useOutgoingDocumentDetailQuery(+(docId || 1));
+  const [selectedDocs, setSelectedDocs] = useState<OutgoingDocumentGetDto[]>([]);
+  const transferDocModalItem = useRecoilValue(transferDocModalState);
+  const transferQuerySetter = useTransferQuerySetter();
+  const navigate = useNavigate();
+  const [modalForm] = useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, setError] = useState<string>();
+  const [transferDocumentDetail, setTransferDocumentDetail] =
+    useState<GetTransferDocumentDetailCustomResponse>();
+
+  const fetchForm = () => {
+    if (!isLoading) {
+      if (data?.data) {
+        const outgoingDocumentTransfer = {
+          ...data?.data,
+          status: t(`PROCESSING_STATUS.${data?.data.status}`),
+          objType: 'OutgoingDocument',
+        };
+        setSelectedDocs([outgoingDocumentTransfer as unknown as OutgoingDocumentGetDto]);
+
+        const outgoingDocument: OutgoingDocumentGetDto = data?.data;
+
+        initForm(outgoingDocument);
+
+        if (outgoingDocument.status === OutgoingDocumentStatusEnum.RELEASED) {
+          removeButtons();
+        }
+      } else {
+        globalNavigate('error');
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchForm();
+  }, [isLoading, isReleased, data?.data]);
 
   const initForm = (outgoingDocument: OutgoingDocumentGetDto) => {
     form.setFieldsValue({
@@ -88,26 +142,6 @@ function OutgoingDocDetailPage() {
     form.resetFields();
     fetchForm();
   };
-
-  const fetchForm = () => {
-    if (!isLoading) {
-      if (data?.data) {
-        const outgoingDocument: OutgoingDocumentGetDto = data?.data;
-
-        initForm(outgoingDocument);
-
-        if (outgoingDocument.status === OutgoingDocumentStatusEnum.RELEASED) {
-          removeButtons();
-        }
-      } else {
-        globalNavigate('error');
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchForm();
-  }, [isLoading, isReleased]);
 
   const renderFolders = () => {
     return foldersQuery.data?.map((folder: FolderDto) => (
@@ -169,7 +203,7 @@ function OutgoingDocDetailPage() {
       const response = await outgoingDocumentService.updateOutgoingDocument(document);
 
       if (response.status === 200) {
-        showAlert({
+        await showAlert({
           icon: 'success',
           html: `${t('outgoing_doc_detail_page.message.edit_success')}`,
           showConfirmButton: false,
@@ -179,7 +213,7 @@ function OutgoingDocDetailPage() {
         await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
-      showAlert({
+      await showAlert({
         icon: 'error',
         html: `${t('outgoing_doc_detail_page.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
@@ -237,7 +271,7 @@ function OutgoingDocDetailPage() {
       const response = await outgoingDocumentService.publishOutgoingDocument(document);
 
       if (response.status === 200) {
-        showAlert({
+        await showAlert({
           icon: 'success',
           html: `${t('outgoing_doc_detail_page.message.publish_success')}`,
           showConfirmButton: false,
@@ -249,7 +283,7 @@ function OutgoingDocDetailPage() {
         removeButtons();
       }
     } catch (error) {
-      showAlert({
+      await showAlert({
         icon: 'error',
         html: `${t('outgoing_doc_detail_page.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
@@ -267,6 +301,105 @@ function OutgoingDocDetailPage() {
 
       onOk: publishDocument,
     });
+  };
+
+  const handleOnOpenModal = async () => {
+    setIsModalOpen(true);
+
+    if (selectedDocs[0].isDocTransferred || selectedDocs[0].isDocCollaborator) {
+      const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
+        documentId: +(docId || 1),
+        userId: currentUser?.id as number,
+        role: ProcessingDocumentRoleEnum.REPORTER,
+        step: getStepOutgoingDocument(currentUser as UserDto, true),
+      };
+
+      if (selectedDocs[0].isDocCollaborator) {
+        getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
+        getTransferDocumentDetailRequest.step = getStepOutgoingDocument(
+          currentUser as UserDto,
+          false
+        );
+      }
+
+      try {
+        const response = await outgoingDocumentService.getTransferDocumentDetail(
+          getTransferDocumentDetailRequest
+        );
+
+        setTransferDocumentDetail(response);
+      } catch (error) {
+        await showAlert({
+          icon: 'error',
+          html: t('outgoingDocListPage.message.get_transfer_document_detail_error'),
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
+      }
+    }
+  };
+
+  const handleOnCancelModal = () => {
+    setIsModalOpen(false);
+    modalForm.resetFields();
+    transferQuerySetter(initialTransferQueryState);
+  };
+
+  const handleOnOkModal = async () => {
+    const transferDocDto: TransferDocDto = {
+      documentIds: selectedDocs.map((doc) => doc.id),
+      summary: modalForm.getFieldValue('summary'),
+      reporterId: currentUser?.id as number,
+      assigneeId: modalForm.getFieldValue('assignee') as number,
+      collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
+      processingTime: modalForm.getFieldValue('processingTime'),
+      isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
+      processMethod: modalForm.getFieldValue('processMethod'),
+      transferDocumentType: transferDocModalItem.transferDocumentType,
+      isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
+    };
+
+    if (
+      await validateTransferDocs(
+        selectedDocs,
+        transferDocModalItem.transferDocumentType,
+        transferDocDto,
+        t,
+        currentUser
+      )
+    ) {
+      setIsModalOpen(false);
+      modalForm.submit();
+      modalForm.resetFields();
+      transferQuerySetter(transferDocDto);
+      try {
+        const response = await outgoingDocumentService.transferDocuments(transferDocDto);
+        if (response.status === 200) {
+          await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 1)]);
+          navigate('/docout/out-list');
+          currentUser?.role !== DocSystemRoleEnum.GIAM_DOC
+            ? await showAlert({
+                icon: 'success',
+                html: t('outgoing_doc_detail_page.message.report_success') as string,
+                showConfirmButton: false,
+                timer: 2000,
+              })
+            : await showAlert({
+                icon: 'success',
+                html: t('outgoing_doc_detail_page.message.transfer_secretary_success') as string,
+                showConfirmButton: false,
+                timer: 2000,
+              });
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data.message);
+          console.error(error.response?.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+    }
   };
 
   return (
@@ -527,8 +660,13 @@ function OutgoingDocDetailPage() {
               </Button>
             )}
 
-            <Button type='primary' size='large' htmlType='button'>
-              {t('outgoing_doc_detail_page.button.report')}
+            <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+              {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
+                ? t('outgoing_doc_detail_page.button.view_transfer_detail')
+                : currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN ||
+                  currentUser?.role === DocSystemRoleEnum.TRUONG_PHONG
+                ? t('outgoing_doc_detail_page.button.report')
+                : t('outgoing_doc_detail_page.button.transfer_secretary')}
             </Button>
           </Row>
         )}
@@ -549,9 +687,36 @@ function OutgoingDocDetailPage() {
             />
           </Col>
         </Row>
+        {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
+          <TransferOutgoingDocModalDetail
+            form={modalForm}
+            isModalOpen={isModalOpen}
+            handleClose={handleOnCancelModal}
+            transferredDoc={selectedDocs[0]}
+            transferDocumentDetail={
+              transferDocumentDetail as GetTransferDocumentDetailCustomResponse
+            }
+            type={'OutgoingDocument'}
+          />
+        ) : (
+          <TransferDocModal
+            form={modalForm}
+            isModalOpen={isModalOpen}
+            handleCancel={handleOnCancelModal}
+            handleOk={handleOnOkModal}
+            selectedDocs={selectedDocs}
+            type={'OutgoingDocument'}
+          />
+        )}
       </Skeleton>
     </>
   );
 }
 
-export default OutgoingDocDetailPage;
+const OutgoingDocPageWrapper = () => (
+  <RecoilRoot>
+    <OutgoingDocDetailPage />
+  </RecoilRoot>
+);
+
+export default OutgoingDocPageWrapper;
