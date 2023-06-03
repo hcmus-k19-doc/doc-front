@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-03 10:08:45.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-03 21:56:11.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -298,6 +298,7 @@ export interface TransferHistoryDto {
     createdDate: DateAsString;
     processingDuration: DateAsString;
     isInfiniteProcessingTime: boolean;
+    isTransferToSameLevel: boolean;
     processMethod: ProcessMethod;
     senderId: number;
     senderName: string;

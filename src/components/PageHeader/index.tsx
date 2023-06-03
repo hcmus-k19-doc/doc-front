@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -10,14 +10,20 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, message, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
-import { DocSystemRoleEnum } from 'models/doc-main-models';
+import {
+  DocSystemRoleEnum,
+  TransferHistoryDto,
+  TransferHistorySearchCriteriaDto,
+} from 'models/doc-main-models';
 import securityService from 'services/SecurityService';
+import userService from 'services/UserService';
 import * as authUtils from 'utils/AuthUtils';
 
+import { ContainerHeight, defaultPageSize, joinArrayWithoutDuplicate } from './core/common';
 import { languageItems } from './core';
 
 import './index.css';
@@ -30,6 +36,8 @@ const PageHeader: React.FC = () => {
   const { logout } = useAuth();
   const location = useLocation();
   const { currentUser } = useAuth();
+  const [transferHistory, setTransferHistory] = useState<TransferHistoryDto[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -82,6 +90,7 @@ const PageHeader: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const handleNotificationClick = () => {
+    appendData();
     setShowNotifications(true);
   };
 
@@ -89,11 +98,38 @@ const PageHeader: React.FC = () => {
     setShowNotifications(false);
   };
 
-  const content = (
-    <div>
-      <NotificationHistory />
-    </div>
-  );
+  const appendData = async () => {
+    try {
+      const searchCriteria: TransferHistorySearchCriteriaDto = {
+        userId: currentUser?.id || -1,
+      };
+      const response = await userService.getTransferHistory(
+        searchCriteria,
+        currentPage,
+        defaultPageSize
+      );
+      console.log(response);
+      if (response.length > 0) {
+        console.log('result', joinArrayWithoutDuplicate(transferHistory, response));
+        setTransferHistory(joinArrayWithoutDuplicate(transferHistory, response));
+      } else {
+        setCurrentPage(1);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    appendData();
+  }, []);
+
+  const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
+    if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
+      appendData();
+      setCurrentPage((currentPage) => currentPage + 1);
+    }
+  };
 
   return (
     <Header
@@ -120,14 +156,17 @@ const PageHeader: React.FC = () => {
           <GlobalOutlined />
         </Dropdown>
 
-        <Badge count={99} overflowCount={10} size='small'>
+        <Badge
+          count={transferHistory.length > 0 ? transferHistory.length : undefined}
+          overflowCount={transferHistory.length > 0 ? transferHistory.length : undefined}
+          size='small'>
           <Popover
             overlayInnerStyle={{ width: '700px' }}
             placement='bottomRight'
             trigger='click'
             open={showNotifications}
             onOpenChange={setShowNotifications}
-            content={content}
+            content={<NotificationHistory onScroll={onScroll} notifications={transferHistory} />}
             showArrow={false}>
             <BellOutlined onClick={handleNotificationClick} />
           </Popover>

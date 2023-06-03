@@ -1,5 +1,6 @@
 export interface NotificationHistoryProps {
-  notifications: any;
+  notifications: any[];
+  onScroll: (e: React.UIEvent<HTMLElement, UIEvent>) => void;
 }
 
 export interface UserItem {
