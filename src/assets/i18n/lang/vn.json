@@ -682,5 +682,18 @@
       "close_to_expiration": "Sắp hết hạn",
       "expired": "Đã quá hạn"
     }
+  },
+  "transfer_history": {
+    "title": "Chuyển xử lý",
+    "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
+    "no_more_item": "Không còn lịch sử chuyển xử lý nào",
+    "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
+    "button": {
+      "view_detail": "Xem chi tiết"
+    },
+    "default_sender": "Bạn",
+    "default_receiver": "bạn",
+    "same_level": "cùng cấp",
+    "process": "xử lý"
   }
 }
