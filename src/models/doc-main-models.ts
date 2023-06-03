@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-01 21:48:54.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-03 10:08:45.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -286,6 +286,27 @@ export interface TransferDocDto {
 export interface ValidateTransferDocDto {
     isValid: boolean;
     message: string;
+}
+
+export interface GetTransferDocumentHistoryResponse {
+    transferHistoryDtos: TransferHistoryDto[];
+}
+
+export interface TransferHistoryDto {
+    id: number;
+    documentIds: number[];
+    createdDate: DateAsString;
+    processingDuration: DateAsString;
+    isInfiniteProcessingTime: boolean;
+    processMethod: ProcessMethod;
+    senderId: number;
+    senderName: string;
+    receiverId: number;
+    receiverName: string;
+}
+
+export interface TransferHistorySearchCriteriaDto {
+    userId: number;
 }
 
 export interface TruongPhongDto {

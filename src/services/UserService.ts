@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
-import { DocSystemRoleEnum, UserDepartmentDto, UserDto } from 'models/doc-main-models';
+import {
+  DocSystemRoleEnum,
+  TransferHistorySearchCriteriaDto,
+  UserDepartmentDto,
+  UserDto,
+} from 'models/doc-main-models';
 import qs from 'qs';
 
 const getCurrentUser = () => {
@@ -33,11 +38,27 @@ async function updatePassword(oldPassword: string, confirmPassword: string, newP
   }
 }
 
+async function getTransferHistory(
+  searchCriteria: Partial<TransferHistorySearchCriteriaDto>,
+  page: number,
+  pageSize: number
+) {
+  return await axios
+    .post(`${REACT_APP_DOC_MAIN_SERVICE_URL}/users/get-transfer-history`, searchCriteria, {
+      params: {
+        page: page - 1,
+        pageSize: pageSize,
+      },
+    })
+    .then((response) => response.data);
+}
+
 const userService = {
   getCurrentUser,
   getUsersByRole,
   getUsersByRoleWithDepartment,
   updatePassword,
+  getTransferHistory,
 };
 
 export default userService;
