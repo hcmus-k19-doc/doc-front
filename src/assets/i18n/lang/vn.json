@@ -688,6 +688,7 @@
     },
     "default_sender": "Bạn",
     "default_receiver": "bạn",
-    "same_level": "cùng cấp"
+    "same_level": "cùng cấp",
+    "process": "xử lý"
   }
 }

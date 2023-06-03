@@ -46,7 +46,9 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                       ? item.receiverName
                       : t('transfer_history.default_receiver'),
                   documentId: item.documentIds.join(', '),
-                  level: item.isTransferToSameLevel ? t('transfer_history.same_level') : '',
+                  level: item.isTransferToSameLevel
+                    ? t('transfer_history.same_level')
+                    : t('transfer_history.process'),
                 })}
               />
               <div>
