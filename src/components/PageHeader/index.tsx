@@ -166,7 +166,13 @@ const PageHeader: React.FC = () => {
             trigger='click'
             open={showNotifications}
             onOpenChange={setShowNotifications}
-            content={<NotificationHistory onScroll={onScroll} notifications={transferHistory} />}
+            content={
+              <NotificationHistory
+                onScroll={onScroll}
+                notifications={transferHistory}
+                handleNotificationClose={handleNotificationClose}
+              />
+            }
             showArrow={false}>
             <BellOutlined onClick={handleNotificationClick} />
           </Popover>

@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Avatar, List } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
 import { ContainerHeight } from 'components/PageHeader/core/common';
 import { TransferHistoryDto } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 
+import TransferHistoryDetailModal from './components/TransferHistoryDetailModal';
 import { NotificationHistoryProps } from './core/models';
 
 import './index.css';
@@ -15,6 +18,24 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
 ) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalForm] = useForm();
+  const [selectedTransferHistory, setSelectedTransferHistory] = useState<TransferHistoryDto>();
+
+  const handleOnOpenModal = (event: any, transferHistory: TransferHistoryDto) => {
+    event.preventDefault();
+    props.handleNotificationClose();
+    setIsModalOpen(true);
+    setSelectedTransferHistory(transferHistory);
+    console.log(transferHistory);
+    // set field value
+  };
+
+  const handleOnCancelModal = () => {
+    setIsModalOpen(false);
+    modalForm.resetFields();
+  };
 
   return (
     <>
@@ -52,7 +73,9 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                 })}
               />
               <div>
-                <a href='#'>{t('transfer_history.button.view_detail')}</a>
+                <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
+                  {t('transfer_history.button.view_detail')}
+                </a>
               </div>
             </List.Item>
           )}
@@ -61,6 +84,13 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
       <div className='notification-actions'>
         <a href='#'>Mark all as read</a>
       </div>
+
+      <TransferHistoryDetailModal
+        form={modalForm}
+        isModalOpen={isModalOpen}
+        handleClose={handleOnCancelModal}
+        transferHistory={selectedTransferHistory as TransferHistoryDto}
+      />
     </>
   );
 };
