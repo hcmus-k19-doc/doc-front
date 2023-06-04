@@ -685,6 +685,7 @@
   },
   "transfer_history": {
     "title": "Chuyển xử lý",
+
     "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
     "no_more_item": "Không còn lịch sử chuyển xử lý nào",
     "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
@@ -694,6 +695,19 @@
     "default_sender": "Bạn",
     "default_receiver": "bạn",
     "same_level": "cùng cấp",
-    "process": "xử lý"
+    "process": "xử lý",
+    "modal": {
+      "modal_title": "Lịch sử  chuyển xử lý",
+      "document":"Văn bản",
+      "transfer_date": "Ngày chuyển",
+      "processing_duration":"Thời hạn xử lý",
+      "infinite_processing_time": "Không thời hạn",
+      "process_method":"Cách thức xử lý",
+      "sender": "Người chuyển",
+      "receiver": "Người nhận",
+      "transfer_type_1": "Chuyển xử lý",
+      "transfer_type_2": "Cùng cấp",
+      "transfer_type": "Loại chuyển"
+    }
   }
 }
