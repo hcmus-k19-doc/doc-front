@@ -10,7 +10,7 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, message, Modal, Popover } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
@@ -108,9 +108,8 @@ const PageHeader: React.FC = () => {
         currentPage,
         defaultPageSize
       );
-      console.log(response);
+
       if (response.length > 0) {
-        console.log('result', joinArrayWithoutDuplicate(transferHistory, response));
         setTransferHistory(joinArrayWithoutDuplicate(transferHistory, response));
       } else {
         setCurrentPage(1);

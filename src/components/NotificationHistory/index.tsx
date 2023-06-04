@@ -28,8 +28,6 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
     props.handleNotificationClose();
     setIsModalOpen(true);
     setSelectedTransferHistory(transferHistory);
-    console.log(transferHistory);
-    // set field value
   };
 
   const handleOnCancelModal = () => {
