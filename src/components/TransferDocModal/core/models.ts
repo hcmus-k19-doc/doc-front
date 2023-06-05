@@ -22,6 +22,7 @@ export const i18_collaborators = `${i18n_transfer_modal}.director_view.collabora
 export const i18n_processing_time = `${i18n_transfer_modal}.secretary_view.processing_time`;
 export const i18n_is_infinite_processing_time = `${i18n_transfer_modal}.secretary_view.is_infinite_processing_time`;
 export const i18n_document_number = `${i18n_transfer_modal}.document_number`;
+export const i18n_ordinal_number = `${i18n_transfer_modal}.ordinal_number`;
 export const i18n_process_method = `${i18n_transfer_modal}.manager_view.process_method`;
 
 export type ComponentMap = {

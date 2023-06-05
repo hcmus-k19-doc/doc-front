@@ -405,6 +405,23 @@ function ReceiveIncomingDocPage() {
               </Col>
             </Row>
 
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.name')}
+                  required
+                  name='name'
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.name_required') as string,
+                    },
+                  ]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+
             <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary'>
               <CKEditor
                 editor={ClassicEditor}

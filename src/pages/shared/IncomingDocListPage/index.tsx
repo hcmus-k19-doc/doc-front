@@ -119,6 +119,16 @@ const IncomingDocListPage: React.FC = () => {
 
   const columns: ColumnsType<TableRowDataType> = [
     {
+      title: t('incomingDocListPage.table.columns.ordinalNumber'),
+      dataIndex: 'ordinalNumber',
+      sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
+    },
+    {
+      title: t('incomingDocListPage.table.columns.name'),
+      dataIndex: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
       title: t('incomingDocListPage.table.columns.type'),
       dataIndex: 'type',
       sorter: (a, b) => a.type.localeCompare(b.type),
