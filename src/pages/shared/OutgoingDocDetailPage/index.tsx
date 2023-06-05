@@ -122,6 +122,7 @@ function OutgoingDocDetailPage() {
 
   const initForm = (outgoingDocument: OutgoingDocumentGetDto) => {
     form.setFieldsValue({
+      name: outgoingDocument.name,
       folder: outgoingDocument.folder?.id,
       outgoingNumber: outgoingDocument.outgoingNumber,
       documentType: outgoingDocument.documentType?.id,
@@ -569,6 +570,23 @@ function OutgoingDocDetailPage() {
                   </Form.Item>
                 </Col>
                 <Col span={2}></Col>
+                <Col span={11}>
+                  <Form.Item
+                    required
+                    rules={[
+                      {
+                        required: true,
+                        message: `${t('outgoing_doc_detail_page.form.name_required')}`,
+                      },
+                    ]}
+                    label={t('outgoing_doc_detail_page.form.name')}
+                    name='name'>
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row>
                 <Col span={11}>
                   <Form.Item label={t('outgoing_doc_detail_page.form.signer')} name='signer'>
                     <Input disabled />

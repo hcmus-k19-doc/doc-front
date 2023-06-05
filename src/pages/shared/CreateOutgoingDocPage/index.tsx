@@ -321,6 +321,21 @@ function CreateOutgoingDocPage() {
                   <Input />
                 </Form.Item>
               </Col>
+              <Col span={2}></Col>
+              <Col span={11}>
+                <Form.Item
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: t('create_outgoing_doc_page.form.name_required') as string,
+                    },
+                  ]}
+                  label={t('create_outgoing_doc_page.form.name')}
+                  name='name'>
+                  <Input />
+                </Form.Item>
+              </Col>
             </Row>
 
             <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary'>

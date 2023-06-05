@@ -192,6 +192,7 @@ function IncomingDocPage() {
       const incomingDocument = data?.data;
 
       form.setFieldsValue({
+        name: incomingDocument.name,
         folder: incomingDocument.folder?.id,
         incomingNumber: incomingDocument.incomingNumber,
         documentType: incomingDocument.documentType?.id,
@@ -524,6 +525,23 @@ function IncomingDocPage() {
                       {t(`incomingDocDetailPage.form.select.option.${Confidentiality.LOW}`)}
                     </Select.Option>
                   </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={11}>
+                <Form.Item
+                  label={t('incomingDocDetailPage.form.name')}
+                  required
+                  name='name'
+                  rules={[
+                    {
+                      required: true,
+                      message: t('incomingDocDetailPage.form.name_required') as string,
+                    },
+                  ]}>
+                  <Input />
                 </Form.Item>
               </Col>
             </Row>

@@ -1,6 +1,8 @@
 import { AttachmentDto, IncomingDocumentDto } from 'models/doc-main-models';
 
 export type TableRowDataType = {
+  ordinalNumber: number;
+  name: string;
   key: number;
   id: number;
   issueLevel: string;

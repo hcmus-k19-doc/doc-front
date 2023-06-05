@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-04 12:18:35.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-04 18:57:09.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -77,7 +77,9 @@ export interface FolderDto extends DocAbstractDto {
     year: number;
 }
 
-export interface IncomingDocumentDto extends DocAbstractDto {
+export interface  IncomingDocumentDto extends DocAbstractDto {
+    ordinalNumber: number;
+    name: string;
     status: ProcessingStatus;
     processingDuration: DateAsString;
     incomingNumber: string;
@@ -98,6 +100,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
 }
 
 export interface IncomingDocumentPostDto {
+    name: string;
     incomingNumber: string;
     documentType: number;
     originalSymbolNumber: string;
@@ -112,6 +115,7 @@ export interface IncomingDocumentPostDto {
 }
 
 export interface IncomingDocumentPutDto extends DocAbstractDto {
+    name: string;
     incomingNumber: string;
     documentType: number;
     originalSymbolNumber: string;
@@ -148,6 +152,8 @@ export interface OutgoingDocSearchCriteriaDto {
 }
 
 export interface OutgoingDocumentGetDto extends DocAbstractDto {
+    ordinalNumber: number;
+    name: string;
     outgoingNumber: string;
     originalSymbolNumber: string;
     recipient: string;
@@ -166,6 +172,7 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
 }
 
 export interface OutgoingDocumentPostDto extends DocAbstractDto {
+    name: string;
     documentType: number;
     originalSymbolNumber: string;
     folder: number;
@@ -178,6 +185,7 @@ export interface OutgoingDocumentPostDto extends DocAbstractDto {
 }
 
 export interface OutgoingDocumentPutDto extends DocAbstractDto {
+    name: string;
     outgoingNumber: string;
     originalSymbolNumber: string;
     recipient: string;
@@ -192,6 +200,7 @@ export interface OutgoingDocumentPutDto extends DocAbstractDto {
 }
 
 export interface PublishDocumentDto extends DocAbstractDto {
+    name: string;
     outgoingNumber: string;
     originalSymbolNumber: string;
     recipient: string;

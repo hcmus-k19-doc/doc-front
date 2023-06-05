@@ -1,12 +1,12 @@
 .notification-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .avatar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9px;
 }
