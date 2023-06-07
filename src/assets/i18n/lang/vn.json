@@ -602,7 +602,8 @@
   },
   "doc": {
     "exception": {
-      "concurrent_update": "Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang."
+      "concurrent_update": "Thông tin đã được cập nhật bởi người khác, vui lòng tải lại trang.",
+      "internal_server_error": "Đã có lỗi xảy ra, vui lòng báo cho quản trị viên."
     }
   },
   "document_type_management": {

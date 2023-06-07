@@ -1,13 +1,13 @@
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Button, Result } from 'antd';
+import { t } from 'i18next';
 import { globalNavigate } from 'utils/RoutingUtils';
 
 const ServerErrorPage: React.FC = () => (
   <Result
     status='500'
     title='500'
-    subTitle='Sorry, something went wrong.'
+    subTitle={t('doc.exception.internal_server_error')}
     extra={
       <Button type='primary' onClick={() => globalNavigate('/')}>
         Back Home
