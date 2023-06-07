@@ -4,11 +4,11 @@ import { FileZipOutlined } from '@ant-design/icons';
 import { Divider, Table, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
-import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
+import { ParentFolderEnum } from 'models/doc-file-models';
 import {
   GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
@@ -84,39 +84,6 @@ const IncomingDocListPage: React.FC = () => {
     transferDocDetailModalForm.resetFields();
   };
 
-  const handleDownloadAttachment = async (record: TableRowDataType) => {
-    try {
-      const response = await attachmentService.downloadAttachments(
-        record.attachments,
-        record.id.toString()
-      );
-
-      if (response.status === 204) {
-        showAlert({
-          icon: 'error',
-          html: t('incomingDocListPage.message.attachment.not_found'),
-          confirmButtonColor: PRIMARY_COLOR,
-          confirmButtonText: 'OK',
-        });
-      } else if (response.status === 200) {
-        attachmentService.saveZipFileToDisk(response);
-        showAlert({
-          icon: 'success',
-          html: t('incomingDocListPage.message.attachment.download_success'),
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setError(error.response?.data.message);
-        console.error(error.response?.data.message);
-      } else {
-        console.error(error);
-      }
-    }
-  };
-
   const columns: ColumnsType<TableRowDataType> = [
     {
       title: t('incomingDocListPage.table.columns.ordinalNumber'),
@@ -188,7 +155,7 @@ const IncomingDocListPage: React.FC = () => {
         return {
           onClick: (event) => {
             event.stopPropagation();
-            handleDownloadAttachment(record);
+            attachmentService.handleDownloadAttachment(record, ParentFolderEnum.ICD, setError);
           },
         };
       },

@@ -8,6 +8,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useAuth } from 'components/AuthComponent';
 import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
+import { ParentFolderEnum } from 'models/doc-file-models';
 import {
   GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
@@ -16,6 +17,7 @@ import {
   UserDto,
 } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
+import attachmentService from 'services/AttachmentService';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
@@ -83,39 +85,6 @@ const OutgoingDocListPage: React.FC = () => {
     transferDocDetailModalForm.resetFields();
   };
 
-  // const handleDownloadAttachment = async (record: TableRowDataType) => {
-  //   try {
-  //     const response = await attachmentService.downloadAttachments(
-  //       record.attachments,
-  //       record.id.toString()
-  //     );
-  //
-  //     if (response.status === 204) {
-  //       showAlert({
-  //         icon: 'error',
-  //         html: t('outgoingDocListPage.message.attachment.not_found') as string,
-  //         confirmButtonColor: PRIMARY_COLOR,
-  //         confirmButtonText: 'OK',
-  //       });
-  //     } else if (response.status === 200) {
-  //       attachmentService.saveZipFileToDisk(response);
-  //       showAlert({
-  //         icon: 'success',
-  //         html: t('outgoingDocListPage.message.attachment.download_success') as string,
-  //         showConfirmButton: false,
-  //         timer: 2000,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       setError(error.response?.data.message);
-  //       console.error(error.response?.data.message);
-  //     } else {
-  //       console.error(error);
-  //     }
-  //   }
-  // };
-
   const columns: ColumnsType<TableRowDataType> = [
     {
       title: t('outgoingDocListPage.table.columns.ordinalNumber'),
@@ -176,7 +145,7 @@ const OutgoingDocListPage: React.FC = () => {
         return {
           onClick: (event) => {
             event.stopPropagation();
-            // handleDownloadAttachment(record);
+            attachmentService.handleDownloadAttachment(record, ParentFolderEnum.OGD, setError);
           },
         };
       },
