@@ -28,6 +28,7 @@ const componentMap: ComponentMap = {
 
 const TransferDocModal: React.FC<TransferModalProps> = ({
   isModalOpen,
+  isSubmitLoading,
   handleOk,
   handleCancel,
   form,
@@ -111,6 +112,8 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
+      confirmLoading={isSubmitLoading}
+      cancelButtonProps={{ disabled: isSubmitLoading }}
       width={1000}>
       <Divider />
       <Row className='mt-5'>

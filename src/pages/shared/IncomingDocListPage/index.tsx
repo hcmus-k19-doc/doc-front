@@ -36,7 +36,7 @@ const IncomingDocListPage: React.FC = () => {
 
   const showAlert = useSweetAlert();
   const [_, setError] = useState<string>();
-  const { isLoading, data } = useIncomingDocRes();
+  const { isLoading, data, isFetching } = useIncomingDocRes();
   const [transferDocDetailModalForm] = useForm();
   const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
@@ -213,7 +213,7 @@ const IncomingDocListPage: React.FC = () => {
       <Divider />
 
       <Table
-        loading={isLoading}
+        loading={isLoading || isFetching}
         onRow={(record) => {
           return {
             onDoubleClick: () => {

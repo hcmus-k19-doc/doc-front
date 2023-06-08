@@ -82,13 +82,14 @@ function OutgoingDocDetailPage() {
 
   const [foldersQuery, documentTypesQuery, , departmentsQuery] = useDropDownFieldsQuery();
 
-  const { isLoading, data } = useOutgoingDocumentDetailQuery(+(docId || 1));
+  const { isLoading, data, isFetching } = useOutgoingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<OutgoingDocumentGetDto[]>([]);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
   const navigate = useNavigate();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [, setError] = useState<string>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
@@ -204,17 +205,17 @@ function OutgoingDocDetailPage() {
       const response = await outgoingDocumentService.updateOutgoingDocument(document);
 
       if (response.status === 200) {
-        await showAlert({
+        showAlert({
           icon: 'success',
           html: `${t('outgoing_doc_detail_page.message.edit_success')}`,
           showConfirmButton: false,
           timer: 2000,
         });
         setIsEditing(false);
-        await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
+        queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
-      await showAlert({
+      showAlert({
         icon: 'error',
         html: `${t('outgoing_doc_detail_page.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
@@ -272,19 +273,19 @@ function OutgoingDocDetailPage() {
       const response = await outgoingDocumentService.publishOutgoingDocument(document);
 
       if (response.status === 200) {
-        await showAlert({
+        showAlert({
           icon: 'success',
           html: `${t('outgoing_doc_detail_page.message.publish_success')}`,
           showConfirmButton: false,
           timer: 2000,
         });
 
-        await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
+        queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
 
         removeButtons();
       }
     } catch (error) {
-      await showAlert({
+      showAlert({
         icon: 'error',
         html: `${t('outgoing_doc_detail_page.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
@@ -327,10 +328,9 @@ function OutgoingDocDetailPage() {
         const response = await outgoingDocumentService.getTransferDocumentDetail(
           getTransferDocumentDetailRequest
         );
-
         setTransferDocumentDetail(response);
       } catch (error) {
-        await showAlert({
+        showAlert({
           icon: 'error',
           html: t('outgoingDocListPage.message.get_transfer_document_detail_error'),
           confirmButtonColor: PRIMARY_COLOR,
@@ -369,23 +369,22 @@ function OutgoingDocDetailPage() {
         currentUser
       )
     ) {
-      setIsModalOpen(false);
       modalForm.submit();
-      modalForm.resetFields();
+      setIsSubmitLoading(true);
       transferQuerySetter(transferDocDto);
       try {
         const response = await outgoingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
-          await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 1)]);
-          navigate('/docout/out-list');
+          queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 1)]);
+          // navigate('/docout/out-list');
           currentUser?.role !== DocSystemRoleEnum.GIAM_DOC
-            ? await showAlert({
+            ? showAlert({
                 icon: 'success',
                 html: t('outgoing_doc_detail_page.message.report_success') as string,
                 showConfirmButton: false,
                 timer: 2000,
               })
-            : await showAlert({
+            : showAlert({
                 icon: 'success',
                 html: t('outgoing_doc_detail_page.message.transfer_secretary_success') as string,
                 showConfirmButton: false,
@@ -400,12 +399,15 @@ function OutgoingDocDetailPage() {
           console.error(error);
         }
       }
+      setIsSubmitLoading(false);
+      modalForm.resetFields();
+      setIsModalOpen(false);
     }
   };
 
   return (
     <>
-      <Skeleton loading={isLoading} active>
+      <Skeleton loading={isLoading || isFetching} active>
         <div className='text-lg text-primary'>{t('outgoing_doc_detail_page.title')}</div>
 
         {isReleased && <DocStatus status={OutgoingDocumentStatusEnum.RELEASED} />}
@@ -720,6 +722,7 @@ function OutgoingDocDetailPage() {
           <TransferDocModal
             form={modalForm}
             isModalOpen={isModalOpen}
+            isSubmitLoading={isSubmitLoading}
             handleCancel={handleOnCancelModal}
             handleOk={handleOnOkModal}
             selectedDocs={selectedDocs}

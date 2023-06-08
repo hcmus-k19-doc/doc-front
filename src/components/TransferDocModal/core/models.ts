@@ -40,6 +40,7 @@ export const getItem = (label: React.ReactNode, key: React.Key): MenuItem => {
 
 export interface TransferModalProps {
   isModalOpen: boolean;
+  isSubmitLoading: boolean;
   handleOk: () => void;
   handleCancel: () => void;
   form: FormInstance;
