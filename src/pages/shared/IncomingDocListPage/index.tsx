@@ -85,11 +85,11 @@ const IncomingDocListPage: React.FC = () => {
   };
 
   const columns: ColumnsType<TableRowDataType> = [
-    // {
-    //   title: t('incomingDocListPage.table.columns.ordinalNumber'),
-    //   dataIndex: 'ordinalNumber',
-    //   sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
-    // }, //arrive number is enough, ordinal number will cause confusion on page changed
+    {
+      title: t('incomingDocListPage.table.columns.ordinalNumber'),
+      dataIndex: 'ordinalNumber',
+      sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
+    },
     {
       title: t('incomingDocListPage.table.columns.arriveId'),
       dataIndex: 'arriveId',
@@ -203,6 +203,7 @@ const IncomingDocListPage: React.FC = () => {
       <Divider />
 
       <Table
+        style={{ width: 'auto' }}
         loading={isLoading || isFetching}
         onRow={(record) => {
           return {

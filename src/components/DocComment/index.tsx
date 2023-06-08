@@ -18,7 +18,12 @@ function Editor({ onChange, onSubmit, submitting, value }: EditorProps) {
       <CKEditor editor={ClassicEditor} data={value} onChange={onChange} />
 
       <Form.Item className='flex w-full flex-wrap mt-4 content-center'>
-        <Button htmlType='submit' loading={submitting} onClick={onSubmit} type='primary'>
+        <Button
+          htmlType='submit'
+          loading={submitting}
+          onClick={onSubmit}
+          type='primary'
+          size='large'>
           {t('incomingDocDetailPage.comment.button.title')}
         </Button>
       </Form.Item>

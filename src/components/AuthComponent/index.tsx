@@ -13,6 +13,12 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+TopBarProgress.config({
+  barColors: {
+    '0': '#324AB2',
+  },
+});
+
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [auth, setAuth] = useState<TokenDto | undefined>(authUtils.getAuth());
   const [currentUser, setCurrentUser] = useState<UserDto | undefined>();
