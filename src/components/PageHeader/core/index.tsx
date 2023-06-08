@@ -5,8 +5,12 @@ import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 
 export const languageItems: MenuProps['items'] = [
   {
-    key: '1',
+    key: 'vie',
     label: t('page_header.languages.vi'),
+  },
+  {
+    key: 'eng',
+    label: t('page_header.languages.en'),
   },
 ];
 

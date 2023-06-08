@@ -8,7 +8,7 @@ import {
 } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 
-import outgoingDocumentService from '../../services/OutgoingDocumentService';
+import outgoingDocumentService from 'services/OutgoingDocumentService';
 
 const validateAssignee = (assigneeId?: number, t?: any) => {
   if (!assigneeId) {

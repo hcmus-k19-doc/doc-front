@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
+import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
 import dayjs from 'dayjs';
 import {
@@ -13,7 +14,6 @@ import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
-import { useAuth } from '../../../AuthComponent';
 import DirectorScreenComponent from '../../components/DirectorScreenComponent';
 import ExpertScreenComponent from '../../components/ExpertScreenComponent';
 import ManagerScreenComponent from '../../components/ManagerScreenComponent';
@@ -158,7 +158,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
 
   return (
     <Modal
-      title={`${transferLabel}`.toUpperCase()}
+      title={`${transferLabel}`}
       open={isModalOpen}
       onCancel={handleClose}
       footer={[

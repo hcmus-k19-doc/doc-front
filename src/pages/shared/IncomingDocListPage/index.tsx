@@ -91,6 +91,16 @@ const IncomingDocListPage: React.FC = () => {
       sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
     },
     {
+      title: t('incomingDocListPage.table.columns.arriveId'),
+      dataIndex: 'arriveId',
+      sorter: (a, b) => a.arriveId.localeCompare(b.arriveId),
+    },
+    {
+      title: t('incomingDocListPage.table.columns.originId'),
+      dataIndex: 'originId',
+      sorter: (a, b) => a.originId.localeCompare(b.originId),
+    },
+    {
       title: t('incomingDocListPage.table.columns.name'),
       dataIndex: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
@@ -106,27 +116,12 @@ const IncomingDocListPage: React.FC = () => {
       onFilter: (value, record) => record.type.indexOf(value as string) === 0,
     },
     {
-      title: t('incomingDocListPage.table.columns.arriveId'),
-      dataIndex: 'arriveId',
-      sorter: (a, b) => a.arriveId.localeCompare(b.arriveId),
-    },
-    {
-      title: t('incomingDocListPage.table.columns.originId'),
-      dataIndex: 'originId',
-      sorter: (a, b) => a.originId.localeCompare(b.originId),
-    },
-    {
       title: t('incomingDocListPage.table.columns.arriveDate'),
       dataIndex: 'arriveDate',
       sorter: (a, b) =>
         moment(a.arriveDate, YEAR_MONTH_DAY_FORMAT).diff(
           moment(b.arriveDate, YEAR_MONTH_DAY_FORMAT)
         ),
-      filters: [...new Set(data?.payload.map((item) => item.arriveDate))].map((item) => ({
-        text: item,
-        value: item,
-      })),
-      onFilter: (value, record) => record.arriveDate.indexOf(value as string) === 0,
     },
     {
       title: t('incomingDocListPage.table.columns.issuePlace'),
@@ -175,11 +170,6 @@ const IncomingDocListPage: React.FC = () => {
       dataIndex: 'deadline',
       sorter: (a, b) =>
         moment(a.deadline, YEAR_MONTH_DAY_FORMAT).diff(moment(b.deadline, YEAR_MONTH_DAY_FORMAT)),
-      filters: [...new Set(data?.payload.map((item) => item.deadline))].map((item) => ({
-        text: item,
-        value: item,
-      })),
-      onFilter: (value, record) => record.deadline.indexOf(value as string) === 0,
     },
     {
       title: t('incomingDocListPage.table.columns.transferDetailBtn'),
@@ -213,6 +203,7 @@ const IncomingDocListPage: React.FC = () => {
       <Divider />
 
       <Table
+        style={{ width: 'auto' }}
         loading={isLoading || isFetching}
         onRow={(record) => {
           return {

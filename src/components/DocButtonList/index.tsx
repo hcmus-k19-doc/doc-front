@@ -5,11 +5,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'antd';
 import { AxiosError } from 'axios';
 import { IncomingDocumentDto } from 'models/doc-main-models';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { validateDocBeforeClose } from 'shared/validators/TransferDocValidator';
 
-import { DocSystemRoleEnum } from '../../models/doc-main-models';
 import { useAuth } from '../AuthComponent';
 
 export interface DocButtonListProps {

@@ -1,4 +1,4 @@
-export const PRIMARY_COLOR = '#4fafd1';
+export const PRIMARY_COLOR = '#324AB2';
 
 export const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
 

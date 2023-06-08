@@ -35,25 +35,23 @@ const IncomingDocumentSearchForm = () => {
           }}
           layout='vertical'>
           <Row justify='space-between'>
-            <Col className='ml-6' span={16}>
+            <Col className='ml-6' span={24}>
               <Row>
-                <Col span={11}>
+                <Col span={7}>
                   <Form.Item name='incomingNumber' label={t('search_criteria_bar.incoming_number')}>
                     <Input />
                   </Form.Item>
                 </Col>
-                <Col span={2}></Col>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={7}>
                   <Form.Item
                     name='originalSymbolNumber'
                     label={t('search_criteria_bar.original_symbol_number')}>
                     <Input />
                   </Form.Item>
                 </Col>
-              </Row>
-
-              <Row>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={7}>
                   <Form.Item name='documentTypeId' label={t('search_criteria_bar.document_type')}>
                     <Select>
                       {documentTypes?.map((documentType: any) => (
@@ -64,8 +62,9 @@ const IncomingDocumentSearchForm = () => {
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col span={2}></Col>
-                <Col span={11}>
+              </Row>
+              <Row>
+                <Col span={7}>
                   <Form.Item
                     name='distributionOrgId'
                     label={t('search_criteria_bar.distribution_organization')}>
@@ -78,10 +77,8 @@ const IncomingDocumentSearchForm = () => {
                     </Select>
                   </Form.Item>
                 </Col>
-              </Row>
-
-              <Row>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={7}>
                   <Form.Item name='arrivingDate' label={t('search_criteria_bar.arriving_date')}>
                     <DatePicker.RangePicker
                       format={DAY_MONTH_YEAR_FORMAT}
@@ -90,8 +87,8 @@ const IncomingDocumentSearchForm = () => {
                     />
                   </Form.Item>
                 </Col>
-                <Col span={2}></Col>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={7}>
                   <Form.Item
                     name='processingDuration'
                     label={t('search_criteria_bar.processing_duration')}>
@@ -103,27 +100,23 @@ const IncomingDocumentSearchForm = () => {
                   </Form.Item>
                 </Col>
               </Row>
-
               <Row>
-                <Col span={24}>
+                <Col span={23}>
                   <Form.Item name='summary' label={t('search_criteria_bar.summary')}>
                     <TextArea rows={4} />
                   </Form.Item>
                 </Col>
               </Row>
-
-              <Row justify='end'>
-                <Button className='px-8 mx-5' htmlType='submit' type='primary'>
-                  {t('common.search_criteria.search')}
-                </Button>
-                <Button
-                  onClick={() => form.resetFields()}
-                  htmlType='submit'
-                  type='default'
-                  className='px-8 reset-btn'>
-                  {t('common.search_criteria.reset')}
-                </Button>
-              </Row>
+              <Button className='px-8 mr-5' htmlType='submit' type='primary'>
+                {t('common.search_criteria.search')}
+              </Button>
+              <Button
+                onClick={() => form.resetFields()}
+                htmlType='submit'
+                type='default'
+                className='px-8 reset-btn'>
+                {t('common.search_criteria.reset')}
+              </Button>
             </Col>
           </Row>
         </Form>
