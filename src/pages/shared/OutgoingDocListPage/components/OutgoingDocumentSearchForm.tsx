@@ -33,25 +33,23 @@ const OutgoingDocumentSearchForm = () => {
           }}
           layout='vertical'>
           <Row justify='space-between'>
-            <Col className='ml-6' span={16}>
+            <Col className='ml-6' span={23}>
               <Row>
-                <Col span={11}>
+                <Col span={4}>
                   <Form.Item name='outgoingNumber' label={t('search_criteria_bar.outgoing_number')}>
                     <Input />
                   </Form.Item>
                 </Col>
-                <Col span={2}></Col>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={4}>
                   <Form.Item
                     name='originalSymbolNumber'
                     label={t('search_criteria_bar.original_symbol_number')}>
                     <Input />
                   </Form.Item>
                 </Col>
-              </Row>
-
-              <Row>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={6}>
                   <Form.Item name='documentTypeId' label={t('search_criteria_bar.document_type')}>
                     <Select>
                       {documentTypes?.map((documentType: any) => (
@@ -62,11 +60,8 @@ const OutgoingDocumentSearchForm = () => {
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col span={2}></Col>
-              </Row>
-
-              <Row>
-                <Col span={11}>
+                <Col span={1}></Col>
+                <Col span={7}>
                   <Form.Item name='releaseDate' label={t('search_criteria_bar.release_date')}>
                     <DatePicker.RangePicker
                       format={DAY_MONTH_YEAR_FORMAT}
@@ -75,7 +70,6 @@ const OutgoingDocumentSearchForm = () => {
                     />
                   </Form.Item>
                 </Col>
-                {/*<Col span={2}></Col>*/}
               </Row>
 
               <Row>
@@ -85,20 +79,19 @@ const OutgoingDocumentSearchForm = () => {
                   </Form.Item>
                 </Col>
               </Row>
-
-              <Row justify='end'>
-                <Button className='px-8 mx-5' htmlType='submit' type='primary'>
-                  {t('common.search_criteria.search')}
-                </Button>
-                <Button
-                  onClick={() => form.resetFields()}
-                  htmlType='submit'
-                  type='default'
-                  className='px-8 reset-btn'>
-                  {t('common.search_criteria.reset')}
-                </Button>
-              </Row>
             </Col>
+            <Row>
+              <Button className='px-8 mx-5' htmlType='submit' type='primary'>
+                {t('common.search_criteria.search')}
+              </Button>
+              <Button
+                onClick={() => form.resetFields()}
+                htmlType='submit'
+                type='default'
+                className='px-8 reset-btn'>
+                {t('common.search_criteria.reset')}
+              </Button>
+            </Row>
           </Row>
         </Form>
       </Panel>

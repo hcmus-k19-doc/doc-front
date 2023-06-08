@@ -5,21 +5,17 @@ import PageHeader from 'components/PageHeader';
 import { t } from 'i18next';
 
 import ChangePasswordCard from './components/ChangePasswordCard';
-import LogInfoCard from './components/LogInfoCard';
 import UserInfoCard from './components/UserInfoCard';
 
 function ProfilePage() {
   return (
-    <Row>
-      <Col span='10'>
-        <Space direction='vertical' size='large'>
-          <UserInfoCard />
-          <ChangePasswordCard />
-        </Space>
+    <Row className='mb-5'>
+      <Col span={15}>
+        <UserInfoCard />
       </Col>
-      <Col span='1' />
-      <Col span='13'>
-        <LogInfoCard />
+      <Col span={1}></Col>
+      <Col span={8}>
+        <ChangePasswordCard />
       </Col>
     </Row>
   );

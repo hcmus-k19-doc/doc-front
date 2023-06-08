@@ -620,7 +620,7 @@ function OutgoingDocDetailPage() {
         </Form>
 
         {!isReleased && (
-          <Row className='w-full justify-end '>
+          <Row className='my-3 mb-10'>
             {isEditing || isReviewing ? (
               <Button
                 type='default'

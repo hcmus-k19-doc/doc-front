@@ -287,7 +287,7 @@ export default {
       sender: 'Người chuyển',
       implementation_date: 'Ngày thực hiện',
       document: 'Văn bản',
-      summary: 'Trích yếu - đề nghị',
+      summary: 'Trích yếu',
       assignee: 'Người nhận',
       collaborators: 'Người tham gia',
     },

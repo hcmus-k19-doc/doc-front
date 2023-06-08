@@ -119,9 +119,11 @@ const DirectorScreenComponent: React.FC<TransferDocScreenProps> = ({
                   </Col>
                   <Col span='18'>{item.name}</Col>
                 </Row>
-                <Row className='mt-4 mb-4' align='middle'>
+                <Row className='mt-4 mb-4'>
                   <Col span='6'>
-                    <Text strong>{t(i18n_summary)}</Text>
+                    <Text strong>
+                      <div dangerouslySetInnerHTML={{ __html: t(i18n_summary) }}></div>
+                    </Text>
                   </Col>
                   <Col span='16'>
                     <TextArea rows={4} disabled defaultValue={item.summary} />

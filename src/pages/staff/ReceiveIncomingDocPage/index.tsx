@@ -453,7 +453,7 @@ function ReceiveIncomingDocPage() {
             </Form.Item>
           </Col>
 
-          <Row className='w-full justify-end '>
+          <Row className='my-3'>
             <Button type='primary' size='large' htmlType='submit' className='mr-5'>
               {t('receiveIncomingDocPage.form.button.save')}
             </Button>

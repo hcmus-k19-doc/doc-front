@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Avatar, List } from 'antd';
+import { Empty } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
 import { ContainerHeight } from 'components/PageHeader/core/common';
@@ -37,58 +39,64 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
 
   return (
     <>
-      <List>
-        <VirtualList
-          data={props.notifications}
-          height={ContainerHeight}
-          itemHeight={47}
-          itemKey='id'
-          onScroll={props.onScroll}>
-          {(item: TransferHistoryDto) => (
-            <List.Item key={item.id}>
-              <List.Item.Meta
-                avatar={
-                  item.senderId === currentUser?.id ? (
-                    <Avatar icon={<ArrowUpOutlined />} className='avatar' />
-                  ) : (
-                    <Avatar icon={<ArrowDownOutlined />} className='avatar' />
-                  )
-                }
-                title={<a href='#'>{t('transfer_history.title')}</a>}
-                description={t('transfer_history.message', {
-                  sender:
-                    item.senderId === currentUser?.id
-                      ? t('transfer_history.default_sender')
-                      : item.senderName,
-                  receiver:
-                    item.receiverId !== currentUser?.id
-                      ? item.receiverName
-                      : t('transfer_history.default_receiver'),
-                  documentId: item.documentIds.join(', '),
-                  level: item.isTransferToSameLevel
-                    ? t('transfer_history.same_level')
-                    : t('transfer_history.process'),
-                })}
-              />
-              <div>
-                <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
-                  {t('transfer_history.button.view_detail')}
-                </a>
-              </div>
-            </List.Item>
-          )}
-        </VirtualList>
-      </List>
-      <div className='notification-actions'>
-        <a href='#'>Mark all as read</a>
-      </div>
+      {props.notifications.length > 0 ? (
+        <>
+          <List>
+            <VirtualList
+              data={props.notifications}
+              height={ContainerHeight}
+              itemHeight={47}
+              itemKey='id'
+              onScroll={props.onScroll}>
+              {(item: TransferHistoryDto) => (
+                <List.Item key={item.id}>
+                  <List.Item.Meta
+                    avatar={
+                      item.senderId === currentUser?.id ? (
+                        <Avatar icon={<ArrowUpOutlined />} className='avatar' />
+                      ) : (
+                        <Avatar icon={<ArrowDownOutlined />} className='avatar' />
+                      )
+                    }
+                    title={<a href='#'>{t('transfer_history.title')}</a>}
+                    description={t('transfer_history.message', {
+                      sender:
+                        item.senderId === currentUser?.id
+                          ? t('transfer_history.default_sender')
+                          : item.senderName,
+                      receiver:
+                        item.receiverId !== currentUser?.id
+                          ? item.receiverName
+                          : t('transfer_history.default_receiver'),
+                      documentId: item.documentIds.join(', '),
+                      level: item.isTransferToSameLevel
+                        ? t('transfer_history.same_level')
+                        : t('transfer_history.process'),
+                    })}
+                  />
+                  <div>
+                    <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
+                      {t('transfer_history.button.view_detail')}
+                    </a>
+                  </div>
+                </List.Item>
+              )}
+            </VirtualList>
+          </List>
+          <div className='notification-actions'>
+            <a href='#'>{t('notification.mark_all_as_read')}</a>
+          </div>
 
-      <TransferHistoryDetailModal
-        form={modalForm}
-        isModalOpen={isModalOpen}
-        handleClose={handleOnCancelModal}
-        transferHistory={selectedTransferHistory as TransferHistoryDto}
-      />
+          <TransferHistoryDetailModal
+            form={modalForm}
+            isModalOpen={isModalOpen}
+            handleClose={handleOnCancelModal}
+            transferHistory={selectedTransferHistory as TransferHistoryDto}
+          />
+        </>
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t('text.no_notification')} />
+      )}
     </>
   );
 };
