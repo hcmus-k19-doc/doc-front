@@ -25,6 +25,8 @@ import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
+import TransferDocModal from 'components/TransferDocModal';
+import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
@@ -45,23 +47,17 @@ import {
   Urgency,
   UserDto,
 } from 'models/doc-main-models';
+import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
-
-import TransferDocModal from '../../../components/TransferDocModal';
-import TransferOutgoingDocModalDetail from '../../../components/TransferDocModal/components/TransferOutgoingDocModalDetail';
-import {
-  initialTransferQueryState,
-  useTransferQuerySetter,
-} from '../../../shared/hooks/TransferDocQuery';
-import { validateTransferDocs } from '../../../shared/validators/TransferDocValidator';
-import { getStepOutgoingDocument } from '../../../utils/TransferDocUtils';
-import { transferDocModalState } from '../IncomingDocListPage/core/states';
+import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 
 import './index.css';
 

@@ -86,25 +86,15 @@ const OutgoingDocListPage: React.FC = () => {
   };
 
   const columns: ColumnsType<TableRowDataType> = [
-    {
-      title: t('outgoingDocListPage.table.columns.ordinalNumber'),
-      dataIndex: 'ordinalNumber',
-      sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
-    },
+    // {
+    //   title: t('outgoingDocListPage.table.columns.ordinalNumber'),
+    //   dataIndex: 'ordinalNumber',
+    //   sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
+    // },
     {
       title: t('outgoingDocListPage.table.columns.name'),
       dataIndex: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
-    },
-    {
-      title: t('outgoingDocListPage.table.columns.type'),
-      dataIndex: 'type',
-      sorter: (a, b) => a.type.localeCompare(b.type),
-    },
-    {
-      title: t('outgoingDocListPage.table.columns.status'),
-      dataIndex: 'status',
-      sorter: (a, b) => a.status.localeCompare(b.status),
     },
     {
       title: t('outgoingDocListPage.table.columns.originId'),
@@ -114,6 +104,21 @@ const OutgoingDocListPage: React.FC = () => {
       title: t('outgoingDocListPage.table.columns.release_number'),
       dataIndex: 'releaseNumber',
       sorter: (a, b) => a.releaseNumber.localeCompare(b.releaseNumber),
+    },
+    {
+      title: t('outgoingDocListPage.table.columns.type'),
+      dataIndex: 'type',
+      sorter: (a, b) => a.type.localeCompare(b.type),
+      filters: [...new Set(data?.payload.map((item) => item.type))].map((item) => ({
+        text: item,
+        value: item,
+      })),
+      onFilter: (value, record) => record.type.indexOf(value as string) === 0,
+    },
+    {
+      title: t('outgoingDocListPage.table.columns.status'),
+      dataIndex: 'status',
+      sorter: (a, b) => a.status.localeCompare(b.status),
     },
     {
       title: t('outgoingDocListPage.table.columns.summary'),
@@ -127,6 +132,11 @@ const OutgoingDocListPage: React.FC = () => {
       title: t('outgoingDocListPage.table.columns.issuePlace'),
       dataIndex: 'issuePlace',
       sorter: (a, b) => a.issuePlace.localeCompare(b.issuePlace),
+      filters: [...new Set(data?.payload.map((item) => item.issuePlace))].map((item) => ({
+        text: item,
+        value: item,
+      })),
+      onFilter: (value, record) => record.issuePlace.indexOf(value as string) === 0,
     },
     {
       title: t('outgoingDocListPage.table.columns.fullText'),
