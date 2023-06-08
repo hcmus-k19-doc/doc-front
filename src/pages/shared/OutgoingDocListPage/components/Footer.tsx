@@ -23,6 +23,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const [outgoingDocReqQuery, setOutgoingDocReqQuery] = useOutgoingDocReq();
   const { data } = useOutgoingDocRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [modalForm] = useForm();
   const { currentUser } = useAuth();
   const [, setError] = useState<string>();
@@ -68,22 +69,21 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         currentUser
       )
     ) {
-      setIsModalOpen(false);
       modalForm.submit();
-      modalForm.resetFields();
+      setIsSubmitLoading(true);
       transferQuerySetter(transferDocDto);
       try {
         const response = await outgoingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
-          await queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
+          queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
           currentUser?.role !== DocSystemRoleEnum.GIAM_DOC
-            ? await showAlert({
+            ? showAlert({
                 icon: 'success',
                 html: t('outgoing_doc_detail_page.message.report_success') as string,
                 showConfirmButton: false,
                 timer: 2000,
               })
-            : await showAlert({
+            : showAlert({
                 icon: 'success',
                 html: t('outgoing_doc_detail_page.message.transfer_secretary_success') as string,
                 showConfirmButton: false,
@@ -98,6 +98,9 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           console.error(error);
         }
       }
+      setIsSubmitLoading(false);
+      modalForm.resetFields();
+      setIsModalOpen(false);
       setSelectedDocs([]);
     }
   };
@@ -138,6 +141,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       <TransferDocModal
         form={modalForm}
         isModalOpen={isModalOpen}
+        isSubmitLoading={isSubmitLoading}
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
         selectedDocs={selectedDocs}

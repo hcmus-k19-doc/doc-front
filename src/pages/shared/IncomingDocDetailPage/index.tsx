@@ -73,7 +73,7 @@ function IncomingDocPage() {
   };
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
-  const { isLoading, data } = useIncomingDocumentDetailQuery(+(docId || 1));
+  const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
@@ -92,6 +92,7 @@ function IncomingDocPage() {
   const { currentUser } = useAuth();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [, setError] = useState<string>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
@@ -158,9 +159,8 @@ function IncomingDocPage() {
         currentUser
       )
     ) {
-      setIsModalOpen(false);
       modalForm.submit();
-      modalForm.resetFields();
+      setIsSubmitLoading(true);
       transferQuerySetter(transferDocDto);
       try {
         const response = await incomingDocumentService.transferDocuments(transferDocDto);
@@ -185,6 +185,9 @@ function IncomingDocPage() {
         }
       }
     }
+    setIsSubmitLoading(false);
+    modalForm.resetFields();
+    setIsModalOpen(false);
   };
 
   if (!isLoading) {
@@ -299,7 +302,7 @@ function IncomingDocPage() {
   };
 
   return (
-    <Skeleton loading={isLoading} active>
+    <Skeleton loading={isLoading || isFetching} active>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
       <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
         <Row>
@@ -619,6 +622,7 @@ function IncomingDocPage() {
         <TransferDocModal
           form={modalForm}
           isModalOpen={isModalOpen}
+          isSubmitLoading={isSubmitLoading}
           handleCancel={handleOnCancelModal}
           handleOk={handleOnOkModal}
           selectedDocs={selectedDocs}

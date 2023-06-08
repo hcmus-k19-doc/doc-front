@@ -23,6 +23,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const { data } = useIncomingDocRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [modalForm] = useForm();
   const { currentUser } = useAuth();
   const [, setError] = useState<string>();
@@ -68,9 +69,8 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         currentUser
       )
     ) {
-      setIsModalOpen(false);
       modalForm.submit();
-      modalForm.resetFields();
+      setIsSubmitLoading(true);
       transferQuerySetter(transferDocDto);
       try {
         const response = await incomingDocumentService.transferDocuments(transferDocDto);
@@ -91,6 +91,9 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           console.error(error);
         }
       }
+      setIsSubmitLoading(false);
+      modalForm.resetFields();
+      setIsModalOpen(false);
       setSelectedDocs([]);
     }
   };
@@ -128,6 +131,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       <TransferDocModal
         form={modalForm}
         isModalOpen={isModalOpen}
+        isSubmitLoading={isSubmitLoading}
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
         selectedDocs={selectedDocs}
