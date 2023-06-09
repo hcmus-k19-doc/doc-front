@@ -29,7 +29,6 @@ export default function ProcessingStepComponent({ processingDocumentType }: Prop
     data: ProcessingDetailsRowDataType[] | undefined
   ) => {
     if (processingDocumentType === ProcessingDocumentTypeEnum.INCOMING_DOCUMENT) {
-      // {t(`user.role_v2.${role}`)}
       return [
         {
           className: 'step-item',
@@ -87,34 +86,14 @@ export default function ProcessingStepComponent({ processingDocumentType }: Prop
             description: '',
           }
         );
+      } else if (stepItems?.length === 2) {
+        stepItems?.splice(2, 0, {
+          className: 'step-item',
+          title: '',
+          description: '',
+        });
       }
       return stepItems;
-      // return [
-      //   {
-      //     className: 'step-item',
-      //     title: t('common.processing_step.processing_step_out.step_1.title'),
-      //     description: t('common.processing_step.processing_step_out.step_1.description', {
-      //       department: data?.[0]?.department,
-      //       fullName: data?.[0]?.fullName,
-      //     }),
-      //   },
-      //   {
-      //     className: 'step-item',
-      //     title: t('common.processing_step.processing_step_out.step_2.title'),
-      //     description: t('common.processing_step.processing_step_out.step_2.description', {
-      //       department: data?.[1]?.department,
-      //       fullName: data?.[1]?.fullName,
-      //     }),
-      //   },
-      //   {
-      //     className: 'step-item',
-      //     title: t('common.processing_step.processing_step_out.step_3.title'),
-      //     description: t('common.processing_step.processing_step_out.step_3.description', {
-      //       department: data?.[2]?.department,
-      //       fullName: data?.[2]?.fullName,
-      //     }),
-      //   },
-      // ];
     }
   };
 
