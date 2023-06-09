@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-09 23:51:46.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-10 00:15:51.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -224,6 +224,7 @@ export interface ProcessingUserDto {
     fullName: string;
     role: ProcessingDocumentRoleEnum;
     department: string;
+    docSystemRole: DocSystemRoleEnum;
 }
 
 export interface SearchCriteriaDto {

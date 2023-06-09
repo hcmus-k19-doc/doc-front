@@ -79,35 +79,38 @@
         "title": "Góp ý"
       }
     },
-    "processing_step_in": {
-      "title": "Tiến độ xử lý",
-      "step_1": {
-        "title": "Giám đốc",
-        "description": "{{department}} - {{fullName}}"
+    "processing_step": {
+      "processing_step_in": {
+        "title": "Tiến độ xử lý",
+        "step_1": {
+          "title": "Giám đốc",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_2": {
+          "title": "Chánh văn phòng",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_3": {
+          "title": "Chuyên viên",
+          "description": "{{department}} - {{fullName}}"
+        }
       },
-      "step_2": {
-        "title": "Chánh văn phòng",
-        "description": "{{department}} - {{fullName}}"
+      "processing_step_out": {
+        "title": "Tiến độ xử lý",
+        "step_1": {
+          "title": "Chánh văn phòng",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_2": {
+          "title": "Giám đốc",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_3": {
+          "title": "Văn thư",
+          "description": "{{department}} - {{fullName}}"
+        }
       },
-      "step_3": {
-        "title": "Chuyên viên",
-        "description": "{{department}} - {{fullName}}"
-      }
-    },
-    "processing_step_out": {
-      "title": "Tiến độ xử lý",
-      "step_1": {
-        "title": "Chánh văn phòng",
-        "description": "{{department}} - {{fullName}}"
-      },
-      "step_2": {
-        "title": "Giám đốc",
-        "description": "{{department}} - {{fullName}}"
-      },
-      "step_3": {
-        "title": "Văn thư",
-        "description": "{{department}} - {{fullName}}"
-      }
+      "not_processing_yet": "Văn bản chưa được xử lý"
     }
   },
   "user": {
@@ -116,6 +119,13 @@
       "GIAM_DOC": "Giám đốc",
       "CHUYEN_VIEN": "Chuyên viên",
       "TRUONG_PHONG": "Trưởng phòng",
+      "VAN_THU": "Văn thư",
+      "DOC_ADMIN": "Quản trị viên"
+    },
+    "role_v2": {
+      "GIAM_DOC": "Giám đốc",
+      "CHUYEN_VIEN": "Chuyên viên",
+      "TRUONG_PHONG": "Chánh văn phòng",
       "VAN_THU": "Văn thư",
       "DOC_ADMIN": "Quản trị viên"
     },
