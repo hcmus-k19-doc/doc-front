@@ -159,7 +159,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
 
   return (
     <Modal
-      title={`${transferLabel}`.toUpperCase()}
+      title={`${transferLabel}`}
       open={isModalOpen}
       onCancel={handleClose}
       footer={[

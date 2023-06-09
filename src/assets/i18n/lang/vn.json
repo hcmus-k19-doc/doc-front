@@ -549,7 +549,7 @@
       "sender": "Người chuyển",
       "implementation_date": "Ngày thực hiện",
       "document": "Tên văn bản",
-      "summary": "Trích yếu - đề nghị",
+      "summary": "Trích yếu",
       "assignee": "Người nhận",
       "collaborators": "Người tham gia"
     },
@@ -746,5 +746,12 @@
       "transfer_type_2": "Cùng cấp",
       "transfer_type": "Loại chuyển"
     }
+  },
+  "notification": {
+    "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
+  },
+  "text": {
+    "no_data": "Không có dữ liệu",
+    "no_notification": "Không có thông báo"
   }
 }

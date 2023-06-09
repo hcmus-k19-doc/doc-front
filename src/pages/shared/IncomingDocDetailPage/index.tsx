@@ -582,7 +582,7 @@ function IncomingDocPage() {
           </Col>
         </Row>
       </Form>
-      <Row className='w-full justify-end '>
+      <Row className='my-3 mb-10'>
         <DocButtonList
           roleNumber={roleData.role}
           enableEditing={enableEditing}

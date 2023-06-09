@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import { DocSystemRoleEnum, TransferDocDto } from 'models/doc-main-models';
+import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocReq, useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
@@ -14,7 +15,6 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 
-import { transferDocModalState } from '../../IncomingDocListPage/core/states';
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
 
