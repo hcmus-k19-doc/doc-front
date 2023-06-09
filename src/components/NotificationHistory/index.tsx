@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Avatar, List } from 'antd';
+import { Avatar, Empty, List } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
 import { ContainerHeight } from 'components/PageHeader/core/common';
@@ -34,6 +34,10 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
     setIsModalOpen(false);
     modalForm.resetFields();
   };
+
+  if (props.notifications.length === 0) {
+    return <Empty description={t('transfer_history.no_item')} />;
+  }
 
   return (
     <>
