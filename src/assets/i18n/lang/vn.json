@@ -79,7 +79,7 @@
         "title": "Góp ý"
       }
     },
-    "processing_step": {
+    "processing_step_in": {
       "title": "Tiến độ xử lý",
       "step_1": {
         "title": "Giám đốc",
@@ -91,6 +91,21 @@
       },
       "step_3": {
         "title": "Chuyên viên",
+        "description": "{{department}} - {{fullName}}"
+      }
+    },
+    "processing_step_out": {
+      "title": "Tiến độ xử lý",
+      "step_1": {
+        "title": "Chánh văn phòng",
+        "description": "{{department}} - {{fullName}}"
+      },
+      "step_2": {
+        "title": "Giám đốc",
+        "description": "{{department}} - {{fullName}}"
+      },
+      "step_3": {
+        "title": "Văn thư",
         "description": "{{department}} - {{fullName}}"
       }
     }
