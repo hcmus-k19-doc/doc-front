@@ -592,7 +592,9 @@ function IncomingDocPage() {
           onOpenTransferModal={handleOnOpenModal}
         />
       </Row>
-      <div className='text-lg text-primary'>{t('common.processing_step.title')}</div>
+      <div className='text-lg text-primary'>
+        {t('common.processing_step.processing_step_in.title')}
+      </div>
       <Row className='my-10'>
         <Col span={16}>
           <ProcessingStepComponent

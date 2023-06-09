@@ -26,6 +26,7 @@ export function useProcessingDetailsRes(
           fullName: item.processingUser.fullName,
           department: item.processingUser.department,
           role: item.processingUser.role,
+          docSystemRole: item.processingUser.docSystemRole,
         };
       });
 

@@ -80,19 +80,37 @@
       }
     },
     "processing_step": {
-      "title": "Tiến độ xử lý",
-      "step_1": {
-        "title": "Giám đốc",
-        "description": "{{department}} - {{fullName}}"
+      "processing_step_in": {
+        "title": "Tiến độ xử lý",
+        "step_1": {
+          "title": "Giám đốc",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_2": {
+          "title": "Chánh văn phòng",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_3": {
+          "title": "Chuyên viên",
+          "description": "{{department}} - {{fullName}}"
+        }
       },
-      "step_2": {
-        "title": "Chánh văn phòng",
-        "description": "{{department}} - {{fullName}}"
+      "processing_step_out": {
+        "title": "Tiến độ xử lý",
+        "step_1": {
+          "title": "Chánh văn phòng",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_2": {
+          "title": "Giám đốc",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_3": {
+          "title": "Văn thư",
+          "description": "{{department}} - {{fullName}}"
+        }
       },
-      "step_3": {
-        "title": "Chuyên viên",
-        "description": "{{department}} - {{fullName}}"
-      }
+      "not_processing_yet": "Văn bản chưa được xử lý"
     }
   },
   "user": {
@@ -101,6 +119,13 @@
       "GIAM_DOC": "Giám đốc",
       "CHUYEN_VIEN": "Chuyên viên",
       "TRUONG_PHONG": "Trưởng phòng",
+      "VAN_THU": "Văn thư",
+      "DOC_ADMIN": "Quản trị viên"
+    },
+    "role_v2": {
+      "GIAM_DOC": "Giám đốc",
+      "CHUYEN_VIEN": "Chuyên viên",
+      "TRUONG_PHONG": "Chánh văn phòng",
       "VAN_THU": "Văn thư",
       "DOC_ADMIN": "Quản trị viên"
     },
@@ -699,7 +724,7 @@
     "title": "Chuyển xử lý",
 
     "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
-    "no_more_item": "Không còn lịch sử chuyển xử lý nào",
+    "no_item": "Không có lịch sử chuyển xử lý nào",
     "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
     "button": {
       "view_detail": "Xem chi tiết"

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-05-31 10:20:55.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-10 00:15:51.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -77,8 +77,7 @@ export interface FolderDto extends DocAbstractDto {
     year: number;
 }
 
-export interface  IncomingDocumentDto extends DocAbstractDto {
-    ordinalNumber: number;
+export interface IncomingDocumentDto extends DocAbstractDto {
     name: string;
     status: ProcessingStatus;
     processingDuration: DateAsString;
@@ -152,7 +151,6 @@ export interface OutgoingDocSearchCriteriaDto {
 }
 
 export interface OutgoingDocumentGetDto extends DocAbstractDto {
-    ordinalNumber: number;
     name: string;
     outgoingNumber: string;
     originalSymbolNumber: string;
@@ -216,6 +214,7 @@ export interface PublishDocumentDto extends DocAbstractDto {
 
 export interface ProcessingDetailsDto {
     incomingNumber: string;
+    outgoingNumber: string;
     step: number;
     processingUser: ProcessingUserDto;
 }
@@ -225,6 +224,7 @@ export interface ProcessingUserDto {
     fullName: string;
     role: ProcessingDocumentRoleEnum;
     department: string;
+    docSystemRole: DocSystemRoleEnum;
 }
 
 export interface SearchCriteriaDto {

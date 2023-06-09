@@ -5,4 +5,5 @@ export interface ProcessingDetailsRowDataType {
   fullName: string;
   department: string;
   role: string;
+  docSystemRole: string;
 }
