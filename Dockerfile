@@ -1,4 +1,4 @@
-FROM node:16.19.0-buster as builder
+FROM node:16.19.0-buster AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY . .
 RUN yarn build
 
 
-FROM nginx:alpine as production
+FROM nginx:alpine AS production
 
 COPY --from=builder /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
