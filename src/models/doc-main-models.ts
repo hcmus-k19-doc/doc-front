@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-10 00:15:51.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-10 10:05:58.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -78,6 +78,7 @@ export interface FolderDto extends DocAbstractDto {
 }
 
 export interface IncomingDocumentDto extends DocAbstractDto {
+    ordinalNumber: number;
     name: string;
     status: ProcessingStatus;
     processingDuration: DateAsString;
@@ -151,6 +152,7 @@ export interface OutgoingDocSearchCriteriaDto {
 }
 
 export interface OutgoingDocumentGetDto extends DocAbstractDto {
+    ordinalNumber: number;
     name: string;
     outgoingNumber: string;
     originalSymbolNumber: string;
