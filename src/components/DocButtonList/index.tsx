@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -23,19 +22,18 @@ export interface DocButtonListProps {
 
 const DocButtonList = ({
   enableEditing,
-  roleNumber,
   isEditing,
   onFinishEditing,
   documentDetail,
   onOpenTransferModal,
 }: DocButtonListProps) => {
-  const [buttonDisplayArr, setButtonDisplayArr] = useState<boolean[]>([]);
   const { currentUser } = useAuth();
   const { docId } = useParams();
   const showAlert = useSweetAlert();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
+  // TODO: Move this function to detail page
   async function onFinishDocument() {
     if (validateDocBeforeClose(documentDetail, currentUser, t)) {
       try {
@@ -63,88 +61,37 @@ const DocButtonList = ({
       type='primary'
       key='1'
       size='large'
+      className='mr-5'
       name='edit'
       onClick={isEditing ? onFinishEditing : enableEditing}>
       {isEditing ? t('incomingDocDetailPage.button.save') : t('incomingDocDetailPage.button.edit')}
     </Button>,
-    <Button type='primary' key='2' size='large' name='collect'>
-      {t('incomingDocDetailPage.button.collect')}
-    </Button>,
-    <Button type='primary' key='3' size='large' name='report'>
+    <Button type='primary' key='3' size='large' className='mr-5' name='report'>
       {t('incomingDocDetailPage.button.report')}
     </Button>,
-    <Button type='primary' size='large' key='4' name='transfer' onClick={onOpenTransferModal}>
+    <Button
+      type='primary'
+      size='large'
+      className='mr-5'
+      key='4'
+      name='transfer'
+      onClick={onOpenTransferModal}>
       {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
         ? t('incomingDocDetailPage.button.transer_detail')
         : t('incomingDocDetailPage.button.transfer')}
     </Button>,
-    <Button type='primary' size='large' key='5' name='assign'>
-      {t('incomingDocDetailPage.button.assign')}
-    </Button>,
-    <Button type='primary' size='large' key='6' name='comment'>
-      {t('incomingDocDetailPage.button.comment')}
-    </Button>,
-    <Button type='primary' size='large' key='7' name='confirm'>
-      {t('incomingDocDetailPage.button.confirm')}
-    </Button>,
-    <Button type='primary' size='large' key='8' name='return'>
-      {t('incomingDocDetailPage.button.return')}
-    </Button>,
   ];
-
-  const shareButtonArr: JSX.Element[] = [
-    <Button type='primary' size='large' key='9' name='extend' className='mr-5'>
-      {t('incomingDocDetailPage.button.extend')}
-    </Button>,
-  ];
-
-  const resolveButtons = (roleNumber: number) => {
-    const arr: boolean[] = [];
-    for (let i = 0; i < 9; i++) {
-      if ((roleNumber >> (8 - i)) & 1) {
-        arr.push(true);
-      } else {
-        arr.push(false);
-      }
-    }
-
-    arr[2] = false;
-
-    setButtonDisplayArr(arr);
-  };
 
   const renderButtons = () => {
-    const displayArr = buttonDisplayArr.map((item, index) => {
-      if (item) {
-        return (
-          <React.Fragment key={index}>
-            {buttonArr[index]}
-            {index === buttonDisplayArr.length - 1 ? null : <span className='mr-5'></span>}
-          </React.Fragment>
-        );
-      }
-    });
-
     return [
-      ...displayArr,
-      ...shareButtonArr,
+      ...buttonArr,
       currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && (
-        <Button
-          type='primary'
-          size='large'
-          key='10'
-          name='end'
-          className='mr-5'
-          onClick={onFinishDocument}>
+        <Button type='primary' size='large' key='10' name='end' onClick={onFinishDocument}>
           {t('incomingDocDetailPage.button.end')}
         </Button>
       ),
     ];
   };
-
-  useEffect(() => {
-    resolveButtons(roleNumber);
-  }, [roleNumber]);
 
   return <>{renderButtons()}</>;
 };
