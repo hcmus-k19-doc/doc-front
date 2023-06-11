@@ -21,7 +21,7 @@
     "echarts-for-react": "3.0.2",
     "i18next": "22.4.11",
     "i18next-browser-languagedetector": "7.0.1",
-    "moment": "2.29.4",
+    "moment": "^2.29.4",
     "qs": "6.11.1",
     "rc-virtual-list": "^3.4.13",
     "react": "18.2.0",
@@ -38,6 +38,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "prepare": "husky install",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint-staged": "lint-staged",
