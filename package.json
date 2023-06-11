@@ -38,7 +38,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "prepare": "husky install",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint-staged": "lint-staged",
