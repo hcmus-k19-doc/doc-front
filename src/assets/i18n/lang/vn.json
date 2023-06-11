@@ -28,7 +28,7 @@
         "users": "Người dùng",
         "document_types": "Loại văn bản",
         "departments": "Phòng ban",
-        "calendar": "Lịch làm việc"
+        "calendar": "Công việc"
       }
     },
     "BUTTON": {
@@ -71,6 +71,11 @@
       "cancel_text": "Hủy",
       "content": "Bạn có chắc chắn muốn xóa?",
       "description_title": "Chú thích"
+    },
+    "no_data": {
+      "no_data": "Không có dữ liệu",
+      "no_work": "Không có công việc cần xử lý",
+      "no_notification": "Không có thông báo"
     },
     "footer": "HCMUS © {{year}} Hệ thống phê duyệt và phát hành văn thư",
     "comment": {
@@ -199,7 +204,7 @@
         "id": "STT",
         "issueLevel": "Cấp gửi",
         "type": "Loại văn bản",
-        "arriveId": "Số đến theo sổ",
+        "arriveId": "Số đến",
         "originId": "Số ký hiệu gốc",
         "arriveDate": "Ngày đến",
         "issuePlace": "Nơi phát hành",
@@ -238,8 +243,8 @@
       "docFolderRequired": "Hãy chọn sổ văn bản",
       "documentType": "Loại văn bản",
       "documentTypeRequired": "Hãy chọn loại văn bản",
-      "incomingNumber": "Số đến theo sổ",
-      "incomingNumberRequired": "Hãy điền số đến theo sổ",
+      "incomingNumber": "Số đến",
+      "incomingNumberRequired": "Hãy điền số đến",
       "folder": "Hồ sơ công việc",
       "folderRequired": "Hãy chọn hồ sơ công việc",
       "originalSymbolNumber": "Số ký hiệu gốc",
@@ -292,8 +297,8 @@
       "docFolderRequired": "Hãy chọn sổ văn bản",
       "documentType": "Loại văn bản",
       "documentTypeRequired": "Hãy chọn loại văn bản",
-      "incomingNumber": "Số đến theo sổ",
-      "incomingNumberRequired": "Hãy điền số đến theo sổ",
+      "incomingNumber": "Số đến",
+      "incomingNumberRequired": "Hãy điền số đến",
       "folder": "Hồ sơ công việc",
       "folderRequired": "Hãy chọn hồ sơ công việc",
       "originalSymbolNumber": "Số ký hiệu gốc",
@@ -749,9 +754,5 @@
   },
   "notification": {
     "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
-  },
-  "text": {
-    "no_data": "Không có dữ liệu",
-    "no_notification": "Không có thông báo"
   }
 }

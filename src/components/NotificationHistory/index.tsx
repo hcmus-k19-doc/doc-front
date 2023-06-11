@@ -94,7 +94,10 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
           />
         </>
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t('text.no_notification')} />
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description={t('common.no_data.no_notification')}
+        />
       )}
     </>
   );
