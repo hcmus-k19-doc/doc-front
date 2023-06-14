@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  CloseCircleOutlined,
+  InboxOutlined,
+  PlusCircleOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -10,6 +15,7 @@ import {
   DatePicker,
   Form,
   Input,
+  List,
   message,
   Row,
   Select,
@@ -59,6 +65,22 @@ import { transferDocModalState } from '../IncomingDocListPage/core/states';
 
 import './index.css';
 
+interface DataType {
+  title?: string;
+  email?: string;
+}
+
+const list: DataType[] = [
+  {
+    title: 'Title 1',
+    email: 'Email 1',
+  },
+  {
+    title: 'Title 2',
+    email: 'Email 2',
+  },
+];
+
 function IncomingDocPage() {
   const { docId } = useParams();
   const { t } = useTranslation();
@@ -67,10 +89,6 @@ function IncomingDocPage() {
   const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
-
-  const roleData = {
-    role: 224,
-  };
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
@@ -265,34 +283,24 @@ function IncomingDocPage() {
   };
 
   const saveChange = async (values: any) => {
-    try {
-      delete values.files;
+    delete values.files;
 
-      const incomingDocument: IncomingDocumentPutDto = {
-        ...values,
-        id: +(docId || 0),
-        distributionDate: new Date(values.distributionDate),
-        arrivingDate: new Date(values.arrivingDate),
-        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
-      };
+    const incomingDocument: IncomingDocumentPutDto = {
+      ...values,
+      id: +(docId || 0),
+      distributionDate: new Date(values.distributionDate),
+      arrivingDate: new Date(values.arrivingDate),
+      arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+    };
 
-      const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
+    const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
 
-      if (response.status === 200) {
-        showAlert({
-          icon: 'success',
-          html: t('incomingDocDetailPage.message.success') as string,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-    } catch (error) {
-      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
+    if (response.status === 200) {
       showAlert({
-        icon: 'error',
-        html: t('incomingDocDetailPage.message.error') as string,
-        confirmButtonColor: PRIMARY_COLOR,
-        confirmButtonText: 'OK',
+        icon: 'success',
+        html: t('incomingDocDetailPage.message.success') as string,
+        showConfirmButton: false,
+        timer: 2000,
       });
     }
   };
@@ -579,12 +587,41 @@ function IncomingDocPage() {
                 <p className='ant-upload-text'>{t('incomingDocDetailPage.form.fileHelper')}</p>
               </Dragger>
             </Form.Item>
+
+            <div className='mb-10'></div>
+
+            <div className='linked-documents'>
+              <div className='flex justify-between linked-header'>
+                <div className='linked-label font-semibold'>
+                  {t('incomingDocDetailPage.linked_document.title')}
+                </div>
+                <div className='text-primary pr-2'>
+                  <PlusCircleOutlined />
+                  <span className='ml-2 cursor-pointer'>
+                    {t('incomingDocDetailPage.linked_document.add')}
+                  </span>
+                </div>
+              </div>
+
+              <List
+                itemLayout='horizontal'
+                dataSource={list}
+                renderItem={(item) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <List.Item actions={[<CloseCircleOutlined />]}>
+                    <List.Item.Meta
+                      title={<a href='https://ant.design'>{item.title}</a>}
+                      description={item.email}
+                    />
+                  </List.Item>
+                )}
+              />
+            </div>
           </Col>
         </Row>
       </Form>
       <Row className='my-3 mb-10'>
         <DocButtonList
-          roleNumber={roleData.role}
           enableEditing={enableEditing}
           isEditing={isEditing}
           onFinishEditing={onFinishEditing}

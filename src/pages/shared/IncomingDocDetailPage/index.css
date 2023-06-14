@@ -5,3 +5,21 @@ label {
 .anticon-undo {
   color: #324ab2;
 }
+
+.anticon-close-circle {
+  font-size: 16px;
+  color: #324ab2;
+}
+
+.anticon-close-circle:hover {
+  cursor: pointer;
+  color: #f5222d;
+}
+
+.ant-list-item {
+  padding: 10px 0 10px 0 !important;
+}
+
+.ant-list-item:first-child {
+  padding-top: 0 !important;
+}

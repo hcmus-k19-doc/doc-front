@@ -389,6 +389,10 @@
       "only_in_progress_docs_can_be_closed": "Chỉ có thể kết thúc văn bản đang xử lý",
       "only_chuyen_vien_can_close_document": "Chỉ có chuyên viên mới có thể kết thúc văn bản",
       "you_dont_have_permission_to_close_this_document": "Bạn không có quyền kết thúc văn bản này"
+    },
+    "linked_document": {
+      "title": "Văn bản phúc đáp",
+      "add": "Thêm"
     }
   },
   "create_outgoing_doc_page": {
