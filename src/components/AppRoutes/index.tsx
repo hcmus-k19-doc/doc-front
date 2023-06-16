@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
+import { BASE_NAME } from 'config/constant';
 import NotFoundPage from 'pages/error/NotFoundPage';
 import ServerErrorPage from 'pages/error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
@@ -19,7 +20,7 @@ const AppRoutes = () => {
   const ProfilePage = lazy(() => import('pages/shared/ProfilePage'));
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASE_NAME}>
       <GlobalHistory />
       <AxiosNavigation />
       <Routes>

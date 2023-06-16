@@ -13,7 +13,7 @@ RUN yarn build
 
 FROM nginx:alpine AS production
 
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/doc-front/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY /nginx/default.conf /etc/nginx/conf.d
 
