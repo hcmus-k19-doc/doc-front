@@ -53,6 +53,7 @@ import { RecoilRoot, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
+import { useDocInLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/IncomingDocument';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import DateValidator from 'shared/validators/DateValidator';
@@ -65,22 +66,6 @@ import { transferDocModalState } from '../IncomingDocListPage/core/states';
 
 import './index.css';
 
-interface DataType {
-  title?: string;
-  email?: string;
-}
-
-const list: DataType[] = [
-  {
-    title: 'Title 1',
-    email: 'Email 1',
-  },
-  {
-    title: 'Title 2',
-    email: 'Email 2',
-  },
-];
-
 function IncomingDocPage() {
   const { docId } = useParams();
   const { t } = useTranslation();
@@ -90,6 +75,7 @@ function IncomingDocPage() {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const linkedDocuments = useDocInLinkedDocumentsQuery(+(docId || 1));
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
@@ -605,13 +591,13 @@ function IncomingDocPage() {
 
               <List
                 itemLayout='horizontal'
-                dataSource={list}
+                dataSource={linkedDocuments.data}
                 renderItem={(item) => (
                   // eslint-disable-next-line react/jsx-key
                   <List.Item actions={[<CloseCircleOutlined />]}>
                     <List.Item.Meta
-                      title={<a href='https://ant.design'>{item.title}</a>}
-                      description={item.email}
+                      title={<a href='https://ant.design'>{item.name}</a>}
+                      description={item.summary}
                     />
                   </List.Item>
                 )}

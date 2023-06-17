@@ -92,6 +92,13 @@ async function getTransferDocumentDetail(
   return response.data;
 }
 
+async function getLinkedDocuments(incomingDocumentId: number) {
+  const { data } = await axios.get<OutgoingDocumentGetDto[]>(
+    `${OUTGOING_DOCUMENTS_URL}/link-documents/${incomingDocumentId}`
+  );
+  return data;
+}
+
 const outgoingDocumentService = {
   createOutgoingDocument,
   getOutgoingDocumentById,
@@ -102,6 +109,7 @@ const outgoingDocumentService = {
   getTransferOutgoingDocumentsSetting,
   validateTransferDocuments,
   getTransferDocumentDetail,
+  getLinkedDocuments,
 };
 
 export default outgoingDocumentService;
