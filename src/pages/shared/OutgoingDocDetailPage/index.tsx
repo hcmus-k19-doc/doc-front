@@ -30,6 +30,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
+import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
@@ -78,6 +79,8 @@ function OutgoingDocDetailPage() {
   const { t } = useTranslation();
   const [form] = useForm();
   const showAlert = useSweetAlert();
+
+  const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isReviewing, setIsReviewing] = useState(false);
@@ -409,6 +412,10 @@ function OutgoingDocDetailPage() {
     }
   };
 
+  const handleCancelLinkDocument = () => {
+    setOpenLinkDocumentModal(false);
+  };
+
   return (
     <>
       <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
@@ -631,7 +638,11 @@ function OutgoingDocDetailPage() {
                   <div className='linked-label font-semibold'>
                     {t('incomingDocDetailPage.linked_document.title')}
                   </div>
-                  <div className='text-primary pr-2'>
+                  <div
+                    className='text-primary pr-2'
+                    onClick={() => {
+                      setOpenLinkDocumentModal(true);
+                    }}>
                     <PlusCircleOutlined />
                     <span className='ml-2 cursor-pointer'>
                       {t('incomingDocDetailPage.linked_document.add')}
@@ -765,6 +776,13 @@ function OutgoingDocDetailPage() {
             type={'OutgoingDocument'}
           />
         )}
+
+        <LinkDocumentModal
+          isIncomingDocument={false}
+          isModalOpen={openLinkDocumentModal}
+          handleOk={handleCancelLinkDocument}
+          handleCancel={handleCancelLinkDocument}
+        />
       </Skeleton>
     </>
   );

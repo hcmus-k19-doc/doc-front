@@ -29,6 +29,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import DocButtonList from 'components/DocButtonList';
 import DocComment from 'components/DocComment';
+import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
@@ -82,6 +83,8 @@ function IncomingDocPage() {
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
   const navigate = useNavigate();
+
+  const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
 
   useEffect(() => {
     const incomingDocument = {
@@ -192,6 +195,10 @@ function IncomingDocPage() {
     setIsSubmitLoading(false);
     modalForm.resetFields();
     setIsModalOpen(false);
+  };
+
+  const handleOnCancelLinkModal = () => {
+    setOpenLinkDocumentModal(false);
   };
 
   if (!isLoading) {
@@ -581,7 +588,11 @@ function IncomingDocPage() {
                 <div className='linked-label font-semibold'>
                   {t('incomingDocDetailPage.linked_document.title')}
                 </div>
-                <div className='text-primary pr-2'>
+                <div
+                  className='text-primary pr-2'
+                  onClick={() => {
+                    setOpenLinkDocumentModal(true);
+                  }}>
                   <PlusCircleOutlined />
                   <span className='ml-2 cursor-pointer'>
                     {t('incomingDocDetailPage.linked_document.add')}
@@ -654,6 +665,13 @@ function IncomingDocPage() {
           type={'IncomingDocument'}
         />
       )}
+
+      <LinkDocumentModal
+        isIncomingDocument={true}
+        isModalOpen={openLinkDocumentModal}
+        handleOk={handleOnCancelLinkModal}
+        handleCancel={handleOnCancelLinkModal}
+      />
     </Skeleton>
   );
 }
