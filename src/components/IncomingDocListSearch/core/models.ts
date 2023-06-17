@@ -31,3 +31,7 @@ export interface FooterProps {
   selectedDocs: IncomingDocumentDto[];
   setSelectedDocs: (docs: IncomingDocumentDto[]) => void;
 }
+
+export interface IncomingDocListSearchProps {
+  linkedDocuments: any;
+}

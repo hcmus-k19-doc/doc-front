@@ -5,17 +5,16 @@ import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import { IncomingDocumentDto } from 'models/doc-main-models';
 import moment from 'moment';
-import { RecoilRoot } from 'recoil';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { YEAR_MONTH_DAY_FORMAT } from 'utils/DateTimeUtils';
 
 import Footer from './components/Footer';
 import IncomingDocumentSearchForm from './components/IncomingDocumentSearchForm';
-import { TableRowDataType } from './core/models';
+import { IncomingDocListSearchProps, TableRowDataType } from './core/models';
 
 import './index.css';
 
-const IncomingDocListSearch: React.FC = () => {
+const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({ linkedDocuments }) => {
   const { isLoading, data, isFetching } = useIncomingDocRes(true);
 
   const navigate = useNavigate();
@@ -95,7 +94,7 @@ const IncomingDocListSearch: React.FC = () => {
           type: 'checkbox',
           ...rowSelection,
           getCheckboxProps: (record) => ({
-            disabled: record.isDocTransferred || record.isDocCollaborator,
+            disabled: linkedDocuments?.some((doc: { id: number }) => doc.id === record.id),
           }),
         }}
         columns={columns}
@@ -108,10 +107,4 @@ const IncomingDocListSearch: React.FC = () => {
   );
 };
 
-const IncomingDocListPageWrapper = () => (
-  <RecoilRoot>
-    <IncomingDocListSearch />
-  </RecoilRoot>
-);
-
-export default IncomingDocListPageWrapper;
+export default IncomingDocListSearch;

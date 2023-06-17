@@ -24,7 +24,6 @@ const Footer: React.FC<FooterProps> = () => {
         total={data?.totalElements}
         pageSize={PAGE_SIZE_MODAL}
         pageSizeOptions={['5']}
-        showTotal={(total) => t('common.pagination.show_total', { total })}
       />
     </div>
   );
