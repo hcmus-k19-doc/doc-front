@@ -607,7 +607,21 @@ function IncomingDocPage() {
                   // eslint-disable-next-line react/jsx-key
                   <List.Item actions={[<CloseCircleOutlined />]}>
                     <List.Item.Meta
-                      title={<a href='https://ant.design'>{item.name}</a>}
+                      title={
+                        <div
+                          onClick={() => {
+                            globalNavigate(`/docout/out-detail/${item.id}`);
+                          }}>
+                          <span className='cursor-pointer text-primary text-link mr-2'>
+                            {item.name}
+                          </span>
+                          {item.outgoingNumber && (
+                            <span>
+                              {item.outgoingNumber}/{item.originalSymbolNumber}
+                            </span>
+                          )}
+                        </div>
+                      }
                       description={item.summary}
                     />
                   </List.Item>

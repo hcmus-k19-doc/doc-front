@@ -644,7 +644,7 @@ function OutgoingDocDetailPage() {
                       setOpenLinkDocumentModal(true);
                     }}>
                     <PlusCircleOutlined />
-                    <span className='ml-2 cursor-pointer'>
+                    <span className='ml-2 cursor-pointer text-link'>
                       {t('incomingDocDetailPage.linked_document.add')}
                     </span>
                   </div>
@@ -657,7 +657,19 @@ function OutgoingDocDetailPage() {
                     // eslint-disable-next-line react/jsx-key
                     <List.Item actions={[<CloseCircleOutlined />]}>
                       <List.Item.Meta
-                        title={<a href='https://ant.design'>{item.name}</a>}
+                        title={
+                          <div
+                            onClick={() => {
+                              globalNavigate(`/docin/in-detail/${item.id}`);
+                            }}>
+                            <span className='cursor-pointer text-primary text-link mr-2'>
+                              {item.name}
+                            </span>
+                            <span>
+                              {item.incomingNumber}/{item.originalSymbolNumber}
+                            </span>
+                          </div>
+                        }
                         description={item.summary}
                       />
                     </List.Item>

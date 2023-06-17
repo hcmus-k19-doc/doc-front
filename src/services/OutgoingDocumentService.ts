@@ -4,6 +4,7 @@ import {
   DocPaginationDto,
   GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
+  IncomingDocumentDto,
   OutgoingDocSearchCriteriaDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
@@ -93,7 +94,7 @@ async function getTransferDocumentDetail(
 }
 
 async function getLinkedDocuments(incomingDocumentId: number) {
-  const { data } = await axios.get<OutgoingDocumentGetDto[]>(
+  const { data } = await axios.get<IncomingDocumentDto[]>(
     `${OUTGOING_DOCUMENTS_URL}/link-documents/${incomingDocumentId}`
   );
   return data;

@@ -6,6 +6,7 @@ import {
   GetTransferDocumentDetailRequest,
   IncomingDocumentDto,
   IncomingDocumentPutDto,
+  OutgoingDocumentGetDto,
   ProcessingDetailsDto,
   ProcessingDocumentTypeEnum,
   SearchCriteriaDto,
@@ -120,7 +121,7 @@ async function closeDocument(incomingDocumentId: number) {
 }
 
 async function getLinkedDocuments(incomingDocumentId: number) {
-  const { data } = await axios.get<IncomingDocumentDto[]>(
+  const { data } = await axios.get<OutgoingDocumentGetDto[]>(
     `${INCOMING_DOCUMENTS_URL}/link-documents/${incomingDocumentId}`
   );
   return data;
