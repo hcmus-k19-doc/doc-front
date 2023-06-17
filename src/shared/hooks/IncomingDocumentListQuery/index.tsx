@@ -46,7 +46,7 @@ export const useIncomingDocRes = () => {
               name: item.name,
               key: item.id,
               id: item.id,
-              issueLevel: t(`SENDING_LEVEL.${item.sendingLevel.level}`),
+              issueLevel: t(`SENDING_LEVEL.${item?.sendingLevel?.level}`),
               type: item.documentType.type,
               arriveId: item.incomingNumber,
               originId: item.originalSymbolNumber,
