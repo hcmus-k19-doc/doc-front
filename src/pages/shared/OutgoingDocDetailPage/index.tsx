@@ -790,6 +790,7 @@ function OutgoingDocDetailPage() {
         )}
 
         <LinkDocumentModal
+          selectedDocuments={linkedDocuments.data}
           isIncomingDocument={false}
           isModalOpen={openLinkDocumentModal}
           handleOk={handleCancelLinkDocument}

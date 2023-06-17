@@ -681,6 +681,7 @@ function IncomingDocPage() {
       )}
 
       <LinkDocumentModal
+        selectedDocuments={linkedDocuments.data}
         isIncomingDocument={true}
         isModalOpen={openLinkDocumentModal}
         handleOk={handleOnCancelLinkModal}
