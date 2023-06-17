@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  CloseCircleOutlined,
+  InboxOutlined,
+  PlusCircleOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -11,6 +16,7 @@ import {
   DatePicker,
   Form,
   Input,
+  List,
   message,
   Modal,
   Row,
@@ -60,6 +66,7 @@ import { globalNavigate } from 'utils/RoutingUtils';
 import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 
 import './index.css';
+import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/OutgoingDocument';
 
 const { confirm } = Modal;
 
@@ -76,6 +83,7 @@ function OutgoingDocDetailPage() {
   const [isReviewing, setIsReviewing] = useState(false);
   const [isReleased, setIsReleased] = useState(false);
 
+  const linkedDocuments = useDocOutLinkedDocumentsQuery(+(docId || 1));
   const [foldersQuery, documentTypesQuery, , departmentsQuery] = useDropDownFieldsQuery();
 
   const { isLoading, data, isFetching } = useOutgoingDocumentDetailQuery(+(docId || 1));
@@ -403,7 +411,7 @@ function OutgoingDocDetailPage() {
 
   return (
     <>
-      <Skeleton loading={isLoading || isFetching} active>
+      <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
         <div className='text-lg text-primary'>{t('outgoing_doc_detail_page.title')}</div>
 
         {isReleased && <DocStatus status={OutgoingDocumentStatusEnum.RELEASED} />}
@@ -615,6 +623,36 @@ function OutgoingDocDetailPage() {
                   </p>
                 </Dragger>
               </Form.Item>
+
+              <div className='mb-10'></div>
+
+              <div className='linked-documents'>
+                <div className='flex justify-between linked-header'>
+                  <div className='linked-label font-semibold'>
+                    {t('incomingDocDetailPage.linked_document.title')}
+                  </div>
+                  <div className='text-primary pr-2'>
+                    <PlusCircleOutlined />
+                    <span className='ml-2 cursor-pointer'>
+                      {t('incomingDocDetailPage.linked_document.add')}
+                    </span>
+                  </div>
+                </div>
+
+                <List
+                  itemLayout='horizontal'
+                  dataSource={linkedDocuments.data}
+                  renderItem={(item) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <List.Item actions={[<CloseCircleOutlined />]}>
+                      <List.Item.Meta
+                        title={<a href='https://ant.design'>{item.name}</a>}
+                        description={item.summary}
+                      />
+                    </List.Item>
+                  )}
+                />
+              </div>
             </Col>
           </Row>
         </Form>

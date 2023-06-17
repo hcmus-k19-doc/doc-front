@@ -296,7 +296,7 @@ function IncomingDocPage() {
   };
 
   return (
-    <Skeleton loading={isLoading || isFetching} active>
+    <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
       <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
         <Row>
