@@ -57,7 +57,11 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                         <Avatar icon={<ArrowDownOutlined />} className='avatar' />
                       )
                     }
-                    title={<a href='#'>{t('transfer_history.title')}</a>}
+                    title={
+                      <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
+                        {t('transfer_history.title')}
+                      </a>
+                    }
                     description={t('transfer_history.message', {
                       sender:
                         item.senderId === currentUser?.id
