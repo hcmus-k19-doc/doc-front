@@ -125,6 +125,8 @@ const PageHeader: React.FC = () => {
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
+      // move the scrollbar up in order to continue scroll
+      e.currentTarget.scrollTop -= 12;
       appendData();
       setCurrentPage((currentPage) => currentPage + 1);
     }
