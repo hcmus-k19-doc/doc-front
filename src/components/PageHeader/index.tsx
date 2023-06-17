@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
@@ -14,6 +13,7 @@ import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
+import { t } from 'i18next';
 import {
   DocSystemRoleEnum,
   TransferHistoryDto,
@@ -32,7 +32,6 @@ const { Header } = Layout;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { logout } = useAuth();
   const location = useLocation();
   const { currentUser } = useAuth();
@@ -44,13 +43,13 @@ const PageHeader: React.FC = () => {
   const mainNavigator: MenuProps['items'] = [
     {
       key: '/',
-      label: 'Văn bản',
+      label: t('page_header.document'),
       icon: <DatabaseOutlined />,
       onClick: () => navigate('/'),
     },
     {
       key: '/statistics',
-      label: 'Thống kê',
+      label: t('page_header.statistics'),
       icon: <FundOutlined />,
       onClick: () => navigate('/statistics'),
     },
@@ -59,13 +58,13 @@ const PageHeader: React.FC = () => {
   const profileNavigator: MenuProps['items'] = [
     {
       key: '/profile',
-      label: 'Thông tin cá nhân',
+      label: t('page_header.profile'),
       icon: <UserOutlined />,
       onClick: () => navigate('/profile'),
     },
     {
       key: '/logout',
-      label: 'Đăng xuất',
+      label: t('page_header.logout.title'),
       icon: <LogoutOutlined />,
       onClick: () => confirmLogout(),
     },

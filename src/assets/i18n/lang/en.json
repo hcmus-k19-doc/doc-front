@@ -1,0 +1,760 @@
+{
+  "LOGIN": {
+    "SUBTITLE": "Approval and Release of Documents System",
+    "SUBMITTER": {
+      "SUBMIT_TEXT": "Log in"
+    },
+    "USERNAME": {
+      "PLACEHOLDER": "Username",
+      "RULE_MESSAGE": "Please enter your username"
+    },
+    "PASSWORD": {
+      "PLACEHOLDER": "Password",
+      "RULE_MESSAGE": "Please enter your password"
+    }
+  },
+  "main_page": {
+    "menu": {
+      "items": {
+        "label": "Incoming Documents",
+        "incoming_document_list": "List of Incoming Documents",
+        "receiving_incoming_document": "Receive Incoming Document",
+        "create_outgoing_document": "Create Outgoing Document",
+        "processes_incoming_document": "Process Incoming Document",
+        "outgoing_document": "Outgoing Document",
+        "outgoing_document_list": "List of Outgoing Documents",
+        "internal_document": "Internal Document",
+        "admin_management": "System Management",
+        "users": "Users",
+        "document_types": "Document Types",
+        "departments": "Departments",
+        "calendar": "Calendar"
+      }
+    },
+    "BUTTON": {
+      "REPORT_TO_LEADER": "Report to Leader"
+    }
+  },
+  "page_header": {
+    "languages": {
+      "title": "Language",
+      "en": "English",
+      "vi": "Vietnamese"
+    },
+    "profile": "Profile",
+    "document": "Document",
+    "statistics": "Statistics",
+    "logout": {
+      "title": "Logout",
+      "modal": {
+        "title": "Confirmation",
+        "ok_text": "Logout",
+        "cancel_text": "Cancel",
+        "content": "Are you sure you want to log out?"
+      }
+    }
+  },
+  "common": {
+    "pagination": {
+      "show_total": "Results: {{total}}"
+    },
+    "search_criteria": {
+      "title": "Search Criteria",
+      "search": "Search",
+      "reset": "Reset"
+    },
+    "button": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "refresh": "Refresh"
+    },
+    "modal": {
+      "title": "Confirmation",
+      "ok_text": "OK",
+      "cancel_text": "Cancel",
+      "content": "Are you sure you want to delete?",
+      "description_title": "Description"
+    },
+    "no_data": {
+      "no_data": "No data",
+      "no_work": "No pending tasks",
+      "no_notification": "No notifications"
+    },
+    "footer": "HCMUS © {{year}} Approval and Release of Documents System",
+    "comment": {
+      "title": "Document Feedback",
+      "button": {
+        "title": "Provide Feedback"
+      }
+    },
+    "processing_step": {
+      "processing_step_in": {
+        "title": "Processing Progress",
+        "step_1": {
+          "title": "Director",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_2": {
+          "title": "Chief of Staff",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_3": {
+          "title": "Specialist",
+          "description": "{{department}} - {{fullName}}"
+        }
+      },
+      "processing_step_out": {
+        "title": "Processing Progress",
+        "step_1": {
+          "title": "Chief of Staff",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_2": {
+          "title": "Director",
+          "description": "{{department}} - {{fullName}}"
+        },
+        "step_3": {
+          "title": "Secretary",
+          "description": "{{department}} - {{fullName}}"
+        }
+      },
+      "not_processing_yet": "Document not processed yet"
+    }
+  },
+  "user": {
+    "invalid": "Invalid account",
+    "role": {
+      "GIAM_DOC": "Director",
+      "CHUYEN_VIEN": "Specialist",
+      "TRUONG_PHONG": "Department Head",
+      "VAN_THU": "Secretary",
+      "DOC_ADMIN": "Administrator"
+    },
+    "role_v2": {
+      "GIAM_DOC": "Director",
+      "CHUYEN_VIEN": "Specialist",
+      "TRUONG_PHONG": "Chief of Staff",
+      "VAN_THU": "Secretary",
+      "DOC_ADMIN": "Administrator"
+    },
+    "detail": {
+      "title": "User Information",
+      "id": "ID",
+      "username": "Username",
+      "password": "Password",
+      "email": "Email",
+      "full_name": "Full Name",
+      "role": "Role",
+      "department": "Department",
+      "username_required": "Please enter your username",
+      "password_required": "Please enter your password",
+      "full_name_required": "Please enter your full name",
+      "email_invalid": "Invalid email",
+      "role_required": "Please select a role",
+      "department_required": "Please select a department",
+      "old_password": "Old Password",
+      "confirm_password": "Confirm Password",
+      "new_password": "New Password",
+      "change_password": "Change Password",
+      "password_not_match": "Passwords do not match",
+      "change_password_success": "Password changed successfully"
+    },
+    "username": {
+      "existed": "Username already exists"
+    },
+    "email": {
+      "existed": "Email already exists"
+    },
+    "not_found": "User not found",
+    "password": {
+      "incorrect": "Incorrect password"
+    }
+  },
+  "SENDING_LEVEL": {
+    "CITY": "City",
+    "DISTRICT": "District",
+    "SCHOOL": "School"
+  },
+  "PROCESSING_STATUS": {
+    "UNPROCESSED": "Unprocessed",
+    "IN_PROGRESS": "In Progress",
+    "CLOSED": "Closed",
+    "WAITING_FOR_OUTGOING_NUMBER": "Waiting for Outgoing Number",
+    "READY_TO_RELEASE": "Ready to Release",
+    "RELEASED": "Released"
+  },
+  "search_criteria_bar": {
+    "incoming_number": "Incoming Document Number",
+    "outgoing_number": "Outgoing Document Number",
+    "original_symbol_number": "Original Symbol Number",
+    "document_type": "Document Type",
+    "distribution_organization": "Issuing Organization",
+    "arriving_date": "Arriving Date",
+    "release_date": "Release Date",
+    "processing_duration": "Processing Duration",
+    "summary": "Summary",
+    "user_management": {
+      "username": "Username",
+      "email": "Email",
+      "full_name": "Full Name",
+      "role": "Role",
+      "department": "Department"
+    }
+  },
+  "incomingDocListPage": {
+    "table": {
+      "columns": {
+        "id": "No.",
+        "issueLevel": "Sending Level",
+        "type": "Document Type",
+        "arriveId": "Incoming Number",
+        "originId": "Original Symbol Number",
+        "arriveDate": "Arriving Date",
+        "issuePlace": "Issuing Place",
+        "summary": "Summary",
+        "fullText": "Full Text",
+        "status": "Status",
+        "deadline": "Processing Deadline",
+        "transferDetailBtn": "Transfer Details",
+        "transferDetail": "View Details",
+        "ordinalNumber": "No.",
+        "name": "Document Name"
+      },
+      "tooltip": {
+        "downloadAttachment": "Download Attachment"
+      }
+    },
+    "message": {
+      "attachment": {
+        "not_found": "No data available",
+        "download_success": "Attachment downloaded successfully"
+      },
+      "selected_docs": {
+        "unprocessed": "Unprocessed",
+        "in_progress": "In Progress",
+        "closed": "Closed",
+        "summary": "Selected {{count}} documents ({{unprocessedDocs}} unprocessed, {{processingDocs}} in progress, {{closedDocs}} closed)"
+      },
+      "transfer_success": "Document transfer successful",
+      "get_transfer_document_detail_error": "Failed to retrieve transfer document information"
+    }
+  },
+  "receiveIncomingDocPage": {
+    "title": "Receive Incoming Document",
+    "form": {
+      "docFolder": "Document Folder",
+      "docFolderRequired": "Please select a document folder",
+      "documentType": "Document Type",
+      "documentTypeRequired": "Please select a document type",
+      "incomingNumber": "Incoming Number",
+      "incomingNumberRequired": "Please enter the incoming number",
+      "folder": "Job Folder",
+      "folderRequired": "Please select a job folder",
+      "originalSymbolNumber": "Original Symbol Number",
+      "originalSymbolNumberRequired": "Please enter the original symbol number",
+      "distributionOrg": "Issuing Organization",
+      "distributionOrgRequired": "Please select an issuing organization",
+      "distributionDate": "Distribution Date",
+      "distributionDateInvalid": "Distribution date must be the same as or earlier than the arrival date",
+      "distributionDateGreaterThanNowError": "Distribution date must be earlier than or equal to the current date",
+      "distributionDateRequired": "Please select a distribution date",
+      "arrivingDate": "Arriving Date",
+      "arrivingDateRequired": "Please select an arriving date",
+      "arrivingDateInvalid": "Arrival date must be the same as or later than the distribution date",
+      "arrivingDateGreaterThanNowError": "Arrival date must be earlier than or equal to the current date",
+      "arrivingTime": "Arriving Time",
+      "arrivingTimeRequired": "Please select an arriving time",
+      "summary": "Summary",
+      "summaryRequired": "Please enter a summary",
+      "signer": "Signer",
+      "signerRequired": "Please select a signer",
+      "signerTitle": "Signer's Title",
+      "signerTitleRequired": "Please enter the signer's title",
+      "confidentiality": "Confidentiality",
+      "confidentialityRequired": "Please select a confidentiality level",
+      "urgency": "Urgency",
+      "urgencyRequired": "Please select an urgency level",
+      "files": "Attached Files",
+      "filesRequired": "Please select attached files",
+      "fileHelper": "Click or drag files here to upload",
+      "button": {
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    },
+    "message": {
+      "file_error": "attachment failed.",
+      "file_success": "has been attached",
+      "file_max_count_error": "You can only attach a maximum of 3 files",
+      "file_type_error": "You can only attach files with the following formats: .pdf, .jpg, .jpeg, .png",
+      "file_size_error": "File size cannot exceed 3MB",
+      "file_duplicate_error": "File has already been attached",
+      "success": "Document received successfully",
+      "error": "An error occurred, please try again."
+    }
+  },
+  "incomingDocDetailPage": {
+    "title": "Incoming Document Details",
+    "form": {
+      "docFolder": "Document Folder",
+      "docFolderRequired": "Please select a document folder",
+      "documentType": "Document Type",
+      "documentTypeRequired": "Please select a document type",
+      "incomingNumber": "Incoming Number",
+      "incomingNumberRequired": "Please enter the incoming number",
+      "folder": "Work Folder",
+      "folderRequired": "Please select a work folder",
+      "originalSymbolNumber": "Original Symbol Number",
+      "originalSymbolNumberRequired": "Please enter the original symbol number",
+      "distributionOrg": "Issuing Organization",
+      "distributionOrgRequired": "Please select an issuing organization",
+      "distributionDate": "Distribution Date",
+      "distributionDateInvalid": "Distribution date must be the same as or earlier than the arrival date",
+      "distributionDateGreaterThanNowError": "Distribution date must be earlier than or equal to the current date",
+      "distributionDateRequired": "Please select a distribution date",
+      "arrivingDate": "Arrival Date",
+      "arrivingDateRequired": "Please select an arrival date",
+      "arrivingDateInvalid": "Arrival date must be the same as or later than the distribution date",
+      "arrivingDateGreaterThanNowError": "Arrival date must be earlier than or equal to the current date",
+      "arrivingTime": "Arrival Time",
+      "arrivingTimeRequired": "Please select an arrival time",
+      "summary": "Summary",
+      "summaryRequired": "Please enter a summary",
+      "signer": "Signer",
+      "signerRequired": "Please select a signer",
+      "signerTitle": "Signer's Title",
+      "signerTitleRequired": "Please enter the signer's title",
+      "confidentiality": "Confidentiality",
+      "confidentialityRequired": "Please select a confidentiality level",
+      "urgency": "Urgency",
+      "urgencyRequired": "Please select an urgency level",
+      "files": "Attached Files",
+      "filesRequired": "Please select attached files",
+      "fileHelper": "Click or drag files here to upload",
+      "select": {
+        "option": {
+          "HIGH": "High",
+          "MEDIUM": "Medium",
+          "LOW": "Low"
+        }
+      },
+      "name": "Document Name",
+      "name_required": "Please enter the document name"
+    },
+    "button": {
+      "collect": "Collect",
+      "edit": "Edit",
+      "save": "Save Edits",
+      "report": "Report to Leadership",
+      "process": "Process Document",
+      "transfer": "Transfer for Processing",
+      "assign": "Assign",
+      "comment": "Comment on Document",
+      "confirm": "Confirm Viewed",
+      "return": "Return",
+      "extend": "Request Extension",
+      "end": "End",
+      "transer_detail": "View Transfer Details"
+    },
+    "message": {
+      "file_error": "Attachment failed.",
+      "file_success": "has been attached",
+      "file_max_count_error": "You can only attach a maximum of 3 files",
+      "file_type_error": "You can only attach files with the following formats: .pdf, .jpg, .jpeg, .png",
+      "file_size_error": "File size cannot exceed 3MB",
+      "file_duplicate_error": "File has already been attached",
+      "success": "Document received successfully",
+      "error": "An error occurred, please try again.",
+      "closed_successfully": "Document has been closed"
+    },
+    "comment": {
+      "title": "Comment on Document",
+      "button": {
+        "title": "Comment"
+      }
+    },
+    "processing_step": {
+      "title": "Processing Steps",
+      "step_1": {
+        "title": "Director",
+        "description": "{{department}} - {{fullName}}"
+      },
+      "step_2": {
+        "title": "Office Manager",
+        "description": "{{department}} - {{fullName}}"
+      },
+      "step_3": {
+        "title": "Specialist",
+        "description": "{{department}} - {{fullName}}"
+      }
+    },
+    "close_document": {
+      "only_in_progress_docs_can_be_closed": "Only in-progress documents can be closed",
+      "only_chuyen_vien_can_close_document": "Only specialists can close documents",
+      "you_dont_have_permission_to_close_this_document": "You don't have permission to close this document"
+    }
+  },
+  "create_outgoing_doc_page": {
+    "title": "Create Outgoing Document",
+    "form": {
+      "doc_folder": "Document Folder",
+      "doc_folder_required": "Please select a document folder",
+      "document_type": "Document Type",
+      "document_type_required": "Please select a document type",
+      "original_symbol_number": "Original Symbol Number",
+      "original_symbol_number_required": "Please enter the original symbol number",
+      "release_number": "Release Number",
+      "distribution_org": "Issuing Department",
+      "distribution_org_required": "Please select an issuing department",
+      "distribution_date": "Distribution Date",
+      "receive_org": "Receiving Unit",
+      "receive_org_required": "Please enter the receiving unit",
+      "note": "Note",
+      "summary": "Summary",
+      "summary_required": "Please enter a summary",
+      "signer": "Issuing Signer",
+      "confidentiality": "Confidentiality",
+      "confidentiality_required": "Please select a confidentiality level",
+      "urgency": "Urgency",
+      "urgency_required": "Please select an urgency level",
+      "files": "Attached Files",
+      "files_required": "Please select attached files",
+      "file_helper": "Click or drag files here to upload",
+      "name": "Document Name",
+      "name_required": "Please enter the document name"
+    },
+    "button": {
+      "save": "Save Document",
+      "cancel": "Cancel"
+    },
+    "message": {
+      "file_error": "Attachment failed.",
+      "file_success": "has been attached",
+      "file_max_count_error": "You can only attach a maximum of 3 files",
+      "file_type_error": "You can only attach files with the following formats: .pdf, .jpg, .jpeg, .png",
+      "file_size_error": "File size cannot exceed 3MB",
+      "file_duplicate_error": "File has already been attached",
+      "success": "Document created successfully",
+      "error": "An error occurred, please try again."
+    },
+    "comment": {
+      "title": "Comment on Document",
+      "button": {
+        "title": "Comment"
+      }
+    }
+  },
+  "outgoingDocListPage": {
+    "table": {
+      "columns": {
+        "id": "No.",
+        "type": "Document Type",
+        "release_number": "Release Number",
+        "originId": "Original Symbol Number",
+        "releaseDate": "Arrival Date",
+        "issuePlace": "Issuing Place",
+        "summary": "Summary",
+        "fullText": "Full Text",
+        "status": "Status",
+        "transferDetailBtn": "Transfer for Processing",
+        "transferDetail": "View Details",
+        "ordinalNumber": "No.",
+        "name": "Document Name"
+      },
+      "tooltip": {
+        "downloadAttachment": "Download Attached File"
+      }
+    },
+    "message": {
+      "attachment": {
+        "not_found": "No data available",
+        "download_success": "Attachment downloaded successfully"
+      },
+      "selected_docs": {
+        "unprocessed": "Not Processed",
+        "in_progress": "In Progress",
+        "waiting_for_outgoing_number": "Waiting for Outgoing Number",
+        "ready_to_release": "Ready to Release",
+        "released": "Released",
+        "summary": "Selected {{count}} documents ({{unprocessedDocs}} not processed, {{processingDocs}} in progress, {{waitingOutgoingNumberDocs}} waiting for outgoing number, {{readyReleaseDocs}} ready to release, {{releasedDocs}} released)"
+      },
+      "transfer_success": "Document transferred successfully",
+      "get_transfer_document_detail_error": "Failed to retrieve leadership document information"
+    }
+  },
+  "outgoing_doc_detail_page": {
+    "title": "Outgoing Document Details",
+    "status": {
+      "note": "Below properties are uppercase to match with document status",
+      "UNPROCESSED": "Not Processed",
+      "IN_PROGRESS": "In Progress",
+      "RELEASED": "Released"
+    },
+    "form": {
+      "doc_folder": "Document Folder",
+      "doc_folder_required": "Please select a document folder",
+      "document_type": "Document Type",
+      "document_type_required": "Please select a document type",
+      "original_symbol_number": "Original Symbol Number",
+      "original_symbol_number_required": "Please enter the original symbol number",
+      "release_number": "Release Number",
+      "distribution_org": "Issuing Department",
+      "distribution_org_required": "Please select an issuing department",
+      "distribution_date": "Release Date",
+      "receive_org": "Receiving Unit",
+      "receive_org_required": "Please enter the receiving unit",
+      "note": "Note",
+      "summary": "Summary",
+      "summary_required": "Please enter the summary",
+      "signer": "Issuing Signatory",
+      "confidentiality": "Confidentiality",
+      "confidentiality_required": "Please select the confidentiality level",
+      "urgency": "Urgency",
+      "urgency_required": "Please select the urgency level",
+      "files": "Attached Files",
+      "files_required": "Please select attached files",
+      "file_helper": "Click or drag and drop files here to upload",
+      "name": "Document Name",
+      "name_required": "Please enter the document name"
+    },
+    "button": {
+      "edit": "Edit Document",
+      "save": "Save Changes",
+      "review": "Preview Release Document",
+      "publish": "Publish Document",
+      "publish_modal": "Publish",
+      "report": "Submit to Leadership",
+      "cancel": "Cancel",
+      "transfer_secretary": "Transfer to Secretary",
+      "view_transfer_detail": "View Transfer Details"
+    },
+    "message": {
+      "file_error": "Attachment upload failed.",
+      "file_success": "Attachment uploaded successfully",
+      "file_max_count_error": "You can only attach a maximum of 3 files",
+      "file_type_error": "Only files with .pdf, .jpg, .jpeg, .png formats can be attached",
+      "file_size_error": "File size cannot exceed 3MB",
+      "file_duplicate_error": "File is already attached",
+      "edit_success": "Document edited successfully",
+      "error": "An error occurred, please try again",
+      "confirm_publish": "Are you sure you want to publish this document?",
+      "publish_success": "Document published successfully",
+      "report_success": "Submitted to leadership successfully",
+      "transfer_secretary_success": "Transferred to secretary successfully"
+    },
+    "comment": {
+      "title": "Document Comments",
+      "button": {
+        "title": "Add Comment"
+      }
+    }
+  },
+  "transfer_modal": {
+    "title": "Transfer Document To",
+    "document_number": "Document Number {{id}}",
+    "ordinal_number": "Ordinal Number",
+    "director_view": {
+      "sender": "Sender",
+      "implementation_date": "Implementation Date",
+      "document": "Document Name",
+      "summary": "Summary",
+      "assignee": "Assignee",
+      "collaborators": "Collaborators"
+    },
+    "secretary_view": {
+      "processing_time": "Processing Time",
+      "is_infinite_processing_time": "No time limit"
+    },
+    "manager_view": {
+      "process_method": "Processing Method"
+    },
+    "sidebar": {
+      "director": "Director",
+      "chief_of_office": "Chief of Office",
+      "secretary": "Secretary",
+      "expert": "Expert"
+    },
+    "form": {
+      "assignee_required": "Please select an assignee",
+      "processing_time_required": "Please select a processing time",
+      "processing_time_invalid": "Invalid processing time",
+      "processing_time_infinite": "No time limit",
+      "collaborators_required": "Please select collaborators",
+      "process_method_required": "Please select a processing method",
+      "collaborator_can_not_has_same_value_with_assignee": "Collaborators cannot be the same as the assignee",
+      "only_unprocessed_docs_can_be_transferred_to_director": "Only unprocessed documents can be transferred to the Director or Secretary at the same level",
+      "only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert": "Only in-progress documents can be transferred to the Chief of Office, Secretary, or Expert",
+      "only_unprocessed_docs_can_be_transferred_to_manager": "Only unprocessed documents can be transferred to the Chief of Office",
+      "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Only in-progress documents can be transferred to the Director or Secretary",
+      "some_user_is_already_assigned_to_this_doc": "This document is already assigned to this user"
+    }
+  },
+  "internal_server_error_page": {
+    "title": "Server Error",
+    "message": "An error has occurred. Please try again later.",
+    "go_back_button": "Go Back"
+  },
+  "error": {
+    "file": {
+      "file_already_existed": "File already exists",
+      "file_type_not_accepted": "File type is not accepted"
+    }
+  },
+  "user_management": {
+    "table": {
+      "column": {
+        "order": "Order",
+        "username": "Username",
+        "email": "Email",
+        "full_name": "Full Name",
+        "role": "Role",
+        "department": "Department"
+      }
+    },
+    "button": {
+      "add": "Add User",
+      "delete": "Delete User"
+    }
+  },
+  "processing_detail_page": {
+    "title": "Processing Detail",
+    "table": {
+      "column": {
+        "step": "Step",
+        "incoming_number": "Incoming Number",
+        "full_name": "Full Name",
+        "department": "Department",
+        "role": "Role"
+      }
+    }
+  },
+  "processing_user_role": {
+    "REPORTER": "Reporter",
+    "ASSIGNEE": "Assignee",
+    "COLLABORATOR": "Collaborator"
+  },
+  "doc": {
+    "exception": {
+      "concurrent_update": "The information has been updated by someone else, please reload the page.",
+      "internal_server_error": "An error has occurred, please report it to the administrator."
+    }
+  },
+  "document_type_management": {
+    "table": {
+      "column": {
+        "order": "Order",
+        "type": "Document Type",
+        "created_by": "Created By"
+      }
+    },
+    "button": {
+      "add": "Add Document Type",
+      "delete": "Delete Document Type"
+    },
+    "document_type": {
+      "detail": {
+        "title": "Document Type Detail",
+        "id": "ID",
+        "type": "Document Type",
+        "type_required": "Please enter the document type"
+      }
+    }
+  },
+  "department_management": {
+    "table": {
+      "column": {
+        "order": "Order",
+        "name": "Department Name",
+        "truong_phong": "Department Manager",
+        "created_by": "Created By"
+      }
+    },
+    "department": {
+      "detail": {
+        "title": "Department Detail",
+        "id": "ID",
+        "name": "Department Name",
+        "name_required": "Please enter the department name",
+        "truong_phong": "Department Manager",
+        "truong_phong_required": "Please select a department manager",
+        "modal": {
+          "title": "The manager belongs to another department",
+          "content": "Once updated, the manager will be transferred to another department. Do you want to transfer the manager to this department?"
+        }
+      }
+    },
+    "button": {
+      "add": "Add Department",
+      "delete": "Delete Department"
+    }
+  },
+  "statistics": {
+    "incoming_document_pie_chart_title": "INCOMING DOCUMENT PROCESSING RATIO",
+    "document_type_processed_title": "NUMBER OF PROCESSED DOCUMENTS BY TYPE\n QUARTER {{quarter}} YEAR {{year}}",
+    "quarter": "Quarter {{quarter}} Year {{year}}",
+    "legend": {
+      "document_type": "Document Type"
+    },
+    "series": {
+      "name": "Number of Documents by Quarter",
+      "data": {
+        "UNPROCESSED": "Unprocessed",
+        "IN_PROGRESS": "In Progress",
+        "CLOSED": "Closed"
+      }
+    }
+  },
+  "profile": {
+    "user": {
+      "info": "User Information",
+      "id": "ID",
+      "username": "Username",
+      "email": "Email",
+      "role": "Role",
+      "department": "Department"
+    },
+    "log": {
+      "title": "Change History"
+    }
+  },
+  "processing_document": {
+    "document_already_closed": "The document has been processed and cannot perform this operation.",
+    "illegal_step": "Cannot perform this operation."
+  },
+  "calendar": {
+    "reminder_status": {
+      "active": "Pending Processing",
+      "close_to_expiration": "Approaching Deadline",
+      "expired": "Expired"
+    }
+  },
+  "transfer_history": {
+    "title": "Transfer History",
+    "message": "{{sender}} has transferred document number {{documentId}} to {{receiver}}",
+    "no_item": "No transfer history available",
+    "loaded_more_item": "Loaded {{number}} more transfer histories",
+    "button": {
+      "view_detail": "View Details"
+    },
+    "default_sender": "You",
+    "default_receiver": "you",
+    "same_level": "same level",
+    "process": "process",
+    "modal": {
+      "modal_title": "Transfer History",
+      "document": "Document",
+      "transfer_date": "Transfer Date",
+      "processing_duration": "Processing Duration",
+      "infinite_processing_time": "Infinite",
+      "process_method": "Processing Method",
+      "sender": "Sender",
+      "receiver": "Receiver",
+      "transfer_type_1": "Transfer",
+      "transfer_type_2": "Same Level",
+      "transfer_type": "Transfer Type"
+    }
+  },
+  "notification": {
+    "mark_all_as_read": "Mark All as Read"
+  }
+}
