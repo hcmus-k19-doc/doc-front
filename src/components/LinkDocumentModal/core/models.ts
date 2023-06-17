@@ -2,6 +2,8 @@ export interface LinkDocumentModalProps {
   isModalOpen: boolean;
   isIncomingDocument: boolean;
   selectedDocuments: any;
+  selectedDocumentsToLink: any;
+  handleSelectedDocumentsToLinkChanged: (documents: any) => void;
   handleOk: () => void;
   handleCancel: () => void;
 }

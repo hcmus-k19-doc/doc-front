@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   CloseCircleOutlined,
   InboxOutlined,
@@ -93,13 +93,14 @@ function OutgoingDocDetailPage() {
   const [selectedDocs, setSelectedDocs] = useState<OutgoingDocumentGetDto[]>([]);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
-  const navigate = useNavigate();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [, setError] = useState<string>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
+
+  const [selectedDocumentsToLink, setSelectedDocumentsToLink] = useState([]);
 
   const fetchForm = () => {
     if (!isLoading) {
@@ -414,6 +415,18 @@ function OutgoingDocDetailPage() {
 
   const handleCancelLinkDocument = () => {
     setOpenLinkDocumentModal(false);
+  };
+
+  const handleOkLinkDocument = async () => {
+    const documentToLinkIds = selectedDocumentsToLink.map((doc: any) => doc.id);
+    await outgoingDocumentService.linkDocuments(+(docId || 0), documentToLinkIds);
+
+    queryClient.invalidateQueries(['docout.link_documents', +(docId || 1)]);
+    setOpenLinkDocumentModal(false);
+  };
+
+  const handleSelectedDocumentsToLinkChanged = (documents: any) => {
+    setSelectedDocumentsToLink(documents);
   };
 
   return (
@@ -790,10 +803,12 @@ function OutgoingDocDetailPage() {
         )}
 
         <LinkDocumentModal
+          selectedDocumentsToLink={selectedDocumentsToLink}
+          handleSelectedDocumentsToLinkChanged={handleSelectedDocumentsToLinkChanged}
           selectedDocuments={linkedDocuments.data}
           isIncomingDocument={false}
           isModalOpen={openLinkDocumentModal}
-          handleOk={handleCancelLinkDocument}
+          handleOk={handleOkLinkDocument}
           handleCancel={handleCancelLinkDocument}
         />
       </Skeleton>

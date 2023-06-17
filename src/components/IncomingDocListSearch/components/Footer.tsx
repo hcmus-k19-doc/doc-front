@@ -1,13 +1,9 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Pagination } from 'antd';
 import { useIncomingDocReq, useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { PAGE_SIZE_MODAL } from 'shared/models/states';
 
-import { FooterProps } from '../core/models';
-
-const Footer: React.FC<FooterProps> = () => {
-  const { t } = useTranslation();
+const Footer: React.FC = () => {
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
   const { data } = useIncomingDocRes(true);
 

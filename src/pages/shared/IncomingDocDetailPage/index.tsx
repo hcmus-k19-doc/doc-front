@@ -680,13 +680,13 @@ function IncomingDocPage() {
         />
       )}
 
-      <LinkDocumentModal
+      {/* <LinkDocumentModal
         selectedDocuments={linkedDocuments.data}
         isIncomingDocument={true}
         isModalOpen={openLinkDocumentModal}
         handleOk={handleOnCancelLinkModal}
         handleCancel={handleOnCancelLinkModal}
-      />
+      /> */}
     </Skeleton>
   );
 }

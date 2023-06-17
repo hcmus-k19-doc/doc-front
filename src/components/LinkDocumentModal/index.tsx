@@ -8,6 +8,8 @@ import { LinkDocumentModalProps } from './core/models';
 const LinkDocumentModal: React.FC<LinkDocumentModalProps> = ({
   isModalOpen,
   isIncomingDocument,
+  selectedDocumentsToLink,
+  handleSelectedDocumentsToLinkChanged,
   selectedDocuments,
   handleOk,
   handleCancel,
@@ -20,7 +22,13 @@ const LinkDocumentModal: React.FC<LinkDocumentModalProps> = ({
       onCancel={handleCancel}
       width={1000}>
       <Divider />
-      {!isIncomingDocument && <IncomingDocListSearch linkedDocuments={selectedDocuments} />}
+      {!isIncomingDocument && (
+        <IncomingDocListSearch
+          selectedDocumentsToLink={selectedDocumentsToLink}
+          handleSelectedDocumentsToLinkChanged={handleSelectedDocumentsToLinkChanged}
+          linkedDocuments={selectedDocuments}
+        />
+      )}
       <div className='mb-10'></div>
     </Modal>
   );

@@ -100,6 +100,15 @@ async function getLinkedDocuments(incomingDocumentId: number) {
   return data;
 }
 
+async function linkDocuments(targetDocumentId: number, incomingDocuments: number[]) {
+  const { data } = await axios.post(
+    `${OUTGOING_DOCUMENTS_URL}/link-documents/${targetDocumentId}`,
+    incomingDocuments
+  );
+  console && console.log('linkDocuments', targetDocumentId, incomingDocuments);
+  return data;
+}
+
 const outgoingDocumentService = {
   createOutgoingDocument,
   getOutgoingDocumentById,
@@ -111,6 +120,7 @@ const outgoingDocumentService = {
   validateTransferDocuments,
   getTransferDocumentDetail,
   getLinkedDocuments,
+  linkDocuments,
 };
 
 export default outgoingDocumentService;

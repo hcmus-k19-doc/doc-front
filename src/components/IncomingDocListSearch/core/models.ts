@@ -27,11 +27,8 @@ export type TableDataType = {
   payload: TableRowDataType[];
 };
 
-export interface FooterProps {
-  selectedDocs: IncomingDocumentDto[];
-  setSelectedDocs: (docs: IncomingDocumentDto[]) => void;
-}
-
 export interface IncomingDocListSearchProps {
+  selectedDocumentsToLink: any;
+  handleSelectedDocumentsToLinkChanged: (documents: any) => void;
   linkedDocuments: any;
 }

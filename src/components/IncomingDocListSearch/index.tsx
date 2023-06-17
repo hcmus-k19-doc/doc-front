@@ -14,11 +14,14 @@ import { IncomingDocListSearchProps, TableRowDataType } from './core/models';
 
 import './index.css';
 
-const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({ linkedDocuments }) => {
+const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({
+  linkedDocuments,
+  selectedDocumentsToLink,
+  handleSelectedDocumentsToLinkChanged,
+}) => {
   const { isLoading, data, isFetching } = useIncomingDocRes(true);
 
   const navigate = useNavigate();
-  const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
 
   const columns: ColumnsType<TableRowDataType> = [
     {
@@ -67,9 +70,9 @@ const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({ linkedDoc
   ];
 
   const rowSelection = {
-    selectedRowKeys: selectedDocs.map((doc) => doc.id),
+    selectedRowKeys: selectedDocumentsToLink.map((doc: { id: any }) => doc.id),
     onChange: (selectedRowKeys: React.Key[], selectedRows: TableRowDataType[]) => {
-      setSelectedDocs(selectedRows as unknown as IncomingDocumentDto[]);
+      handleSelectedDocumentsToLinkChanged(selectedRows);
     },
   };
 
@@ -101,7 +104,7 @@ const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({ linkedDoc
         dataSource={data?.payload}
         scroll={{ x: 900 }}
         pagination={false}
-        footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
+        footer={() => <Footer />}
       />
     </>
   );
