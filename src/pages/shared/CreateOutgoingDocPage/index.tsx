@@ -376,6 +376,7 @@ function CreateOutgoingDocPage() {
               type='default'
               size='large'
               className='mr-5'
+              loading={loading}
               onClick={() => {
                 onCancel();
               }}>

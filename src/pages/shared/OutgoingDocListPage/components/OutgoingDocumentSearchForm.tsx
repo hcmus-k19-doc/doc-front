@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import { Button, Col, Collapse, DatePicker, Form, Input, Row, Select } from 'antd';
@@ -22,6 +22,7 @@ const OutgoingDocumentSearchForm = () => {
   const { data: documentTypes } = useDocumentTypesRes();
   const [form] = useForm();
   const [outgoingDocReqQuery, setOutgoingDocReqQuery] = useOutgoingDocReq();
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <Collapse bordered={false} expandIcon={ExpandIcon}>
@@ -29,7 +30,9 @@ const OutgoingDocumentSearchForm = () => {
         <Form
           form={form}
           onFinish={(values: OutgoingDocSearchState) => {
+            setLoading(true);
             setOutgoingDocReqQuery({ ...outgoingDocReqQuery, ...values, page: 1 });
+            setLoading(false);
           }}
           layout='vertical'>
           <Row justify='space-between'>
@@ -81,13 +84,14 @@ const OutgoingDocumentSearchForm = () => {
               </Row>
             </Col>
             <Row>
-              <Button className='px-8 mx-5' htmlType='submit' type='primary'>
+              <Button className='px-8 mx-5' htmlType='submit' type='primary' loading={loading}>
                 {t('common.search_criteria.search')}
               </Button>
               <Button
                 onClick={() => form.resetFields()}
                 htmlType='submit'
                 type='default'
+                loading={loading}
                 className='px-8 reset-btn'>
                 {t('common.search_criteria.reset')}
               </Button>
