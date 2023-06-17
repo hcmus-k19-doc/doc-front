@@ -57,6 +57,7 @@ import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/sta
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
+import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/OutgoingDocument';
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
@@ -66,7 +67,6 @@ import { globalNavigate } from 'utils/RoutingUtils';
 import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 
 import './index.css';
-import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/OutgoingDocument';
 
 const { confirm } = Modal;
 
