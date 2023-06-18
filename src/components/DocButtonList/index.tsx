@@ -12,7 +12,6 @@ import { validateDocBeforeClose } from 'shared/validators/TransferDocValidator';
 import { useAuth } from '../AuthComponent';
 
 export interface DocButtonListProps {
-  roleNumber: number;
   isEditing: boolean;
   enableEditing: () => void;
   onFinishEditing: () => void;

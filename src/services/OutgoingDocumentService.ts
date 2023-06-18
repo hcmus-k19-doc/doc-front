@@ -4,6 +4,7 @@ import {
   DocPaginationDto,
   GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
+  IncomingDocumentDto,
   OutgoingDocSearchCriteriaDto,
   OutgoingDocumentGetDto,
   OutgoingDocumentPutDto,
@@ -92,6 +93,29 @@ async function getTransferDocumentDetail(
   return response.data;
 }
 
+async function getLinkedDocuments(incomingDocumentId: number) {
+  const { data } = await axios.get<IncomingDocumentDto[]>(
+    `${OUTGOING_DOCUMENTS_URL}/link-documents/${incomingDocumentId}`
+  );
+  return data;
+}
+
+async function linkDocuments(targetDocumentId: number, incomingDocuments: number[]) {
+  const { data } = await axios.post(
+    `${OUTGOING_DOCUMENTS_URL}/link-documents/${targetDocumentId}`,
+    incomingDocuments
+  );
+  console && console.log('linkDocuments', targetDocumentId, incomingDocuments);
+  return data;
+}
+
+async function unlinkDocument(targetDocumentId: number, incomingDocumentId: number) {
+  const { data } = await axios.delete(
+    `${OUTGOING_DOCUMENTS_URL}/link-documents/${targetDocumentId}?linkedDocumentId=${incomingDocumentId}`
+  );
+  return data;
+}
+
 const outgoingDocumentService = {
   createOutgoingDocument,
   getOutgoingDocumentById,
@@ -102,6 +126,9 @@ const outgoingDocumentService = {
   getTransferOutgoingDocumentsSetting,
   validateTransferDocuments,
   getTransferDocumentDetail,
+  getLinkedDocuments,
+  linkDocuments,
+  unlinkDocument,
 };
 
 export default outgoingDocumentService;
