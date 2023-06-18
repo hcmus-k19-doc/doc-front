@@ -758,5 +758,13 @@
   },
   "notification": {
     "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
+  },
+  "link-document": {
+    "unlink_modal": {
+      "title": "Hủy liên kết văn bản",
+      "content": "Bạn chắc chắn muốn hủy liên kết văn bản này?",
+      "ok_text": "Huỷ liên kết",
+      "cancel_text": "Quay lại"
+    }
   }
 }

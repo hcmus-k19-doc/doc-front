@@ -109,6 +109,13 @@ async function linkDocuments(targetDocumentId: number, incomingDocuments: number
   return data;
 }
 
+async function unlinkDocument(targetDocumentId: number, incomingDocumentId: number) {
+  const { data } = await axios.delete(
+    `${OUTGOING_DOCUMENTS_URL}/link-documents/${targetDocumentId}?linkedDocumentId=${incomingDocumentId}`
+  );
+  return data;
+}
+
 const outgoingDocumentService = {
   createOutgoingDocument,
   getOutgoingDocumentById,
@@ -121,6 +128,7 @@ const outgoingDocumentService = {
   getTransferDocumentDetail,
   getLinkedDocuments,
   linkDocuments,
+  unlinkDocument,
 };
 
 export default outgoingDocumentService;

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
-import { IncomingDocumentDto } from 'models/doc-main-models';
 import moment from 'moment';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { YEAR_MONTH_DAY_FORMAT } from 'utils/DateTimeUtils';
