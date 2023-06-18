@@ -41,6 +41,9 @@
       "en": "Tiếng Anh",
       "vi": "Tiếng Việt"
     },
+    "profile": "Thông tin cá nhân",
+    "document": "Văn bản",
+    "statistics": "Thống kê",
     "logout": {
       "title": "Đăng xuất",
       "modal": {
@@ -687,7 +690,7 @@
   },
   "statistics": {
     "incoming_document_pie_chart_title": "TỈ LỆ XỬ LÝ VĂN BẢN ĐẾN",
-    "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ QUÝ {{quarter}} NĂM {{year}}",
+    "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ\n QUÝ {{quarter}} NĂM {{year}}",
     "quarter": "Quý {{quarter}} năm {{year}}",
     "legend": {
       "document_type": "Loại văn bản"

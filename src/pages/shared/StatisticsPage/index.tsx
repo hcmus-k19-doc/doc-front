@@ -9,7 +9,7 @@ import { useStatisticsRes } from 'shared/hooks/StatisticsQuery';
 
 function StatisticsPage() {
   const { data: statisticsDto, isLoading } = useStatisticsRes();
-  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto || {};
+  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto ?? {};
 
   const incomingPieChartOptions = {
     title: {
@@ -19,6 +19,9 @@ function StatisticsPage() {
         year: statisticsDto?.year,
       }),
       x: 'center',
+    },
+    textStyle: {
+      fontFamily: theme.useToken().token.fontFamily,
     },
     tooltip: {
       trigger: 'item',
@@ -73,6 +76,9 @@ function StatisticsPage() {
         year: statisticsDto?.year,
       }),
       x: 'center',
+    },
+    textStyle: {
+      fontFamily: theme.useToken().token.fontFamily,
     },
     tooltip: {},
     legend: {
