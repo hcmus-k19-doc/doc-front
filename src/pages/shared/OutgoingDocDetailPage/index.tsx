@@ -36,7 +36,6 @@ import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
-import { set } from 'date-fns';
 import dayjs from 'dayjs';
 import {
   Confidentiality,
@@ -690,7 +689,6 @@ function OutgoingDocDetailPage() {
                   itemLayout='horizontal'
                   dataSource={linkedDocuments.data}
                   renderItem={(item) => (
-                    // eslint-disable-next-line react/jsx-key
                     <List.Item
                       actions={[
                         <span

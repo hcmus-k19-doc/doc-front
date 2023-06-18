@@ -103,7 +103,7 @@ const OutgoingDocListSearch: React.FC<OutgoingDocListSearchProps> = ({
           type: 'checkbox',
           ...rowSelection,
           getCheckboxProps: (record) => ({
-            disabled: record.isDocTransferred || record.isDocCollaborator,
+            disabled: linkedDocuments.some((doc: { id: number }) => doc.id === record.id),
           }),
         }}
         columns={columns}
