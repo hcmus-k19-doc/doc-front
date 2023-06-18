@@ -696,9 +696,10 @@ function OutgoingDocDetailPage() {
                         <span
                           key={`delete-${item.id}`}
                           onClick={() => {
+                            if (isReleased) return;
                             handleDeleteLinkedDocument(item.id);
                           }}>
-                          <CloseCircleOutlined />
+                          {!isReleased && <CloseCircleOutlined />}
                         </span>,
                       ]}>
                       <List.Item.Meta
@@ -802,15 +803,21 @@ function OutgoingDocDetailPage() {
             />
           </Col>
         </Row>
-        <div className='text-lg text-primary'>{t('common.comment.title')}</div>
-        <Row>
-          <Col span={16}>
-            <DocComment
-              docId={Number(docId)}
-              processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
-            />
-          </Col>
-        </Row>
+
+        {!isReleased && (
+          <div className='comment-section'>
+            <div className='text-lg text-primary'>{t('common.comment.title')}</div>
+            <Row>
+              <Col span={16}>
+                <DocComment
+                  docId={Number(docId)}
+                  processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
+                />
+              </Col>
+            </Row>
+          </div>
+        )}
+
         {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
           <TransferOutgoingDocModalDetail
             form={modalForm}
