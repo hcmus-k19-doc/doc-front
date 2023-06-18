@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
-import { Divider, Table, Tooltip } from 'antd';
+import { Divider, Table, Tag, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { useAuth } from 'components/AuthComponent';
@@ -22,6 +22,8 @@ import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
+
+import { getColorBaseOnStatus } from '../IncomingDocListPage/core/common';
 
 import Footer from './components/Footer';
 import OutgoingDocumentSearchForm from './components/OutgoingDocumentSearchForm';
@@ -119,6 +121,9 @@ const OutgoingDocListPage: React.FC = () => {
       title: t('outgoingDocListPage.table.columns.status'),
       dataIndex: 'status',
       sorter: (a, b) => a.status.localeCompare(b.status),
+      render: (_, record) => {
+        return <Tag color={getColorBaseOnStatus(record.status, t)}>{record.status}</Tag>;
+      },
     },
     {
       title: t('outgoingDocListPage.table.columns.summary'),

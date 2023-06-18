@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined } from '@ant-design/icons';
-import { Divider, Table, Tooltip } from 'antd';
+import { Divider, Table, Tag, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { useAuth } from 'components/AuthComponent';
@@ -27,6 +28,7 @@ import { getStep } from 'utils/TransferDocUtils';
 
 import Footer from './components/Footer';
 import IncomingDocumentSearchForm from './components/IncomingDocumentSearchForm';
+import { getColorBaseOnStatus } from './core/common';
 import { TableRowDataType } from './core/models';
 
 import './index.css';
@@ -41,6 +43,7 @@ const IncomingDocListPage: React.FC = () => {
   const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const [transferredDoc, setTransferredDoc] = useState<IncomingDocumentDto>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
@@ -164,6 +167,9 @@ const IncomingDocListPage: React.FC = () => {
         value: item,
       })),
       onFilter: (value, record) => record.status.indexOf(value as string) === 0,
+      render: (_, record) => {
+        return <Tag color={getColorBaseOnStatus(record.status, t)}>{record.status}</Tag>;
+      },
     },
     {
       title: t('incomingDocListPage.table.columns.deadline'),
