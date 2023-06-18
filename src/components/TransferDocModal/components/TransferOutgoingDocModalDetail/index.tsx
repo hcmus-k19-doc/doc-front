@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ArrowUpOutlined, SwapOutlined } from '@ant-design/icons';
 import { Button, Col, Divider, Menu, Modal, Row, Spin } from 'antd';
 import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
@@ -104,7 +105,18 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
 
   const items = detailModalSetting?.menuConfigs?.reduce(
     (acc: MenuItem[], item: TransferDocumentMenuConfig) => {
-      return [...acc, getItem(item.menuLabel, item.menuKey)];
+      return [
+        ...acc,
+        getItem(
+          item.menuLabel,
+          item.menuKey,
+          item.isTransferToSameLevel ? (
+            <SwapOutlined className={'transfer-icon'} />
+          ) : (
+            <ArrowUpOutlined className={'transfer-icon'} />
+          )
+        ),
+      ];
     },
     []
   );

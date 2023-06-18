@@ -31,10 +31,15 @@ export type ComponentMap = {
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
-export const getItem = (label: React.ReactNode, key: React.Key): MenuItem => {
+export const getItem = (
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode
+): MenuItem => {
   return {
     key,
     label,
+    icon,
   };
 };
 

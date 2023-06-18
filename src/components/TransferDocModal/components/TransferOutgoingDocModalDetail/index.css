@@ -4,3 +4,8 @@
   display: flex;
   justify-content: center;
 }
+
+.transfer-icon {
+    font-size: 24px !important;
+  }
+  
