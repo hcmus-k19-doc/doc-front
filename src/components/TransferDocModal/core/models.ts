@@ -55,6 +55,7 @@ export interface TransferModalDetailProps {
   transferredDoc: IncomingDocumentDto | OutgoingDocumentGetDto;
   transferDocumentDetail: GetTransferDocumentDetailCustomResponse;
   type: string;
+  loading: boolean;
 }
 
 export interface MenuSelectProps {

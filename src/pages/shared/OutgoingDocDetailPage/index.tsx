@@ -89,7 +89,7 @@ function OutgoingDocDetailPage() {
   const [, setError] = useState<string>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const fetchForm = () => {
     if (!isLoading) {
       if (data?.data) {
@@ -320,6 +320,7 @@ function OutgoingDocDetailPage() {
         );
       }
 
+      setLoading(true);
       try {
         const response = await outgoingDocumentService.getTransferDocumentDetail(
           getTransferDocumentDetailRequest
@@ -332,6 +333,8 @@ function OutgoingDocDetailPage() {
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -715,6 +718,7 @@ function OutgoingDocDetailPage() {
               transferDocumentDetail as GetTransferDocumentDetailCustomResponse
             }
             type={'OutgoingDocument'}
+            loading={loading}
           />
         ) : (
           <TransferDocModal

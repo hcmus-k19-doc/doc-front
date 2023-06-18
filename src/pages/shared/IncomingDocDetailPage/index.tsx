@@ -75,6 +75,7 @@ function IncomingDocPage() {
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
   const navigate = useNavigate();
@@ -113,6 +114,7 @@ function IncomingDocPage() {
         getTransferDocumentDetailRequest.step = getStep(currentUser as UserDto, null, false);
       }
 
+      setLoading(true);
       try {
         const response = await incomingDocumentService.getTransferDocumentDetail(
           getTransferDocumentDetailRequest
@@ -126,6 +128,8 @@ function IncomingDocPage() {
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -619,6 +623,7 @@ function IncomingDocPage() {
           transferredDoc={selectedDocs[0]}
           transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
           type={'IncomingDocument'}
+          loading={loading}
         />
       ) : (
         <TransferDocModal

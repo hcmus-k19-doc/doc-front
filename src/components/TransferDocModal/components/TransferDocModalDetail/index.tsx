@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Col, Divider, Menu, Modal, Row } from 'antd';
+import { Button, Col, Divider, Menu, Modal, Row, Spin } from 'antd';
 import { useAuth } from 'components/AuthComponent';
 import format from 'date-fns/format';
 import dayjs from 'dayjs';
@@ -26,6 +26,7 @@ import {
   TransferModalDetailProps,
 } from '../../core/models';
 
+import './index.css';
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
   2: ManagerScreenComponent,
@@ -40,6 +41,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   transferredDoc,
   transferDocumentDetail,
   type,
+  loading,
 }) => {
   const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
@@ -181,7 +183,13 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
           />
         </Col>
         <Col span='1'></Col>
-        <Col span='18'>{handleSwitchScreen()}</Col>
+        <Col span='18'>
+          {loading ? ( // Render loading indicator when isLoading is true
+            <Spin className={'spin'} />
+          ) : (
+            handleSwitchScreen() // Render your content when isLoading is false
+          )}
+        </Col>
       </Row>
     </Modal>
   );
