@@ -69,5 +69,6 @@ export const useOutgoingDocRes = () => {
           return tableData;
         });
     },
+    retry: false,
   });
 };

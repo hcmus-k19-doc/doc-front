@@ -74,5 +74,6 @@ export const useIncomingDocRes = (isModal: boolean) => {
           return tableData;
         });
     },
+    retry: false,
   });
 };
