@@ -21,7 +21,7 @@ import { FooterProps } from '../core/models';
 const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const { t } = useTranslation();
   const [outgoingDocReqQuery, setOutgoingDocReqQuery] = useOutgoingDocReq();
-  const { data } = useOutgoingDocRes();
+  const { data } = useOutgoingDocRes(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [modalForm] = useForm();

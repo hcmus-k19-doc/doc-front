@@ -85,6 +85,7 @@ function IncomingDocPage() {
   const navigate = useNavigate();
 
   const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
+  const [selectedDocumentsToLink, setSelectedDocumentsToLink] = useState([]);
 
   useEffect(() => {
     const incomingDocument = {
@@ -197,8 +198,35 @@ function IncomingDocPage() {
     setIsModalOpen(false);
   };
 
-  const handleOnCancelLinkModal = () => {
+  const handleCancelLinkModal = () => {
     setOpenLinkDocumentModal(false);
+  };
+
+  const handleSelectedDocumentsToLinkChanged = (documents: any) => {
+    setSelectedDocumentsToLink(documents);
+  };
+
+  const handleOkLinkDocument = async () => {
+    // const documentToLinkIds = selectedDocumentsToLink.map((doc: any) => doc.id);
+    // await outgoingDocumentService.linkDocuments(+(docId ?? 0), documentToLinkIds);
+    // queryClient.invalidateQueries(['docout.link_documents', +(docId ?? 1)]);
+    // setOpenLinkDocumentModal(false);
+    // setSelectedDocumentsToLink([]);
+  };
+
+  const handleDeleteLinkedDocument = async (documentId: number) => {
+    // modal.confirm({
+    //   title: t('link-document.unlink_modal.title'),
+    //   icon: <ExclamationCircleOutlined />,
+    //   content: t('link-document.unlink_modal.content'),
+    //   okText: t('link-document.unlink_modal.ok_text'),
+    //   cancelText: t('link-document.unlink_modal.cancel_text'),
+    //   onOk: async () => {
+    //     await outgoingDocumentService.unlinkDocument(+(docId ?? 0), documentId);
+    //     queryClient.invalidateQueries(['docout.link_documents', +(docId ?? 1)]);
+    //   },
+    //   centered: true,
+    // });
   };
 
   if (!isLoading) {
@@ -680,13 +708,15 @@ function IncomingDocPage() {
         />
       )}
 
-      {/* <LinkDocumentModal
+      <LinkDocumentModal
+        selectedDocumentsToLink={selectedDocumentsToLink}
+        handleSelectedDocumentsToLinkChanged={handleSelectedDocumentsToLinkChanged}
         selectedDocuments={linkedDocuments.data}
         isIncomingDocument={true}
         isModalOpen={openLinkDocumentModal}
-        handleOk={handleOnCancelLinkModal}
-        handleCancel={handleOnCancelLinkModal}
-      /> */}
+        handleOk={handleOkLinkDocument}
+        handleCancel={handleCancelLinkModal}
+      />
     </Skeleton>
   );
 }
