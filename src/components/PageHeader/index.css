@@ -8,3 +8,7 @@ header span.anticon:hover,
 i:hover {
   cursor: pointer;
 }
+
+.profile:hover {
+  cursor: pointer;
+}

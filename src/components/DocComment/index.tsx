@@ -45,7 +45,7 @@ function CommentList({ comments }: CommentListProps) {
             content: (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: props.content?.toLocaleString() || '',
+                  __html: props.content?.toLocaleString() ?? '',
                 }}
               />
             ),
@@ -88,7 +88,7 @@ export default function DocComment({ docId, processingDocumentType }: DocComment
             onChange={handleChange}
             onSubmit={handleSubmit}
             submitting={submitting}
-            value={value.content || ''}
+            value={value.content ?? ''}
           />
         }
       />

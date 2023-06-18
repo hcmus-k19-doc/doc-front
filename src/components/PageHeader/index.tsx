@@ -9,10 +9,11 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Typography } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
+import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
 import {
   DocSystemRoleEnum,
@@ -29,6 +30,7 @@ import { languageItems } from './core';
 import './index.css';
 
 const { Header } = Layout;
+const { Text } = Typography;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -151,7 +153,7 @@ const PageHeader: React.FC = () => {
         />
       )}
 
-      <div className='flex justify-between w-[78px]'>
+      <div className='flex justify-between items-center min-w-[200px]'>
         <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
           <GlobalOutlined />
         </Dropdown>
@@ -178,8 +180,17 @@ const PageHeader: React.FC = () => {
           </Popover>
         </Badge>
 
-        <Dropdown menu={{ items: profileNavigator }} placement='bottomRight' trigger={['click']}>
-          <UserOutlined title={currentUser?.username} />
+        <Dropdown menu={{ items: profileNavigator }} placement='bottomCenter' trigger={['click']}>
+          <div className='flex justify-between w-[140px] profile'>
+            <UserOutlined title={currentUser?.username} />
+            <Text
+              strong
+              style={{ color: PRIMARY_COLOR }}
+              title={currentUser?.role}
+              className='text-center'>
+              {currentUser?.fullName}
+            </Text>
+          </div>
         </Dropdown>
       </div>
       {contextHolder}
