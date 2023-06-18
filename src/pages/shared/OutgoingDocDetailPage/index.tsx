@@ -671,16 +671,18 @@ function OutgoingDocDetailPage() {
                   <div className='linked-label font-semibold'>
                     {t('incomingDocDetailPage.linked_document.title')}
                   </div>
-                  <div
-                    className='text-primary pr-2'
-                    onClick={() => {
-                      setOpenLinkDocumentModal(true);
-                    }}>
-                    <PlusCircleOutlined />
-                    <span className='ml-2 cursor-pointer text-link'>
-                      {t('incomingDocDetailPage.linked_document.add')}
-                    </span>
-                  </div>
+                  {!isReleased && (
+                    <div
+                      className='text-primary pr-2'
+                      onClick={() => {
+                        setOpenLinkDocumentModal(true);
+                      }}>
+                      <PlusCircleOutlined />
+                      <span className='ml-2 cursor-pointer text-link'>
+                        {t('incomingDocDetailPage.linked_document.add')}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <List
