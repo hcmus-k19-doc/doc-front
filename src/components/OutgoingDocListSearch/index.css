@@ -1,0 +1,39 @@
+.link {
+  color: #324ab2;
+}
+
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.footer-btn {
+  color: #fff !important;
+}
+
+.reset-btn {
+  border-color: #324ab2;
+  color: #324ab2;
+}
+
+.zip-icon {
+  font-size: 20px;
+}
+
+.row-hover:hover {
+  cursor: pointer;
+}
+
+.transfer-doc-btn {
+  width: 150px;
+}
+
+.transfer-doc-btn:disabled {
+  color: white !important;
+  background-color: lightgray !important;
+}
+
+.transfer-doc-wrapper {
+  display: flex;
+  flex-direction: column;
+}

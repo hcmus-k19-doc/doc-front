@@ -36,7 +36,6 @@ import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
-import { set } from 'date-fns';
 import dayjs from 'dayjs';
 import {
   Confidentiality,
@@ -671,16 +670,18 @@ function OutgoingDocDetailPage() {
                   <div className='linked-label font-semibold'>
                     {t('incomingDocDetailPage.linked_document.title')}
                   </div>
-                  <div
-                    className='text-primary pr-2'
-                    onClick={() => {
-                      setOpenLinkDocumentModal(true);
-                    }}>
-                    <PlusCircleOutlined />
-                    <span className='ml-2 cursor-pointer text-link'>
-                      {t('incomingDocDetailPage.linked_document.add')}
-                    </span>
-                  </div>
+                  {!isReleased && (
+                    <div
+                      className='text-primary pr-2'
+                      onClick={() => {
+                        setOpenLinkDocumentModal(true);
+                      }}>
+                      <PlusCircleOutlined />
+                      <span className='ml-2 cursor-pointer text-link'>
+                        {t('incomingDocDetailPage.linked_document.add')}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <List
@@ -688,15 +689,15 @@ function OutgoingDocDetailPage() {
                   itemLayout='horizontal'
                   dataSource={linkedDocuments.data}
                   renderItem={(item) => (
-                    // eslint-disable-next-line react/jsx-key
                     <List.Item
                       actions={[
                         <span
                           key={`delete-${item.id}`}
                           onClick={() => {
+                            if (isReleased) return;
                             handleDeleteLinkedDocument(item.id);
                           }}>
-                          <CloseCircleOutlined />
+                          {!isReleased && <CloseCircleOutlined />}
                         </span>,
                       ]}>
                       <List.Item.Meta
@@ -800,15 +801,21 @@ function OutgoingDocDetailPage() {
             />
           </Col>
         </Row>
-        <div className='text-lg text-primary'>{t('common.comment.title')}</div>
-        <Row>
-          <Col span={16}>
-            <DocComment
-              docId={Number(docId)}
-              processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
-            />
-          </Col>
-        </Row>
+
+        {!isReleased && (
+          <div className='comment-section'>
+            <div className='text-lg text-primary'>{t('common.comment.title')}</div>
+            <Row>
+              <Col span={16}>
+                <DocComment
+                  docId={Number(docId)}
+                  processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
+                />
+              </Col>
+            </Row>
+          </div>
+        )}
+
         {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
           <TransferOutgoingDocModalDetail
             form={modalForm}

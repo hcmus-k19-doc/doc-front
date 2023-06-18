@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   CloseCircleOutlined,
+  ExclamationCircleOutlined,
   InboxOutlined,
   PlusCircleOutlined,
   QuestionCircleOutlined,
@@ -17,6 +18,7 @@ import {
   Input,
   List,
   message,
+  Modal,
   Row,
   Select,
   Skeleton,
@@ -72,6 +74,8 @@ function IncomingDocPage() {
   const { t } = useTranslation();
   const [form] = useForm();
 
+  const [modal, contextHolder] = Modal.useModal();
+
   const showAlert = useSweetAlert();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -85,6 +89,7 @@ function IncomingDocPage() {
   const navigate = useNavigate();
 
   const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
+  const [selectedDocumentsToLink, setSelectedDocumentsToLink] = useState([]);
 
   useEffect(() => {
     const incomingDocument = {
@@ -197,8 +202,36 @@ function IncomingDocPage() {
     setIsModalOpen(false);
   };
 
-  const handleOnCancelLinkModal = () => {
+  const handleCancelLinkModal = () => {
     setOpenLinkDocumentModal(false);
+  };
+
+  const handleSelectedDocumentsToLinkChanged = (documents: any) => {
+    setSelectedDocumentsToLink(documents);
+  };
+
+  const handleOkLinkDocument = async () => {
+    const documentToLinkIds = selectedDocumentsToLink.map((doc: any) => doc.id);
+    await incomingDocumentService.linkDocuments(+(docId ?? 0), documentToLinkIds);
+
+    queryClient.invalidateQueries(['docin.link_documents', +(docId ?? 1)]);
+    setOpenLinkDocumentModal(false);
+    setSelectedDocumentsToLink([]);
+  };
+
+  const handleDeleteLinkedDocument = async (documentId: number) => {
+    modal.confirm({
+      title: t('link-document.unlink_modal.title'),
+      icon: <ExclamationCircleOutlined />,
+      content: t('link-document.unlink_modal.content'),
+      okText: t('link-document.unlink_modal.ok_text'),
+      cancelText: t('link-document.unlink_modal.cancel_text'),
+      onOk: async () => {
+        await incomingDocumentService.unlinkDocument(+(docId ?? 0), documentId);
+        queryClient.invalidateQueries(['docin.link_documents', +(docId ?? 1)]);
+      },
+      centered: true,
+    });
   };
 
   if (!isLoading) {
@@ -601,11 +634,20 @@ function IncomingDocPage() {
               </div>
 
               <List
+                loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
                 itemLayout='horizontal'
                 dataSource={linkedDocuments.data}
                 renderItem={(item) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <List.Item actions={[<CloseCircleOutlined />]}>
+                  <List.Item
+                    actions={[
+                      <span
+                        key={`delete-${item.id}`}
+                        onClick={() => {
+                          handleDeleteLinkedDocument(item.id);
+                        }}>
+                        <CloseCircleOutlined />
+                      </span>,
+                    ]}>
                     <List.Item.Meta
                       title={
                         <div
@@ -680,13 +722,17 @@ function IncomingDocPage() {
         />
       )}
 
-      {/* <LinkDocumentModal
+      <LinkDocumentModal
+        selectedDocumentsToLink={selectedDocumentsToLink}
+        handleSelectedDocumentsToLinkChanged={handleSelectedDocumentsToLinkChanged}
         selectedDocuments={linkedDocuments.data}
         isIncomingDocument={true}
         isModalOpen={openLinkDocumentModal}
-        handleOk={handleOnCancelLinkModal}
-        handleCancel={handleOnCancelLinkModal}
-      /> */}
+        handleOk={handleOkLinkDocument}
+        handleCancel={handleCancelLinkModal}
+      />
+
+      {contextHolder}
     </Skeleton>
   );
 }

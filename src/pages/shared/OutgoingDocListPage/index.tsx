@@ -37,7 +37,7 @@ const OutgoingDocListPage: React.FC = () => {
 
   const showAlert = useSweetAlert();
   const [, setError] = useState<string>();
-  const { isLoading, data, isFetching } = useOutgoingDocRes();
+  const { isLoading, data, isFetching } = useOutgoingDocRes(false);
   const [transferDocDetailModalForm] = useForm();
   const [isDetailTransferModalOpen, setIsDetailTransferModalOpen] = useState(false);
 
@@ -126,14 +126,6 @@ const OutgoingDocListPage: React.FC = () => {
       },
     },
     {
-      title: t('outgoingDocListPage.table.columns.summary'),
-      dataIndex: 'summary',
-      width: '20%',
-      render: (text) => {
-        return <div dangerouslySetInnerHTML={{ __html: text }} />;
-      },
-    },
-    {
       title: t('outgoingDocListPage.table.columns.issuePlace'),
       dataIndex: 'issuePlace',
       sorter: (a, b) => a.issuePlace.localeCompare(b.issuePlace),
@@ -163,6 +155,14 @@ const OutgoingDocListPage: React.FC = () => {
             attachmentService.handleDownloadAttachment(record, ParentFolderEnum.OGD, setError);
           },
         };
+      },
+    },
+    {
+      title: t('outgoingDocListPage.table.columns.summary'),
+      dataIndex: 'summary',
+      width: '20%',
+      render: (text) => {
+        return <div dangerouslySetInnerHTML={{ __html: text }} />;
       },
     },
     {

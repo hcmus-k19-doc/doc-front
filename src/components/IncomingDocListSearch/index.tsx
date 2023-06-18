@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import moment from 'moment';
+import { getColorBaseOnStatus } from 'pages/shared/IncomingDocListPage/core/common';
 import { useIncomingDocRes } from 'shared/hooks/IncomingDocumentListQuery';
 import { YEAR_MONTH_DAY_FORMAT } from 'utils/DateTimeUtils';
 
@@ -64,6 +65,9 @@ const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({
         text: item,
         value: item,
       })),
+      render: (_, record) => {
+        return <Tag color={getColorBaseOnStatus(record.status, t)}>{record.status}</Tag>;
+      },
       onFilter: (value, record) => record.status.indexOf(value as string) === 0,
     },
   ];
