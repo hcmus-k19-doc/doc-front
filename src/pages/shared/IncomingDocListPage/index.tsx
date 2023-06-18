@@ -48,6 +48,7 @@ const IncomingDocListPage: React.FC = () => {
   const [transferredDoc, setTransferredDoc] = useState<IncomingDocumentDto>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleOnOpenDetailModal = async (event: any, tableRecord: TableRowDataType) => {
     event.preventDefault();
@@ -66,6 +67,7 @@ const IncomingDocListPage: React.FC = () => {
       getTransferDocumentDetailRequest.step = getStep(currentUser as UserDto, null, false);
     }
 
+    setLoading(true);
     try {
       const response = await incomingDocumentService.getTransferDocumentDetail(
         getTransferDocumentDetailRequest
@@ -79,6 +81,8 @@ const IncomingDocListPage: React.FC = () => {
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -240,6 +244,7 @@ const IncomingDocListPage: React.FC = () => {
         transferredDoc={transferredDoc as IncomingDocumentDto}
         transferDocumentDetail={transferDocumentDetail as GetTransferDocumentDetailCustomResponse}
         type={'IncomingDocument'}
+        loading={loading}
       />
     </>
   );
