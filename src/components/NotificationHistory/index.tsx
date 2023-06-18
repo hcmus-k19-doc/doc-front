@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  DownCircleTwoTone,
+  UpCircleTwoTone,
+} from '@ant-design/icons';
 import { Avatar, Empty, List } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
@@ -52,9 +57,9 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                   <List.Item.Meta
                     avatar={
                       item.senderId === currentUser?.id ? (
-                        <Avatar icon={<ArrowUpOutlined />} className='avatar' />
+                        <UpCircleTwoTone twoToneColor='#52c41a' className='avatar' />
                       ) : (
-                        <Avatar icon={<ArrowDownOutlined />} className='avatar' />
+                        <DownCircleTwoTone twoToneColor='#0096FF' className='avatar' />
                       )
                     }
                     title={
