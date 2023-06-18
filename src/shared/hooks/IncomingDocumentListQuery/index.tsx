@@ -7,6 +7,8 @@ import incomingDocumentService from 'services/IncomingDocumentService';
 import { PAGE_SIZE } from 'shared/models/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
+import { PAGE_SIZE_MODAL } from '../../models/states';
+
 import { DocQueryState } from './core/states';
 
 const queryState = atom<DocQueryState>({
@@ -19,7 +21,7 @@ const queryState = atom<DocQueryState>({
 
 export const useIncomingDocReq = () => useRecoilState(queryState);
 
-export const useIncomingDocRes = () => {
+export const useIncomingDocRes = (isModal: boolean) => {
   const { t } = useTranslation();
   const query = useRecoilValue<DocQueryState>(queryState);
 
@@ -36,7 +38,7 @@ export const useIncomingDocRes = () => {
             ...query,
           },
           query.page,
-          query.pageSize
+          isModal ? PAGE_SIZE_MODAL : query.pageSize
         )
         .then((data) => {
           const totalElements = data.totalElements;
@@ -65,12 +67,13 @@ export const useIncomingDocRes = () => {
 
           const tableData: TableDataType = {
             page: query.page,
-            pageSize: query.pageSize,
+            pageSize: isModal ? PAGE_SIZE_MODAL : query.pageSize,
             totalElements: totalElements,
             payload: rowsData,
           };
           return tableData;
         });
     },
+    retry: false,
   });
 };

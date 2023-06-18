@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  CloseCircleOutlined,
+  InboxOutlined,
+  PlusCircleOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -10,6 +15,7 @@ import {
   DatePicker,
   Form,
   Input,
+  List,
   message,
   Row,
   Select,
@@ -23,6 +29,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import DocButtonList from 'components/DocButtonList';
 import DocComment from 'components/DocComment';
+import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
@@ -47,6 +54,7 @@ import { RecoilRoot, useRecoilValue } from 'recoil';
 import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useIncomingDocumentDetailQuery } from 'shared/hooks/IncomingDocumentDetailQuery';
+import { useDocInLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/IncomingDocument';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import DateValidator from 'shared/validators/DateValidator';
@@ -68,10 +76,7 @@ function IncomingDocPage() {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const roleData = {
-    role: 224,
-  };
-
+  const linkedDocuments = useDocInLinkedDocumentsQuery(+(docId || 1));
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
@@ -79,6 +84,8 @@ function IncomingDocPage() {
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
   const navigate = useNavigate();
+
+  const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
 
   useEffect(() => {
     const incomingDocument = {
@@ -194,6 +201,10 @@ function IncomingDocPage() {
     setIsModalOpen(false);
   };
 
+  const handleOnCancelLinkModal = () => {
+    setOpenLinkDocumentModal(false);
+  };
+
   if (!isLoading) {
     if (data?.data) {
       const incomingDocument = data?.data;
@@ -269,34 +280,24 @@ function IncomingDocPage() {
   };
 
   const saveChange = async (values: any) => {
-    try {
-      delete values.files;
+    delete values.files;
 
-      const incomingDocument: IncomingDocumentPutDto = {
-        ...values,
-        id: +(docId || 0),
-        distributionDate: new Date(values.distributionDate),
-        arrivingDate: new Date(values.arrivingDate),
-        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
-      };
+    const incomingDocument: IncomingDocumentPutDto = {
+      ...values,
+      id: +(docId || 0),
+      distributionDate: new Date(values.distributionDate),
+      arrivingDate: new Date(values.arrivingDate),
+      arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+    };
 
-      const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
+    const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
 
-      if (response.status === 200) {
-        showAlert({
-          icon: 'success',
-          html: t('incomingDocDetailPage.message.success') as string,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-    } catch (error) {
-      //Only in this case, deal to the UX, just show a popup instead of navigating to error page
+    if (response.status === 200) {
       showAlert({
-        icon: 'error',
-        html: t('incomingDocDetailPage.message.error') as string,
-        confirmButtonColor: PRIMARY_COLOR,
-        confirmButtonText: 'OK',
+        icon: 'success',
+        html: t('incomingDocDetailPage.message.success') as string,
+        showConfirmButton: false,
+        timer: 2000,
       });
     }
   };
@@ -306,7 +307,7 @@ function IncomingDocPage() {
   };
 
   return (
-    <Skeleton loading={isLoading || isFetching} active>
+    <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
       <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
         <Row>
@@ -583,12 +584,59 @@ function IncomingDocPage() {
                 <p className='ant-upload-text'>{t('incomingDocDetailPage.form.fileHelper')}</p>
               </Dragger>
             </Form.Item>
+
+            <div className='mb-10'></div>
+
+            <div className='linked-documents'>
+              <div className='flex justify-between linked-header'>
+                <div className='linked-label font-semibold'>
+                  {t('incomingDocDetailPage.linked_document.title')}
+                </div>
+                <div
+                  className='text-primary pr-2'
+                  onClick={() => {
+                    setOpenLinkDocumentModal(true);
+                  }}>
+                  <PlusCircleOutlined />
+                  <span className='ml-2 cursor-pointer'>
+                    {t('incomingDocDetailPage.linked_document.add')}
+                  </span>
+                </div>
+              </div>
+
+              <List
+                itemLayout='horizontal'
+                dataSource={linkedDocuments.data}
+                renderItem={(item) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <List.Item actions={[<CloseCircleOutlined />]}>
+                    <List.Item.Meta
+                      title={
+                        <div
+                          onClick={() => {
+                            globalNavigate(`/docout/out-detail/${item.id}`);
+                          }}>
+                          <span className='cursor-pointer text-primary text-link mr-2'>
+                            {item.name}
+                          </span>
+                          {item.outgoingNumber && (
+                            <span>
+                              {item.outgoingNumber}/{item.originalSymbolNumber}
+                            </span>
+                          )}
+                        </div>
+                      }
+                      description={item.summary}
+                    />
+                  </List.Item>
+                )}
+              />
+            </div>
           </Col>
         </Row>
       </Form>
       <Row className='my-3 mb-10'>
         <DocButtonList
-          roleNumber={roleData.role}
           enableEditing={enableEditing}
           isEditing={isEditing}
           onFinishEditing={onFinishEditing}
@@ -636,6 +684,14 @@ function IncomingDocPage() {
           type={'IncomingDocument'}
         />
       )}
+
+      {/* <LinkDocumentModal
+        selectedDocuments={linkedDocuments.data}
+        isIncomingDocument={true}
+        isModalOpen={openLinkDocumentModal}
+        handleOk={handleOnCancelLinkModal}
+        handleCancel={handleOnCancelLinkModal}
+      /> */}
     </Skeleton>
   );
 }
