@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -25,10 +25,10 @@ import './index.css';
 
 function CreateOutgoingDocPage() {
   const { t } = useTranslation();
-  const { TextArea } = Input;
   const navigate = useNavigate();
   const [form] = useForm();
   const showAlert = useSweetAlert();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery, departmentsQuery] =
     useDropDownFieldsQuery();
@@ -120,6 +120,7 @@ function CreateOutgoingDocPage() {
   };
 
   const onFinish = async (values: any) => {
+    setLoading(true);
     try {
       const outgoingDocument = new FormData();
       if (values.files !== undefined) {
@@ -155,6 +156,8 @@ function CreateOutgoingDocPage() {
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -361,13 +364,19 @@ function CreateOutgoingDocPage() {
           </Col>
 
           <Row className='my-3'>
-            <Button type='primary' size='large' htmlType='submit' className='mr-5'>
+            <Button
+              type='primary'
+              size='large'
+              htmlType='submit'
+              className='mr-5'
+              loading={loading}>
               {t('create_outgoing_doc_page.button.save')}
             </Button>
             <Button
               type='default'
               size='large'
               className='mr-5'
+              loading={loading}
               onClick={() => {
                 onCancel();
               }}>

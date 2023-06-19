@@ -1,0 +1,10 @@
+.spin {
+  padding: 30px 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.transfer-icon {
+  font-size: 24px !important;
+}

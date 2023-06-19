@@ -4,6 +4,7 @@ export interface PaginationState {
 }
 
 export const PAGE_SIZE = 10;
+export const PAGE_SIZE_MODAL = 5;
 
 export const PaginationStateUtils = {
   defaultValue: {

@@ -42,6 +42,9 @@
       "en": "Tiếng Anh",
       "vi": "Tiếng Việt"
     },
+    "profile": "Thông tin cá nhân",
+    "document": "Văn bản",
+    "statistics": "Thống kê",
     "logout": {
       "title": "Đăng xuất",
       "modal": {
@@ -396,6 +399,10 @@
       "only_in_progress_docs_can_be_closed": "Chỉ có thể kết thúc văn bản đang xử lý",
       "only_chuyen_vien_can_close_document": "Chỉ có chuyên viên mới có thể kết thúc văn bản",
       "you_dont_have_permission_to_close_this_document": "Bạn không có quyền kết thúc văn bản này"
+    },
+    "linked_document": {
+      "title": "Văn bản liên kết",
+      "add": "Thêm"
     }
   },
   "create_outgoing_doc_page": {
@@ -694,7 +701,7 @@
   },
   "statistics": {
     "incoming_document_pie_chart_title": "TỈ LỆ XỬ LÝ VĂN BẢN ĐẾN",
-    "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ QUÝ {{quarter}} NĂM {{year}}",
+    "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ\n QUÝ {{quarter}} NĂM {{year}}",
     "quarter": "Quý {{quarter}} năm {{year}}",
     "legend": {
       "document_type": "Loại văn bản"
@@ -722,59 +729,68 @@
     },
     "button": {
       "export": "In báo cáo"
+    }
+  },
+  "profile": {
+    "user": {
+      "info": "Thông tin người dùng",
+      "id": "ID",
+      "username": "Tên người dùng",
+      "email": "Email",
+      "role": "Chức vụ",
+      "department": "Phòng ban"
     },
-    "profile": {
-      "user": {
-        "info": "Thông tin người dùng",
-        "id": "ID",
-        "username": "Tên người dùng",
-        "email": "Email",
-        "role": "Chức vụ",
-        "department": "Phòng ban"
-      },
-      "log": {
-        "title": "Lịch sử thay đổi"
-      }
+    "log": {
+      "title": "Lịch sử thay đổi"
+    }
+  },
+  "processing_document": {
+    "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
+    "illegal_step": "Không thể thực hiện thao tác này"
+  },
+  "calendar": {
+    "reminder_status": {
+      "active": "Đang chờ xử lý",
+      "close_to_expiration": "Sắp hết hạn",
+      "expired": "Đã quá hạn"
+    }
+  },
+  "transfer_history": {
+    "title": "Chuyển xử lý",
+
+    "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
+    "no_item": "Không có lịch sử chuyển xử lý nào",
+    "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
+    "button": {
+      "view_detail": "Xem chi tiết"
     },
-    "processing_document": {
-      "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
-      "illegal_step": "Không thể thực hiện thao tác này"
-    },
-    "calendar": {
-      "reminder_status": {
-        "active": "Đang chờ xử lý",
-        "close_to_expiration": "Sắp hết hạn",
-        "expired": "Đã quá hạn"
-      }
-    },
-    "transfer_history": {
-      "title": "Chuyển xử lý",
-      "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
-      "no_item": "Không có lịch sử chuyển xử lý nào",
-      "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
-      "button": {
-        "view_detail": "Xem chi tiết"
-      },
-      "default_sender": "Bạn",
-      "default_receiver": "bạn",
-      "same_level": "cùng cấp",
-      "process": "xử lý",
-      "modal": {
-        "modal_title": "Lịch sử  chuyển xử lý",
-        "document": "Văn bản",
-        "transfer_date": "Ngày chuyển",
-        "processing_duration": "Thời hạn xử lý",
-        "infinite_processing_time": "Không thời hạn",
-        "process_method": "Cách thức xử lý",
-        "sender": "Người chuyển",
-        "receiver": "Người nhận",
-        "transfer_type_1": "Chuyển xử lý",
-        "transfer_type_2": "Cùng cấp",
-        "transfer_type": "Loại chuyển"
-      }
-    },
-    "notification": {
-      "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
+    "default_sender": "Bạn",
+    "default_receiver": "bạn",
+    "same_level": "cùng cấp",
+    "process": "xử lý",
+    "modal": {
+      "modal_title": "Lịch sử  chuyển xử lý",
+      "document": "Văn bản",
+      "transfer_date": "Ngày chuyển",
+      "processing_duration": "Thời hạn xử lý",
+      "infinite_processing_time": "Không thời hạn",
+      "process_method": "Cách thức xử lý",
+      "sender": "Người chuyển",
+      "receiver": "Người nhận",
+      "transfer_type_1": "Chuyển xử lý",
+      "transfer_type_2": "Cùng cấp",
+      "transfer_type": "Loại chuyển"
+    }
+  },
+  "notification": {
+    "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
+  },
+  "link-document": {
+    "unlink_modal": {
+      "title": "Hủy liên kết văn bản",
+      "content": "Bạn chắc chắn muốn hủy liên kết văn bản này?",
+      "ok_text": "Huỷ liên kết",
+      "cancel_text": "Quay lại"
     }
   }
 }

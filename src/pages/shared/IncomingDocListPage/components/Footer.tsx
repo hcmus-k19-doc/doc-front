@@ -21,7 +21,7 @@ import { transferDocModalState } from '../core/states';
 const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const { t } = useTranslation();
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
-  const { data } = useIncomingDocRes();
+  const { data } = useIncomingDocRes(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [modalForm] = useForm();

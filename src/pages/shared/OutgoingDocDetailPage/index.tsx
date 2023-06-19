@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { useParams } from 'react-router-dom';
+import {
+  CloseCircleOutlined,
+  ExclamationCircleOutlined,
+  InboxOutlined,
+  PlusCircleOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -11,6 +17,7 @@ import {
   DatePicker,
   Form,
   Input,
+  List,
   message,
   Modal,
   Row,
@@ -24,6 +31,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
+import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
@@ -51,6 +59,7 @@ import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/sta
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
+import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/OutgoingDocument';
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
@@ -72,23 +81,30 @@ function OutgoingDocDetailPage() {
   const [form] = useForm();
   const showAlert = useSweetAlert();
 
+  const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
   const [isReviewing, setIsReviewing] = useState(false);
   const [isReleased, setIsReleased] = useState(false);
 
+  const linkedDocuments = useDocOutLinkedDocumentsQuery(+(docId || 1));
   const [foldersQuery, documentTypesQuery, , departmentsQuery] = useDropDownFieldsQuery();
 
   const { isLoading, data, isFetching } = useOutgoingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<OutgoingDocumentGetDto[]>([]);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
-  const navigate = useNavigate();
   const [modalForm] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [, setError] = useState<string>();
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
+
+  const [selectedDocumentsToLink, setSelectedDocumentsToLink] = useState([]);
+
+  const [modal, contextHolder] = Modal.useModal();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchForm = () => {
     if (!isLoading) {
@@ -320,6 +336,7 @@ function OutgoingDocDetailPage() {
         );
       }
 
+      setLoading(true);
       try {
         const response = await outgoingDocumentService.getTransferDocumentDetail(
           getTransferDocumentDetailRequest
@@ -332,6 +349,8 @@ function OutgoingDocDetailPage() {
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -401,9 +420,41 @@ function OutgoingDocDetailPage() {
     }
   };
 
+  const handleCancelLinkDocument = () => {
+    setOpenLinkDocumentModal(false);
+  };
+
+  const handleOkLinkDocument = async () => {
+    const documentToLinkIds = selectedDocumentsToLink.map((doc: any) => doc.id);
+    await outgoingDocumentService.linkDocuments(+(docId ?? 0), documentToLinkIds);
+
+    queryClient.invalidateQueries(['docout.link_documents', +(docId ?? 1)]);
+    setOpenLinkDocumentModal(false);
+    setSelectedDocumentsToLink([]);
+  };
+
+  const handleDeleteLinkedDocument = async (documentId: number) => {
+    modal.confirm({
+      title: t('link-document.unlink_modal.title'),
+      icon: <ExclamationCircleOutlined />,
+      content: t('link-document.unlink_modal.content'),
+      okText: t('link-document.unlink_modal.ok_text'),
+      cancelText: t('link-document.unlink_modal.cancel_text'),
+      onOk: async () => {
+        await outgoingDocumentService.unlinkDocument(+(docId ?? 0), documentId);
+        queryClient.invalidateQueries(['docout.link_documents', +(docId ?? 1)]);
+      },
+      centered: true,
+    });
+  };
+
+  const handleSelectedDocumentsToLinkChanged = (documents: any) => {
+    setSelectedDocumentsToLink(documents);
+  };
+
   return (
     <>
-      <Skeleton loading={isLoading || isFetching} active>
+      <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
         <div className='text-lg text-primary'>{t('outgoing_doc_detail_page.title')}</div>
 
         {isReleased && <DocStatus status={OutgoingDocumentStatusEnum.RELEASED} />}
@@ -615,6 +666,64 @@ function OutgoingDocDetailPage() {
                   </p>
                 </Dragger>
               </Form.Item>
+
+              <div className='mb-10'></div>
+
+              <div className='linked-documents'>
+                <div className='flex justify-between linked-header'>
+                  <div className='linked-label font-semibold'>
+                    {t('incomingDocDetailPage.linked_document.title')}
+                  </div>
+                  {!isReleased && (
+                    <div
+                      className='text-primary pr-2'
+                      onClick={() => {
+                        setOpenLinkDocumentModal(true);
+                      }}>
+                      <PlusCircleOutlined />
+                      <span className='ml-2 cursor-pointer text-link'>
+                        {t('incomingDocDetailPage.linked_document.add')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <List
+                  loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
+                  itemLayout='horizontal'
+                  dataSource={linkedDocuments.data}
+                  renderItem={(item) => (
+                    <List.Item
+                      actions={[
+                        <span
+                          key={`delete-${item.id}`}
+                          onClick={() => {
+                            if (isReleased) return;
+                            handleDeleteLinkedDocument(item.id);
+                          }}>
+                          {!isReleased && <CloseCircleOutlined />}
+                        </span>,
+                      ]}>
+                      <List.Item.Meta
+                        title={
+                          <div
+                            onClick={() => {
+                              globalNavigate(`/docin/in-detail/${item.id}`);
+                            }}>
+                            <span className='cursor-pointer text-primary text-link mr-2'>
+                              {item.name}
+                            </span>
+                            <span>
+                              {item.incomingNumber}/{item.originalSymbolNumber}
+                            </span>
+                          </div>
+                        }
+                        description={item.summary}
+                      />
+                    </List.Item>
+                  )}
+                />
+              </div>
             </Col>
           </Row>
         </Form>
@@ -696,15 +805,21 @@ function OutgoingDocDetailPage() {
             />
           </Col>
         </Row>
-        <div className='text-lg text-primary'>{t('common.comment.title')}</div>
-        <Row>
-          <Col span={16}>
-            <DocComment
-              docId={Number(docId)}
-              processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
-            />
-          </Col>
-        </Row>
+
+        {!isReleased && (
+          <div className='comment-section'>
+            <div className='text-lg text-primary'>{t('common.comment.title')}</div>
+            <Row>
+              <Col span={16}>
+                <DocComment
+                  docId={Number(docId)}
+                  processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
+                />
+              </Col>
+            </Row>
+          </div>
+        )}
+
         {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
           <TransferOutgoingDocModalDetail
             form={modalForm}
@@ -715,6 +830,7 @@ function OutgoingDocDetailPage() {
               transferDocumentDetail as GetTransferDocumentDetailCustomResponse
             }
             type={'OutgoingDocument'}
+            loading={loading}
           />
         ) : (
           <TransferDocModal
@@ -727,6 +843,18 @@ function OutgoingDocDetailPage() {
             type={'OutgoingDocument'}
           />
         )}
+
+        <LinkDocumentModal
+          selectedDocumentsToLink={selectedDocumentsToLink}
+          handleSelectedDocumentsToLinkChanged={handleSelectedDocumentsToLinkChanged}
+          selectedDocuments={linkedDocuments.data}
+          isIncomingDocument={false}
+          isModalOpen={openLinkDocumentModal}
+          handleOk={handleOkLinkDocument}
+          handleCancel={handleCancelLinkDocument}
+        />
+
+        {contextHolder}
       </Skeleton>
     </>
   );

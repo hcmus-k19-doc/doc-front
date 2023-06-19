@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ArrowUpOutlined, SwapOutlined } from '@ant-design/icons';
 import { Col, Divider, Menu, Modal, Row } from 'antd';
 import { format } from 'date-fns';
 import { TransferDocumentMenuConfig } from 'models/doc-main-models';
@@ -19,6 +20,7 @@ import {
   TransferModalProps,
 } from './core/models';
 
+import './index.css';
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
   2: ManagerScreenComponent,
@@ -54,7 +56,18 @@ const TransferDocModal: React.FC<TransferModalProps> = ({
 
   const items = settings?.menuConfigs?.reduce(
     (acc: MenuItem[], item: TransferDocumentMenuConfig) => {
-      return [...acc, getItem(item.menuLabel, item.menuKey)];
+      return [
+        ...acc,
+        getItem(
+          item.menuLabel,
+          item.menuKey,
+          item.isTransferToSameLevel ? (
+            <SwapOutlined className={'transfer-icon'} />
+          ) : (
+            <ArrowUpOutlined className={'transfer-icon'} />
+          )
+        ),
+      ];
     },
     []
   );

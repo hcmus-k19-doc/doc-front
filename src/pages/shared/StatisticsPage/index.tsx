@@ -19,7 +19,7 @@ import './index.css';
 
 const StatisticsPage: React.FC = () => {
   const { data: statisticsDto, isLoading } = useStatisticsRes();
-  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto || {};
+  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto ?? {};
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -33,6 +33,9 @@ const StatisticsPage: React.FC = () => {
         year: statisticsDto?.year,
       }),
       x: 'center',
+    },
+    textStyle: {
+      fontFamily: theme.useToken().token.fontFamily,
     },
     tooltip: {
       trigger: 'item',
@@ -87,6 +90,9 @@ const StatisticsPage: React.FC = () => {
         year: statisticsDto?.year,
       }),
       x: 'center',
+    },
+    textStyle: {
+      fontFamily: theme.useToken().token.fontFamily,
     },
     tooltip: {},
     legend: {

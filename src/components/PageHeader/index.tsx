@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
@@ -10,10 +9,12 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover } from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Typography } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
+import { PRIMARY_COLOR } from 'config/constant';
+import { t } from 'i18next';
 import {
   DocSystemRoleEnum,
   TransferHistoryDto,
@@ -29,10 +30,10 @@ import { languageItems } from './core';
 import './index.css';
 
 const { Header } = Layout;
+const { Text } = Typography;
 
 const PageHeader: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { logout } = useAuth();
   const location = useLocation();
   const { currentUser } = useAuth();
@@ -44,13 +45,13 @@ const PageHeader: React.FC = () => {
   const mainNavigator: MenuProps['items'] = [
     {
       key: '/',
-      label: 'Văn bản',
+      label: t('page_header.document'),
       icon: <DatabaseOutlined />,
       onClick: () => navigate('/'),
     },
     {
       key: '/statistics',
-      label: 'Thống kê',
+      label: t('page_header.statistics'),
       icon: <FundOutlined />,
       onClick: () => navigate('/statistics'),
     },
@@ -59,13 +60,13 @@ const PageHeader: React.FC = () => {
   const profileNavigator: MenuProps['items'] = [
     {
       key: '/profile',
-      label: 'Thông tin cá nhân',
+      label: t('page_header.profile'),
       icon: <UserOutlined />,
       onClick: () => navigate('/profile'),
     },
     {
       key: '/logout',
-      label: 'Đăng xuất',
+      label: t('page_header.logout.title'),
       icon: <LogoutOutlined />,
       onClick: () => confirmLogout(),
     },
@@ -125,6 +126,8 @@ const PageHeader: React.FC = () => {
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
+      // move the scrollbar up in order to continue scroll
+      e.currentTarget.scrollTop -= 12;
       appendData();
       setCurrentPage((currentPage) => currentPage + 1);
     }
@@ -150,7 +153,7 @@ const PageHeader: React.FC = () => {
         />
       )}
 
-      <div className='flex justify-between w-[78px]'>
+      <div className='flex justify-between items-center min-w-[200px]'>
         <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
           <GlobalOutlined />
         </Dropdown>
@@ -177,8 +180,17 @@ const PageHeader: React.FC = () => {
           </Popover>
         </Badge>
 
-        <Dropdown menu={{ items: profileNavigator }} placement='bottomRight' trigger={['click']}>
-          <UserOutlined title={currentUser?.username} />
+        <Dropdown menu={{ items: profileNavigator }} placement='bottomCenter' trigger={['click']}>
+          <div className='flex justify-between w-[140px] profile'>
+            <UserOutlined title={currentUser?.username} />
+            <Text
+              strong
+              style={{ color: PRIMARY_COLOR }}
+              title={currentUser?.role}
+              className='text-center'>
+              {currentUser?.fullName}
+            </Text>
+          </div>
         </Dropdown>
       </div>
       {contextHolder}
