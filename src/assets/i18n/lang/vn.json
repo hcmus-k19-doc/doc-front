@@ -28,7 +28,8 @@
         "users": "Người dùng",
         "document_types": "Loại văn bản",
         "departments": "Phòng ban",
-        "calendar": "Công việc"
+        "calendar": "Công việc",
+        "report": "Báo cáo"
       }
     },
     "BUTTON": {
@@ -58,7 +59,9 @@
     "search_criteria": {
       "title": "Tiêu thức tìm kiếm",
       "search": "Tìm kiếm",
-      "reset": "Làm mới"
+      "reset": "Làm mới",
+      "report": "Tiêu thức lập báo cáo",
+      "export": "Xem báo cáo"
     },
     "button": {
       "save": "Lưu",
@@ -196,7 +199,11 @@
       "full_name": "Họ và tên",
       "role": "Vai trò",
       "department": "Phòng ban"
-    }
+    },
+    "expert_name": "Tên người dùng",
+    "from_date": "Từ ngày",
+    "to_date": "Đến ngày",
+    "doc_types": "Loại văn bản"
   },
   "incomingDocListPage": {
     "table": {
@@ -699,60 +706,75 @@
         "IN_PROGRESS": "Đang xử lý",
         "CLOSED": "Đã xử lý"
       }
-    }
-  },
-  "profile": {
-    "user": {
-      "info": "Thông tin người dùng",
-      "id": "ID",
-      "username": "Tên người dùng",
-      "email": "Email",
-      "role": "Chức vụ",
-      "department": "Phòng ban"
     },
-    "log": {
-      "title": "Lịch sử thay đổi"
-    }
-  },
-  "processing_document": {
-    "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
-    "illegal_step": "Không thể thực hiện thao tác này"
-  },
-  "calendar": {
-    "reminder_status": {
-      "active": "Đang chờ xử lý",
-      "close_to_expiration": "Sắp hết hạn",
-      "expired": "Đã quá hạn"
-    }
-  },
-  "transfer_history": {
-    "title": "Chuyển xử lý",
-
-    "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
-    "no_item": "Không có lịch sử chuyển xử lý nào",
-    "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
+    "table": {
+      "columns": {
+        "ordinal_Number": "STT",
+        "expert_name": "Tên chuyên viên",
+        "unprocessed": "Chưa xử lý",
+        "closed": "Đã xử lý",
+        "on_time": "Đúng hạn",
+        "unexpired": "Trong hạn",
+        "overdue": "Trễ hạn",
+        "total": "Tổng",
+        "on_time_processing_percentage": "Tỷ lệ % xử lý đúng hạn"
+      }
+    },
     "button": {
-      "view_detail": "Xem chi tiết"
+      "export": "In báo cáo"
     },
-    "default_sender": "Bạn",
-    "default_receiver": "bạn",
-    "same_level": "cùng cấp",
-    "process": "xử lý",
-    "modal": {
-      "modal_title": "Lịch sử  chuyển xử lý",
-      "document": "Văn bản",
-      "transfer_date": "Ngày chuyển",
-      "processing_duration": "Thời hạn xử lý",
-      "infinite_processing_time": "Không thời hạn",
-      "process_method": "Cách thức xử lý",
-      "sender": "Người chuyển",
-      "receiver": "Người nhận",
-      "transfer_type_1": "Chuyển xử lý",
-      "transfer_type_2": "Cùng cấp",
-      "transfer_type": "Loại chuyển"
+    "profile": {
+      "user": {
+        "info": "Thông tin người dùng",
+        "id": "ID",
+        "username": "Tên người dùng",
+        "email": "Email",
+        "role": "Chức vụ",
+        "department": "Phòng ban"
+      },
+      "log": {
+        "title": "Lịch sử thay đổi"
+      }
+    },
+    "processing_document": {
+      "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
+      "illegal_step": "Không thể thực hiện thao tác này"
+    },
+    "calendar": {
+      "reminder_status": {
+        "active": "Đang chờ xử lý",
+        "close_to_expiration": "Sắp hết hạn",
+        "expired": "Đã quá hạn"
+      }
+    },
+    "transfer_history": {
+      "title": "Chuyển xử lý",
+      "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
+      "no_item": "Không có lịch sử chuyển xử lý nào",
+      "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
+      "button": {
+        "view_detail": "Xem chi tiết"
+      },
+      "default_sender": "Bạn",
+      "default_receiver": "bạn",
+      "same_level": "cùng cấp",
+      "process": "xử lý",
+      "modal": {
+        "modal_title": "Lịch sử  chuyển xử lý",
+        "document": "Văn bản",
+        "transfer_date": "Ngày chuyển",
+        "processing_duration": "Thời hạn xử lý",
+        "infinite_processing_time": "Không thời hạn",
+        "process_method": "Cách thức xử lý",
+        "sender": "Người chuyển",
+        "receiver": "Người nhận",
+        "transfer_type_1": "Chuyển xử lý",
+        "transfer_type_2": "Cùng cấp",
+        "transfer_type": "Loại chuyển"
+      }
+    },
+    "notification": {
+      "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
     }
-  },
-  "notification": {
-    "mark_all_as_read": "Đánh dấu tất cả là đã đọc"
   }
 }

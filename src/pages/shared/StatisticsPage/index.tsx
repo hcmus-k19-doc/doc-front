@@ -1,15 +1,29 @@
 import React from 'react';
-import { Layout, theme } from 'antd';
+import { Button, Divider, Layout, Table, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
+import { ColumnsType } from 'antd/es/table';
 import PageHeader from 'components/PageHeader';
 import ReactECharts from 'echarts-for-react';
 import { t } from 'i18next';
-import { ProcessingStatus } from 'models/doc-main-models';
+import { DocSystemRoleEnum, ProcessingStatus } from 'models/doc-main-models';
+import { RecoilRoot } from 'recoil';
 import { useStatisticsRes } from 'shared/hooks/StatisticsQuery';
 
-function StatisticsPage() {
+import { useAuth } from '../../../components/AuthComponent';
+
+import DirectorStatisticsSearchForm from './components/DirectorStatisticsSearchForm';
+import StatisticsSearchForm from './components/StatisticsSearchForm';
+import { TableRowDataType } from './core/models';
+
+import './index.css';
+
+const StatisticsPage: React.FC = () => {
   const { data: statisticsDto, isLoading } = useStatisticsRes();
   const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto || {};
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+  const { currentUser } = useAuth();
 
   const incomingPieChartOptions = {
     title: {
@@ -95,28 +109,85 @@ function StatisticsPage() {
     }),
   };
 
-  return (
-    <div className='flex justify-between'>
-      <ReactECharts
-        showLoading={isLoading}
-        option={incomingPieChartOptions}
-        style={{ height: 400, width: '50%' }}
-        opts={{ renderer: 'svg' }}
-      />
-      <ReactECharts
-        showLoading={isLoading}
-        option={processingDocumentTypeBarChartOptions}
-        style={{ height: 400, width: '50%' }}
-        opts={{ renderer: 'svg' }}
-      />
-    </div>
-  );
-}
+  const dummyData: TableRowDataType[] = [
+    {
+      key: 1,
+      id: 1,
+      ordinalNumber: 1,
+      expertName: 'Nguyễn Văn A',
+      onTime: 10,
+      overdueClosedDoc: 0,
+      totalClosedDoc: 10,
+      unexpired: 0,
+      overdueUnprocessedDoc: 0,
+      totalUnprocessedDoc: 0,
+      onTimeProcessingPercentage: 50,
+    },
+    {
+      key: 2,
+      id: 2,
+      ordinalNumber: 2,
+      expertName: 'Trần Văn B',
+      onTime: 15,
+      overdueClosedDoc: 5,
+      totalClosedDoc: 15,
+      unexpired: 3,
+      overdueUnprocessedDoc: 2,
+      totalUnprocessedDoc: 5,
+      onTimeProcessingPercentage: 70,
+    },
+  ];
 
-export default function StatisticsPageWrapper() {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const columns: ColumnsType<TableRowDataType> = [
+    {
+      title: t('statistics.table.columns.ordinal_Number'),
+      dataIndex: 'ordinalNumber',
+    },
+    {
+      title: t('statistics.table.columns.expert_name'),
+      dataIndex: 'expertName',
+    },
+    {
+      title: t('statistics.table.columns.closed'),
+      className: 'top-column',
+      children: [
+        {
+          title: t('statistics.table.columns.on_time'),
+          dataIndex: 'onTime',
+        },
+        {
+          title: t('statistics.table.columns.overdue'),
+          dataIndex: 'overdueClosedDoc',
+        },
+        {
+          title: t('statistics.table.columns.total'),
+          dataIndex: 'totalClosedDoc',
+        },
+      ],
+    },
+    {
+      title: t('statistics.table.columns.unprocessed'),
+      className: 'top-column',
+      children: [
+        {
+          title: t('statistics.table.columns.unexpired'),
+          dataIndex: 'unexpired',
+        },
+        {
+          title: t('statistics.table.columns.overdue'),
+          dataIndex: 'overdueUnprocessedDoc',
+        },
+        {
+          title: t('statistics.table.columns.total'),
+          dataIndex: 'totalUnprocessedDoc',
+        },
+      ],
+    },
+    {
+      title: t('statistics.table.columns.on_time_processing_percentage'),
+      dataIndex: 'onTimeProcessingPercentage',
+    },
+  ];
 
   return (
     <Layout>
@@ -128,7 +199,49 @@ export default function StatisticsPageWrapper() {
         }}
         className='mt-12'>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
-          <StatisticsPage />
+          <div className='text-lg text-primary'>{t('main_page.menu.items.report')}</div>
+          {currentUser?.role === DocSystemRoleEnum.GIAM_DOC ? (
+            <DirectorStatisticsSearchForm />
+          ) : (
+            <StatisticsSearchForm />
+          )}
+          <Divider />
+          <Table
+            style={{ width: '100%' }}
+            loading={isLoading}
+            rowClassName={() => 'row-hover'}
+            columns={columns}
+            // dataSource={data?.payload}
+            dataSource={dummyData}
+            // scroll={{ x: 1500 }}
+            pagination={false}
+            // footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
+          />
+          <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>
+            <div className='transfer-doc-wrapper'>
+              <Button
+                type='primary'
+                // onClick={handleOnOpenModal}
+                className='transfer-doc-btn'>
+                {t('statistics.button.export')}
+              </Button>
+            </div>
+          </div>
+          <Divider />
+          <div className='flex justify-between'>
+            <ReactECharts
+              showLoading={isLoading}
+              option={incomingPieChartOptions}
+              style={{ height: 400, width: '50%' }}
+              opts={{ renderer: 'svg' }}
+            />
+            <ReactECharts
+              showLoading={isLoading}
+              option={processingDocumentTypeBarChartOptions}
+              style={{ height: 400, width: '50%' }}
+              opts={{ renderer: 'svg' }}
+            />
+          </div>
         </Layout>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
@@ -136,4 +249,12 @@ export default function StatisticsPageWrapper() {
       </Footer>
     </Layout>
   );
-}
+};
+
+const StatisticsPageWrapper = () => (
+  <RecoilRoot>
+    <StatisticsPage />
+  </RecoilRoot>
+);
+
+export default StatisticsPageWrapper;

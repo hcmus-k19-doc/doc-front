@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { SelectProps } from 'antd';
 import { AxiosError } from 'axios';
 import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
@@ -149,4 +150,22 @@ export function useUserDeleteMutation() {
       queryClient.invalidateQueries(['QUERIES.USER_LIST', query]);
     },
   });
+}
+
+export function useAllUsers() {
+  const { data } = useQuery({
+    queryKey: ['QUERIES.ALL_USERS'],
+    queryFn: async () => {
+      return await userService.getAllUsers();
+    },
+  });
+
+  const allUsers: SelectProps['options'] = data?.map((user) => ({
+    value: user.id,
+    label: user.fullName + ' - ' + user.department.departmentName,
+  }));
+
+  return {
+    allUsers,
+  };
 }

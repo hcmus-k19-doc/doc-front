@@ -53,12 +53,18 @@ async function getTransferHistory(
     .then((response) => response.data);
 }
 
+async function getAllUsers() {
+  const res = await axios.get<UserDto[]>(`${REACT_APP_DOC_MAIN_SERVICE_URL}/users/all`);
+  return res.data;
+}
+
 const userService = {
   getCurrentUser,
   getUsersByRole,
   getUsersByRoleWithDepartment,
   updatePassword,
   getTransferHistory,
+  getAllUsers,
 };
 
 export default userService;

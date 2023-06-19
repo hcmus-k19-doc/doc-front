@@ -42,7 +42,7 @@ export const useIncomingDocRes = () => {
           const totalElements = data.totalElements;
           const rowsData: TableRowDataType[] = data.payload.map((item) => {
             return {
-              ordinalNumber: data.payload.indexOf(item) + 1,
+              ordinalNumber: (query.page - 1) * query.pageSize + data.payload.indexOf(item) + 1,
               name: item.name,
               key: item.id,
               id: item.id,
