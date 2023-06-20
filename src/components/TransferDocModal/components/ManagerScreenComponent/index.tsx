@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -58,6 +58,14 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
       }
     });
   }
+
+  useEffect(() => {
+    const assigneeValue = form.getFieldValue('assignee');
+    // if assignee is undefined => reset this state
+    if (!assigneeValue) {
+      setSelectedAssignee(undefined);
+    }
+  }, [form.getFieldValue('assignee')]);
 
   const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
     e.target.checked ? setIsInfiniteProcessingTime(true) : setIsInfiniteProcessingTime(false);

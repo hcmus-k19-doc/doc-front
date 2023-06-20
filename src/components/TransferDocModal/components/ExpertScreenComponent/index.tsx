@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -57,6 +57,14 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
       }
     });
   }
+
+  useEffect(() => {
+    const assigneeValue = form.getFieldValue('assignee');
+    // if assignee is undefined => reset this state
+    if (!assigneeValue) {
+      setSelectedAssignee(undefined);
+    }
+  }, [form.getFieldValue('assignee')]);
 
   const onChooseNoneProcessingTime = (e: CheckboxChangeEvent) => {
     e.target.checked ? setIsInfiniteProcessingTime(true) : setIsInfiniteProcessingTime(false);
