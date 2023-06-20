@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -46,6 +46,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
   const { t } = useTranslation();
   const { experts } = useExpertTransferRes();
   const { currentUser } = useAuth();
+  const [selectedAssignee, setSelectedAssignee] = useState();
   const setDirectorTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
 
@@ -69,6 +70,21 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
     return current && current < dayjs().endOf('day');
   };
 
+  const handleOnFieldsChange = (changedFields: any[], allFields: any[]) => {
+    if (changedFields?.[0]?.name?.[0] === 'assignee') {
+      const newAssigneeValue = changedFields?.[0]?.value;
+      const collaboratorsField = allFields.find((field) => field?.name[0] === 'collaborators');
+      setSelectedAssignee(newAssigneeValue);
+
+      // remove the assignee value inside collaborators if exist
+      const filteredCollaborators = collaboratorsField.value?.filter(
+        (collaborator: any) => collaborator !== newAssigneeValue
+      );
+
+      form.setFieldsValue({ collaborators: filteredCollaborators });
+    }
+  };
+
   return (
     <Form
       form={form}
@@ -81,6 +97,7 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
         });
       }}
+      onFieldsChange={handleOnFieldsChange}
       disabled={isReadOnlyMode}>
       <Row>
         <Col span='6'>
@@ -155,7 +172,12 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
             </Col>
             <Col span='16'>
               <Form.Item name='collaborators'>
-                <Select mode='multiple' allowClear options={experts} />
+                <Select
+                  mode='multiple'
+                  allowClear
+                  disabled={!selectedAssignee}
+                  options={experts?.filter((expert) => expert.value !== selectedAssignee)}
+                />
               </Form.Item>
             </Col>
           </Row>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -47,6 +47,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
   const { currentUser } = useAuth();
+  const [selectedAssignee, setSelectedAssignee] = useState();
   const setManagerTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
 
@@ -70,6 +71,21 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
     return current && current < dayjs().endOf('day');
   };
 
+  const handleOnFieldsChange = (changedFields: any[], allFields: any[]) => {
+    if (changedFields?.[0]?.name?.[0] === 'assignee') {
+      const newAssigneeValue = changedFields?.[0]?.value;
+      const collaboratorsField = allFields.find((field) => field?.name[0] === 'collaborators');
+      setSelectedAssignee(newAssigneeValue);
+
+      // remove the assignee value inside collaborators if exist
+      const filteredCollaborators = collaboratorsField.value?.filter(
+        (collaborator: any) => collaborator !== newAssigneeValue
+      );
+
+      form.setFieldsValue({ collaborators: filteredCollaborators });
+    }
+  };
+
   return (
     <Form
       form={form}
@@ -82,6 +98,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           processMethod: values.processMethod,
         });
       }}
+      onFieldsChange={handleOnFieldsChange}
       disabled={isReadOnlyMode}>
       <Row>
         <Col span='6'>
@@ -178,7 +195,12 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
             </Col>
             <Col span='16'>
               <Form.Item name='collaborators'>
-                <Select mode='multiple' allowClear options={managers} />
+                <Select
+                  mode='multiple'
+                  allowClear
+                  options={managers?.filter((manager) => manager.value !== selectedAssignee)}
+                  disabled={!selectedAssignee}
+                />
               </Form.Item>
             </Col>
           </Row>

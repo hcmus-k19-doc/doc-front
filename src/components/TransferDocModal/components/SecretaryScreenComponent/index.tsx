@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -44,6 +44,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
   const { t } = useTranslation();
   const { secretaries } = useSecretaryTransferRes();
   const { currentUser } = useAuth();
+  const [selectedAssignee, setSelectedAssignee] = useState();
   const setSecretaryTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
 
@@ -67,6 +68,21 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
     return current && current < dayjs().endOf('day');
   };
 
+  const handleOnFieldsChange = (changedFields: any[], allFields: any[]) => {
+    if (changedFields?.[0]?.name?.[0] === 'assignee') {
+      const newAssigneeValue = changedFields?.[0]?.value;
+      const collaboratorsField = allFields.find((field) => field?.name[0] === 'collaborators');
+      setSelectedAssignee(newAssigneeValue);
+
+      // remove the assignee value inside collaborators if exist
+      const filteredCollaborators = collaboratorsField.value?.filter(
+        (collaborator: any) => collaborator !== newAssigneeValue
+      );
+
+      form.setFieldsValue({ collaborators: filteredCollaborators });
+    }
+  };
+
   return (
     <Form
       form={form}
@@ -78,6 +94,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
         });
       }}
+      onFieldsChange={handleOnFieldsChange}
       disabled={isReadOnlyMode}>
       <Row>
         <Col span='6'>
@@ -152,7 +169,14 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
             </Col>
             <Col span='16'>
               <Form.Item name='collaborators'>
-                <Select mode='multiple' allowClear options={secretaries} />
+                <Select
+                  mode='multiple'
+                  allowClear
+                  disabled={!selectedAssignee}
+                  options={secretaries?.filter(
+                    (secretarie) => secretarie.value !== selectedAssignee
+                  )}
+                />
               </Form.Item>
             </Col>
           </Row>
