@@ -1,6 +1,7 @@
 {
   "name": "doc-front",
-  "version": "0.1.0",
+  "homepage": "/doc",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@ant-design/compatible": "^5.1.1",
@@ -37,7 +38,7 @@
     "tailwindcss": "3.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd -f .env react-scripts start",
     "build": "react-scripts build",
     "build:local": "env-cmd -f .env.local yarn build",
     "lint": "eslint .",
