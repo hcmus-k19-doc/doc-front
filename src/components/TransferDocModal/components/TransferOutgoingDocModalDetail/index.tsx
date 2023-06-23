@@ -60,7 +60,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
         ...settings,
         menuConfigs:
           currentUser?.role === DocSystemRoleEnum.TRUONG_PHONG ||
-          currentUser?.role === DocSystemRoleEnum.GIAM_DOC
+          currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
             ? settings?.menuConfigs?.filter((item) => {
                 if (transferredDoc?.isDocCollaborator) {
                   return item.isTransferToSameLevel === true;

@@ -1,4 +1,4 @@
-name: DOC build, push to Docker Hub and deploy
+name: doc-front CD
 
 on:
   push:
@@ -10,23 +10,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Use Node.js 16.10.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.10.0
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build bundle
+        run: yarn build
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
+      - name: Build image and push to Docker Hub
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: hcmusdoc/doc-front:latest
-  
-  Deploy:
-    runs-on: ubuntu-latest
-    needs: ["Build"]
-    steps:
-      - name: Deploy 
-        shell: bash
-        run: echo Deploying...

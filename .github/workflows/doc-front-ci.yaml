@@ -1,4 +1,4 @@
-name: DOC build
+name: doc-front CI
 
 on:
   pull_request:
@@ -20,5 +20,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build production
+      - name: Build bundle
         run: yarn build

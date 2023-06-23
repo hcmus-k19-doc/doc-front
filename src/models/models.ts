@@ -6,7 +6,7 @@ export interface TokenDto {
 }
 
 export const ALL_SYSTEM_ROLES = [
-  DocSystemRoleEnum.GIAM_DOC,
+  DocSystemRoleEnum.HIEU_TRUONG,
   DocSystemRoleEnum.CHUYEN_VIEN,
   DocSystemRoleEnum.TRUONG_PHONG,
   DocSystemRoleEnum.VAN_THU,

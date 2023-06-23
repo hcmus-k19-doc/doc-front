@@ -338,6 +338,7 @@ export interface UserDto extends DocAbstractDto {
   password: string;
   role: DocSystemRoleEnum;
   department: DepartmentDto;
+  roleTitle: string;
 }
 
 export interface UserSearchCriteria {
@@ -437,7 +438,7 @@ export const enum ProcessingStatus {
 }
 
 export const enum DocSystemRoleEnum {
-  GIAM_DOC = "GIAM_DOC",
+  HIEU_TRUONG = "HIEU_TRUONG",
   CHUYEN_VIEN = "CHUYEN_VIEN",
   TRUONG_PHONG = "TRUONG_PHONG",
   VAN_THU = "VAN_THU",

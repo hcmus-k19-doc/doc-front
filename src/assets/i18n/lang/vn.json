@@ -127,14 +127,14 @@
   "user": {
     "invalid": "Tài khoản không hợp lệ",
     "role": {
-      "GIAM_DOC": "Giám đốc",
+      "HIEU_TRUONG": "Hiệu trưởng",
       "CHUYEN_VIEN": "Chuyên viên",
       "TRUONG_PHONG": "Trưởng phòng",
       "VAN_THU": "Văn thư",
       "DOC_ADMIN": "Quản trị viên"
     },
     "role_v2": {
-      "GIAM_DOC": "Giám đốc",
+      "HIEU_TRUONG": "Hiệu trưởng",
       "CHUYEN_VIEN": "Chuyên viên",
       "TRUONG_PHONG": "Chánh văn phòng",
       "VAN_THU": "Văn thư",
@@ -148,12 +148,14 @@
       "email": "Email",
       "full_name": "Họ và tên",
       "role": "Vai trò",
+      "role_title": "Chức danh",
       "department": "Phòng ban",
       "username_required": "Hãy điền tên đăng nhập",
       "password_required": "Hãy điền mật khẩu",
       "full_name_required": "Hãy điền họ và tên",
       "email_invalid": "Email không hợp lệ",
       "role_required": "Hãy chọn vai trò",
+      "role_title_invalid": "Chức danh không hợp lệ. Chức danh phải có độ dài từ 1 đến 200 ký tự",
       "department_required": "Hãy chọn phòng ban",
       "old_password": "Mật khẩu cũ",
       "confirm_password": "Xác nhận mật khẩu",
@@ -618,6 +620,7 @@
         "email": "Email",
         "full_name": "Họ và tên",
         "role": "Vai trò",
+        "role_title": "Chức danh",
         "department": "Phòng ban"
       }
     },
@@ -740,7 +743,7 @@
       "id": "ID",
       "username": "Tên người dùng",
       "email": "Email",
-      "role": "Chức vụ",
+      "role_title": "Chức danh",
       "department": "Phòng ban"
     },
     "log": {

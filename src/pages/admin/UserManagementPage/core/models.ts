@@ -10,6 +10,7 @@ export interface UserTableRowDataType {
   email: string;
   fullName: string;
   role: DocSystemRoleEnum;
+  roleTitle: string;
   translatedRole: string;
   department: string;
   departmentId: number;

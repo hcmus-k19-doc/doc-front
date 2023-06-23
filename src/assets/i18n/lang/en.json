@@ -124,14 +124,14 @@
   "user": {
     "invalid": "Invalid account",
     "role": {
-      "GIAM_DOC": "Director",
+      "HIEU_TRUONG": "Principal",
       "CHUYEN_VIEN": "Specialist",
       "TRUONG_PHONG": "Department Head",
       "VAN_THU": "Secretary",
       "DOC_ADMIN": "Administrator"
     },
     "role_v2": {
-      "GIAM_DOC": "Director",
+      "HIEU_TRUONG": "Principal",
       "CHUYEN_VIEN": "Specialist",
       "TRUONG_PHONG": "Chief of Staff",
       "VAN_THU": "Secretary",
@@ -144,13 +144,15 @@
       "password": "Password",
       "email": "Email",
       "full_name": "Full Name",
-      "role": "Role",
+      "role": "Position",
+      "role_title": "Role Title",
       "department": "Department",
       "username_required": "Please enter your username",
       "password_required": "Please enter your password",
       "full_name_required": "Please enter your full name",
       "email_invalid": "Invalid email",
       "role_required": "Please select a role",
+      "role_title_invalid": "Invalid role title. The role title must be between 1 and 200 characters",
       "department_required": "Please select a department",
       "old_password": "Old Password",
       "confirm_password": "Confirm Password",
@@ -611,6 +613,7 @@
         "email": "Email",
         "full_name": "Full Name",
         "role": "Role",
+        "role_title": "Role Title",
         "department": "Department"
       }
     },
@@ -717,7 +720,7 @@
       "id": "ID",
       "username": "Username",
       "email": "Email",
-      "role": "Role",
+      "role_title": "Role Title",
       "department": "Department"
     },
     "log": {
