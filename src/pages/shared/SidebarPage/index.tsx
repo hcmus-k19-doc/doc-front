@@ -92,7 +92,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );
-      case DocSystemRoleEnum.GIAM_DOC:
+      case DocSystemRoleEnum.HIEU_TRUONG:
         return (
           <Routes>
             <Route path='/' element={<Navigate to='/docin/in-list' />} />
@@ -148,7 +148,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
 
   const getMenus = (): JSX.Element => {
     switch (currentUser?.role as DocSystemRoleEnum) {
-      case DocSystemRoleEnum.GIAM_DOC:
+      case DocSystemRoleEnum.HIEU_TRUONG:
         return <DirectorMenu />;
       case DocSystemRoleEnum.TRUONG_PHONG:
         return <ManagerMenu />;

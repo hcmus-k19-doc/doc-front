@@ -392,7 +392,7 @@ function OutgoingDocDetailPage() {
         if (response.status === 200) {
           queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 1)]);
           // navigate('/docout/out-list');
-          currentUser?.role !== DocSystemRoleEnum.GIAM_DOC
+          currentUser?.role !== DocSystemRoleEnum.HIEU_TRUONG
             ? showAlert({
                 icon: 'success',
                 html: t('outgoing_doc_detail_page.message.report_success') as string,

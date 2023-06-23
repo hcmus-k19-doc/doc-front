@@ -32,22 +32,8 @@ const AppRoutes = () => {
                 path='/processing-details/:incomingDocumentId'
                 element={<ProcessingDetailsPageWrapper />}
               />
-              <Route
-                path='/statistics'
-                element={
-                  <DocSuspenseComponent>
-                    <StatisticsPage />
-                  </DocSuspenseComponent>
-                }
-              />
-              <Route
-                path='/profile'
-                element={
-                  <DocSuspenseComponent>
-                    <ProfilePage />
-                  </DocSuspenseComponent>
-                }
-              />
+              <Route path='/statistics' element={<StatisticsPage />} />
+              <Route path='/profile' element={<ProfilePage />} />
               <Route path='/*' element={<MainPage />} />
             </>
           ) : (

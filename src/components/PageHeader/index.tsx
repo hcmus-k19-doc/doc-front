@@ -180,13 +180,13 @@ const PageHeader: React.FC = () => {
           </Popover>
         </Badge>
 
-        <Dropdown menu={{ items: profileNavigator }} placement='bottomCenter' trigger={['click']}>
+        <Dropdown menu={{ items: profileNavigator }} placement='bottom' trigger={['click']}>
           <div className='flex justify-between w-[140px] profile'>
             <UserOutlined title={currentUser?.username} />
             <Text
               strong
               style={{ color: PRIMARY_COLOR }}
-              title={currentUser?.role}
+              title={currentUser?.roleTitle}
               className='text-center'>
               {currentUser?.fullName}
             </Text>

@@ -76,7 +76,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         const response = await outgoingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
           queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
-          currentUser?.role !== DocSystemRoleEnum.GIAM_DOC
+          currentUser?.role !== DocSystemRoleEnum.HIEU_TRUONG
             ? showAlert({
                 icon: 'success',
                 html: t('outgoing_doc_detail_page.message.report_success') as string,
@@ -115,7 +115,7 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           className='transfer-doc-btn'
           style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
           disabled={!hasSelected}>
-          {currentUser?.role === DocSystemRoleEnum.GIAM_DOC
+          {currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
             ? t('outgoing_doc_detail_page.button.transfer_secretary')
             : t('outgoing_doc_detail_page.button.report')}
         </Button>

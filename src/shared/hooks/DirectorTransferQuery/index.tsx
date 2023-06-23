@@ -7,7 +7,7 @@ export function useDirectorTransferRes() {
   const { data } = useQuery({
     queryKey: ['QUERIES.GIAM_DOC_TRANSFER'],
     queryFn: () => {
-      return userService.getUsersByRoleWithDepartment(DocSystemRoleEnum.GIAM_DOC);
+      return userService.getUsersByRoleWithDepartment(DocSystemRoleEnum.HIEU_TRUONG);
     },
     cacheTime: 0,
   });

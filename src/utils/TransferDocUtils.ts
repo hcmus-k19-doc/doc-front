@@ -6,7 +6,7 @@ export const getStep = (reporter: UserDto, assignee: UserDto | null, isCreate: b
     case DocSystemRoleEnum.VAN_THU:
       step = 1;
       break;
-    case DocSystemRoleEnum.GIAM_DOC:
+    case DocSystemRoleEnum.HIEU_TRUONG:
       if (isCreate) {
         step = 2;
       } else {
@@ -47,7 +47,7 @@ export const getStepOutgoingDocument = (reporter: UserDto, isCreate: boolean) =>
         step = 1;
       }
       break;
-    case DocSystemRoleEnum.GIAM_DOC:
+    case DocSystemRoleEnum.HIEU_TRUONG:
       if (isCreate) {
         step = 3;
       } else {

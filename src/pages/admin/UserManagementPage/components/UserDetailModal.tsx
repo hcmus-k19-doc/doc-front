@@ -118,6 +118,19 @@ export default function UserDetailModal({
           </Col>
           <Col>
             <Form.Item
+              label={t('user.detail.role_title')}
+              name='roleTitle'
+              rules={[
+                {
+                  required: true,
+                  message: `${t('user.detail.role_title_invalid')}`,
+                },
+              ]}>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item
               label={t('user.detail.department')}
               name='departmentId'
               rules={[{ required: true, message: `${t('user.detail.department_required')}` }]}>

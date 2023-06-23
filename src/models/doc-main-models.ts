@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-20 20:59:47.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-23 11:46:28.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -337,6 +337,7 @@ export interface UserDto extends DocAbstractDto {
     password: string;
     role: DocSystemRoleEnum;
     department: DepartmentDto;
+    roleTitle: string;
 }
 
 export interface UserSearchCriteria {
@@ -421,7 +422,7 @@ export const enum ProcessingStatus {
 }
 
 export const enum DocSystemRoleEnum {
-    GIAM_DOC = "GIAM_DOC",
+    HIEU_TRUONG = "HIEU_TRUONG",
     CHUYEN_VIEN = "CHUYEN_VIEN",
     TRUONG_PHONG = "TRUONG_PHONG",
     VAN_THU = "VAN_THU",

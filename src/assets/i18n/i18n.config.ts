@@ -26,6 +26,7 @@ i18n
     react: {
       transSupportBasicHtmlNodes: true,
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'b', 'i'],
+      useSuspense: false,
     },
     detection: {
       order: ['queryString', 'cookie'],

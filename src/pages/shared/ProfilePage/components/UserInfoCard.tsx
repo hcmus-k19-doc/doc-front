@@ -16,8 +16,8 @@ export default function UserInfoCard() {
           {currentUser?.username}
         </Descriptions.Item>
         <Descriptions.Item label={t('profile.user.email')}>{currentUser?.email}</Descriptions.Item>
-        <Descriptions.Item label={t('profile.user.role')}>
-          {t(`user.role.${currentUser?.role}`)}
+        <Descriptions.Item label={t('profile.user.role_title')}>
+          {currentUser?.roleTitle}
         </Descriptions.Item>
         <Descriptions.Item label={t('profile.user.department')}>
           {currentUser?.department.departmentName}

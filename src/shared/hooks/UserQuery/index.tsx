@@ -57,6 +57,7 @@ export function useUserRes() {
           email: item.email,
           fullName: item.fullName,
           role: item.role,
+          roleTitle: item.roleTitle,
           translatedRole: t(`user.role.${item.role}`),
           department: item.department.departmentName,
           departmentId: item.department.id,
@@ -103,6 +104,7 @@ export function useUserMutation() {
         email: user.email,
         fullName: user.fullName,
         role: user.role,
+        roleTitle: user.roleTitle,
         version: user.version,
         department: {
           id: user.departmentId,
