@@ -1,7 +1,6 @@
 export type TableRowDataType = {
   ordinalNumber: number;
   key: number;
-  id: number;
   expertName: string;
   onTime: number;
   overdueClosedDoc: number;
@@ -9,5 +8,5 @@ export type TableRowDataType = {
   unexpired: number;
   overdueUnprocessedDoc: number;
   totalUnprocessedDoc: number;
-  onTimeProcessingPercentage: number;
+  onTimeProcessingPercentage: number | string;
 };

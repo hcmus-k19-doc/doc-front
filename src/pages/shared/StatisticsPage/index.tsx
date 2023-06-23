@@ -7,7 +7,7 @@ import ReactECharts from 'echarts-for-react';
 import { t } from 'i18next';
 import { DocSystemRoleEnum, ProcessingStatus } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
-import { useStatisticsRes } from 'shared/hooks/StatisticsQuery';
+import { useChartStatisticsRes, useStatisticsRes } from 'shared/hooks/StatisticsQuery';
 
 import { useAuth } from '../../../components/AuthComponent';
 
@@ -18,8 +18,10 @@ import { TableRowDataType } from './core/models';
 import './index.css';
 
 const StatisticsPage: React.FC = () => {
-  const { data: statisticsDto, isLoading } = useStatisticsRes();
-  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } = statisticsDto ?? {};
+  const { data: DocStatisticsDto, isLoading } = useStatisticsRes();
+  const { data: chartStatisticsDto } = useChartStatisticsRes();
+  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } =
+    chartStatisticsDto ?? {};
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -29,8 +31,8 @@ const StatisticsPage: React.FC = () => {
     title: {
       text: t('statistics.incoming_document_pie_chart_title'),
       subtext: t('statistics.quarter', {
-        quarter: statisticsDto?.quarter,
-        year: statisticsDto?.year,
+        quarter: chartStatisticsDto?.quarter,
+        year: chartStatisticsDto?.year,
       }),
       x: 'center',
     },
@@ -86,8 +88,8 @@ const StatisticsPage: React.FC = () => {
   const processingDocumentTypeBarChartOptions = {
     title: {
       text: t('statistics.document_type_processed_title', {
-        quarter: statisticsDto?.quarter,
-        year: statisticsDto?.year,
+        quarter: chartStatisticsDto?.quarter,
+        year: chartStatisticsDto?.year,
       }),
       x: 'center',
     },
@@ -114,35 +116,6 @@ const StatisticsPage: React.FC = () => {
       };
     }),
   };
-
-  const dummyData: TableRowDataType[] = [
-    {
-      key: 1,
-      id: 1,
-      ordinalNumber: 1,
-      expertName: 'Nguyễn Văn A',
-      onTime: 10,
-      overdueClosedDoc: 0,
-      totalClosedDoc: 10,
-      unexpired: 0,
-      overdueUnprocessedDoc: 0,
-      totalUnprocessedDoc: 0,
-      onTimeProcessingPercentage: 50,
-    },
-    {
-      key: 2,
-      id: 2,
-      ordinalNumber: 2,
-      expertName: 'Trần Văn B',
-      onTime: 15,
-      overdueClosedDoc: 5,
-      totalClosedDoc: 15,
-      unexpired: 3,
-      overdueUnprocessedDoc: 2,
-      totalUnprocessedDoc: 5,
-      onTimeProcessingPercentage: 70,
-    },
-  ];
 
   const columns: ColumnsType<TableRowDataType> = [
     {
@@ -212,16 +185,23 @@ const StatisticsPage: React.FC = () => {
             <StatisticsSearchForm />
           )}
           <Divider />
+          <div className='flex justify-center text-primary text-lg table-title'>
+            {t('statistics.document_statistics_title')}
+          </div>
+          <div className='flex justify-center subtitle'>
+            ({currentUser?.department.departmentName} - {t('statistics.handler_name')}:{' '}
+            {currentUser?.fullName})
+          </div>
+          <div className='flex justify-center small-text'>
+            ({t('statistics.from_date')} - {t('statistics.to_date')} )
+          </div>
           <Table
             style={{ width: '100%' }}
             loading={isLoading}
             rowClassName={() => 'row-hover'}
             columns={columns}
-            // dataSource={data?.payload}
-            dataSource={dummyData}
-            // scroll={{ x: 1500 }}
+            dataSource={DocStatisticsDto?.rowsData}
             pagination={false}
-            // footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
           />
           <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>
             <div className='transfer-doc-wrapper'>

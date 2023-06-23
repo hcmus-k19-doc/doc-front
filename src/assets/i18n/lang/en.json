@@ -199,7 +199,10 @@
       "full_name": "Full Name",
       "role": "Role",
       "department": "Department"
-    }
+    },
+    "expert_name": "Expert Name",
+    "statistic_date": "Statistic Date",
+    "doc_types": "Document Types"
   },
   "incomingDocListPage": {
     "table": {
@@ -692,6 +695,10 @@
     "incoming_document_pie_chart_title": "INCOMING DOCUMENT PROCESSING RATIO",
     "document_type_processed_title": "NUMBER OF PROCESSED DOCUMENTS BY TYPE\n QUARTER {{quarter}} YEAR {{year}}",
     "quarter": "Quarter {{quarter}} Year {{year}}",
+    "document_statistics_title": "DOCUMENT STATISTICS",
+    "handler_name": "Handler",
+    "from_date": "From",
+    "to_date": "To",
     "legend": {
       "document_type": "Document Type"
     },

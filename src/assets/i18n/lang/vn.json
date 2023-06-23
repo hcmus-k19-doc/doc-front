@@ -204,8 +204,7 @@
       "department": "Phòng ban"
     },
     "expert_name": "Tên người dùng",
-    "from_date": "Từ ngày",
-    "to_date": "Đến ngày",
+    "statistic_date": "Thời gian thống kê",
     "doc_types": "Loại văn bản"
   },
   "incomingDocListPage": {
@@ -703,6 +702,10 @@
     "incoming_document_pie_chart_title": "TỈ LỆ XỬ LÝ VĂN BẢN ĐẾN",
     "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ\n QUÝ {{quarter}} NĂM {{year}}",
     "quarter": "Quý {{quarter}} năm {{year}}",
+    "document_statistics_title": "THỐNG KÊ TÌNH HÌNH THỤ LÝ VĂN BẢN",
+    "handler_name": "Tên người xử lý",
+    "from_date": "Từ ngày",
+    "to_date": "Đến ngày",
     "legend": {
       "document_type": "Loại văn bản"
     },

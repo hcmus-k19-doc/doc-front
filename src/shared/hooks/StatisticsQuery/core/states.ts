@@ -6,12 +6,11 @@ import { ProcessingDocumentTypeEnum } from '../../../../models/doc-main-models';
 
 export type SearchState = {
   expertIds?: [];
-  fromDate?: Dayjs[];
-  toDate?: Dayjs[];
-  docTypes?: ProcessingDocumentTypeEnum;
+  statisticDate?: Dayjs[];
+  docType?: ProcessingDocumentTypeEnum;
 };
 
-export const docTypesOptions: SelectProps['options'] = [
+export const docTypeOptions: SelectProps['options'] = [
   { value: ProcessingDocumentTypeEnum.INCOMING_DOCUMENT, label: 'Văn bản đến' },
   { value: ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT, label: 'Văn bản đi' },
 ];

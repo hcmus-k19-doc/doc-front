@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
+  DocStatisticsDto,
+  DocStatisticsSearchCriteriaDto,
   DocSystemRoleEnum,
   TransferHistorySearchCriteriaDto,
   UserDepartmentDto,
@@ -58,6 +60,17 @@ async function getAllUsers() {
   return res.data;
 }
 
+async function getStatistics(
+  docStatisticsSearchCriteriaDto: Partial<DocStatisticsSearchCriteriaDto>
+): Promise<DocStatisticsDto[]> {
+  return await axios
+    .post<DocStatisticsDto[]>(
+      `${REACT_APP_DOC_MAIN_SERVICE_URL}/users/get-statistics`,
+      docStatisticsSearchCriteriaDto
+    )
+    .then((response) => response.data);
+}
+
 const userService = {
   getCurrentUser,
   getUsersByRole,
@@ -65,6 +78,7 @@ const userService = {
   updatePassword,
   getTransferHistory,
   getAllUsers,
+  getStatistics,
 };
 
 export default userService;
