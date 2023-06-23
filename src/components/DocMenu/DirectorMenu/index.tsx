@@ -18,8 +18,10 @@ const DirectorMenu = () => {
 
     if (location.pathname.includes('/docout')) {
       handleDocOutMenuKeys(path);
-    } else {
+    } else if (location.pathname.includes('/docin')) {
       handleDocInMenuKeys(path);
+    } else {
+      handleCalendarMenuKeys();
     }
   }, [location]);
 
@@ -41,6 +43,11 @@ const DirectorMenu = () => {
     }
   };
 
+  function handleCalendarMenuKeys() {
+    setOpenKey('calendar');
+    setCurrent('calendar');
+  }
+
   const onSelect = ({ key }: { key: string }) => {
     setCurrent(key);
   };
@@ -59,9 +66,7 @@ const DirectorMenu = () => {
         {
           key: 'in-list',
           label: t('main_page.menu.items.incoming_document_list'),
-          onClick: () => {
-            globalNavigate('/docin');
-          },
+          onClick: () => globalNavigate('/docin'),
         },
       ],
     },
@@ -73,16 +78,12 @@ const DirectorMenu = () => {
         {
           key: 'out-list',
           label: t('main_page.menu.items.outgoing_document_list'),
-          onClick: () => {
-            globalNavigate('/docout/out-list');
-          },
+          onClick: () => globalNavigate('/docout/out-list'),
         },
         {
           key: 'out-create',
           label: t('main_page.menu.items.create_outgoing_document'),
-          onClick: () => {
-            globalNavigate('/docout/out-create');
-          },
+          onClick: () => globalNavigate('/docout/out-create'),
         },
       ],
     },

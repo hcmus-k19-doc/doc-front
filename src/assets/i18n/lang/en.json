@@ -726,8 +726,8 @@
   },
   "calendar": {
     "reminder_status": {
-      "active": "Pending Processing",
-      "close_to_expiration": "Approaching Deadline",
+      "active": "Pending",
+      "close_to_expiration": "Almost Expired",
       "expired": "Expired"
     }
   },

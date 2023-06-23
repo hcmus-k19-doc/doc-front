@@ -24,15 +24,13 @@ export const useDocumentReminderDateReq = () => useRecoilState(documentReminderD
 export const useDocumentReminderRes = () => {
   const query = useRecoilValue<DocumentReminderDateState>(documentReminderDateState);
 
-  const { data, isLoading } = useQuery({
+  return useQuery({
     queryKey: ['QUERIES.DOCUMENT_REMINDER_LIST', query],
     queryFn: async () => {
       const { data } = await documentReminderService.getCurrentUserDocumentReminders(query.date);
       return data;
     },
   });
-
-  return { data, isLoading };
 };
 
 export const useDocumentReminderDetailsReq = () => useRecoilState(documentReminderDetailsState);
@@ -40,7 +38,7 @@ export const useDocumentReminderDetailsReq = () => useRecoilState(documentRemind
 export const useDocumentReminderDetailsRes = () => {
   const query = useRecoilValue<DocumentReminderDateState>(documentReminderDetailsState);
 
-  const { data, isLoading } = useQuery({
+  return useQuery({
     queryKey: ['QUERIES.DOCUMENT_REMINDER_DETAILS', query],
     queryFn: async () => {
       const { data } = await documentReminderService.getCurrentUserDocumentReminderDetails(
@@ -49,6 +47,4 @@ export const useDocumentReminderDetailsRes = () => {
       return data;
     },
   });
-
-  return { data, isLoading };
 };
