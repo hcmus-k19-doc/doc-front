@@ -35,6 +35,10 @@ const columns: ColumnsType<UserTableRowDataType> = [
     dataIndex: 'translatedRole',
   },
   {
+    title: t('user_management.table.column.role_title'),
+    dataIndex: 'roleTitle',
+  },
+  {
     title: t('user_management.table.column.department'),
     dataIndex: 'department',
   },

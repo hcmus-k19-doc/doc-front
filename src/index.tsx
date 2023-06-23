@@ -14,6 +14,8 @@ import { setupAxios } from 'utils/AuthUtils';
 import 'dayjs/locale/vi';
 import 'moment/locale/vi';
 
+import DocSuspenseComponent from './components/DocSuspenseComponent';
+
 import './index.css';
 
 setupAxios(axios);
@@ -31,14 +33,16 @@ const queryClient = new QueryClient({
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <I18nextProvider i18n={i18n}>
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <AppRoutes />
-          </RecoilRoot>
-        </QueryClientProvider>
-      </I18nextProvider>
-    </AuthProvider>
+    <DocSuspenseComponent>
+      <AuthProvider>
+        <I18nextProvider i18n={i18n}>
+          <QueryClientProvider client={queryClient}>
+            <RecoilRoot>
+              <AppRoutes />
+            </RecoilRoot>
+          </QueryClientProvider>
+        </I18nextProvider>
+      </AuthProvider>
+    </DocSuspenseComponent>
   </React.StrictMode>
 );
