@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-23 11:46:28.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-24 11:36:53.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -36,11 +36,18 @@ export interface DocPaginationDto<T> {
 }
 
 export interface DocumentReminderDetailsDto extends DocAbstractDto {
+    documentName: string;
     incomingNumber: string;
     summary: string;
     expirationDate: DateAsString;
     status: DocumentReminderStatusEnum;
     incomingDocumentId: number;
+}
+
+export interface DocumentReminderWrapperDto {
+    ACTIVE: DocumentReminderDetailsDto[];
+    CLOSE_TO_EXPIRATION: DocumentReminderDetailsDto[];
+    EXPIRED: DocumentReminderDetailsDto[];
 }
 
 export interface DocumentTypeDto extends DocAbstractDto {

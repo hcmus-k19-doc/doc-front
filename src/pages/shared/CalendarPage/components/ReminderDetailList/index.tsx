@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
-import { Button, Card, Dropdown, Empty, List, MenuProps, Space, Typography } from 'antd';
+import { Button, Card, Dropdown, Empty, List, MenuProps, Space, Tag, Typography } from 'antd';
 import { documentReminderStatusItems } from 'components/PageHeader/core';
 import { format } from 'date-fns';
 import { t } from 'i18next';
@@ -8,6 +8,8 @@ import { DocumentReminderDetailsDto, DocumentReminderStatusEnum } from 'models/d
 import { useDocumentReminderDetailsRes } from 'shared/hooks/DocumentReminderQuery';
 import { DEFAULT_DATE_FORMAT } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
+
+import { getStatusColor } from './core';
 
 const { Text } = Typography;
 
@@ -56,7 +58,7 @@ function ReminderDetailList({ onRefresh }: Props) {
           </Dropdown>
         </Space>
       </div>
-      {!data ? (
+      {!data?.[status] ? (
         <Empty className='mt-3 mb-10' description={t('common.no_data.no_work')} />
       ) : (
         <List
@@ -69,11 +71,15 @@ function ReminderDetailList({ onRefresh }: Props) {
               <Card
                 onClick={() => handleOnDetailClick(item.incomingDocumentId)}
                 className='w-full cursor-pointer'
-                title={<div className='font-bold'>{item.incomingNumber}</div>}>
-                <p dangerouslySetInnerHTML={{ __html: item.summary }} />
-                <Text type='secondary' className='text-end'>
-                  {format(new Date(item.expirationDate), DEFAULT_DATE_FORMAT)}
-                </Text>
+                title={
+                  <div className='font-bold'>{`${item.documentName} - ${item.incomingNumber}`}</div>
+                }>
+                <Space direction='vertical'>
+                  <div dangerouslySetInnerHTML={{ __html: item.summary }} />
+                  <Tag color={getStatusColor(status)}>
+                    {format(new Date(item.expirationDate), DEFAULT_DATE_FORMAT)}
+                  </Tag>
+                </Space>
               </Card>
             );
           }}
