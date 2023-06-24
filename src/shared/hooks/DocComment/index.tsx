@@ -9,7 +9,11 @@ import commentService from 'services/CommentService';
 const QUERY_COMMENT_KEY = 'QUERY.COMMENT';
 
 export function useCommentsRes(processingDocumentType: ProcessingDocumentTypeEnum, docId: number) {
-  const { data: comments, isFetching } = useQuery({
+  const {
+    data: comments,
+    isFetching,
+    isLoading,
+  } = useQuery({
     queryKey: [QUERY_COMMENT_KEY, processingDocumentType, docId],
     queryFn: async () => {
       const { data } = await commentService.getCommentsByTypeAndDocumentId(
@@ -39,7 +43,7 @@ export function useCommentsRes(processingDocumentType: ProcessingDocumentTypeEnu
   }
 
   return {
-    comments: comments,
+    comments,
     isFetching,
   };
 }

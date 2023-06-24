@@ -14,8 +14,8 @@ import './index.css';
 
 export default function CalendarPage() {
   const [documentReminder, setDocumentReminder] = useDocumentReminderDateReq();
-  const [documentReminderDetails, setDocumentReminderDetails] = useDocumentReminderDetailsReq();
-  const { data } = useDocumentReminderRes();
+  const [_, setDocumentReminderDetails] = useDocumentReminderDetailsReq();
+  const { data, refetch } = useDocumentReminderRes();
 
   function handleOnSelect(date: Dayjs) {
     setDocumentReminder({ date });
@@ -27,9 +27,13 @@ export default function CalendarPage() {
     setDocumentReminderDetails({ date });
   }
 
+  function handleOnRefresh() {
+    refetch();
+  }
+
   return (
     <>
-      <ReminderDetailList />
+      <ReminderDetailList onRefresh={handleOnRefresh} />
       <Calendar
         value={documentReminder.date}
         onSelect={handleOnSelect}

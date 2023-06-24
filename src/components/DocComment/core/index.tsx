@@ -12,6 +12,7 @@ export interface CommentItem {
 
 export interface CommentListProps {
   comments: CommentItem[];
+  loading?: boolean;
 }
 
 export interface EditorProps {

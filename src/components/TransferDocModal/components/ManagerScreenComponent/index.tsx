@@ -157,28 +157,6 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
             );
           })}
       </div>
-      {/*<Row className='my-6'>*/}
-      {/*  <Col span='6'>*/}
-      {/*    <Text strong>{`${t(i18n_document)} (${selectedDocs.length})`}</Text>*/}
-      {/*  </Col>*/}
-      {/*  <Col span='16'>*/}
-      {/*    <List>*/}
-      {/*      <VirtualList*/}
-      {/*        data={selectedDocs.sort(*/}
-      {/*          (a: IncomingDocumentDto, b: IncomingDocumentDto) => a.id - b.id*/}
-      {/*        )}*/}
-      {/*        height={itemHeight * 2}*/}
-      {/*        itemHeight={itemHeight}*/}
-      {/*        itemKey={'id'}>*/}
-      {/*        {(item) => (*/}
-      {/*          <List.Item style={{ padding: '0px' }} key={item.id}>*/}
-      {/*            <div>{t(i18n_document_number, { id: item.id })}</div>*/}
-      {/*          </List.Item>*/}
-      {/*        )}*/}
-      {/*      </VirtualList>*/}
-      {/*    </List>*/}
-      {/*  </Col>*/}
-      {/*</Row>*/}
       <Row className='mt-4 mb-3' style={{ marginTop: '1rem' }}>
         <Col span='6'>
           <Typography.Text strong>

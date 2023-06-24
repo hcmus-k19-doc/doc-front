@@ -132,14 +132,6 @@ const SidebarPage: React.FC<MenuProps> = () => {
                 </DocSuspenseComponent>
               }
             />
-            <Route
-              path='/calendar'
-              element={
-                <DocSuspenseComponent>
-                  <CalendarPage />
-                </DocSuspenseComponent>
-              }
-            />
             <Route path='*' element={<Navigate to='/not-found' />} />
           </Routes>
         );

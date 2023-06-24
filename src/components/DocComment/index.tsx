@@ -31,9 +31,10 @@ function Editor({ onChange, onSubmit, submitting, value }: EditorProps) {
   );
 }
 
-function CommentList({ comments }: CommentListProps) {
+function CommentList({ comments, loading }: CommentListProps) {
   return (
     <List
+      loading={loading}
       dataSource={comments}
       header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
       itemLayout='horizontal'
@@ -80,7 +81,7 @@ export default function DocComment({ docId, processingDocumentType }: DocComment
   return (
     <>
       {comments.length <= 0 && <Skeleton loading={isFetching} active avatar></Skeleton>}
-      {comments.length > 0 && <CommentList comments={comments} />}
+      {comments.length > 0 && <CommentList comments={comments} loading={isFetching} />}
 
       <Comment
         content={

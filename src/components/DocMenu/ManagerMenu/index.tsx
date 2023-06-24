@@ -18,8 +18,10 @@ const ManagerMenu = () => {
 
     if (location.pathname.includes('/docout')) {
       handleDocOutMenuKeys(path);
-    } else {
+    } else if (location.pathname.includes('/docin')) {
       handleDocInMenuKeys(path);
+    } else {
+      handleCalendarMenuKeys();
     }
   }, [location]);
 
@@ -40,6 +42,11 @@ const ManagerMenu = () => {
       setCurrent(path[2]);
     }
   };
+
+  function handleCalendarMenuKeys() {
+    setOpenKey('calendar');
+    setCurrent('calendar');
+  }
 
   const onSelect = ({ key }: { key: string }) => {
     setCurrent(key);

@@ -1,8 +1,12 @@
-import { Dayjs } from 'dayjs';
+import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 
-export interface ExpireDocDto {
-  id: number;
-  name: string;
-  summary: string;
-  dateExpired: Dayjs;
+export function getStatusColor(status: DocumentReminderStatusEnum) {
+  switch (status) {
+    case DocumentReminderStatusEnum.ACTIVE:
+      return 'green';
+    case DocumentReminderStatusEnum.CLOSE_TO_EXPIRATION:
+      return 'yellow';
+    case DocumentReminderStatusEnum.EXPIRED:
+      return 'red';
+  }
 }
