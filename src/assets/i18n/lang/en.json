@@ -89,33 +89,51 @@
     },
     "processing_step": {
       "processing_step_in": {
-        "title": "Processing Progress",
+        "title": "Processing progress",
         "step_1": {
-          "title": "Director",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_2": {
-          "title": "Chief of Staff",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_3": {
-          "title": "Specialist",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         }
       },
       "processing_step_out": {
-        "title": "Processing Progress",
+        "title": "Processing progress",
         "step_1": {
-          "title": "Chief of Staff",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_2": {
-          "title": "Director",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_3": {
-          "title": "Secretary",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         }
       },
       "not_processing_yet": "Document not processed yet"

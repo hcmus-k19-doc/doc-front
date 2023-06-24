@@ -234,6 +234,7 @@ export interface ProcessingUserDto {
     role: ProcessingDocumentRoleEnum;
     department: string;
     docSystemRole: DocSystemRoleEnum;
+    roleTitle: string;
 }
 
 export interface SearchCriteriaDto {
