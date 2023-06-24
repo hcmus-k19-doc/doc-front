@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
-import { Button, Card, Dropdown, Empty, List, MenuProps, Space, Tag, Typography } from 'antd';
+import { Button, Card, Dropdown, Empty, List, MenuProps, Space, Tag, Tooltip } from 'antd';
 import { documentReminderStatusItems } from 'components/PageHeader/core';
 import { format } from 'date-fns';
 import { t } from 'i18next';
-import { DocumentReminderDetailsDto, DocumentReminderStatusEnum } from 'models/doc-main-models';
+import {
+  DocumentReminderDetailsDto,
+  DocumentReminderStatusEnum,
+  ProcessingDocumentTypeEnum,
+} from 'models/doc-main-models';
 import { useDocumentReminderDetailsRes } from 'shared/hooks/DocumentReminderQuery';
 import { DEFAULT_DATE_FORMAT } from 'utils/DateTimeUtils';
-import { globalNavigate } from 'utils/RoutingUtils';
+import { globalNavigate, routingUtils } from 'utils/RoutingUtils';
 
 import { getStatusColor } from './core';
-
-const { Text } = Typography;
 
 interface Props {
   onRefresh: () => void;
@@ -28,8 +30,8 @@ function ReminderDetailList({ onRefresh }: Props) {
     setStatus(e.key as DocumentReminderStatusEnum);
   };
 
-  function handleOnDetailClick(incomingNumberId: number) {
-    globalNavigate(`/docin/in-detail/${incomingNumberId}`);
+  function handleOnDetailClick(documentId: number, documentType: ProcessingDocumentTypeEnum) {
+    globalNavigate(`${routingUtils.getUrl(documentType)}/${documentId}`);
   }
 
   function handleOnRefreshClick() {
@@ -40,6 +42,15 @@ function ReminderDetailList({ onRefresh }: Props) {
     items: documentReminderStatusItems,
     onClick: handleMenuClick,
   };
+
+  function getDocumentTypeLabel(documentType: ProcessingDocumentTypeEnum) {
+    switch (documentType) {
+      case ProcessingDocumentTypeEnum.INCOMING_DOCUMENT:
+        return t('calendar.reminder_detail_list.document_type.INCOMING_DOCUMENT');
+      case ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT:
+        return t('calendar.reminder_detail_list.document_type.OUTGOING_DOCUMENT');
+    }
+  }
 
   return (
     <div className='work-list'>
@@ -58,7 +69,7 @@ function ReminderDetailList({ onRefresh }: Props) {
           </Dropdown>
         </Space>
       </div>
-      {!data?.[status] ? (
+      {!data?.[status].length ? (
         <Empty className='mt-3 mb-10' description={t('common.no_data.no_work')} />
       ) : (
         <List
@@ -69,10 +80,22 @@ function ReminderDetailList({ onRefresh }: Props) {
           renderItem={(item: DocumentReminderDetailsDto) => {
             return (
               <Card
-                onClick={() => handleOnDetailClick(item.incomingDocumentId)}
+                onClick={() => handleOnDetailClick(item.documentId, item.documentType)}
                 className='w-full cursor-pointer'
                 title={
-                  <div className='font-bold'>{`${item.documentName} - ${item.incomingNumber}`}</div>
+                  <div className='font-bold'>
+                    <Tooltip title={t('calendar.reminder_detail_list.document_type.title')}>
+                      <span>{getDocumentTypeLabel(item.documentType)}: </span>
+                    </Tooltip>
+                    <Tooltip title={t('calendar.reminder_detail_list.document_name')}>
+                      <span>{item.documentName}</span>
+                    </Tooltip>
+                    {item.documentNumber && (
+                      <Tooltip title={t('calendar.reminder_detail_list.document_number')}>
+                        <span> &minus; {`${item.documentNumber}`}</span>
+                      </Tooltip>
+                    )}
+                  </div>
                 }>
                 <Space direction='vertical'>
                   <div dangerouslySetInnerHTML={{ __html: item.summary }} />

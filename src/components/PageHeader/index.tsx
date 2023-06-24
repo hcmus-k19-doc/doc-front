@@ -9,7 +9,17 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Typography } from 'antd';
+import {
+  Badge,
+  Dropdown,
+  Layout,
+  Menu,
+  MenuProps,
+  Modal,
+  Popover,
+  Tooltip,
+  Typography,
+} from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
@@ -182,14 +192,14 @@ const PageHeader: React.FC = () => {
 
         <Dropdown menu={{ items: profileNavigator }} placement='bottom' trigger={['click']}>
           <div className='flex justify-between w-[140px] profile'>
-            <UserOutlined title={currentUser?.username} />
-            <Text
-              strong
-              style={{ color: PRIMARY_COLOR }}
-              title={currentUser?.roleTitle}
-              className='text-center'>
-              {currentUser?.fullName}
-            </Text>
+            <Tooltip title={currentUser?.username} placement='bottom'>
+              <UserOutlined />
+            </Tooltip>
+            <Tooltip title={currentUser?.roleTitle} placement='bottom'>
+              <Text strong style={{ color: PRIMARY_COLOR }} className='text-center'>
+                {currentUser?.fullName}
+              </Text>
+            </Tooltip>
           </div>
         </Dropdown>
       </div>
