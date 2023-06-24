@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuProps } from 'antd';
-import i18n from 'assets/i18n/i18n.config';
+import i18n, { EN, VN } from 'assets/i18n/i18n.config';
 import { t } from 'i18next';
 import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 
@@ -9,6 +9,10 @@ export const languageItems: MenuProps['items'] = [
     key: 'vie',
     label: t('page_header.languages.vi'),
     onClick: () => {
+      if (i18n.language === VN) {
+        return;
+      }
+
       i18n
         .changeLanguage('vi')
         .then(() => window.location.reload())
@@ -19,6 +23,10 @@ export const languageItems: MenuProps['items'] = [
     key: 'eng',
     label: t('page_header.languages.en'),
     onClick: () => {
+      if (i18n.language === EN) {
+        return;
+      }
+
       i18n
         .changeLanguage('en')
         .then(() => window.location.reload())

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-24 15:54:54.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-24 14:49:05.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -37,11 +37,11 @@ export interface DocPaginationDto<T> {
 
 export interface DocumentReminderDetailsDto extends DocAbstractDto {
     documentName: string;
-    incomingNumber: string;
+    documentNumber: string;
+    documentId: number;
     summary: string;
     expirationDate: DateAsString;
-    status: DocumentReminderStatusEnum;
-    incomingDocumentId: number;
+    documentType: ProcessingDocumentTypeEnum;
 }
 
 export interface DocumentReminderWrapperDto {
@@ -380,6 +380,12 @@ export const enum Confidentiality {
     HIGH = "HIGH",
 }
 
+export const enum DocumentReminderStatusEnum {
+    ACTIVE = "ACTIVE",
+    CLOSE_TO_EXPIRATION = "CLOSE_TO_EXPIRATION",
+    EXPIRED = "EXPIRED",
+}
+
 export const enum ProcessMethod {
     BAO_CAO_KET_QUA = "BAO_CAO_KET_QUA",
     LUU_THAM_KHAO = "LUU_THAM_KHAO",
@@ -409,12 +415,6 @@ export const enum Urgency {
 export const enum ProcessingDocumentTypeEnum {
     INCOMING_DOCUMENT = "INCOMING_DOCUMENT",
     OUTGOING_DOCUMENT = "OUTGOING_DOCUMENT",
-}
-
-export const enum DocumentReminderStatusEnum {
-    ACTIVE = "ACTIVE",
-    CLOSE_TO_EXPIRATION = "CLOSE_TO_EXPIRATION",
-    EXPIRED = "EXPIRED",
 }
 
 export const enum ExtendRequestStatus {

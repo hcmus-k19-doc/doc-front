@@ -751,6 +751,15 @@
       "active": "Đang chờ xử lý",
       "close_to_expiration": "Sắp hết hạn",
       "expired": "Đã quá hạn"
+    },
+    "reminder_detail_list": {
+      "document_name": "Tên văn bản",
+      "document_number": "Số văn bản",
+      "document_type": {
+        "title": "Loại văn bản",
+        "INCOMING_DOCUMENT": "Văn bản đến",
+        "OUTGOING_DOCUMENT": "Văn bản đi"
+      }
     }
   },
   "transfer_history": {
