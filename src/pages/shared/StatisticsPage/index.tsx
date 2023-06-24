@@ -18,7 +18,7 @@ import { TableRowDataType } from './core/models';
 import './index.css';
 
 const StatisticsPage: React.FC = () => {
-  const { data: DocStatisticsDto, isLoading } = useStatisticsRes();
+  const { data: DocStatisticsData, isLoading } = useStatisticsRes();
   const { data: chartStatisticsDto } = useChartStatisticsRes();
   const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } =
     chartStatisticsDto ?? {};
@@ -179,7 +179,7 @@ const StatisticsPage: React.FC = () => {
         className='mt-12'>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
           <div className='text-lg text-primary'>{t('main_page.menu.items.report')}</div>
-          {currentUser?.role === DocSystemRoleEnum.GIAM_DOC ? (
+          {currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG ? (
             <DirectorStatisticsSearchForm />
           ) : (
             <StatisticsSearchForm />
@@ -193,14 +193,15 @@ const StatisticsPage: React.FC = () => {
             {currentUser?.fullName})
           </div>
           <div className='flex justify-center small-text'>
-            ({t('statistics.from_date')} - {t('statistics.to_date')} )
+            ({t('statistics.from_date')} {DocStatisticsData?.fromDate} {t('statistics.to_date')}{' '}
+            {DocStatisticsData?.toDate} )
           </div>
           <Table
             style={{ width: '100%' }}
             loading={isLoading}
             rowClassName={() => 'row-hover'}
             columns={columns}
-            dataSource={DocStatisticsDto?.rowsData}
+            dataSource={DocStatisticsData?.rowsData}
             pagination={false}
           />
           <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>

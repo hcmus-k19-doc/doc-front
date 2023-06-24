@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
-  DocStatisticsDto,
   DocStatisticsSearchCriteriaDto,
+  DocStatisticsWrapperDto,
   DocSystemRoleEnum,
   TransferHistorySearchCriteriaDto,
   UserDepartmentDto,
@@ -62,9 +62,9 @@ async function getAllUsers() {
 
 async function getStatistics(
   docStatisticsSearchCriteriaDto: Partial<DocStatisticsSearchCriteriaDto>
-): Promise<DocStatisticsDto[]> {
+): Promise<DocStatisticsWrapperDto> {
   return await axios
-    .post<DocStatisticsDto[]>(
+    .post<DocStatisticsWrapperDto>(
       `${REACT_APP_DOC_MAIN_SERVICE_URL}/users/get-statistics`,
       docStatisticsSearchCriteriaDto
     )

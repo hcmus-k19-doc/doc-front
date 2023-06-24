@@ -33,7 +33,6 @@ const StatisticsSearchForm = () => {
             setLoading(true);
             setstatisticsReqQuery({ ...statisticsReqQuery, ...values, page: 1 });
             setLoading(false);
-            console.log(values);
           }}
           layout='vertical'>
           <Row justify='space-between'>

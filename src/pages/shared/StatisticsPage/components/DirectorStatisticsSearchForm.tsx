@@ -42,7 +42,7 @@ const StatisticsSearchForm = () => {
               <Row>
                 <Col span={7}>
                   <Form.Item
-                    initialValue={[allUsers?.find((user) => user.value === currentUser?.id)]}
+                    initialValue={[allUsers?.find((user) => user.value === currentUser?.id)?.value]}
                     name='expertIds'
                     label={t('search_criteria_bar.expert_name')}>
                     <Select

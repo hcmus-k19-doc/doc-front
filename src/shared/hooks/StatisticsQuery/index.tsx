@@ -35,10 +35,10 @@ export function useStatisticsRes() {
           ...query,
         })
         .then((data) => {
-          const rowsData: TableRowDataType[] = data.map((item) => {
+          const rowsData: TableRowDataType[] = data.docStatisticsDtos?.map((item) => {
             return {
-              ordinalNumber: data.indexOf(item) + 1,
-              key: data.indexOf(item) + 1,
+              ordinalNumber: data.docStatisticsDtos.indexOf(item) + 1,
+              key: data.docStatisticsDtos.indexOf(item) + 1,
               expertName: item.userName,
               onTime: item.numberOfProcessedDocumentOnTime,
               overdueClosedDoc: item.numberOfProcessedDocumentOverdue,
@@ -67,6 +67,8 @@ export function useStatisticsRes() {
           });
           return {
             rowsData,
+            fromDate: data.fromDate,
+            toDate: data.toDate,
           };
         });
     },
