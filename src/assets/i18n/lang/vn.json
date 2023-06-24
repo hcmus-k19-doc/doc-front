@@ -91,31 +91,49 @@
       "processing_step_in": {
         "title": "Tiến độ xử lý",
         "step_1": {
-          "title": "Giám đốc",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_2": {
-          "title": "Chánh văn phòng",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_3": {
-          "title": "Chuyên viên",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         }
       },
       "processing_step_out": {
         "title": "Tiến độ xử lý",
         "step_1": {
-          "title": "Chánh văn phòng",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_2": {
-          "title": "Giám đốc",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_3": {
-          "title": "Văn thư",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         }
       },
       "not_processing_yet": "Văn bản chưa được xử lý"
