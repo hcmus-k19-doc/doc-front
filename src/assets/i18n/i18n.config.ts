@@ -37,4 +37,7 @@ i18n
 
 i18n.languages = ['vn', 'en'];
 
+export const VN = 'vn';
+export const EN = 'en';
+
 export default i18n;

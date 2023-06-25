@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-25 02:18:59.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-25 03:21:59.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -105,6 +105,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     isDocTransferred: boolean;
     isDocCollaborator: boolean;
     closeDate: DateAsString;
+    closeUsername: string;
 }
 
 export interface IncomingDocumentPostDto {

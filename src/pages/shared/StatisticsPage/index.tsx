@@ -192,10 +192,14 @@ const StatisticsPage: React.FC = () => {
             ({currentUser?.department.departmentName} - {t('statistics.handler_name')}:{' '}
             {currentUser?.fullName})
           </div>
-          <div className='flex justify-center small-text'>
-            ({t('statistics.from_date')} {DocStatisticsData?.fromDate} {t('statistics.to_date')}{' '}
-            {DocStatisticsData?.toDate} )
-          </div>
+          {DocStatisticsData?.fromDate !== '' && DocStatisticsData?.toDate !== '' ? (
+            <div className='flex justify-center small-text'>
+              ({t('statistics.from_date')} {DocStatisticsData?.fromDate} {t('statistics.to_date')}{' '}
+              {DocStatisticsData?.toDate})
+            </div>
+          ) : (
+            <div className='flex justify-center small-text'>({t('statistics.all_the_time')})</div>
+          )}
           <Table
             style={{ width: '100%' }}
             loading={isLoading}

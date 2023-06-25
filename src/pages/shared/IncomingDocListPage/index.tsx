@@ -8,7 +8,6 @@ import type { ColumnsType } from 'antd/es/table';
 import { useAuth } from 'components/AuthComponent';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { PRIMARY_COLOR } from 'config/constant';
-import { t } from 'i18next';
 import { ParentFolderEnum } from 'models/doc-file-models';
 import {
   GetTransferDocumentDetailCustomResponse,

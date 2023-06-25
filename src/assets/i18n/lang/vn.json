@@ -28,7 +28,7 @@
         "users": "Người dùng",
         "document_types": "Loại văn bản",
         "departments": "Phòng ban",
-        "calendar": "Công việc",
+        "calendar": "Lịch",
         "report": "Báo cáo"
       }
     },
@@ -94,31 +94,49 @@
       "processing_step_in": {
         "title": "Tiến độ xử lý",
         "step_1": {
-          "title": "Giám đốc",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_2": {
-          "title": "Chánh văn phòng",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_3": {
-          "title": "Chuyên viên",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         }
       },
       "processing_step_out": {
         "title": "Tiến độ xử lý",
         "step_1": {
-          "title": "Chánh văn phòng",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_2": {
-          "title": "Giám đốc",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         },
         "step_3": {
-          "title": "Văn thư",
-          "description": "{{department}} - {{fullName}}"
+          "title": "{{roleTitle}}",
+          "description": {
+            "department": "{{department}}",
+            "full_name": "{{fullName}}"
+          }
         }
       },
       "not_processing_yet": "Văn bản chưa được xử lý"
@@ -205,7 +223,7 @@
       "role": "Vai trò",
       "department": "Phòng ban"
     },
-    "expert_name": "Tên người dùng",
+    "expert_name": "Tên người xử lý",
     "statistic_date": "Thời gian thống kê",
     "doc_types": "Loại văn bản"
   },
@@ -347,7 +365,9 @@
         }
       },
       "name": "Tên văn bản",
-      "name_required": "Hãy điền tên văn bản"
+      "name_required": "Hãy điền tên văn bản",
+      "close_date": "Ngày kết thúc",
+      "close_username": "Người kết thúc văn bản"
     },
     "button": {
       "collect": "Thu thập",
@@ -706,9 +726,10 @@
     "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ\n QUÝ {{quarter}} NĂM {{year}}",
     "quarter": "Quý {{quarter}} năm {{year}}",
     "document_statistics_title": "THỐNG KÊ TÌNH HÌNH THỤ LÝ VĂN BẢN",
-    "handler_name": "Tên người xử lý",
+    "handler_name": "Tên người lập báo cáo",
     "from_date": "Từ ngày",
     "to_date": "Đến ngày",
+    "all_the_time": "Từ trước đến nay",
     "legend": {
       "document_type": "Loại văn bản"
     },
@@ -723,7 +744,7 @@
     "table": {
       "columns": {
         "ordinal_Number": "STT",
-        "expert_name": "Tên chuyên viên",
+        "expert_name": "Tên người xử lý",
         "unprocessed": "Chưa xử lý",
         "closed": "Đã xử lý",
         "on_time": "Đúng hạn",
@@ -759,6 +780,15 @@
       "active": "Đang chờ xử lý",
       "close_to_expiration": "Sắp hết hạn",
       "expired": "Đã quá hạn"
+    },
+    "reminder_detail_list": {
+      "document_name": "Tên văn bản",
+      "document_number": "Số văn bản",
+      "document_type": {
+        "title": "Loại văn bản",
+        "INCOMING_DOCUMENT": "Văn bản đến",
+        "OUTGOING_DOCUMENT": "Văn bản đi"
+      }
     }
   },
   "transfer_history": {
