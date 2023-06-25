@@ -258,7 +258,7 @@ function OutgoingDocDetailPage() {
     const data = {
       ...form.getFieldsValue(),
       outgoingNumber: getReleaseNumberFromFolder(),
-      signer: currentUser?.fullName,
+      signer: currentUser?.username,
       releaseDate: dayjs(),
     };
     setIsReviewing(true);

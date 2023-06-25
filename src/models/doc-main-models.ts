@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-24 14:49:05.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-25 03:21:59.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -104,6 +104,8 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     confidentiality: Confidentiality;
     isDocTransferred: boolean;
     isDocCollaborator: boolean;
+    closeDate: DateAsString;
+    closeUsername: string;
 }
 
 export interface IncomingDocumentPostDto {
@@ -370,6 +372,27 @@ export interface TransferDocumentMenuConfig {
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
+}
+
+export interface DocStatisticsSearchCriteriaDto {
+  expertIds: number[];
+  docType: string;
+  fromDate: DateAsString;
+  toDate: DateAsString;
+}
+
+export interface DocStatisticsDto {
+  userName: string;
+  numberOfProcessedDocumentOnTime: number;
+  numberOfProcessedDocumentOverdue: number;
+  numberOfUnprocessedDocumentUnexpired: number;
+  numberOfUnprocessedDocumentOverdue: number;
+}
+
+export interface DocStatisticsWrapperDto {
+    docStatisticsDtos: DocStatisticsDto[];
+    fromDate: DateAsString;
+    toDate: DateAsString;
 }
 
 export type DateAsString = string;

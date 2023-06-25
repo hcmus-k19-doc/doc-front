@@ -1,0 +1,34 @@
+.top-column {
+  padding: 16px 0 0 0 !important;
+}
+
+.ant-table-thead > tr > th {
+  text-align: center !important;
+}
+
+table {
+  text-align: center !important;
+}
+
+.py-5 {
+  padding: 0.5rem 1.25rem 0.5rem 1.25rem !important;
+}
+
+.transfer-doc-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-title {
+  margin-bottom: 0 !important;
+}
+
+.subtitle {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.small-text {
+  font-weight: 300;
+  margin-bottom: 1rem;
+}

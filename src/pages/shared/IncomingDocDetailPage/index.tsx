@@ -255,6 +255,8 @@ function IncomingDocPage() {
         arrivingDate: dayjs(incomingDocument.arrivingDate),
         arrivingTime: dayjs(incomingDocument.arrivingTime, HH_MM_SS_FORMAT),
         summary: incomingDocument.summary,
+        closeDate: incomingDocument.closeDate,
+        closeUsername: incomingDocument?.closeUsername,
       });
     } else {
       globalNavigate('error');
@@ -569,6 +571,25 @@ function IncomingDocPage() {
                 </Form.Item>
               </Col>
             </Row>
+
+            {form.getFieldValue('closeDate') !== null &&
+              form.getFieldValue('closeUsername') !== null && (
+                <Row>
+                  <Col span={11}>
+                    <Form.Item label={t('incomingDocDetailPage.form.close_date')} name='closeDate'>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2}></Col>
+                  <Col span={11}>
+                    <Form.Item
+                      label={t('incomingDocDetailPage.form.close_username')}
+                      name='closeUsername'>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              )}
 
             <Row>
               <Col span={11}>
