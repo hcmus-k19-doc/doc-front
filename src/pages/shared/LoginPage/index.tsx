@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
-import logo from 'assets/icons/logo.png';
+import { Card } from 'antd';
+import logoDoc from 'assets/icons/logo.png';
+import logoHcmus from 'assets/icons/logo-hcmus.png';
+import hcmusBg from 'assets/images/hcmus-bg.jpeg';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import { PRIMARY_COLOR } from 'config/constant';
@@ -42,54 +44,69 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const bgStyle = {
+    backgroundImage: `url('${hcmusBg}')`,
+  };
+
+  const contentStyle = {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  };
+
   return (
-    <ProConfigProvider hashed={false}>
-      <div style={{ backgroundColor: 'white' }}>
-        <LoginForm
-          logo={logo}
-          title='DOC'
-          subTitle={t(`${I18N_PREFIX}.SUBTITLE`)}
-          submitter={{
-            searchConfig: {
-              submitText: t(`${I18N_PREFIX}.SUBMITTER.SUBMIT_TEXT`),
-            },
-          }}
-          onFinish={handleOnFinish}>
-          <ProFormText
-            name='username'
-            hasFeedback={!!error}
-            validateStatus={error ? 'error' : 'success'}
-            fieldProps={{
-              size: 'large',
-              prefix: <UserOutlined className='prefixIcon' />,
-            }}
-            placeholder={t(`${I18N_PREFIX}.USERNAME.PLACEHOLDER`).toString()}
-            rules={[
-              {
-                required: true,
-                message: t(`${I18N_PREFIX}.USERNAME.RULE_MESSAGE`).toString(),
-              },
-            ]}
-          />
-          <ProFormText.Password
-            name='password'
-            hasFeedback={!!error}
-            validateStatus={error ? 'error' : 'success'}
-            fieldProps={{
-              size: 'large',
-              prefix: <LockOutlined className='prefixIcon' />,
-            }}
-            placeholder={t(`${I18N_PREFIX}.PASSWORD.PLACEHOLDER`).toString()}
-            rules={[
-              {
-                required: true,
-                message: t(`${I18N_PREFIX}.PASSWORD.RULE_MESSAGE`).toString(),
-              },
-            ]}
-          />
-        </LoginForm>
+    <div className='login-screen' style={bgStyle}>
+      <div style={contentStyle} className='flex items-center justify-center content'>
+        <Card className='flex items-center justify-center'>
+          <ProConfigProvider hashed={false}>
+            <div className='flex items-center justify-center'>
+              <img src={logoHcmus} alt='logo-doc' className='logo mr-10' />
+              <img src={logoDoc} alt='logo-hcmus' className='logo' />
+            </div>
+            <LoginForm
+              submitter={{
+                searchConfig: {
+                  submitText: t(`${I18N_PREFIX}.SUBMITTER.SUBMIT_TEXT`),
+                },
+              }}
+              onFinish={handleOnFinish}>
+              <ProFormText
+                name='username'
+                hasFeedback={!!error}
+                validateStatus={error ? 'error' : 'success'}
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined className='prefixIcon' />,
+                }}
+                placeholder={t(`${I18N_PREFIX}.USERNAME.PLACEHOLDER`).toString()}
+                rules={[
+                  {
+                    required: true,
+                    message: t(`${I18N_PREFIX}.USERNAME.RULE_MESSAGE`).toString(),
+                  },
+                ]}
+              />
+              <ProFormText.Password
+                name='password'
+                hasFeedback={!!error}
+                validateStatus={error ? 'error' : 'success'}
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined className='prefixIcon' />,
+                }}
+                placeholder={t(`${I18N_PREFIX}.PASSWORD.PLACEHOLDER`).toString()}
+                rules={[
+                  {
+                    required: true,
+                    message: t(`${I18N_PREFIX}.PASSWORD.RULE_MESSAGE`).toString(),
+                  },
+                ]}
+              />
+            </LoginForm>
+          </ProConfigProvider>
+        </Card>
       </div>
-    </ProConfigProvider>
+    </div>
   );
 };
 
