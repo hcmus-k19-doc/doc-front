@@ -806,19 +806,17 @@ function OutgoingDocDetailPage() {
           </Col>
         </Row>
 
-        {!isReleased && (
-          <div className='comment-section'>
-            <div className='text-lg text-primary'>{t('common.comment.title')}</div>
-            <Row>
-              <Col span={16}>
-                <DocComment
-                  docId={Number(docId)}
-                  processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
-                />
-              </Col>
-            </Row>
-          </div>
-        )}
+        <div className='comment-section'>
+          <div className='text-lg text-primary'>{t('common.comment.title')}</div>
+          <Row>
+            <Col span={16}>
+              <DocComment
+                docId={Number(docId)}
+                processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
+              />
+            </Col>
+          </Row>
+        </div>
 
         {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
           <TransferOutgoingDocModalDetail
