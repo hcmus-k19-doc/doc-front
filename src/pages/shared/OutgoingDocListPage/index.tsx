@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { FileZipOutlined } from '@ant-design/icons';
+import { FileZipOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Divider, Table, Tag, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
@@ -143,6 +143,10 @@ const OutgoingDocListPage: React.FC = () => {
       dataIndex: 'fullText',
       align: 'center',
       render: () => {
+        if (loading) {
+          return <LoadingOutlined />;
+        }
+
         return (
           <Tooltip
             title={t('outgoingDocListPage.table.tooltip.downloadAttachment')}
@@ -152,10 +156,19 @@ const OutgoingDocListPage: React.FC = () => {
         );
       },
       onCell: (record) => {
+        if (loading) {
+          return {};
+        }
+
         return {
           onClick: (event) => {
             event.stopPropagation();
-            attachmentService.handleDownloadAttachment(record, ParentFolderEnum.OGD, setError);
+            attachmentService.handleDownloadAttachment(
+              record,
+              ParentFolderEnum.OGD,
+              setError,
+              setLoading
+            );
           },
         };
       },

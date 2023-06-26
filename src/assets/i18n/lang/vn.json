@@ -456,7 +456,8 @@
       "files_required": "Hãy chọn tài liệu đính kèm",
       "file_helper": "Bấm hoặc kéo thả tệp vào đây để tải lên",
       "name": "Tên văn bản",
-      "name_required": "Hãy điền tên văn bản"
+      "name_required": "Hãy điền tên văn bản",
+      "filesRequired": "Hãy chọn tài liệu đính kèm"
     },
     "button": {
       "save": "Lưu văn bản",
@@ -552,7 +553,8 @@
       "files_required": "Hãy chọn tài liệu đính kèm",
       "file_helper": "Bấm hoặc kéo thả tệp vào đây để tải lên",
       "name": "Tên văn bản",
-      "name_required": "Hãy điền tên văn bản"
+      "name_required": "Hãy điền tên văn bản",
+      "filesRequired": "Hãy chọn tài liệu đính kèm"
     },
     "button": {
       "edit": "Chỉnh sửa văn bản",

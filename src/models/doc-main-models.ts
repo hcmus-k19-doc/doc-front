@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-06-25 03:21:59.
+// Generated using typescript-generator version 3.1.1185 on 2023-06-26 23:22:29.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -33,6 +33,19 @@ export interface DocPaginationDto<T> {
     totalPages: number;
     totalElements: number;
     payload: T[];
+}
+
+export interface DocStatisticsSearchCriteriaDto {
+    expertIds: number[];
+    docType: string;
+    fromDate: DateAsString;
+    toDate: DateAsString;
+}
+
+export interface DocStatisticsWrapperDto {
+    docStatisticsDtos: DocStatisticsDto[];
+    fromDate: string;
+    toDate: string;
 }
 
 export interface DocumentReminderDetailsDto extends DocAbstractDto {
@@ -358,11 +371,20 @@ export interface UserSearchCriteria {
     departmentId: number;
 }
 
+export interface DocStatisticsDto {
+    userName: string;
+    numberOfProcessedDocumentOnTime: number;
+    numberOfProcessedDocumentOverdue: number;
+    numberOfUnprocessedDocumentUnexpired: number;
+    numberOfUnprocessedDocumentOverdue: number;
+}
+
 export interface AttachmentDto extends DocAbstractDto {
     docId: number;
     alfrescoFileId: string;
     alfrescoFolderId: string;
     fileType: FileType;
+    fileName: string;
 }
 
 export interface TransferDocumentMenuConfig {
@@ -372,27 +394,6 @@ export interface TransferDocumentMenuConfig {
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
-}
-
-export interface DocStatisticsSearchCriteriaDto {
-  expertIds: number[];
-  docType: string;
-  fromDate: DateAsString;
-  toDate: DateAsString;
-}
-
-export interface DocStatisticsDto {
-  userName: string;
-  numberOfProcessedDocumentOnTime: number;
-  numberOfProcessedDocumentOverdue: number;
-  numberOfUnprocessedDocumentUnexpired: number;
-  numberOfUnprocessedDocumentOverdue: number;
-}
-
-export interface DocStatisticsWrapperDto {
-    docStatisticsDtos: DocStatisticsDto[];
-    fromDate: DateAsString;
-    toDate: DateAsString;
 }
 
 export type DateAsString = string;

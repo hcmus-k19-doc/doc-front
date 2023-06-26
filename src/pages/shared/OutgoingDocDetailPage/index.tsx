@@ -656,7 +656,16 @@ function OutgoingDocDetailPage() {
             </Col>
             <Col span={1}></Col>
             <Col span={7}>
-              <Form.Item label={t('outgoing_doc_detail_page.form.files')} name='files'>
+              <Form.Item
+                label={t('outgoing_doc_detail_page.form.files')}
+                name='files'
+                required
+                rules={[
+                  {
+                    required: true,
+                    message: t('outgoing_doc_detail_page.form.files_required') as string,
+                  },
+                ]}>
                 <Dragger {...fileProps}>
                   <p className='ant-upload-drag-icon'>
                     <InboxOutlined />
@@ -807,19 +816,17 @@ function OutgoingDocDetailPage() {
           </Col>
         </Row>
 
-        {!isReleased && (
-          <div className='comment-section'>
-            <div className='text-lg text-primary'>{t('common.comment.title')}</div>
-            <Row>
-              <Col span={16}>
-                <DocComment
-                  docId={Number(docId)}
-                  processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
-                />
-              </Col>
-            </Row>
-          </div>
-        )}
+        <div className='comment-section'>
+          <div className='text-lg text-primary'>{t('common.comment.title')}</div>
+          <Row>
+            <Col span={16}>
+              <DocComment
+                docId={Number(docId)}
+                processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
+              />
+            </Col>
+          </Row>
+        </div>
 
         {data?.data?.isDocTransferred || data?.data?.isDocCollaborator ? (
           <TransferOutgoingDocModalDetail
