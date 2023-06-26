@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Divider, Layout, Table, theme } from 'antd';
+import { CSVLink } from 'react-csv';
+import { Button, Divider, Layout, message, Table, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { ColumnsType } from 'antd/es/table';
 import PageHeader from 'components/PageHeader';
@@ -168,6 +169,45 @@ const StatisticsPage: React.FC = () => {
     },
   ];
 
+  const headers = [
+    {
+      label: t('statistics.table.columns.ordinal_Number'),
+      key: 'ordinalNumber',
+    },
+    {
+      label: t('statistics.table.columns.expert_name'),
+      key: 'expertName',
+    },
+    {
+      label: t('statistics.table.columns.on_time'),
+      key: 'onTime',
+    },
+    {
+      label: t('statistics.table.columns.overdue'),
+      key: 'overdueClosedDoc',
+    },
+    {
+      label: t('statistics.table.columns.total'),
+      key: 'totalClosedDoc',
+    },
+    {
+      label: t('statistics.table.columns.unexpired'),
+      key: 'unexpired',
+    },
+    {
+      label: t('statistics.table.columns.overdue'),
+      key: 'overdueUnprocessedDoc',
+    },
+    {
+      label: t('statistics.table.columns.total'),
+      key: 'totalUnprocessedDoc',
+    },
+    {
+      label: t('statistics.table.columns.on_time_processing_percentage'),
+      key: 'onTimeProcessingPercentage',
+    },
+  ];
+
   return (
     <Layout>
       <PageHeader />
@@ -210,11 +250,22 @@ const StatisticsPage: React.FC = () => {
           />
           <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>
             <div className='transfer-doc-wrapper'>
-              <Button
-                type='primary'
-                // onClick={handleOnOpenModal}
-                className='transfer-doc-btn'>
-                {t('statistics.button.export')}
+              <Button type='primary' className='transfer-doc-btn'>
+                <CSVLink
+                  filename={`${t('statistics.message.file_name', {
+                    user: currentUser?.fullName,
+                  })}`}
+                  headers={headers}
+                  data={DocStatisticsData?.rowsData || []}
+                  onClick={() => {
+                    message.success(
+                      `${t('statistics.message.file_name', {
+                        user: currentUser?.fullName,
+                      })} ${t('statistics.message.file_downloading')}`
+                    );
+                  }}>
+                  {t('statistics.button.export')}
+                </CSVLink>
               </Button>
             </div>
           </div>

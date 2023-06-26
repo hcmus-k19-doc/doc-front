@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, Pagination } from 'antd';
+import { Button, message, Pagination } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
@@ -18,7 +19,7 @@ import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
 
-const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
+const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData }) => {
   const { t } = useTranslation();
   const [outgoingDocReqQuery, setOutgoingDocReqQuery] = useOutgoingDocReq();
   const { data } = useOutgoingDocRes(false);
@@ -106,19 +107,71 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   };
   const hasSelected = selectedDocs.length > 0;
 
+  const headers = [
+    {
+      label: t('outgoingDocListPage.table.columns.ordinalNumber'),
+      key: 'ordinalNumber',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.name'),
+      key: 'name',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.originId'),
+      key: 'originId',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.release_number'),
+      key: 'releaseNumber',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.type'),
+      key: 'type',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.status'),
+      key: 'status',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.issuePlace'),
+      key: 'issuePlace',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.summary'),
+      key: 'summary',
+    },
+  ];
+
   return (
     <div className='mt-5 flex justify-between'>
       <div className='float-left transfer-doc-wrapper'>
-        <Button
-          type='primary'
-          onClick={handleOnOpenModal}
-          className='transfer-doc-btn'
-          style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
-          disabled={!hasSelected}>
-          {currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
-            ? t('outgoing_doc_detail_page.button.transfer_secretary')
-            : t('outgoing_doc_detail_page.button.report')}
-        </Button>
+        <div style={{ marginTop: 0 }}>
+          <Button type='primary' style={{ marginRight: '0.5rem' }} className='transfer-doc-btn'>
+            <CSVLink
+              filename={`${t('outgoingDocListPage.message.file_name')}`}
+              headers={headers}
+              data={csvData || []}
+              onClick={() => {
+                message.success(
+                  `${t('outgoingDocListPage.message.file_name')} ${t(
+                    'outgoingDocListPage.message.file_downloading'
+                  )}`
+                );
+              }}>
+              {t('outgoing_doc_detail_page.button.export')}
+            </CSVLink>
+          </Button>
+          <Button
+            type='primary'
+            onClick={handleOnOpenModal}
+            className='transfer-doc-btn'
+            style={currentUser?.role !== DocSystemRoleEnum.VAN_THU ? {} : { display: 'none' }}
+            disabled={!hasSelected}>
+            {currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
+              ? t('outgoing_doc_detail_page.button.transfer_secretary')
+              : t('outgoing_doc_detail_page.button.report')}
+          </Button>
+        </div>
 
         <span style={{ marginTop: 8 }}>
           {hasSelected

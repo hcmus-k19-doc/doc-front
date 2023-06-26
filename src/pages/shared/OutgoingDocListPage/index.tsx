@@ -221,7 +221,13 @@ const OutgoingDocListPage: React.FC = () => {
         dataSource={data?.payload}
         scroll={{ x: 1500 }}
         pagination={false}
-        footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
+        footer={() => (
+          <Footer
+            selectedDocs={selectedDocs}
+            setSelectedDocs={setSelectedDocs}
+            csvData={data?.payload}
+          />
+        )}
       />
 
       <TransferOutgoingDocModalDetail
