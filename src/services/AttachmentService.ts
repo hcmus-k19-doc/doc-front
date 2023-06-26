@@ -51,10 +51,11 @@ async function downloadZipFileFromS3(parentFolder: ParentFolderEnum, folderName:
 export async function handleDownloadAttachment(
   record: IncomingTableRowType | OutgoingTableRowType,
   parentFolder: ParentFolderEnum,
-  setError?: (error: string) => void
+  setError?: (error: string) => void,
+  setLoading?: (loading: boolean) => void
 ) {
   const showAlert = useSweetAlert();
-
+  setLoading?.(true);
   try {
     const responseStatus = await downloadZipFileFromS3(ParentFolderEnum.ICD, record.id);
 
@@ -75,6 +76,8 @@ export async function handleDownloadAttachment(
     } else {
       console.error(error);
     }
+  } finally {
+    setLoading?.(false);
   }
 }
 
