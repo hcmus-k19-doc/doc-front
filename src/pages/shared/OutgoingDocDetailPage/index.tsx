@@ -656,7 +656,16 @@ function OutgoingDocDetailPage() {
             </Col>
             <Col span={1}></Col>
             <Col span={7}>
-              <Form.Item label={t('outgoing_doc_detail_page.form.files')} name='files'>
+              <Form.Item
+                label={t('outgoing_doc_detail_page.form.files')}
+                name='files'
+                required
+                rules={[
+                  {
+                    required: true,
+                    message: t('outgoing_doc_detail_page.form.files_required') as string,
+                  },
+                ]}>
                 <Dragger {...fileProps}>
                   <p className='ant-upload-drag-icon'>
                     <InboxOutlined />

@@ -353,7 +353,16 @@ function CreateOutgoingDocPage() {
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item label={t('create_outgoing_doc_page.form.files')} name='files'>
+            <Form.Item
+              label={t('create_outgoing_doc_page.form.files')}
+              name='files'
+              required
+              rules={[
+                {
+                  required: true,
+                  message: t('create_outgoing_doc_page.form.filesRequired') as string,
+                },
+              ]}>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
