@@ -20,4 +20,5 @@
 .ant-card {
   width: 60vh;
   height: 60vh;
+  border-radius: 30px;
 }

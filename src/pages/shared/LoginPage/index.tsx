@@ -52,7 +52,8 @@ const LoginPage: React.FC = () => {
   const contentStyle = {
     height: '100%',
     width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    // backgroundColor: 'rgba(255, 255, 255, 0.2)',
   };
 
   return (
