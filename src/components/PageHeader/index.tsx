@@ -163,7 +163,7 @@ const PageHeader: React.FC = () => {
         />
       )}
 
-      <div className='flex justify-between items-center min-w-[200px]'>
+      <div className='flex justify-between items-center min-w-[220px]'>
         <Dropdown menu={{ items: languageItems }} placement='bottomRight' trigger={['click']}>
           <GlobalOutlined />
         </Dropdown>
@@ -190,16 +190,19 @@ const PageHeader: React.FC = () => {
           </Popover>
         </Badge>
 
+        <span>&#124;</span>
+
         <Dropdown menu={{ items: profileNavigator }} placement='bottom' trigger={['click']}>
-          <div className='flex justify-between w-[140px] profile'>
-            <Tooltip title={currentUser?.username} placement='bottom'>
-              <UserOutlined />
-            </Tooltip>
-            <Tooltip title={currentUser?.roleTitle} placement='bottom'>
-              <Text strong style={{ color: PRIMARY_COLOR }} className='text-center'>
-                {currentUser?.fullName}
-              </Text>
-            </Tooltip>
+          <div className='flex justify-between profile'>
+            <UserOutlined />
+
+            <Text
+              strong
+              style={{ color: PRIMARY_COLOR }}
+              ellipsis={true}
+              className='text-center ml-3'>
+              {currentUser?.fullName}
+            </Text>
           </div>
         </Dropdown>
       </div>
