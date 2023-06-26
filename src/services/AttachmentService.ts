@@ -57,7 +57,7 @@ export async function handleDownloadAttachment(
   const showAlert = useSweetAlert();
   setLoading?.(true);
   try {
-    const responseStatus = await downloadZipFileFromS3(ParentFolderEnum.ICD, record.id);
+    const responseStatus = await downloadZipFileFromS3(parentFolder, record.id);
 
     if (responseStatus === 204) {
       showAlert({
