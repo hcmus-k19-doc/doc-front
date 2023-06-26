@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { OutgoingDocumentGetDto } from 'models/doc-main-models';
 import { getColorBaseOnStatus } from 'pages/shared/IncomingDocListPage/core/common';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 

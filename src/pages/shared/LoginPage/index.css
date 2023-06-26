@@ -5,3 +5,20 @@
 .ant-btn-primary:hover {
   background-color: #1a34ab !important;
 }
+
+.logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.login-screen {
+  height: 100vh;
+  width: 100vw;
+}
+
+.ant-card {
+  width: 60vh;
+  height: 60vh;
+  border-radius: 30px;
+}

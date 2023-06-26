@@ -6,4 +6,4 @@ export const REACT_APP_DOC_MAIN_SERVICE_URL = process.env.REACT_APP_DOC_MAIN_SER
 
 export const REACT_APP_DOC_FILE_SERVICE_URL = process.env.REACT_APP_DOC_FILE_SERVICE_URL;
 
-export const BASE_NAME = process.env.REACT_APP_BASE_NAME || '/';
+export const BASE_NAME = process.env.REACT_APP_BASE_NAME || '/doc';

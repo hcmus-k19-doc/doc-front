@@ -11,8 +11,6 @@ import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 import { GlobalHistory } from 'utils/RoutingUtils';
 
-import DocSuspenseComponent from '../DocSuspenseComponent';
-
 const AppRoutes = () => {
   const { currentUser } = useAuth();
 
