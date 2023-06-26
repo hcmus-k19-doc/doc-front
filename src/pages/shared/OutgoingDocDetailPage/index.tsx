@@ -785,14 +785,15 @@ function OutgoingDocDetailPage() {
               </Button>
             )}
 
-            <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
-              {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
-                ? t('outgoing_doc_detail_page.button.view_transfer_detail')
-                : currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN ||
-                  currentUser?.role === DocSystemRoleEnum.TRUONG_PHONG
-                ? t('outgoing_doc_detail_page.button.report')
-                : t('outgoing_doc_detail_page.button.transfer_secretary')}
-            </Button>
+            {currentUser?.role !== DocSystemRoleEnum.VAN_THU && (
+              <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+                {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
+                  ? t('outgoing_doc_detail_page.button.view_transfer_detail')
+                  : currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
+                  ? t('outgoing_doc_detail_page.button.transfer_secretary')
+                  : t('outgoing_doc_detail_page.button.report')}
+              </Button>
+            )}
           </Row>
         )}
         <div className='text-lg text-primary'>
