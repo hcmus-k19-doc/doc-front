@@ -46,6 +46,7 @@ const LoginPage: React.FC = () => {
 
   const bgStyle = {
     backgroundImage: `url('${hcmusBg}')`,
+    backgroundSize: 'cover',
   };
 
   const contentStyle = {
