@@ -29,4 +29,5 @@ export type TableDataType = {
 export interface FooterProps {
   selectedDocs: OutgoingDocumentGetDto[];
   setSelectedDocs: (docs: OutgoingDocumentGetDto[]) => void;
+  csvData: any;
 }
