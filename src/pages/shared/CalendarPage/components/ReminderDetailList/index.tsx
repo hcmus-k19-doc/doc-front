@@ -15,6 +15,8 @@ import { globalNavigate, routingUtils } from 'utils/RoutingUtils';
 
 import { getStatusColor } from './core';
 
+import '../../index.css';
+
 interface Props {
   onRefresh: () => void;
 }
@@ -56,17 +58,21 @@ function ReminderDetailList({ onRefresh }: Props) {
     <div className='work-list'>
       <div className='flex justify-end'>
         <Space direction='vertical'>
-          <Button className='w-full' type='primary' onClick={handleOnRefreshClick}>
-            {t('common.button.refresh')}
-          </Button>
-          <Dropdown trigger={['click']} menu={menuProps}>
-            <Button>
-              <Space>
-                <div className='w-28'>{t(`calendar.reminder_status.${status.toLowerCase()}`)}</div>
-                <DownOutlined />
-              </Space>
+          <div className='flex'>
+            <Dropdown trigger={['click']} menu={menuProps}>
+              <Button>
+                <Space>
+                  <div className='w-28'>
+                    {t(`calendar.reminder_status.${status.toLowerCase()}`)}
+                  </div>
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+            <Button className='w-full ml-5' type='primary' onClick={handleOnRefreshClick}>
+              {t('common.button.refresh')}
             </Button>
-          </Dropdown>
+          </div>
         </Space>
       </div>
       {!data?.[status].length ? (
@@ -81,7 +87,7 @@ function ReminderDetailList({ onRefresh }: Props) {
             return (
               <Card
                 onClick={() => handleOnDetailClick(item.documentId, item.documentType)}
-                className='w-full cursor-pointer'
+                className='w-full cursor-pointer mb-5 task-card'
                 title={
                   <div className='font-bold'>
                     <Tooltip title={t('calendar.reminder_detail_list.document_type.title')}>
@@ -97,12 +103,15 @@ function ReminderDetailList({ onRefresh }: Props) {
                     )}
                   </div>
                 }>
-                <Space direction='vertical'>
-                  <div dangerouslySetInnerHTML={{ __html: item.summary }} />
-                  <Tag color={getStatusColor(status)}>
-                    {format(new Date(item.expirationDate), DEFAULT_DATE_FORMAT)}
-                  </Tag>
-                </Space>
+                <Tag color={getStatusColor(status)}>
+                  {format(new Date(item.expirationDate), DEFAULT_DATE_FORMAT)}
+                </Tag>
+                <div className='flex mt-4'>
+                  <span className='font-semibold mr-1'>
+                    {t('calendar.reminder_detail_list.summary')}
+                  </span>
+                  <span dangerouslySetInnerHTML={{ __html: item.summary }} />
+                </div>
               </Card>
             );
           }}

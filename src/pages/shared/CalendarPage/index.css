@@ -17,3 +17,20 @@
 .notes-month section {
   font-size: 28px;
 }
+
+.task-card {
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: solid;
+  height: fit-content;
+  border-color: rgb(50, 74, 178, 0.2);
+  background-color: rgb(50, 74, 178, 0.1);
+}
+
+.ant-card-body {
+  padding-top: 0px !important;
+}
+
+.ant-card-head {
+  font-size: 14px !important;
+}
