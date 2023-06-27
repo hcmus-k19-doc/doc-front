@@ -18,6 +18,7 @@ export type TableRowDataType = {
   attachments: AttachmentDto[];
   isDocTransferred: boolean;
   isDocCollaborator: boolean;
+  isTransferable: boolean;
 };
 
 export type TableDataType = {

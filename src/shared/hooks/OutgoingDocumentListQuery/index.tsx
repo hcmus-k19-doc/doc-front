@@ -58,6 +58,7 @@ export const useOutgoingDocRes = (isModal: boolean) => {
               attachments: item.attachments,
               isDocTransferred: item.isDocTransferred,
               isDocCollaborator: item.isDocCollaborator,
+              isTransferable: item.isTransferable,
               outgoingNumber: item.outgoingNumber,
             };
           });

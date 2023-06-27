@@ -728,7 +728,7 @@ function OutgoingDocDetailPage() {
           </Row>
         </Form>
 
-        {!isReleased && (
+        {!isReleased ? (
           <Row className='my-3 mb-10'>
             {isEditing || isReviewing ? (
               <Button
@@ -785,7 +785,19 @@ function OutgoingDocDetailPage() {
               </Button>
             )}
 
-            {currentUser?.role !== DocSystemRoleEnum.VAN_THU && (
+            {currentUser?.role !== DocSystemRoleEnum.VAN_THU && data?.data?.isTransferable && (
+              <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+                {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
+                  ? t('outgoing_doc_detail_page.button.view_transfer_detail')
+                  : currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
+                  ? t('outgoing_doc_detail_page.button.transfer_secretary')
+                  : t('outgoing_doc_detail_page.button.report')}
+              </Button>
+            )}
+          </Row>
+        ) : (
+          <Row className='my-3 mb-10'>
+            {currentUser?.role !== DocSystemRoleEnum.VAN_THU && data?.data?.isTransferable && (
               <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
                 {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
                   ? t('outgoing_doc_detail_page.button.view_transfer_detail')
