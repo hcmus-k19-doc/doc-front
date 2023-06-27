@@ -61,7 +61,7 @@ const AdminMenu = () => {
           label: t('main_page.menu.items.users'),
           icon: <UserOutlined />,
           onClick: () => {
-            globalNavigate('/');
+            globalNavigate('/list/');
           },
         },
         {
@@ -69,7 +69,7 @@ const AdminMenu = () => {
           label: t('main_page.menu.items.document_types'),
           icon: <FileTextOutlined />,
           onClick: () => {
-            globalNavigate('/document-types');
+            globalNavigate('/list/document-types');
           },
         },
         {
@@ -77,7 +77,7 @@ const AdminMenu = () => {
           label: t('main_page.menu.items.departments'),
           icon: <TeamOutlined />,
           onClick: () => {
-            globalNavigate('/departments');
+            globalNavigate('/list/departments');
           },
         },
       ],

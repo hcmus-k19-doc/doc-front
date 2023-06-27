@@ -167,7 +167,7 @@ function ReceiveIncomingDocPage() {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/docin');
+          navigate('/list/docin');
         });
       }
     } catch (error) {
@@ -184,7 +184,7 @@ function ReceiveIncomingDocPage() {
   };
 
   const onCancel = () => {
-    navigate('/docin');
+    navigate('/list/docin');
   };
 
   return (

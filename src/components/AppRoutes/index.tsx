@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
@@ -11,10 +11,13 @@ import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 import { GlobalHistory } from 'utils/RoutingUtils';
 
+import { DocSystemRoleEnum } from '../../models/doc-main-models';
+import StatisticsPage from '../../pages/shared/StatisticsPage';
+import DocSuspenseComponent from '../DocSuspenseComponent';
+
 const AppRoutes = () => {
   const { currentUser } = useAuth();
 
-  const StatisticsPage = lazy(() => import('pages/shared/StatisticsPage'));
   const ProfilePage = lazy(() => import('pages/shared/ProfilePage'));
 
   return (
@@ -25,14 +28,26 @@ const AppRoutes = () => {
         <Route element={<App />}>
           {currentUser ? (
             <>
-              <Route path='/login' element={<Navigate to='/' />} />
+              {currentUser?.role === DocSystemRoleEnum.DOC_ADMIN ? (
+                <Route path='/login' element={<Navigate to='/list' />} />
+              ) : (
+                <Route path='/login' element={<Navigate to='/' />} />
+              )}
               <Route
                 path='/processing-details/:incomingDocumentId'
                 element={<ProcessingDetailsPageWrapper />}
               />
-              <Route path='/statistics' element={<StatisticsPage />} />
-              <Route path='/profile' element={<ProfilePage />} />
-              <Route path='/*' element={<MainPage />} />
+              <Route path='/' element={<StatisticsPage />} />
+              <Route
+                path='/profile'
+                element={
+                  <DocSuspenseComponent>
+                    <ProfilePage />
+                  </DocSuspenseComponent>
+                }
+              />
+              <Route path='/list/*' element={<MainPage />} />
+              <Route path='*' element={<Navigate to='/not-found' />} />
             </>
           ) : (
             <>
