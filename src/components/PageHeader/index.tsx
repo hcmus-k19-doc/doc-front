@@ -137,7 +137,7 @@ const PageHeader: React.FC = () => {
     <Header
       className='header flex items-center justify-between border-b-2'
       style={{ backgroundColor: 'white' }}>
-      <div className='logo flex-none w-40'>
+      <div className='logo flex-none w-40 mt-4'>
         {currentUser?.role === DocSystemRoleEnum.DOC_ADMIN ? (
           <Link to='/list'>
             <img src={logo} style={{ width: '50%' }} alt='doc' />

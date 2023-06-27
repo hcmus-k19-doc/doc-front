@@ -758,6 +758,7 @@
     "reminder_detail_list": {
       "document_name": "Document name",
       "document_number": "Document number",
+      "summary": "Summary",
       "document_type": {
         "title": "Document type",
         "INCOMING_DOCUMENT": "Incoming document",

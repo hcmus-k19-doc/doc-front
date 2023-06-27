@@ -796,6 +796,7 @@
     "reminder_detail_list": {
       "document_name": "Tên văn bản",
       "document_number": "Số văn bản",
+      "summary": "Trích yếu",
       "document_type": {
         "title": "Loại văn bản",
         "INCOMING_DOCUMENT": "Văn bản đến",
