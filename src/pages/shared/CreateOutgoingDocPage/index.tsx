@@ -145,7 +145,7 @@ function CreateOutgoingDocPage() {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/docout/out-list');
+          navigate('/list/docout/out-list');
         });
       }
     } catch (error) {
@@ -162,7 +162,7 @@ function CreateOutgoingDocPage() {
   };
 
   const onCancel = () => {
-    navigate('/docout');
+    navigate('/list/docout/out-list');
   };
 
   return (

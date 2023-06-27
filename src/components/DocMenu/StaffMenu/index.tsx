@@ -7,7 +7,7 @@ import { globalNavigate } from 'utils/RoutingUtils';
 
 import '../menu.css';
 
-const ManagerMenu = () => {
+const StaffMenu = () => {
   const [openKey, setOpenKey] = useState('docin');
   const [current, setCurrent] = useState('in-list');
 
@@ -56,7 +56,7 @@ const ManagerMenu = () => {
     setOpenKey(keys[1]);
   };
 
-  const managerMenuItems: MenuProps['items'] = [
+  const staffMenuItems: MenuProps['items'] = [
     {
       key: 'docin',
       icon: <InboxOutlined />,
@@ -67,14 +67,14 @@ const ManagerMenu = () => {
           key: 'in-list',
           label: t('main_page.menu.items.incoming_document_list'),
           onClick: () => {
-            globalNavigate('/docin');
+            globalNavigate('/list/docin');
           },
         },
         {
           key: 'in-receive',
           label: t('main_page.menu.items.receiving_incoming_document'),
           onClick: () => {
-            globalNavigate('/docin/in-receive');
+            globalNavigate('/list/docin/in-receive');
           },
         },
       ],
@@ -88,14 +88,14 @@ const ManagerMenu = () => {
           key: 'out-list',
           label: t('main_page.menu.items.outgoing_document_list'),
           onClick: () => {
-            globalNavigate('/docout/out-list');
+            globalNavigate('/list/docout/out-list');
           },
         },
         {
           key: 'out-create',
           label: t('main_page.menu.items.create_outgoing_document'),
           onClick: () => {
-            globalNavigate('/docout/out-create');
+            globalNavigate('/list/docout/out-create');
           },
         },
       ],
@@ -104,27 +104,27 @@ const ManagerMenu = () => {
       key: 'calendar',
       icon: <CalendarOutlined />,
       label: t('main_page.menu.items.calendar'),
-      onClick: () => globalNavigate('/calendar'),
+      onClick: () => globalNavigate('/list/calendar'),
     },
   ];
 
-  const managerMenu: MenuProps = {
+  const staffMenu: MenuProps = {
     mode: 'inline',
     defaultSelectedKeys: ['in-list'],
     defaultOpenKeys: ['docin'],
-    items: managerMenuItems,
+    items: staffMenuItems,
   };
 
   return (
     <Menu
-      mode={managerMenu.mode}
+      mode={staffMenu.mode}
       openKeys={[openKey]}
       selectedKeys={[current]}
       onSelect={onSelect}
       onOpenChange={onOpenChange}
-      items={managerMenu.items}
+      items={staffMenu.items}
     />
   );
 };
 
-export default ManagerMenu;
+export default StaffMenu;

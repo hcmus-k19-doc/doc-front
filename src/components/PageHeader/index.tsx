@@ -9,17 +9,7 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import {
-  Badge,
-  Dropdown,
-  Layout,
-  Menu,
-  MenuProps,
-  Modal,
-  Popover,
-  Tooltip,
-  Typography,
-} from 'antd';
+import { Badge, Dropdown, Layout, Menu, MenuProps, Modal, Popover, Typography } from 'antd';
 import logo from 'assets/icons/logo.png';
 import { useAuth } from 'components/AuthComponent';
 import NotificationHistory from 'components/NotificationHistory';
@@ -55,15 +45,15 @@ const PageHeader: React.FC = () => {
   const mainNavigator: MenuProps['items'] = [
     {
       key: '/',
-      label: t('page_header.document'),
-      icon: <DatabaseOutlined />,
+      label: t('page_header.statistics'),
+      icon: <FundOutlined />,
       onClick: () => navigate('/'),
     },
     {
-      key: '/statistics',
-      label: t('page_header.statistics'),
-      icon: <FundOutlined />,
-      onClick: () => navigate('/statistics'),
+      key: '/list',
+      label: t('page_header.document'),
+      icon: <DatabaseOutlined />,
+      onClick: () => navigate('/list'),
     },
   ];
 
@@ -148,9 +138,15 @@ const PageHeader: React.FC = () => {
       className='header flex items-center justify-between border-b-2'
       style={{ backgroundColor: 'white' }}>
       <div className='logo flex-none w-40'>
-        <Link to='/'>
-          <img src={logo} style={{ width: '50%' }} alt='doc' />
-        </Link>
+        {currentUser?.role === DocSystemRoleEnum.DOC_ADMIN ? (
+          <Link to='/list'>
+            <img src={logo} style={{ width: '50%' }} alt='doc' />
+          </Link>
+        ) : (
+          <Link to='/'>
+            <img src={logo} style={{ width: '50%' }} alt='doc' />
+          </Link>
+        )}
       </div>
 
       {currentUser?.role !== DocSystemRoleEnum.DOC_ADMIN && (

@@ -230,7 +230,7 @@ const IncomingDocListPage: React.FC = () => {
         onRow={(record) => {
           return {
             onDoubleClick: () => {
-              navigate(`/docin/in-detail/${record.id}`);
+              navigate(`/list/docin/in-detail/${record.id}`);
             },
           };
         }}
