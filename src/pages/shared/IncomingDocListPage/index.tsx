@@ -239,7 +239,12 @@ const IncomingDocListPage: React.FC = () => {
           type: 'checkbox',
           ...rowSelection,
           getCheckboxProps: (record) => ({
-            disabled: record.isDocTransferred || record.isDocCollaborator,
+            disabled:
+              record.isDocTransferred ||
+              record.isDocCollaborator ||
+              !record.isTransferable ||
+              record.status === 'Đã xử lý' ||
+              record.status === 'Closed',
           }),
         }}
         columns={columns}

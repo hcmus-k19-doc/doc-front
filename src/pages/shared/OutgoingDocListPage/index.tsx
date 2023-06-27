@@ -227,7 +227,10 @@ const OutgoingDocListPage: React.FC = () => {
           ...rowSelection,
           getCheckboxProps: (record) => ({
             disabled:
-              record.isDocTransferred || record.isDocCollaborator || record.releaseNumber !== null,
+              record.isDocTransferred ||
+              record.isDocCollaborator ||
+              !record.isTransferable ||
+              record.releaseNumber !== null,
           }),
         }}
         columns={columns}
