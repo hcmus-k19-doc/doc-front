@@ -59,7 +59,7 @@ function CreateOutgoingDocPage() {
 
   useEffect(() => {
     form.setFieldsValue({
-      folder: foldersQuery.data?.[2].id, //Folder van ban di
+      folder: foldersQuery.data?.[0].id, //Folder van ban di
       documentType: documentTypesQuery.data?.[0].id,
       publishingDepartment: departmentsQuery.data?.[0].id,
       urgency: Urgency.HIGH,
