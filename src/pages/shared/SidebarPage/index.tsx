@@ -34,7 +34,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
       case DocSystemRoleEnum.VAN_THU:
         return (
           <Routes>
-            <Route path='/' element={<Navigate to='/list/docin/in-list' />} />
+            <Route path='/' element={<Navigate to='/main/docin/in-list' />} />
             <Route path='/in-list' element={<IncomingDocListPage />} />
             <Route path='/in-receive' element={<ReceiveIncomingDocPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
@@ -55,7 +55,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
       case DocSystemRoleEnum.CHUYEN_VIEN:
         return (
           <Routes>
-            <Route path='/' element={<Navigate to='/list/docin/in-list' />} />
+            <Route path='/' element={<Navigate to='/main/docin/in-list' />} />
             <Route path='/in-list' element={<IncomingDocListPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
             <Route path='/out-list' element={<OutgoingDocListPage />} />
@@ -75,7 +75,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
       case DocSystemRoleEnum.TRUONG_PHONG:
         return (
           <Routes>
-            <Route path='/' element={<Navigate to='/list/docin/in-list' />} />
+            <Route path='/' element={<Navigate to='/main/docin/in-list' />} />
             <Route path='/in-list' element={<IncomingDocListPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
             <Route path='/out-list' element={<OutgoingDocListPage />} />
@@ -95,7 +95,7 @@ const SidebarPage: React.FC<MenuProps> = () => {
       case DocSystemRoleEnum.HIEU_TRUONG:
         return (
           <Routes>
-            <Route path='/' element={<Navigate to='/list/docin/in-list' />} />
+            <Route path='/' element={<Navigate to='/main/docin/in-list' />} />
             <Route path='/in-list' element={<IncomingDocListPage />} />
             <Route path='/in-detail/:docId' element={<IncomingDocDetailPage />} />
             <Route path='/out-list' element={<OutgoingDocListPage />} />

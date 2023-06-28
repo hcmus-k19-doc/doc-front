@@ -29,7 +29,7 @@ const AppRoutes = () => {
           {currentUser ? (
             <>
               {currentUser?.role === DocSystemRoleEnum.DOC_ADMIN ? (
-                <Route path='/login' element={<Navigate to='/list' />} />
+                <Route path='/login' element={<Navigate to='/main' />} />
               ) : (
                 <Route path='/login' element={<Navigate to='/' />} />
               )}
@@ -46,7 +46,7 @@ const AppRoutes = () => {
                   </DocSuspenseComponent>
                 }
               />
-              <Route path='/list/*' element={<MainPage />} />
+              <Route path='/main/*' element={<MainPage />} />
               <Route path='*' element={<Navigate to='/not-found' />} />
             </>
           ) : (

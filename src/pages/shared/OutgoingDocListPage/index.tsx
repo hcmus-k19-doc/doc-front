@@ -217,7 +217,7 @@ const OutgoingDocListPage: React.FC = () => {
         onRow={(record) => {
           return {
             onDoubleClick: () => {
-              navigate(`/list/docout/out-detail/${record.id}`);
+              navigate(`/main/docout/out-detail/${record.id}`);
             },
           };
         }}

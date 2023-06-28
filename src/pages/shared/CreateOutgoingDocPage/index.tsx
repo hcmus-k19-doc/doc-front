@@ -145,7 +145,7 @@ function CreateOutgoingDocPage() {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/list/docout/out-list');
+          navigate('/main/docout/out-list');
         });
       }
     } catch (error) {
@@ -162,7 +162,7 @@ function CreateOutgoingDocPage() {
   };
 
   const onCancel = () => {
-    navigate('/list/docout/out-list');
+    navigate('/main/docout/out-list');
   };
 
   return (
@@ -376,7 +376,6 @@ function CreateOutgoingDocPage() {
               type='default'
               size='large'
               className='mr-5'
-              loading={loading}
               onClick={() => {
                 onCancel();
               }}>

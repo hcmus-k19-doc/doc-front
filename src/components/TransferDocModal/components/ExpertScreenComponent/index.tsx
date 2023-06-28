@@ -144,12 +144,10 @@ const ExpertScreenComponent: React.FC<TransferDocScreenProps> = ({
                 </Row>
                 <Row className='mt-4 mb-4'>
                   <Col span='6'>
-                    <Text strong>
-                      <div dangerouslySetInnerHTML={{ __html: t(i18n_summary) }}></div>
-                    </Text>
+                    <Text strong>{t(i18n_summary)}</Text>
                   </Col>
                   <Col span='16'>
-                    <TextArea rows={4} disabled defaultValue={item.summary} />
+                    <div dangerouslySetInnerHTML={{ __html: item.summary }}></div>
                   </Col>
                 </Row>
               </React.Fragment>

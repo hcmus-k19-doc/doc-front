@@ -167,7 +167,7 @@ function ReceiveIncomingDocPage() {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate('/list/docin');
+          navigate('/main/docin');
         });
       }
     } catch (error) {
@@ -184,7 +184,7 @@ function ReceiveIncomingDocPage() {
   };
 
   const onCancel = () => {
-    navigate('/list/docin');
+    navigate('/main/docin');
   };
 
   return (
@@ -469,7 +469,6 @@ function ReceiveIncomingDocPage() {
               type='default'
               size='large'
               className='mr-5'
-              loading={loading}
               onClick={() => {
                 onCancel();
               }}>

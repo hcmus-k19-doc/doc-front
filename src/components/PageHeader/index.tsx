@@ -50,10 +50,10 @@ const PageHeader: React.FC = () => {
       onClick: () => navigate('/'),
     },
     {
-      key: '/list',
+      key: '/main',
       label: t('page_header.document'),
       icon: <DatabaseOutlined />,
-      onClick: () => navigate('/list'),
+      onClick: () => navigate('/main'),
     },
   ];
 
@@ -139,7 +139,7 @@ const PageHeader: React.FC = () => {
       style={{ backgroundColor: 'white' }}>
       <div className='logo flex-none w-40 mt-4'>
         {currentUser?.role === DocSystemRoleEnum.DOC_ADMIN ? (
-          <Link to='/list'>
+          <Link to='/main'>
             <img src={logo} style={{ width: '50%' }} alt='doc' />
           </Link>
         ) : (

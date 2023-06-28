@@ -377,7 +377,8 @@
       "return": "Return",
       "extend": "Request Extension",
       "end": "End",
-      "transer_detail": "View Transfer Details"
+      "transer_detail": "View Transfer Details",
+      "cancel": "Cancel"
     },
     "message": {
       "file_error": "Attachment failed.",

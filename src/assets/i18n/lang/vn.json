@@ -385,7 +385,8 @@
       "extend": "Yêu cầu gia hạn",
       "end": "Kết thúc",
       "transer_detail": "Xem chi tiết chuyển xử lý",
-      "export": "In danh sách"
+      "export": "In danh sách",
+      "cancel": "Hủy"
     },
     "message": {
       "file_error": "đính kèm không thành công.",
