@@ -12,6 +12,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  Button,
   Col,
   DatePicker,
   Form,
@@ -155,6 +156,10 @@ function IncomingDocPage() {
     setIsModalOpen(false);
     modalForm.resetFields();
     transferQuerySetter(initialTransferQueryState);
+  };
+
+  const onCancel = () => {
+    setIsEditing(false);
   };
 
   const handleOnOkModal = async () => {
@@ -711,6 +716,17 @@ function IncomingDocPage() {
 
       {!isClosed && (
         <Row className='my-3 mb-10'>
+          {isEditing && (
+            <Button
+              type='default'
+              size='large'
+              htmlType='button'
+              className='mr-5'
+              onClick={() => onCancel()}>
+              {t('incomingDocDetailPage.button.cancel')}
+            </Button>
+          )}
+
           <DocButtonList
             enableEditing={enableEditing}
             isEditing={isEditing}
