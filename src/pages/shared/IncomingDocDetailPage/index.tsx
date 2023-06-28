@@ -625,7 +625,7 @@ function IncomingDocPage() {
               <CKEditor
                 disabled={!isEditing}
                 editor={ClassicEditor}
-                data={form.getFieldValue('summary')}
+                data={form.getFieldValue('summary') || ''}
                 onChange={(event, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}
@@ -692,7 +692,7 @@ function IncomingDocPage() {
                       title={
                         <div
                           onClick={() => {
-                            globalNavigate(`/docout/out-detail/${item.id}`);
+                            globalNavigate(`/main/docout/out-detail/${item.id}`);
                           }}>
                           <span className='cursor-pointer text-primary text-link mr-2'>
                             {item.name}
@@ -704,7 +704,7 @@ function IncomingDocPage() {
                           )}
                         </div>
                       }
-                      description={item.summary}
+                      description={<div dangerouslySetInnerHTML={{ __html: item.summary }}></div>}
                     />
                   </List.Item>
                 )}

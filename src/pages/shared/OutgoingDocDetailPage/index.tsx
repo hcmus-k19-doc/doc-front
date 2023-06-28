@@ -452,6 +452,8 @@ function OutgoingDocDetailPage() {
     setSelectedDocumentsToLink(documents);
   };
 
+  console.log(linkedDocuments?.data);
+
   return (
     <>
       <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
@@ -647,7 +649,7 @@ function OutgoingDocDetailPage() {
                 <CKEditor
                   disabled={!isEditing}
                   editor={ClassicEditor}
-                  data={form.getFieldValue('summary')}
+                  data={form.getFieldValue('summary') || ''}
                   onChange={(event, editor) => {
                     form.setFieldValue('summary', editor.getData());
                   }}
@@ -708,7 +710,7 @@ function OutgoingDocDetailPage() {
                         title={
                           <div
                             onClick={() => {
-                              globalNavigate(`/docin/in-detail/${item.id}`);
+                              globalNavigate(`/main/docin/in-detail/${item.id}`);
                             }}>
                             <span className='cursor-pointer text-primary text-link mr-2'>
                               {item.name}
@@ -718,7 +720,7 @@ function OutgoingDocDetailPage() {
                             </span>
                           </div>
                         }
-                        description={item.summary}
+                        description={<div dangerouslySetInnerHTML={{ __html: item.summary }}></div>}
                       />
                     </List.Item>
                   )}
