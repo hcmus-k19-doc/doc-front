@@ -91,7 +91,7 @@ const IncomingDocListSearch: React.FC<IncomingDocListSearchProps> = ({
         onRow={(record) => {
           return {
             onDoubleClick: () => {
-              navigate(`/list/docin/in-detail/${record.id}`);
+              navigate(`/main/docin/in-detail/${record.id}`);
             },
           };
         }}

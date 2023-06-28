@@ -67,7 +67,7 @@ const ExpertMenu = () => {
           key: 'in-list',
           label: t('main_page.menu.items.incoming_document_list'),
           onClick: () => {
-            globalNavigate('/list/docin');
+            globalNavigate('/main/docin');
           },
         },
       ],
@@ -81,14 +81,14 @@ const ExpertMenu = () => {
           key: 'out-list',
           label: t('main_page.menu.items.outgoing_document_list'),
           onClick: () => {
-            globalNavigate('/list/docout/out-list');
+            globalNavigate('/main/docout/out-list');
           },
         },
         {
           key: 'out-create',
           label: t('main_page.menu.items.create_outgoing_document'),
           onClick: () => {
-            globalNavigate('/list/docout/out-create');
+            globalNavigate('/main/docout/out-create');
           },
         },
       ],
@@ -97,7 +97,7 @@ const ExpertMenu = () => {
       key: 'calendar',
       icon: <CalendarOutlined />,
       label: t('main_page.menu.items.calendar'),
-      onClick: () => globalNavigate('/list/calendar'),
+      onClick: () => globalNavigate('/main/calendar'),
     },
   ];
 

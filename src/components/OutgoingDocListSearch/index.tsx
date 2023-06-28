@@ -93,7 +93,7 @@ const OutgoingDocListSearch: React.FC<OutgoingDocListSearchProps> = ({
         onRow={(record) => {
           return {
             onDoubleClick: () => {
-              navigate(`/list/docout/out-detail/${record.id}`);
+              navigate(`/main/docout/out-detail/${record.id}`);
             },
           };
         }}

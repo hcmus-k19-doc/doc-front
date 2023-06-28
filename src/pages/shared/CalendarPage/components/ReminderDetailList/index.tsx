@@ -33,7 +33,7 @@ function ReminderDetailList({ onRefresh }: Props) {
   };
 
   function handleOnDetailClick(documentId: number, documentType: ProcessingDocumentTypeEnum) {
-    globalNavigate(`/list/${routingUtils.getUrl(documentType)}/${documentId}`);
+    globalNavigate(`/main/${routingUtils.getUrl(documentType)}/${documentId}`);
   }
 
   function handleOnRefreshClick() {
