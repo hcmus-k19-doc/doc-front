@@ -31,6 +31,7 @@ import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import DocButtonList from 'components/DocButtonList';
 import DocComment from 'components/DocComment';
+import DocStatus from 'components/DocStatus';
 import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
@@ -48,6 +49,7 @@ import {
   IncomingDocumentPutDto,
   ProcessingDocumentRoleEnum,
   ProcessingDocumentTypeEnum,
+  ProcessingStatus,
   TransferDocDto,
   Urgency,
   UserDto,
@@ -92,11 +94,14 @@ function IncomingDocPage() {
   const [openLinkDocumentModal, setOpenLinkDocumentModal] = useState(false);
   const [selectedDocumentsToLink, setSelectedDocumentsToLink] = useState([]);
 
+  const [isClosed, setIsClosed] = useState(false);
+
   useEffect(() => {
     const incomingDocument = {
       ...data?.data,
       status: t(`PROCESSING_STATUS.${data?.data.status}`),
     };
+    setIsClosed(incomingDocument.status === t('PROCESSING_STATUS.CLOSED'));
     setSelectedDocs([incomingDocument as unknown as IncomingDocumentDto]);
   }, [data?.data]);
 
@@ -344,6 +349,9 @@ function IncomingDocPage() {
   return (
     <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
       <div className='text-lg text-primary'>{t('incomingDocDetailPage.title')}</div>
+
+      {isClosed && <DocStatus status={ProcessingStatus.CLOSED} />}
+
       <Form form={form} layout='vertical' onFinish={saveChange} disabled={!isEditing}>
         <Row>
           <Col span={16}>
@@ -646,16 +654,18 @@ function IncomingDocPage() {
                 <div className='linked-label font-semibold'>
                   {t('incomingDocDetailPage.linked_document.title')}
                 </div>
-                <div
-                  className='text-primary pr-2'
-                  onClick={() => {
-                    setOpenLinkDocumentModal(true);
-                  }}>
-                  <PlusCircleOutlined />
-                  <span className='ml-2 cursor-pointer'>
-                    {t('incomingDocDetailPage.linked_document.add')}
-                  </span>
-                </div>
+                {!isClosed && (
+                  <div
+                    className='text-primary pr-2'
+                    onClick={() => {
+                      setOpenLinkDocumentModal(true);
+                    }}>
+                    <PlusCircleOutlined />
+                    <span className='ml-2 cursor-pointer'>
+                      {t('incomingDocDetailPage.linked_document.add')}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <List
@@ -698,15 +708,19 @@ function IncomingDocPage() {
           </Col>
         </Row>
       </Form>
-      <Row className='my-3 mb-10'>
-        <DocButtonList
-          enableEditing={enableEditing}
-          isEditing={isEditing}
-          onFinishEditing={onFinishEditing}
-          documentDetail={selectedDocs[0]}
-          onOpenTransferModal={handleOnOpenModal}
-        />
-      </Row>
+
+      {!isClosed && (
+        <Row className='my-3 mb-10'>
+          <DocButtonList
+            enableEditing={enableEditing}
+            isEditing={isEditing}
+            onFinishEditing={onFinishEditing}
+            documentDetail={selectedDocs[0]}
+            onOpenTransferModal={handleOnOpenModal}
+          />
+        </Row>
+      )}
+
       <div className='text-lg text-primary'>
         {t('common.processing_step.processing_step_in.title')}
       </div>

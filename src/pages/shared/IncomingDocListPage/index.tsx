@@ -140,6 +140,19 @@ const IncomingDocListPage: React.FC = () => {
       onFilter: (value, record) => record.issuePlace.indexOf(value as string) === 0,
     },
     {
+      title: t('incomingDocListPage.table.columns.status'),
+      dataIndex: 'status',
+      sorter: (a, b) => a.status.localeCompare(b.status),
+      filters: [...new Set(data?.payload.map((item) => item.status))].map((item) => ({
+        text: item,
+        value: item,
+      })),
+      onFilter: (value, record) => record.status.indexOf(value as string) === 0,
+      render: (_, record) => {
+        return <Tag color={getColorBaseOnStatus(record.status, t)}>{record.status}</Tag>;
+      },
+    },
+    {
       title: t('incomingDocListPage.table.columns.fullText'),
       dataIndex: 'fullText',
       align: 'center',
@@ -172,19 +185,6 @@ const IncomingDocListPage: React.FC = () => {
             );
           },
         };
-      },
-    },
-    {
-      title: t('incomingDocListPage.table.columns.status'),
-      dataIndex: 'status',
-      sorter: (a, b) => a.status.localeCompare(b.status),
-      filters: [...new Set(data?.payload.map((item) => item.status))].map((item) => ({
-        text: item,
-        value: item,
-      })),
-      onFilter: (value, record) => record.status.indexOf(value as string) === 0,
-      render: (_, record) => {
-        return <Tag color={getColorBaseOnStatus(record.status, t)}>{record.status}</Tag>;
       },
     },
     {

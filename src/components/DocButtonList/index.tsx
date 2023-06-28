@@ -65,9 +65,6 @@ const DocButtonList = ({
       onClick={isEditing ? onFinishEditing : enableEditing}>
       {isEditing ? t('incomingDocDetailPage.button.save') : t('incomingDocDetailPage.button.edit')}
     </Button>,
-    <Button type='primary' key='3' size='large' className='mr-5' name='report'>
-      {t('incomingDocDetailPage.button.report')}
-    </Button>,
     <Button
       type='primary'
       size='large'
