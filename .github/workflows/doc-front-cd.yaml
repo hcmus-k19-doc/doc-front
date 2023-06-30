@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build bundle
+      - name: Build dev
         run: yarn build
 
       - name: Login to Docker Hub
@@ -28,9 +28,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build image and push to Docker Hub
+      - name: Build dev image and push to Docker Hub
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: hcmusdoc/doc-front:latest
+          tags: hcmusdoc/doc-front:dev-latest
+      
+      - name: Build local
+        run: yarn build:local
+      
+      - name: Build local image and push to Docker Hub
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: hcmusdoc/doc-front:dev-latest
