@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "env-cmd -f .env react-scripts start",
-    "build": "react-scripts build",
+    "build": "env-cmd -f .env react-scripts build",
     "build:local": "env-cmd -f .env.local yarn build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
