@@ -43,4 +43,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: hcmusdoc/doc-front:dev-latest
+          tags: hcmusdoc/doc-front:local-latest
