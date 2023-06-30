@@ -118,6 +118,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     isDocTransferred: boolean;
     isDocCollaborator: boolean;
     isTransferable: boolean;
+    isCloseable: boolean;
     closeDate: DateAsString;
     closeUsername: string;
 }
@@ -193,6 +194,7 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     isDocTransferred: boolean;
     isDocCollaborator: boolean;
     isTransferable: boolean;
+    isReleasable: boolean;
 }
 
 export interface OutgoingDocumentPostDto extends DocAbstractDto {
