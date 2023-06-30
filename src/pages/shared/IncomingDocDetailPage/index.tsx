@@ -193,7 +193,7 @@ function IncomingDocPage() {
         if (response.status === 200) {
           queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 1)]);
           if (transferDocDto.isTransferToSameLevel) {
-            navigate('/docin/in-list');
+            navigate('/main/docin/in-list');
           }
           showAlert({
             icon: 'success',
@@ -692,7 +692,7 @@ function IncomingDocPage() {
                       title={
                         <div
                           onClick={() => {
-                            globalNavigate(`/docout/out-detail/${item.id}`);
+                            globalNavigate(`/main/docout/out-detail/${item.id}`);
                           }}>
                           <span className='cursor-pointer text-primary text-link mr-2'>
                             {item.name}
@@ -714,7 +714,7 @@ function IncomingDocPage() {
         </Row>
       </Form>
 
-      {!isClosed && (
+      {!isClosed ? (
         <Row className='my-3 mb-10'>
           {isEditing && (
             <Button
@@ -729,6 +729,18 @@ function IncomingDocPage() {
 
           <DocButtonList
             enableEditing={enableEditing}
+            isEditing={isEditing}
+            isClosed={isClosed}
+            onFinishEditing={onFinishEditing}
+            documentDetail={selectedDocs[0]}
+            onOpenTransferModal={handleOnOpenModal}
+          />
+        </Row>
+      ) : (
+        <Row className='my-3 mb-10'>
+          <DocButtonList
+            enableEditing={enableEditing}
+            isClosed={isClosed}
             isEditing={isEditing}
             onFinishEditing={onFinishEditing}
             documentDetail={selectedDocs[0]}
