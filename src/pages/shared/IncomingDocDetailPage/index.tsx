@@ -171,7 +171,7 @@ function IncomingDocPage() {
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
-      processMethod: modalForm.getFieldValue('processMethod'),
+      processingMethod: modalForm.getFieldValue('processingMethod'),
       transferDocumentType: transferDocModalItem.transferDocumentType,
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
