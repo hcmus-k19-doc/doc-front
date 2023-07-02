@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Col, DatePicker, Form, List, Row, Select, Space, Typography } from 'antd';
+import {
+  AutoComplete,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  List,
+  Row,
+  Select,
+  Space,
+  Typography,
+} from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { RangePickerProps } from 'antd/es/date-picker';
 import TextArea from 'antd/es/input/TextArea';
@@ -11,6 +22,7 @@ import { IncomingDocumentDto, OutgoingDocumentGetDto } from 'models/doc-main-mod
 import { useManagerTransferRes } from 'shared/hooks/ManagerTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 
+import { useProcessingMethodRes } from '../../../../shared/hooks/ProcessingMethodQuery';
 import {
   i18_collaborators,
   i18n_assignee,
@@ -19,11 +31,11 @@ import {
   i18n_implementation_date,
   i18n_is_infinite_processing_time,
   i18n_ordinal_number,
-  i18n_process_method,
+  i18n_processing_method,
+  i18n_processing_method_required,
   i18n_processing_time,
   i18n_sender,
   i18n_summary,
-  processMethodOptions,
   TransferDocScreenFormProps,
   TransferDocScreenProps,
 } from '../../core/models';
@@ -46,6 +58,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
 }) => {
   const { t } = useTranslation();
   const { managers } = useManagerTransferRes();
+  const { processingMethods } = useProcessingMethodRes();
   const { currentUser } = useAuth();
   const [selectedAssignee, setSelectedAssignee] = useState();
   const setManagerTransferQuery = useTransferQuerySetter();
@@ -103,7 +116,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           collaboratorIds: values.collaborators,
           processingTime: values.processingTime,
           isInfiniteProcessingTime: values.isInfiniteProcessingTime,
-          processMethod: values.processMethod,
+          processingMethod: values.processingMethod,
         });
       }}
       onFieldsChange={handleOnFieldsChange}
@@ -192,12 +205,20 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
             <Col span='6'>
               <Typography.Text strong>
                 <span className='asterisk'>*</span>
-                {t(i18n_process_method)}
+                {t(i18n_processing_method)}
               </Typography.Text>
             </Col>
             <Col span='16'>
-              <Form.Item name='processMethod'>
-                <Select style={{ width: '100%' }} allowClear options={processMethodOptions} />
+              <Form.Item name='processingMethod'>
+                <AutoComplete
+                  style={{ width: '100%' }}
+                  options={processingMethods}
+                  placeholder={t(i18n_processing_method_required)}
+                  filterOption={(inputValue, option) =>
+                    option?.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                  }
+                />
+                {/*<Select style={{ width: '100%' }} allowClear options={processingMethods} />*/}
               </Form.Item>
             </Col>
           </Row>

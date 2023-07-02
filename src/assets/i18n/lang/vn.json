@@ -607,7 +607,8 @@
       "is_infinite_processing_time": "Không thời hạn"
     },
     "manager_view": {
-      "process_method": "Cách thức xử lý"
+      "processing_method": "Cách thức xử lý",
+      "processing_method_required": "Hãy chọn cách thức xử lý"
     },
     "sidebar": {
       "director": "Ban giám đốc",
@@ -621,7 +622,7 @@
       "processing_time_invalid": "Hạn xử lý không hợp lệ",
       "processing_time_infinite": "Không thời hạn",
       "collaborators_required": "Hãy chọn người tham gia",
-      "process_method_required": "Hãy chọn cách thức xử lý",
+      "processing_method_required": "Hãy chọn cách thức xử lý",
       "collaborator_can_not_has_same_value_with_assignee": "Người tham gia không được trùng với người nhận",
       "only_unprocessed_docs_can_be_transferred_to_director": "Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc hoặc Văn thư cùng cấp",
       "only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert": "Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng, Văn thư hoặc Chuyên viên",
@@ -824,7 +825,7 @@
       "transfer_date": "Ngày chuyển",
       "processing_duration": "Thời hạn xử lý",
       "infinite_processing_time": "Không thời hạn",
-      "process_method": "Cách thức xử lý",
+      "processing_method": "Cách thức xử lý",
       "sender": "Người chuyển",
       "receiver": "Người nhận",
       "transfer_type_1": "Chuyển xử lý",

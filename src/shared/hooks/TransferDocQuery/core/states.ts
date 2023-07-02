@@ -5,6 +5,6 @@ export interface TransferQueryState {
   collaboratorIds?: number[];
   processingTime?: string;
   isInfiniteProcessingTime?: boolean;
-  processMethod?: string;
+  processingMethod?: string;
   isTransferToSameLevel?: boolean;
 }
