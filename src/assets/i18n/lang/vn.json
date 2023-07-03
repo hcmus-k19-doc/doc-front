@@ -81,7 +81,8 @@
     "no_data": {
       "no_data": "Không có dữ liệu",
       "no_work": "Không có công việc cần xử lý",
-      "no_notification": "Không có thông báo"
+      "no_notification": "Không có thông báo",
+      "no_attachment": "Không có tài liệu nào để hiển thị"
     },
     "footer": "HCMUS © {{year}} Hệ thống phê duyệt và phát hành văn thư",
     "comment": {
@@ -842,5 +843,10 @@
       "ok_text": "Huỷ liên kết",
       "cancel_text": "Quay lại"
     }
+  },
+  "attachments": {
+    "created_date": "Ngày tạo",
+    "title": "Tài liệu đã đính kèm",
+    "at_time": "lúc"
   }
 }
