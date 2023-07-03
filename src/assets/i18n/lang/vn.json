@@ -847,6 +847,8 @@
   "attachments": {
     "created_date": "Ngày tạo",
     "title": "Tài liệu đã đính kèm",
-    "at_time": "lúc"
+    "at_time": "lúc",
+    "download": "Tải về",
+    "preview": "Xem trước"
   }
 }

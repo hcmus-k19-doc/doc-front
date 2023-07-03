@@ -20,6 +20,10 @@ async function downloadAttachments(attachmentDtoList: AttachmentDto[], incomingD
   );
 }
 
+async function getFileContentFromS3Key(key: string) {
+  return await axios.get(`${DOC_FILE_SERVICE_FILE_URL}?fileKey=${key}`);
+}
+
 function saveZipFileToDisk(response: AxiosResponse<any, any>) {
   const url: string = window.URL.createObjectURL(new Blob([response.data]));
   const link: HTMLAnchorElement = document.createElement('a');
@@ -85,6 +89,7 @@ const attachmentService = {
   downloadAttachments,
   saveZipFileToDisk,
   handleDownloadAttachment,
+  getFileContentFromS3Key,
 };
 
 export default attachmentService;

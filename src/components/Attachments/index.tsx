@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CloseCircleOutlined, DownloadOutlined, FileSearchOutlined } from '@ant-design/icons';
-import { Dropdown, Empty, List, MenuProps } from 'antd';
+import { Button, Dropdown, Empty, List, MenuProps, Spin } from 'antd';
 import { format, parseISO } from 'date-fns';
+import { AttachmentDto } from 'models/doc-main-models';
 
 import { AttachmentsComponentProps } from './core/models';
 
@@ -18,27 +20,50 @@ const parseLocalDateTimeToFormatedDate = (dateTimeString: string, t: any) => {
 
 const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComponentProps) => {
   const { t } = useTranslation();
+  const [selectedFile, setSelectedFile] = useState<AttachmentDto>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleDownloadFile = (event: any) => {
+    event.preventDefault();
+    console.log('donwload', selectedFile);
+  };
+
+  const handlePreviewFile = (event: any) => {
+    event.preventDefault();
+    console.log('preview', selectedFile);
+  };
 
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.antgroup.com'>
-          <FileSearchOutlined style={{ marginRight: '8px' }} />
-          Preview
-        </a>
+        <Spin spinning={loading}>
+          <a onClick={handlePreviewFile}>
+            <FileSearchOutlined style={{ marginRight: '8px' }} />
+            {t('attachments.preview')}
+          </a>
+        </Spin>
       ),
     },
     {
       key: '2',
       label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
-          <DownloadOutlined style={{ marginRight: '8px' }} />
-          Download
-        </a>
+        <Spin spinning={loading}>
+          <a onClick={handleDownloadFile}>
+            <DownloadOutlined style={{ marginRight: '8px' }} />
+            {t('attachments.download')}
+          </a>
+        </Spin>
       ),
     },
   ];
+
+  const onOpenChange = (open: boolean, file: AttachmentDto) => {
+    console.log('open', open, file);
+    if (open) {
+      setSelectedFile(file);
+    }
+  };
 
   return (
     <div className='linked-documents'>
@@ -76,7 +101,8 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
                       menu={{ items }}
                       trigger={['click']}
                       overlayClassName='dropdown-menu'
-                      placement='bottomLeft'>
+                      placement='bottomLeft'
+                      onOpenChange={(open) => onOpenChange(open, item)}>
                       <div
                       // onClick={() => {
                       //   console.log('preview me', item.alfrescoFileId);
