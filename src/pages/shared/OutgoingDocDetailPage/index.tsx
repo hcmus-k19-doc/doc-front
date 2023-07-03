@@ -691,7 +691,11 @@ function OutgoingDocDetailPage() {
                 </div>
 
                 <List
-                  loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
+                  loading={
+                    linkedDocuments.isLoading ||
+                    linkedDocuments.isFetching ||
+                    linkedDocuments.isInitialLoading
+                  }
                   itemLayout='horizontal'
                   dataSource={linkedDocuments.data}
                   renderItem={(item) => (

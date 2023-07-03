@@ -228,9 +228,10 @@ function IncomingDocPage() {
     const documentToLinkIds = selectedDocumentsToLink.map((doc: any) => doc.id);
     await incomingDocumentService.linkDocuments(+(docId ?? 0), documentToLinkIds);
 
-    queryClient.invalidateQueries(['docin.link_documents', +(docId ?? 1)]);
     setOpenLinkDocumentModal(false);
     setSelectedDocumentsToLink([]);
+
+    queryClient.invalidateQueries(['docin.link_documents', +(docId ?? 1)]);
   };
 
   const handleDeleteLinkedDocument = async (documentId: number) => {
@@ -674,7 +675,11 @@ function IncomingDocPage() {
               </div>
 
               <List
-                loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
+                loading={
+                  linkedDocuments.isLoading ||
+                  linkedDocuments.isFetching ||
+                  linkedDocuments.isInitialLoading
+                }
                 itemLayout='horizontal'
                 dataSource={linkedDocuments.data}
                 renderItem={(item) => (
