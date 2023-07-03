@@ -41,7 +41,7 @@
   "scripts": {
     "start": "env-cmd -f .env react-scripts start",
     "build": "env-cmd -f .env react-scripts build",
-    "build:local": "env-cmd -f .env.local yarn build",
+    "build:local": "env-cmd -f .env.local react-scripts build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint-staged": "lint-staged",
