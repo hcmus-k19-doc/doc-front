@@ -28,6 +28,7 @@ import {
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
+import Attachments from 'components/Attachments';
 import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
@@ -666,6 +667,29 @@ function OutgoingDocDetailPage() {
                   </p>
                 </Dragger>
               </Form.Item>
+
+              <div className='mb-10'></div>
+
+              <div className='linked-documents'>
+                <div className='flex justify-between linked-header'>
+                  <div className='linked-label font-semibold'>
+                    {t('incomingDocDetailPage.linked_document.title')}
+                  </div>
+                  {!isReleased && (
+                    <div
+                      className='text-primary pr-2'
+                      onClick={() => {
+                        setOpenLinkDocumentModal(true);
+                      }}>
+                      <PlusCircleOutlined />
+                      <span className='ml-2 cursor-pointer text-link'>
+                        {t('incomingDocDetailPage.linked_document.add')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <Attachments attachments={data?.data?.attachments || []} />
+              </div>
 
               <div className='mb-10'></div>
 
