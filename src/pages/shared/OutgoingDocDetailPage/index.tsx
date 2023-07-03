@@ -370,7 +370,7 @@ function OutgoingDocDetailPage() {
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
-      processMethod: modalForm.getFieldValue('processMethod'),
+      processingMethod: modalForm.getFieldValue('processingMethod'),
       transferDocumentType: transferDocModalItem.transferDocumentType,
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
@@ -767,25 +767,26 @@ function OutgoingDocDetailPage() {
               </Button>
             )}
 
-            {isReviewing ? (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={onPublishConfirm}>
-                {t('outgoing_doc_detail_page.button.publish')}
-              </Button>
-            ) : (
-              <Button
-                type='primary'
-                size='large'
-                htmlType='button'
-                className='mr-5'
-                onClick={onPublishReview}>
-                {t('outgoing_doc_detail_page.button.review')}
-              </Button>
-            )}
+            {data?.data?.isReleasable &&
+              (isReviewing ? (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={onPublishConfirm}>
+                  {t('outgoing_doc_detail_page.button.publish')}
+                </Button>
+              ) : (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={onPublishReview}>
+                  {t('outgoing_doc_detail_page.button.review')}
+                </Button>
+              ))}
 
             {currentUser?.role !== DocSystemRoleEnum.VAN_THU && data?.data?.isTransferable && (
               <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
@@ -799,15 +800,12 @@ function OutgoingDocDetailPage() {
           </Row>
         ) : (
           <Row className='my-3 mb-10'>
-            {currentUser?.role !== DocSystemRoleEnum.VAN_THU && data?.data?.isTransferable && (
-              <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
-                {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
-                  ? t('outgoing_doc_detail_page.button.view_transfer_detail')
-                  : currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
-                  ? t('outgoing_doc_detail_page.button.transfer_secretary')
-                  : t('outgoing_doc_detail_page.button.report')}
-              </Button>
-            )}
+            {currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
+              (data?.data?.isDocTransferred || data?.data?.isDocCollaborator) && (
+                <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+                  {t('outgoing_doc_detail_page.button.view_transfer_detail')}
+                </Button>
+              )}
           </Row>
         )}
         <div className='text-lg text-primary'>

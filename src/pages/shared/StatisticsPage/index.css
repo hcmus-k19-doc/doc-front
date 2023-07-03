@@ -2,14 +2,6 @@
   padding: 16px 0 0 0 !important;
 }
 
-.ant-table-thead > tr > th {
-  text-align: center !important;
-}
-
-table {
-  text-align: center !important;
-}
-
 .py-5 {
   padding: 0.5rem 1.25rem 0.5rem 1.25rem !important;
 }

@@ -296,7 +296,7 @@ export default {
       is_infinite_processing_time: 'Không thời hạn',
     },
     manager_view: {
-      process_method: 'Cách thức xử lý',
+      processing_method: 'Cách thức xử lý',
     },
     sidebar: {
       director: 'Ban giám đốc',

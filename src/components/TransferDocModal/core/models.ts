@@ -4,7 +4,6 @@ import {
   GetTransferDocumentDetailCustomResponse,
   IncomingDocumentDto,
   OutgoingDocumentGetDto,
-  ProcessMethod,
 } from 'models/doc-main-models';
 
 export const i18n_transfer_modal = 'transfer_modal';
@@ -23,7 +22,8 @@ export const i18n_processing_time = `${i18n_transfer_modal}.secretary_view.proce
 export const i18n_is_infinite_processing_time = `${i18n_transfer_modal}.secretary_view.is_infinite_processing_time`;
 export const i18n_document_number = `${i18n_transfer_modal}.document_number`;
 export const i18n_ordinal_number = `${i18n_transfer_modal}.ordinal_number`;
-export const i18n_process_method = `${i18n_transfer_modal}.manager_view.process_method`;
+export const i18n_processing_method = `${i18n_transfer_modal}.manager_view.processing_method`;
+export const i18n_processing_method_required = `${i18n_transfer_modal}.manager_view.processing_method_required`;
 
 export type ComponentMap = {
   [key: number]: React.FC<any>;
@@ -85,11 +85,11 @@ export interface TransferDocScreenFormProps {
   collaborators: number[];
   processingTime: string;
   isInfiniteProcessingTime: boolean;
-  processMethod: string;
+  processingMethod: string;
 }
 
-export const processMethodOptions: SelectProps['options'] = [
-  { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
-  { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },
-  { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
-];
+// export const processMethodOptions: SelectProps['options'] = [
+//   { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
+//   { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },
+//   { value: ProcessMethod.SOAN_VAN_BAN, label: 'Soạn văn bản trả lời' },
+// ];

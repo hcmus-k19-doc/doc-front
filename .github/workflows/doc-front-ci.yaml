@@ -20,5 +20,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build bundle
+      - name: Build dev
         run: yarn build
+        
+      - name: Build local
+        run: yarn build:local

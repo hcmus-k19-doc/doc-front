@@ -13,6 +13,7 @@ import { useAuth } from '../AuthComponent';
 
 export interface DocButtonListProps {
   isEditing: boolean;
+  isClosed: boolean;
   enableEditing: () => void;
   onFinishEditing: () => void;
   documentDetail?: IncomingDocumentDto;
@@ -25,6 +26,7 @@ const DocButtonList = ({
   onFinishEditing,
   documentDetail,
   onOpenTransferModal,
+  isClosed,
 }: DocButtonListProps) => {
   const { currentUser } = useAuth();
   const { docId } = useParams();
@@ -80,8 +82,46 @@ const DocButtonList = ({
 
   const renderButtons = () => {
     return [
-      ...buttonArr,
-      currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && (
+      // ...buttonArr,
+      !isClosed && (
+        <Button
+          type='primary'
+          key='1'
+          size='large'
+          className='mr-5'
+          name='edit'
+          onClick={isEditing ? onFinishEditing : enableEditing}>
+          {isEditing
+            ? t('incomingDocDetailPage.button.save')
+            : t('incomingDocDetailPage.button.edit')}
+        </Button>
+      ),
+      !isClosed
+        ? documentDetail?.isTransferable && (
+            <Button
+              type='primary'
+              size='large'
+              className='mr-5'
+              key='4'
+              name='transfer'
+              onClick={onOpenTransferModal}>
+              {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
+                ? t('incomingDocDetailPage.button.transer_detail')
+                : t('incomingDocDetailPage.button.transfer')}
+            </Button>
+          )
+        : (documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator) && (
+            <Button
+              type='primary'
+              size='large'
+              className='mr-5'
+              key='4'
+              name='transfer'
+              onClick={onOpenTransferModal}>
+              {t('incomingDocDetailPage.button.transer_detail')}
+            </Button>
+          ),
+      currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && documentDetail?.isCloseable && (
         <Button type='primary' size='large' key='10' name='end' onClick={onFinishDocument}>
           {t('incomingDocDetailPage.button.end')}
         </Button>

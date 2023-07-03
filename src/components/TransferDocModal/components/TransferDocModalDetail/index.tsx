@@ -90,7 +90,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         collaborators: collaboratorIds,
         processingTime: dayjs(baseInfo.processingDuration),
         isInfiniteProcessingTime: baseInfo.isInfiniteProcessingTime,
-        processMethod: baseInfo.processMethod,
+        processingMethod: baseInfo.processingMethod,
       });
       setTransferDate(format(new Date(baseInfo.transferDate), DAY_MONTH_YEAR_FORMAT_2));
       if (baseInfo.isInfiniteProcessingTime) {
