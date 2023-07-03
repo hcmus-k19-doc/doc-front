@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { CloseCircleOutlined } from '@ant-design/icons';
-import { Empty, List } from 'antd';
+import { CloseCircleOutlined, DownloadOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { Dropdown, Empty, List, MenuProps } from 'antd';
 import { format, parseISO } from 'date-fns';
 
 import { AttachmentsComponentProps } from './core/models';
@@ -18,6 +18,27 @@ const parseLocalDateTimeToFormatedDate = (dateTimeString: string, t: any) => {
 
 const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComponentProps) => {
   const { t } = useTranslation();
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <a target='_blank' rel='noopener noreferrer' href='https://www.antgroup.com'>
+          <FileSearchOutlined style={{ marginRight: '8px' }} />
+          Preview
+        </a>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
+          <DownloadOutlined style={{ marginRight: '8px' }} />
+          Download
+        </a>
+      ),
+    },
+  ];
 
   return (
     <div className='linked-documents'>
@@ -51,11 +72,21 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
                 ]}>
                 <List.Item.Meta
                   title={
-                    <div>
-                      <span className='cursor-pointer text-primary text-link mr-2'>
-                        {index + 1}. {item.fileName}
-                      </span>
-                    </div>
+                    <Dropdown
+                      menu={{ items }}
+                      trigger={['click']}
+                      overlayClassName='dropdown-menu'
+                      placement='bottomLeft'>
+                      <div
+                      // onClick={() => {
+                      //   console.log('preview me', item.alfrescoFileId);
+                      // }}
+                      >
+                        <span className='cursor-pointer text-primary text-link mr-2'>
+                          {index + 1}. {item.fileName}
+                        </span>
+                      </div>
+                    </Dropdown>
                   }
                   description={`${t(
                     'attachments.created_date'
