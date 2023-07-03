@@ -344,7 +344,7 @@ function CreateOutgoingDocPage() {
             <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary'>
               <CKEditor
                 editor={ClassicEditor}
-                data={form.getFieldValue('summary')}
+                data={form.getFieldValue('summary') || ''}
                 onChange={(event, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}

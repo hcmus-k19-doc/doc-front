@@ -428,7 +428,7 @@ function ReceiveIncomingDocPage() {
             <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary'>
               <CKEditor
                 editor={ClassicEditor}
-                data={form.getFieldValue('summary')}
+                data={form.getFieldValue('summary') || ''}
                 onChange={(event, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}

@@ -2,18 +2,17 @@ import React, { lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
+import DocSuspenseComponent from 'components/DocSuspenseComponent';
 import { BASE_NAME } from 'config/constant';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import NotFoundPage from 'pages/error/NotFoundPage';
 import ServerErrorPage from 'pages/error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
 import MainPage from 'pages/shared/MainPage';
 import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
+import StatisticsPage from 'pages/shared/StatisticsPage';
 import AxiosNavigation from 'shared/hooks/AxiosNavigation';
 import { GlobalHistory } from 'utils/RoutingUtils';
-
-import { DocSystemRoleEnum } from '../../models/doc-main-models';
-import StatisticsPage from '../../pages/shared/StatisticsPage';
-import DocSuspenseComponent from '../DocSuspenseComponent';
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();

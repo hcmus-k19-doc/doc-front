@@ -452,6 +452,8 @@ function OutgoingDocDetailPage() {
     setSelectedDocumentsToLink(documents);
   };
 
+  console.log(linkedDocuments?.data);
+
   return (
     <>
       <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
@@ -647,7 +649,7 @@ function OutgoingDocDetailPage() {
                 <CKEditor
                   disabled={!isEditing}
                   editor={ClassicEditor}
-                  data={form.getFieldValue('summary')}
+                  data={form.getFieldValue('summary') || ''}
                   onChange={(event, editor) => {
                     form.setFieldValue('summary', editor.getData());
                   }}
@@ -689,7 +691,11 @@ function OutgoingDocDetailPage() {
                 </div>
 
                 <List
-                  loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
+                  loading={
+                    linkedDocuments.isLoading ||
+                    linkedDocuments.isFetching ||
+                    linkedDocuments.isInitialLoading
+                  }
                   itemLayout='horizontal'
                   dataSource={linkedDocuments.data}
                   renderItem={(item) => (
@@ -718,7 +724,7 @@ function OutgoingDocDetailPage() {
                             </span>
                           </div>
                         }
-                        description={item.summary}
+                        description={<div dangerouslySetInnerHTML={{ __html: item.summary }}></div>}
                       />
                     </List.Item>
                   )}
