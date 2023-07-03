@@ -22,15 +22,6 @@ export const getMimeFromFileType = (type: FileType) => {
   }
 };
 
-export const downloadFileFromByteArray = (byteArray: any, fileType: FileType, fileName: string) => {
-//   const blob = new Blob([byteArray], { type: getMimeFromFileType(fileType) });
-//   saveAs(blob, fileName);
-  const url: string = window.URL.createObjectURL(new Blob([byteArray]));
-  const link: HTMLAnchorElement = document.createElement('a');
-//   const fileName: string = response.headers['content-disposition'].split('filename=')[1];
-  link.href = url;
-  link.setAttribute('download', fileName);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
+export const downloadFileFromBlob = (blob: Blob, fileName: string) => {
+  saveAs(blob, fileName);
 };

@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CloseCircleOutlined, DownloadOutlined, FileSearchOutlined } from '@ant-design/icons';
 import { Dropdown, Empty, List, MenuProps, Spin } from 'antd';
-import { AttachmentDto, FileType } from 'models/doc-main-models';
+import { AttachmentDto } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
 
-import { downloadFileFromByteArray, parseLocalDateTimeToFormatedDate } from './core/common';
+import { downloadFileFromBlob, parseLocalDateTimeToFormatedDate } from './core/common';
 import { AttachmentsComponentProps } from './core/models';
 
 import './index.css';
@@ -22,11 +22,7 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
       const data = await attachmentService.getFileContentFromS3Key(
         selectedFile?.alfrescoFileId as string
       );
-      downloadFileFromByteArray(
-        data.data,
-        selectedFile?.fileType as FileType,
-        selectedFile?.fileName as string
-      );
+      downloadFileFromBlob(data.data, selectedFile?.fileName as string);
     } catch (error) {
       console.error(error);
     } finally {
