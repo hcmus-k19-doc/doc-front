@@ -21,7 +21,9 @@ async function downloadAttachments(attachmentDtoList: AttachmentDto[], incomingD
 }
 
 async function getFileContentFromS3Key(key: string) {
-  return await axios.get(`${DOC_FILE_SERVICE_FILE_URL}?fileKey=${key}`);
+  return await axios.get(`${DOC_FILE_SERVICE_FILE_URL}/get-byte-array-from-s3-key?fileKey=${key}`, {
+    responseType: 'blob',
+  });
 }
 
 function saveZipFileToDisk(response: AxiosResponse<any, any>) {

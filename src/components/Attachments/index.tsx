@@ -1,31 +1,37 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CloseCircleOutlined, DownloadOutlined, FileSearchOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Empty, List, MenuProps, Spin } from 'antd';
-import { format, parseISO } from 'date-fns';
-import { AttachmentDto } from 'models/doc-main-models';
+import { Dropdown, Empty, List, MenuProps, Spin } from 'antd';
+import { AttachmentDto, FileType } from 'models/doc-main-models';
+import attachmentService from 'services/AttachmentService';
 
+import { downloadFileFromByteArray, parseLocalDateTimeToFormatedDate } from './core/common';
 import { AttachmentsComponentProps } from './core/models';
 
 import './index.css';
-
-const parseLocalDateTimeToFormatedDate = (dateTimeString: string, t: any) => {
-  const dateTime = parseISO(dateTimeString);
-
-  const formattedDate = format(dateTime, 'dd-MM-yyyy');
-  const formattedTime = format(dateTime, 'HH:mm:ss');
-
-  return `${formattedDate} ${t('attachments.at_time')} ${formattedTime}`;
-};
 
 const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComponentProps) => {
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<AttachmentDto>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleDownloadFile = (event: any) => {
+  const handleDownloadFile = async (event: any) => {
     event.preventDefault();
-    console.log('donwload', selectedFile);
+    setLoading(true);
+    try {
+      const data = await attachmentService.getFileContentFromS3Key(
+        selectedFile?.alfrescoFileId as string
+      );
+      downloadFileFromByteArray(
+        data.data,
+        selectedFile?.fileType as FileType,
+        selectedFile?.fileName as string
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePreviewFile = (event: any) => {
@@ -59,7 +65,6 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
   ];
 
   const onOpenChange = (open: boolean, file: AttachmentDto) => {
-    console.log('open', open, file);
     if (open) {
       setSelectedFile(file);
     }
@@ -103,11 +108,7 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
                       overlayClassName='dropdown-menu'
                       placement='bottomLeft'
                       onOpenChange={(open) => onOpenChange(open, item)}>
-                      <div
-                      // onClick={() => {
-                      //   console.log('preview me', item.alfrescoFileId);
-                      // }}
-                      >
+                      <div>
                         <span className='cursor-pointer text-primary text-link mr-2'>
                           {index + 1}. {item.fileName}
                         </span>
