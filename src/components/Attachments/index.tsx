@@ -7,6 +7,7 @@ import attachmentService from 'services/AttachmentService';
 
 import { downloadFileFromBlob, parseLocalDateTimeToFormatedDate } from './core/common';
 import { AttachmentsComponentProps } from './core/models';
+import AttachmentPreviewModal from './AttachmentPreviewModal';
 
 import './index.css';
 
@@ -14,6 +15,11 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<AttachmentDto>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState<boolean>(false);
+
+  const handleCancel = () => {
+    setIsPreviewModalOpen(false);
+  };
 
   const handleDownloadFile = async (event: any) => {
     event.preventDefault();
@@ -33,6 +39,7 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
   const handlePreviewFile = (event: any) => {
     event.preventDefault();
     console.log('preview', selectedFile);
+    setIsPreviewModalOpen(true);
   };
 
   const items: MenuProps['items'] = [
@@ -81,44 +88,52 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
           description={t('common.no_data.no_attachment')}
         />
       ) : (
-        <List
-          itemLayout='horizontal'
-          dataSource={props.attachments}
-          renderItem={(item, index) => {
-            return (
-              <List.Item
-                actions={[
-                  <span
-                    key={`delete-${item.id}`}
-                    onClick={() => {
-                      console.log('delete document', item.alfrescoFileId);
-                    }}>
-                    <CloseCircleOutlined />
-                  </span>,
-                ]}>
-                <List.Item.Meta
-                  title={
-                    <Dropdown
-                      menu={{ items }}
-                      trigger={['click']}
-                      overlayClassName='dropdown-menu'
-                      placement='bottomLeft'
-                      onOpenChange={(open) => onOpenChange(open, item)}>
-                      <div>
-                        <span className='cursor-pointer text-primary text-link mr-2'>
-                          {index + 1}. {item.fileName}
-                        </span>
-                      </div>
-                    </Dropdown>
-                  }
-                  description={`${t(
-                    'attachments.created_date'
-                  )}: ${parseLocalDateTimeToFormatedDate(item.createdDate as string, t)}`}
-                />
-              </List.Item>
-            );
-          }}
-        />
+        <>
+          <AttachmentPreviewModal
+            attachment={selectedFile as AttachmentDto}
+            handleClose={handleCancel}
+            isPreviewModalOpen={isPreviewModalOpen}
+          />
+
+          <List
+            itemLayout='horizontal'
+            dataSource={props.attachments}
+            renderItem={(item, index) => {
+              return (
+                <List.Item
+                  actions={[
+                    <span
+                      key={`delete-${item.id}`}
+                      onClick={() => {
+                        console.log('delete document', item.alfrescoFileId);
+                      }}>
+                      <CloseCircleOutlined />
+                    </span>,
+                  ]}>
+                  <List.Item.Meta
+                    title={
+                      <Dropdown
+                        menu={{ items }}
+                        trigger={['click']}
+                        overlayClassName='dropdown-menu'
+                        placement='bottomLeft'
+                        onOpenChange={(open) => onOpenChange(open, item)}>
+                        <div>
+                          <span className='cursor-pointer text-primary text-link mr-2'>
+                            {index + 1}. {item.fileName}
+                          </span>
+                        </div>
+                      </Dropdown>
+                    }
+                    description={`${t(
+                      'attachments.created_date'
+                    )}: ${parseLocalDateTimeToFormatedDate(item.createdDate as string, t)}`}
+                  />
+                </List.Item>
+              );
+            }}
+          />
+        </>
       )}
     </div>
   );
