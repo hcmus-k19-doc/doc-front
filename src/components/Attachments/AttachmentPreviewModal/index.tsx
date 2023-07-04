@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
-import { Empty, Modal, Spin } from 'antd';
+import { Modal, Spin } from 'antd';
 import { AttachmentDto } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
 
@@ -17,7 +17,7 @@ const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
   handleClose: () => void;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [docs, setDocs] = useState<any>();
+  const [docs, setDocs] = useState<any>([]);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -26,11 +26,13 @@ const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
         setLoading(true);
         try {
           const data = await attachmentService.getFileContentFromS3Key(attachment.alfrescoFileId);
-          setDocs({
-            uri: 'https://manual.calibre-ebook.com/calibre.pdf',
-            fileType: 'pdf',
-            fileName: attachment.fileName,
-          });
+          console.log('data hihi', { data });
+          setDocs([
+            {
+              uri: URL.createObjectURL(data.data),
+              fileName: attachment.fileName,
+            },
+          ]);
         } catch (error) {
           console.log(error);
         } finally {
@@ -51,11 +53,9 @@ const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
       footer={[]}
       width={1000}
       bodyStyle={{ height: '800px' }}>
-      {/* {data && ( */}
       <Spin spinning={loading}>
         <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />
       </Spin>
-      {/* )} */}
     </Modal>
   );
 };
