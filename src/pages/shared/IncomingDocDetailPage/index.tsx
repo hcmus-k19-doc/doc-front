@@ -29,6 +29,7 @@ import {
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
+import Attachments from 'components/Attachments';
 import { useAuth } from 'components/AuthComponent';
 import DocButtonList from 'components/DocButtonList';
 import DocComment from 'components/DocComment';
@@ -651,6 +652,10 @@ function IncomingDocPage() {
                 <p className='ant-upload-text'>{t('incomingDocDetailPage.form.fileHelper')}</p>
               </Dragger>
             </Form.Item>
+
+            <div className='mb-10'></div>
+
+            <Attachments attachments={data?.data?.attachments || []} />
 
             <div className='mb-10'></div>
 
