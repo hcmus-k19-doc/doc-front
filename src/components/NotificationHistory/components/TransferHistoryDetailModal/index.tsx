@@ -16,38 +16,40 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
   const dataSource = [
     {
       key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
+      id: 'Mike',
+      type: 32,
+      fullText: '10 Downing Street',
+      attachmentDetail: 'attachmentDetail',
     },
     {
       key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
+      id: 'John',
+      type: 42,
+      fullText: '10 Downing Street',
+      attachmentDetail: 'attachmentDetail',
     },
   ];
 
   const columns = [
     {
       title: t('transfer_history.modal.table.columns.id'),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: t('transfer_history.modal.table.columns.type'),
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'type',
+      key: 'type',
     },
     {
       title: t('transfer_history.modal.table.columns.fullText'),
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'fullText',
+      key: 'fullText',
     },
     {
       title: t('transfer_history.modal.table.columns.attachmentDetail'),
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'attachmentDetail',
+      key: 'attachmentDetail',
     },
   ];
 
