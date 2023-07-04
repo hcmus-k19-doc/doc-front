@@ -28,6 +28,7 @@ import {
 import { useForm } from 'antd/es/form/Form';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
+import Attachments from 'components/Attachments';
 import { useAuth } from 'components/AuthComponent';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
@@ -668,6 +669,10 @@ function OutgoingDocDetailPage() {
                   </p>
                 </Dragger>
               </Form.Item>
+
+              <div className='mb-10'></div>
+
+              <Attachments attachments={data?.data?.attachments || []} />
 
               <div className='mb-10'></div>
 
