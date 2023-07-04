@@ -371,7 +371,7 @@ function OutgoingDocDetailPage() {
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
-      processMethod: modalForm.getFieldValue('processMethod'),
+      processingMethod: modalForm.getFieldValue('processingMethod'),
       transferDocumentType: transferDocModalItem.transferDocumentType,
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
@@ -452,6 +452,8 @@ function OutgoingDocDetailPage() {
   const handleSelectedDocumentsToLinkChanged = (documents: any) => {
     setSelectedDocumentsToLink(documents);
   };
+
+  console.log(linkedDocuments?.data);
 
   return (
     <>
@@ -648,7 +650,7 @@ function OutgoingDocDetailPage() {
                 <CKEditor
                   disabled={!isEditing}
                   editor={ClassicEditor}
-                  data={form.getFieldValue('summary')}
+                  data={form.getFieldValue('summary') || ''}
                   onChange={(event, editor) => {
                     form.setFieldValue('summary', editor.getData());
                   }}
@@ -694,7 +696,11 @@ function OutgoingDocDetailPage() {
                 </div>
 
                 <List
-                  loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
+                  loading={
+                    linkedDocuments.isLoading ||
+                    linkedDocuments.isFetching ||
+                    linkedDocuments.isInitialLoading
+                  }
                   itemLayout='horizontal'
                   dataSource={linkedDocuments.data}
                   renderItem={(item) => (
@@ -723,7 +729,7 @@ function OutgoingDocDetailPage() {
                             </span>
                           </div>
                         }
-                        description={item.summary}
+                        description={<div dangerouslySetInnerHTML={{ __html: item.summary }}></div>}
                       />
                     </List.Item>
                   )}

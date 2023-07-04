@@ -13,7 +13,7 @@ export const initialTransferQueryState: TransferQueryState = {
   collaboratorIds: [],
   processingTime: undefined,
   isInfiniteProcessingTime: false,
-  processMethod: undefined,
+  processingMethod: undefined,
   isTransferToSameLevel: false,
 };
 

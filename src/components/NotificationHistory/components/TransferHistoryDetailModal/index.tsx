@@ -82,14 +82,14 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
             </Col>
           </Row>
 
-          {transferHistory?.processMethod && (
+          {transferHistory?.processingMethod && (
             <Row className='mb-3'>
               <Col span='8'>
                 <Typography.Text strong>
-                  {t('transfer_history.modal.process_method')}
+                  {t('transfer_history.modal.processing_method')}
                 </Typography.Text>
               </Col>
-              <Col span='16'>{transferHistory?.processMethod}</Col>
+              <Col span='16'>{transferHistory?.processingMethod}</Col>
             </Row>
           )}
         </Form>

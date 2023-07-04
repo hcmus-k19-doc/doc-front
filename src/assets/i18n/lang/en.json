@@ -590,7 +590,7 @@
       "is_infinite_processing_time": "No time limit"
     },
     "manager_view": {
-      "process_method": "Processing Method"
+      "processing_method": "Processing Method"
     },
     "sidebar": {
       "director": "Director",
@@ -604,7 +604,7 @@
       "processing_time_invalid": "Invalid processing time",
       "processing_time_infinite": "No time limit",
       "collaborators_required": "Please select collaborators",
-      "process_method_required": "Please select a processing method",
+      "processing_method_required": "Please select a processing method",
       "collaborator_can_not_has_same_value_with_assignee": "Collaborators cannot be the same as the assignee",
       "only_unprocessed_docs_can_be_transferred_to_director": "Only unprocessed documents can be transferred to the Director or Secretary at the same level",
       "only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert": "Only in-progress documents can be transferred to the Chief of Office, Secretary, or Expert",
@@ -785,7 +785,7 @@
       "transfer_date": "Transfer Date",
       "processing_duration": "Processing Duration",
       "infinite_processing_time": "Infinite",
-      "process_method": "Processing Method",
+      "processing_method": "Processing Method",
       "sender": "Sender",
       "receiver": "Receiver",
       "transfer_type_1": "Transfer",

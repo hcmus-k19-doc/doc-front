@@ -96,29 +96,31 @@ const DocButtonList = ({
             : t('incomingDocDetailPage.button.edit')}
         </Button>
       ),
-      documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator ? (
-        <Button
-          type='primary'
-          size='large'
-          className='mr-5'
-          key='4'
-          name='transfer'
-          onClick={onOpenTransferModal}>
-          {t('incomingDocDetailPage.button.transer_detail')}
-        </Button>
-      ) : (
-        documentDetail?.isTransferable && (
-          <Button
-            type='primary'
-            size='large'
-            className='mr-5'
-            key='4'
-            name='transfer'
-            onClick={onOpenTransferModal}>
-            {t('incomingDocDetailPage.button.transfer')}
-          </Button>
-        )
-      ),
+      !isClosed
+        ? documentDetail?.isTransferable && (
+            <Button
+              type='primary'
+              size='large'
+              className='mr-5'
+              key='4'
+              name='transfer'
+              onClick={onOpenTransferModal}>
+              {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
+                ? t('incomingDocDetailPage.button.transer_detail')
+                : t('incomingDocDetailPage.button.transfer')}
+            </Button>
+          )
+        : (documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator) && (
+            <Button
+              type='primary'
+              size='large'
+              className='mr-5'
+              key='4'
+              name='transfer'
+              onClick={onOpenTransferModal}>
+              {t('incomingDocDetailPage.button.transer_detail')}
+            </Button>
+          ),
       currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && documentDetail?.isCloseable && (
         <Button type='primary' size='large' key='10' name='end' onClick={onFinishDocument}>
           {t('incomingDocDetailPage.button.end')}

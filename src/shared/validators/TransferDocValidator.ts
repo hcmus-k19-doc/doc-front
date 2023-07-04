@@ -53,9 +53,9 @@ const isProcessingDocs = (selectedDocs: IncomingDocumentDto[], t?: any) => {
   return true;
 };
 
-const isValidProcessMethod = (processMethod?: string, t?: any) => {
-  if (!processMethod) {
-    message.error(t('transfer_modal.form.process_method_required'));
+const isValidProcessingMethod = (processingMethod?: string, t?: any) => {
+  if (!processingMethod) {
+    message.error(t('transfer_modal.form.processing_method_required'));
     return false;
   }
   return true;
@@ -108,7 +108,7 @@ const validateTransferDocs = async (
     }
 
     if (transferDocModalItem === TransferDocumentType.TRANSFER_TO_TRUONG_PHONG) {
-      if (!isValidProcessMethod(transferDocDto.processMethod, t)) {
+      if (!isValidProcessingMethod(transferDocDto.processingMethod, t)) {
         return false;
       }
     }

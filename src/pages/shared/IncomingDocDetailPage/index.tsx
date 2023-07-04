@@ -172,7 +172,7 @@ function IncomingDocPage() {
       collaboratorIds: modalForm.getFieldValue('collaborators') as number[],
       processingTime: modalForm.getFieldValue('processingTime'),
       isInfiniteProcessingTime: modalForm.getFieldValue('isInfiniteProcessingTime'),
-      processMethod: modalForm.getFieldValue('processMethod'),
+      processingMethod: modalForm.getFieldValue('processingMethod'),
       transferDocumentType: transferDocModalItem.transferDocumentType,
       isTransferToSameLevel: transferDocModalItem.isTransferToSameLevel,
     };
@@ -229,9 +229,10 @@ function IncomingDocPage() {
     const documentToLinkIds = selectedDocumentsToLink.map((doc: any) => doc.id);
     await incomingDocumentService.linkDocuments(+(docId ?? 0), documentToLinkIds);
 
-    queryClient.invalidateQueries(['docin.link_documents', +(docId ?? 1)]);
     setOpenLinkDocumentModal(false);
     setSelectedDocumentsToLink([]);
+
+    queryClient.invalidateQueries(['docin.link_documents', +(docId ?? 1)]);
   };
 
   const handleDeleteLinkedDocument = async (documentId: number) => {
@@ -626,7 +627,7 @@ function IncomingDocPage() {
               <CKEditor
                 disabled={!isEditing}
                 editor={ClassicEditor}
-                data={form.getFieldValue('summary')}
+                data={form.getFieldValue('summary') || ''}
                 onChange={(event, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}
@@ -679,7 +680,11 @@ function IncomingDocPage() {
               </div>
 
               <List
-                loading={linkedDocuments.isLoading || linkedDocuments.isFetching}
+                loading={
+                  linkedDocuments.isLoading ||
+                  linkedDocuments.isFetching ||
+                  linkedDocuments.isInitialLoading
+                }
                 itemLayout='horizontal'
                 dataSource={linkedDocuments.data}
                 renderItem={(item) => (
@@ -709,7 +714,7 @@ function IncomingDocPage() {
                           )}
                         </div>
                       }
-                      description={item.summary}
+                      description={<div dangerouslySetInnerHTML={{ __html: item.summary }}></div>}
                     />
                   </List.Item>
                 )}
