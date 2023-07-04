@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-01 16:07:40.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-04 22:43:24.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -247,6 +247,10 @@ export interface ProcessingDetailsDto {
     processingUser: ProcessingUserDto;
 }
 
+export interface ProcessingMethodDto extends DocAbstractDto {
+    name: string;
+}
+
 export interface ProcessingUserDto {
     id: number;
     fullName: string;
@@ -355,10 +359,6 @@ export interface TruongPhongDto {
 
 export interface UserDepartmentDto extends UserDto {
     departmentName: string;
-}
-
-export interface ProcessingMethodDto {
-    name: string;
 }
 
 export interface UserDto extends DocAbstractDto {
