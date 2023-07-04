@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-04 22:43:24.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-04 23:51:13.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -346,6 +346,7 @@ export interface TransferHistoryDto {
     senderName: string;
     receiverId: number;
     receiverName: string;
+    attachments: DocumentWithAttachmentDto[];
 }
 
 export interface TransferHistorySearchCriteriaDto {
@@ -402,6 +403,11 @@ export interface TransferDocumentMenuConfig {
     menuKey: number;
     transferDocumentType: TransferDocumentType;
     isTransferToSameLevel: boolean;
+}
+
+export interface DocumentWithAttachmentDto {
+    docId: number;
+    attachments: AttachmentDto[];
 }
 
 export type DateAsString = string;
