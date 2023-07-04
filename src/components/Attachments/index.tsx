@@ -38,7 +38,6 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
 
   const handlePreviewFile = (event: any) => {
     event.preventDefault();
-    console.log('preview', selectedFile);
     setIsPreviewModalOpen(true);
   };
 

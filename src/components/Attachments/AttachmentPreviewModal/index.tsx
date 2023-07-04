@@ -7,6 +7,7 @@ import attachmentService from 'services/AttachmentService';
 
 import { AttachmentPreviewModalProps } from '../core/models';
 
+import './index.css';
 const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
   attachment,
   isPreviewModalOpen,
@@ -26,7 +27,6 @@ const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
         setLoading(true);
         try {
           const data = await attachmentService.getFileContentFromS3Key(attachment.alfrescoFileId);
-          console.log('data hihi', { data });
           setDocs([
             {
               uri: URL.createObjectURL(data.data),
@@ -46,7 +46,7 @@ const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
 
   return (
     <Modal
-      title='Basic Modal'
+      title={''}
       open={isPreviewModalOpen}
       onCancel={handleClose}
       centered
@@ -54,7 +54,11 @@ const AttachmentPreviewModal: React.FC<AttachmentPreviewModalProps> = ({
       width={1000}
       bodyStyle={{ height: '800px' }}>
       <Spin spinning={loading}>
-        <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />
+        <DocViewer
+          documents={docs}
+          pluginRenderers={DocViewerRenderers}
+          className={'modal-preview-body'}
+        />
       </Spin>
     </Modal>
   );
