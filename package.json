@@ -9,6 +9,7 @@
     "@ant-design/pro-components": "2.3.52",
     "@ckeditor/ckeditor5-build-classic": "^37.1.0",
     "@ckeditor/ckeditor5-react": "^6.0.0",
+    "@cyntler/react-doc-viewer": "^1.13.0",
     "@fortawesome/fontawesome-svg-core": "6.2.1",
     "@fortawesome/free-regular-svg-icons": "6.2.1",
     "@fortawesome/free-solid-svg-icons": "6.2.1",
