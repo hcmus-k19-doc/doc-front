@@ -1,4 +1,5 @@
 import { FormInstance } from 'antd';
+import { ParentFolderEnum } from 'models/doc-file-models';
 import { AttachmentDto, TransferHistoryDto } from 'models/doc-main-models';
 
 export interface NotificationHistoryProps {
@@ -36,4 +37,5 @@ export type TableRowDataType = {
   type: string;
   fullText: string;
   attachments: AttachmentDto[];
+  parentFolderEnum: ParentFolderEnum;
 };

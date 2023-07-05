@@ -24,6 +24,7 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
   const { transferHistory } = props;
   const [dataSource, setDataSource] = useState<TableRowDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [, setError] = useState<string>();
 
   const columns: ColumnsType<TableRowDataType> = [
     {
@@ -64,11 +65,12 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
         return {
           onClick: (event) => {
             event.stopPropagation();
-            // attachmentService.handleDownloadAttachmentInTransferHistory(
-            //   ParentFolderEnum.ICD,
-            //   setError,
-            //   setLoading
-            // );
+            attachmentService.handleDownloadAttachmentInTransferHistory(
+              record.parentFolderEnum,
+              record.id,
+              setError,
+              setLoading
+            );
           },
         };
       },
@@ -78,7 +80,6 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
       key: 'attachmentDetail',
       fixed: 'right',
       render: (text, record, index) => {
-        console.log('detail', text, record, index);
         return <Attachments attachments={record?.attachments} isReadOnly={true} />;
       },
     },
@@ -86,7 +87,6 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
 
   useEffect(() => {
     if (transferHistory?.attachments) {
-      console.log('ds', createDataSourceFromTransferHistory(transferHistory));
       setDataSource(createDataSourceFromTransferHistory(transferHistory));
     }
   }, [transferHistory]);
