@@ -4,8 +4,8 @@ import { TransferHistoryDto } from 'models/doc-main-models';
 import { TableRowDataType } from './models';
 
 const getDocTypeFromFolderId = (folderId: string): string => {
-  const split = folderId.split('/');
-  const firstElement = split[0];
+  const split = folderId?.split('/');
+  const firstElement = split?.[0];
   if (firstElement === ParentFolderEnum.ICD) {
     return 'incoming_doc';
   }
@@ -13,8 +13,8 @@ const getDocTypeFromFolderId = (folderId: string): string => {
 };
 
 const getParentFolderEnumFromFolderId = (folderId: string): ParentFolderEnum => {
-  const split = folderId.split('/');
-  const firstElement = split[0];
+  const split = folderId?.split('/');
+  const firstElement = split?.[0];
   if (firstElement === ParentFolderEnum.ICD) {
     return ParentFolderEnum.ICD;
   }
