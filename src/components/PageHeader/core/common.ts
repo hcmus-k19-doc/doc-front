@@ -7,9 +7,11 @@ export const joinArrayWithoutDuplicate = (oldArray: any[], newArray: any[]) => {
     if (!result.find((i) => i.id === item.id)) {
       result.push(item);
     }
-    // if (!result.includes(item)) {
-    //   result.push(item);
-    // }
   });
+  // sort result by newest createdDate and if equal then compare createdTime
+  result.sort((a, b) => {
+    return b.id - a.id;
+  });
+
   return result;
 };
