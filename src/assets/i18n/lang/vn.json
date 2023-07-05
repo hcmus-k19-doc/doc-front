@@ -831,7 +831,20 @@
       "receiver": "Người nhận",
       "transfer_type_1": "Chuyển xử lý",
       "transfer_type_2": "Cùng cấp",
-      "transfer_type": "Loại chuyển"
+      "transfer_type": "Loại chuyển",
+      "table": {
+        "columns": {
+          "id": "Văn bản",
+          "type": "Loại văn bản",
+          "fullText": "Toàn văn",
+          "attachmentDetail": "Chi tiết"
+        },
+        "incoming_doc": "Văn bản đến",
+        "outgoing_doc": "Văn bản đi",
+        "tooltip": {
+          "downloadAttachment": "Tải tệp đính kèm"
+        }
+      }
     }
   },
   "notification": {

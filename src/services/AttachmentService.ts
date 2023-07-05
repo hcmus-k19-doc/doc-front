@@ -87,11 +87,45 @@ export async function handleDownloadAttachment(
   }
 }
 
+export async function handleDownloadAttachmentInTransferHistory(
+  parentFolder: ParentFolderEnum,
+  id: number,
+  setError?: (error: string) => void,
+  setLoading?: (loading: boolean) => void
+) {
+  const showAlert = useSweetAlert();
+  setLoading?.(true);
+  try {
+    const responseStatus = await downloadZipFileFromS3(parentFolder, id);
+
+    if (responseStatus === 204) {
+      showAlert({
+        icon: 'error',
+        html: t('incomingDocListPage.message.attachment.not_found'),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (setError) {
+        setError(error.response?.data.message);
+      }
+      console.error(error.response?.data.message);
+    } else {
+      console.error(error);
+    }
+  } finally {
+    setLoading?.(false);
+  }
+}
+
 const attachmentService = {
   downloadAttachments,
   saveZipFileToDisk,
   handleDownloadAttachment,
   getFileContentFromS3Key,
+  handleDownloadAttachmentInTransferHistory,
 };
 
 export default attachmentService;

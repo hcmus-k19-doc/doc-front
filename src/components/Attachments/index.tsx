@@ -11,7 +11,13 @@ import AttachmentPreviewModal from './AttachmentPreviewModal';
 
 import './index.css';
 
-const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComponentProps) => {
+const Attachments: React.FC<AttachmentsComponentProps> = ({
+  isReadOnly,
+  attachments,
+}: {
+  isReadOnly: boolean;
+  attachments: AttachmentDto[];
+}) => {
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<AttachmentDto>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -75,13 +81,13 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
   return (
     <div className='linked-documents'>
       <div className='flex justify-between linked-header'>
-        <div className='linked-label font-semibold'>{t('attachments.title')}</div>
+        {!isReadOnly && <div className='linked-label font-semibold'>{t('attachments.title')}</div>}
 
         <div className='text-primary pr-2'>
           <span className='ml-2 cursor-pointer text-link'></span>
         </div>
       </div>
-      {props.attachments.length === 0 ? (
+      {attachments.length === 0 ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={t('common.no_data.no_attachment')}
@@ -96,18 +102,20 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
 
           <List
             itemLayout='horizontal'
-            dataSource={props.attachments}
+            dataSource={attachments}
             renderItem={(item, index) => {
               return (
                 <List.Item
                   actions={[
-                    <span
-                      key={`delete-${item.id}`}
-                      onClick={() => {
-                        console.log('delete document', item.alfrescoFileId);
-                      }}>
-                      <CloseCircleOutlined />
-                    </span>,
+                    !isReadOnly && (
+                      <span
+                        key={`delete-${item.id}`}
+                        onClick={() => {
+                          console.log('delete document', item.alfrescoFileId);
+                        }}>
+                        <CloseCircleOutlined />
+                      </span>
+                    ),
                   ]}>
                   <List.Item.Meta
                     title={
@@ -124,9 +132,13 @@ const Attachments: React.FC<AttachmentsComponentProps> = (props: AttachmentsComp
                         </div>
                       </Dropdown>
                     }
-                    description={`${t(
-                      'attachments.created_date'
-                    )}: ${parseLocalDateTimeToFormatedDate(item.createdDate as string, t)}`}
+                    description={
+                      !isReadOnly &&
+                      `${t('attachments.created_date')}: ${parseLocalDateTimeToFormatedDate(
+                        item.createdDate as string,
+                        t
+                      )}`
+                    }
                   />
                 </List.Item>
               );
