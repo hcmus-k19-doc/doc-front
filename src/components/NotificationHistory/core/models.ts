@@ -1,5 +1,5 @@
 import { FormInstance } from 'antd';
-import { TransferHistoryDto } from 'models/doc-main-models';
+import { AttachmentDto, TransferHistoryDto } from 'models/doc-main-models';
 
 export interface NotificationHistoryProps {
   notifications: any[];
@@ -29,3 +29,11 @@ export interface UserItem {
     thumbnail: string;
   };
 }
+
+export type TableRowDataType = {
+  key: number;
+  id: number;
+  type: string;
+  fullText: string;
+  attachments: AttachmentDto[];
+};

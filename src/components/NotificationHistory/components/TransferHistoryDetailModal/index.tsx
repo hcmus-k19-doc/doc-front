@@ -1,7 +1,18 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Col, Form, Modal, Row, Spin, Table, Typography } from 'antd';
-import { TransferHistoryDetailModalProps } from 'components/NotificationHistory/core/models';
+import { FileZipOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Button, Col, Form, Modal, Row, Spin, Table, Tooltip, Typography } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import Attachments from 'components/Attachments';
+import { createDataSourceFromTransferHistory } from 'components/NotificationHistory/core/common';
+import {
+  TableRowDataType,
+  TransferHistoryDetailModalProps,
+} from 'components/NotificationHistory/core/models';
+import { PRIMARY_COLOR } from 'config/constant';
 import { format } from 'date-fns';
+import { ParentFolderEnum } from 'models/doc-file-models';
+import attachmentService from 'services/AttachmentService';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
 import './index.css';
@@ -11,26 +22,28 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
 ) => {
   const { t } = useTranslation();
   const { transferHistory } = props;
+  const [dataSource, setDataSource] = useState<TableRowDataType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   console.log('transfer history', transferHistory);
-  const dataSource = [
-    {
-      key: '1',
-      id: 'Mike',
-      type: 32,
-      fullText: '10 Downing Street',
-      attachmentDetail: 'attachmentDetail',
-    },
-    {
-      key: '2',
-      id: 'John',
-      type: 42,
-      fullText: '10 Downing Street',
-      attachmentDetail: 'attachmentDetail',
-    },
-  ];
+  // const dataSource1 = [
+  //   {
+  //     key: '1',
+  //     id: 'Mike',
+  //     type: 32,
+  //     fullText: '10 Downing Street',
+  //     attachmentDetail: 'attachmentDetail',
+  //   },
+  //   {
+  //     key: '2',
+  //     id: 'John',
+  //     type: 42,
+  //     fullText: '10 Downing Street',
+  //     attachmentDetail: 'attachmentDetail',
+  //   },
+  // ];
 
-  const columns = [
+  const columns: ColumnsType<TableRowDataType> = [
     {
       title: t('transfer_history.modal.table.columns.id'),
       dataIndex: 'id',
@@ -44,15 +57,53 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
     {
       title: t('transfer_history.modal.table.columns.fullText'),
       dataIndex: 'fullText',
-      key: 'fullText',
+      align: 'center',
+      render: () => {
+        if (loading) {
+          return <LoadingOutlined />;
+        }
+
+        return (
+          <Tooltip
+            title={t('transfer_history.modal.table.tooltip.downloadAttachment')}
+            placement='bottom'>
+            <FileZipOutlined className='zip-icon' style={{ color: PRIMARY_COLOR }} />
+          </Tooltip>
+        );
+      },
+      onCell: (record: any) => {
+        if (loading) {
+          return {};
+        }
+
+        return {
+          onClick: (event) => {
+            event.stopPropagation();
+            // attachmentService.handleDownloadAttachmentInTransferHistory(
+            //   ParentFolderEnum.ICD,
+            //   setError,
+            //   setLoading
+            // );
+          },
+        };
+      },
     },
     {
       title: t('transfer_history.modal.table.columns.attachmentDetail'),
-      dataIndex: 'attachmentDetail',
       key: 'attachmentDetail',
+      render: (text, record, index) => {
+        console.log('detail', text, record, index);
+        return <Attachments attachments={record?.attachments} isReadOnly={true} />;
+      },
     },
   ];
 
+  useEffect(() => {
+    if (transferHistory?.attachments) {
+      console.log('ds', createDataSourceFromTransferHistory(transferHistory));
+      setDataSource(createDataSourceFromTransferHistory(transferHistory));
+    }
+  }, [transferHistory]);
   return (
     <Modal
       className='transfer-history-detail-modal'
@@ -151,7 +202,12 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
           <Row>
             <Col span={24}>
               <Typography.Text strong>{`${t('attachments.title')}:`}</Typography.Text>
-              <Table dataSource={dataSource} columns={columns} pagination={false} />
+              <Table
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+                rowClassName={() => 'row-hover'}
+              />
             </Col>
           </Row>
         </Form>
