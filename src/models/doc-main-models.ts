@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-05 21:31:53.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-05 23:53:13.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -347,6 +347,7 @@ export interface TransferHistoryDto {
     receiverId: number;
     receiverName: string;
     attachments: DocumentWithAttachmentDto[];
+    createdTime: DateAsString;
 }
 
 export interface TransferHistorySearchCriteriaDto {
