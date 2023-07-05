@@ -37,7 +37,10 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
       title: t('transfer_history.modal.table.columns.type'),
       dataIndex: 'type',
       key: 'type',
-      width: 160,
+      width: 130,
+      render: (text) => {
+        return <Text>{t(`transfer_history.modal.table.${text}`)}</Text>;
+      },
     },
     {
       title: t('transfer_history.modal.table.columns.fullText'),

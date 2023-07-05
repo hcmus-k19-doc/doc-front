@@ -7,9 +7,9 @@ const getDocTypeFromFolderId = (folderId: string): string => {
   const split = folderId.split('/');
   const firstElement = split[0];
   if (firstElement === ParentFolderEnum.ICD) {
-    return 'Incoming Document';
+    return 'incoming_doc';
   }
-  return 'Outgoing Document';
+  return 'outgoing_doc';
 };
 
 const getParentFolderEnumFromFolderId = (folderId: string): ParentFolderEnum => {
