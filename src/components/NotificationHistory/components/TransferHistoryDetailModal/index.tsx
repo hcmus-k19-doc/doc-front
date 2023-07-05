@@ -25,39 +25,24 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
   const [dataSource, setDataSource] = useState<TableRowDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log('transfer history', transferHistory);
-  // const dataSource1 = [
-  //   {
-  //     key: '1',
-  //     id: 'Mike',
-  //     type: 32,
-  //     fullText: '10 Downing Street',
-  //     attachmentDetail: 'attachmentDetail',
-  //   },
-  //   {
-  //     key: '2',
-  //     id: 'John',
-  //     type: 42,
-  //     fullText: '10 Downing Street',
-  //     attachmentDetail: 'attachmentDetail',
-  //   },
-  // ];
-
   const columns: ColumnsType<TableRowDataType> = [
     {
       title: t('transfer_history.modal.table.columns.id'),
       dataIndex: 'id',
       key: 'id',
+      width: 100,
     },
     {
       title: t('transfer_history.modal.table.columns.type'),
       dataIndex: 'type',
       key: 'type',
+      width: 160,
     },
     {
       title: t('transfer_history.modal.table.columns.fullText'),
       dataIndex: 'fullText',
       align: 'center',
+      width: 100,
       render: () => {
         if (loading) {
           return <LoadingOutlined />;
@@ -71,7 +56,7 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
           </Tooltip>
         );
       },
-      onCell: (record: any) => {
+      onCell: (record) => {
         if (loading) {
           return {};
         }
@@ -91,6 +76,7 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
     {
       title: t('transfer_history.modal.table.columns.attachmentDetail'),
       key: 'attachmentDetail',
+      fixed: 'right',
       render: (text, record, index) => {
         console.log('detail', text, record, index);
         return <Attachments attachments={record?.attachments} isReadOnly={true} />;

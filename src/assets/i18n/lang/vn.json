@@ -834,7 +834,7 @@
       "transfer_type": "Loại chuyển",
       "table": {
         "columns": {
-          "id": "STT",
+          "id": "Văn bản",
           "type": "Loại văn bản",
           "fullText": "Toàn văn",
           "attachmentDetail": "Chi tiết"
