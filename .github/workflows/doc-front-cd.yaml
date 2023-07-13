@@ -38,12 +38,19 @@ jobs:
       - name: Build local
         run: yarn build:local
 
-      - name: Build production
-        run: yarn build:prod
-
       - name: Build local image and push to Docker Hub
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: hcmusdoc/doc-front:local-latest
+
+      - name: Build production
+        run: yarn build:prod
+
+      - name: Build prod image and push to Docker Hub
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: hcmusdoc/doc-front:prod-latest
