@@ -9,7 +9,8 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Use Node.js 16.10.0
         uses: actions/setup-node@v3
@@ -26,5 +27,5 @@ jobs:
       - name: Build local
         run: yarn build:local
 
-      - name: Build production
-        run: yarn build:prod
+      - name: Build release
+        run: yarn build:release
