@@ -5,8 +5,8 @@ import {
   Checkbox,
   Col,
   DatePicker,
+  Divider,
   Form,
-  List,
   Row,
   Select,
   Space,
@@ -14,7 +14,6 @@ import {
 } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { RangePickerProps } from 'antd/es/date-picker';
-import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -164,6 +163,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                     <div dangerouslySetInnerHTML={{ __html: item.summary }}></div>
                   </Col>
                 </Row>
+                <Divider />
               </React.Fragment>
             );
           })}

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Col, DatePicker, Form, Row, Select, Space, Typography } from 'antd';
+import { Checkbox, Col, DatePicker, Divider, Form, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { RangePickerProps } from 'antd/es/date-picker';
-import TextArea from 'antd/es/input/TextArea';
 import { useAuth } from 'components/AuthComponent';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -147,6 +146,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
                     <div dangerouslySetInnerHTML={{ __html: item.summary }}></div>
                   </Col>
                 </Row>
+                <Divider />
               </React.Fragment>
             );
           })}
