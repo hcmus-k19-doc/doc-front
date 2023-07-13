@@ -7,6 +7,7 @@ import { t } from 'i18next';
 import userService from 'services/UserService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
+import '../index.css';
 export default function ChangePasswordCard() {
   const [form] = useForm();
   const { logout } = useAuth();
@@ -51,7 +52,7 @@ export default function ChangePasswordCard() {
   }
 
   return (
-    <Card className='shadow-xl drop-shadow-2xl rounded-lg'>
+    <Card className='shadow-xl drop-shadow-2xl rounded-lg ant-card'>
       <Form layout='vertical' onFinish={handleOnFinish} form={form}>
         <Form.Item label={t('user.detail.old_password')} name='oldPassword' rules={rules}>
           <Input.Password />

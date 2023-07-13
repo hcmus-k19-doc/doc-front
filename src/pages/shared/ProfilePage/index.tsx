@@ -1,5 +1,4 @@
-import React from 'react';
-import { Col, Layout, Row, Space } from 'antd';
+import { Col, Layout, Row } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import PageHeader from 'components/PageHeader';
 import { t } from 'i18next';
@@ -9,12 +8,11 @@ import UserInfoCard from './components/UserInfoCard';
 
 function ProfilePage() {
   return (
-    <Row className='mb-5'>
-      <Col span={15}>
+    <Row className='mb-5' gutter={[20, 0]}>
+      <Col span={12}>
         <UserInfoCard />
       </Col>
-      <Col span={1}></Col>
-      <Col span={8}>
+      <Col span={12}>
         <ChangePasswordCard />
       </Col>
     </Row>

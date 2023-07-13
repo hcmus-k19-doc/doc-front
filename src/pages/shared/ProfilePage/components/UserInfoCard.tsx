@@ -9,7 +9,7 @@ export default function UserInfoCard() {
   const { currentUser } = useAuth();
 
   return (
-    <Card className='shadow-xl drop-shadow-2xl rounded-lg h-full'>
+    <Card className='shadow-xl drop-shadow-2xl rounded-lg h-full ant-card'>
       <Descriptions column={1} title={t('profile.user.info')} className='mx-2'>
         <Descriptions.Item label={t('profile.user.id')}>{currentUser?.id}</Descriptions.Item>
         <Descriptions.Item label={t('profile.user.username')}>
