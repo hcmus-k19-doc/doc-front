@@ -224,7 +224,7 @@
       "role": "Vai trò",
       "department": "Phòng ban"
     },
-    "expert_name": "Tên người xử lý",
+    "name_of_handler": "Tên người xử lý",
     "statistic_date": "Thời gian thống kê",
     "doc_types": "Loại văn bản"
   },
@@ -316,7 +316,7 @@
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tiếp nhận văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại."
@@ -394,7 +394,7 @@
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tiếp nhận văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại.",
@@ -470,7 +470,7 @@
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tạo văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại."
@@ -575,7 +575,7 @@
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "edit_success": "Chỉnh sửa văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại",
@@ -754,8 +754,8 @@
     },
     "table": {
       "columns": {
-        "ordinal_Number": "STT",
-        "expert_name": "Tên người xử lý",
+        "ordinal_number": "STT",
+        "name_of_handler": "Tên người xử lý",
         "unprocessed": "Chưa xử lý",
         "closed": "Đã xử lý",
         "on_time": "Đúng hạn",

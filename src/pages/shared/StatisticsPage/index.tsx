@@ -120,11 +120,11 @@ const StatisticsPage: React.FC = () => {
 
   const columns: ColumnsType<TableRowDataType> = [
     {
-      title: t('statistics.table.columns.ordinal_Number'),
+      title: t('statistics.table.columns.ordinal_number'),
       dataIndex: 'ordinalNumber',
     },
     {
-      title: t('statistics.table.columns.expert_name'),
+      title: t('statistics.table.columns.name_of_handler'),
       dataIndex: 'expertName',
     },
     {
@@ -171,11 +171,11 @@ const StatisticsPage: React.FC = () => {
 
   const headers = [
     {
-      label: t('statistics.table.columns.ordinal_Number'),
+      label: t('statistics.table.columns.ordinal_number'),
       key: 'ordinalNumber',
     },
     {
-      label: t('statistics.table.columns.expert_name'),
+      label: t('statistics.table.columns.name_of_handler'),
       key: 'expertName',
     },
     {
@@ -218,7 +218,7 @@ const StatisticsPage: React.FC = () => {
         }}
         className='mt-12'>
         <Layout className='py-5' style={{ backgroundColor: colorBgContainer }}>
-          <div className='text-lg text-primary'>{t('main_page.menu.items.report')}</div>
+          <div className='text-lg text-primary'>{t('main_page.menu.items.statistics')}</div>
           {currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG ? (
             <DirectorStatisticsSearchForm />
           ) : (

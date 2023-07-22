@@ -28,7 +28,8 @@
         "users": "Users",
         "document_types": "Document Types",
         "departments": "Departments",
-        "calendar": "Calendar"
+        "calendar": "Calendar",
+        "statistics": "Statistics"
       }
     },
     "BUTTON": {
@@ -61,7 +62,9 @@
     "search_criteria": {
       "title": "Search Criteria",
       "search": "Search",
-      "reset": "Reset"
+      "reset": "Reset",
+      "report": "Report",
+      "export": "Export"
     },
     "button": {
       "save": "Save",
@@ -220,7 +223,7 @@
       "role": "Role",
       "department": "Department"
     },
-    "expert_name": "Expert Name",
+    "name_of_handler": "Handler",
     "statistic_date": "Statistic Date",
     "doc_types": "Document Types"
   },
@@ -310,7 +313,7 @@
       "file_success": "has been attached",
       "file_max_count_error": "You can only attach a maximum of 3 files",
       "file_type_error": "You can only attach files with the following formats: .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "File size cannot exceed 3MB",
+      "file_size_error": "File size cannot exceed 10MB",
       "file_duplicate_error": "File has already been attached",
       "success": "Document received successfully",
       "error": "An error occurred, please try again."
@@ -385,7 +388,7 @@
       "file_success": "has been attached",
       "file_max_count_error": "You can only attach a maximum of 3 files",
       "file_type_error": "You can only attach files with the following formats: .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "File size cannot exceed 3MB",
+      "file_size_error": "File size cannot exceed 10MB",
       "file_duplicate_error": "File has already been attached",
       "success": "Document received successfully",
       "error": "An error occurred, please try again.",
@@ -456,7 +459,7 @@
       "file_success": "has been attached",
       "file_max_count_error": "You can only attach a maximum of 3 files",
       "file_type_error": "You can only attach files with the following formats: .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "File size cannot exceed 3MB",
+      "file_size_error": "File size cannot exceed 10MB",
       "file_duplicate_error": "File has already been attached",
       "success": "Document created successfully",
       "error": "An error occurred, please try again."
@@ -557,7 +560,7 @@
       "file_success": "Attachment uploaded successfully",
       "file_max_count_error": "You can only attach a maximum of 3 files",
       "file_type_error": "Only files with .pdf, .jpg, .jpeg, .png formats can be attached",
-      "file_size_error": "File size cannot exceed 3MB",
+      "file_size_error": "File size cannot exceed 10MB",
       "file_duplicate_error": "File is already attached",
       "edit_success": "Document edited successfully",
       "error": "An error occurred, please try again",
@@ -721,6 +724,7 @@
     "handler_name": "Handler",
     "from_date": "From",
     "to_date": "To",
+    "all_the_time": "All the time",
     "legend": {
       "document_type": "Document Type"
     },
@@ -731,6 +735,26 @@
         "IN_PROGRESS": "In Progress",
         "CLOSED": "Closed"
       }
+    },
+    "table": {
+      "columns": {
+        "ordinal_number": "No.",
+        "name_of_handler": "Handler",
+        "unprocessed": "Unprocessed",
+        "closed": "Processed",
+        "on_time": "On Time",
+        "unexpired": "Unexpired",
+        "overdue": "Overdue",
+        "total": "Total",
+        "on_time_processing_percentage": "On Time Processing Percentage"
+      }
+    },
+    "button": {
+      "export": "Export report"
+    },
+    "message": {
+      "file_downloading": "File downloading...",
+      "file_name": "ThongKeTinhHinhThuLyVanBan_{{user}}.csv"
     }
   },
   "profile": {
