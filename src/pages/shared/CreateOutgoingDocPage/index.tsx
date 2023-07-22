@@ -378,7 +378,8 @@ function CreateOutgoingDocPage() {
               className='mr-5'
               onClick={() => {
                 onCancel();
-              }}>
+              }}
+              disabled={loading}>
               {t('create_outgoing_doc_page.button.cancel')}
             </Button>
           </Row>

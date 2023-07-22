@@ -471,7 +471,8 @@ function ReceiveIncomingDocPage() {
               className='mr-5'
               onClick={() => {
                 onCancel();
-              }}>
+              }}
+              disabled={loading}>
               {t('receiveIncomingDocPage.form.button.cancel')}
             </Button>
           </Row>
