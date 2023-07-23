@@ -57,7 +57,9 @@ export const useIncomingDocRes = (isModal: boolean) => {
               summary: item.summary,
               fullText: '',
               status: t(`PROCESSING_STATUS.${item.status}`),
-              deadline: format(new Date(item.processingDuration), 'dd-MM-yyyy'),
+              deadline: item.processingDuration
+                ? format(new Date(item.processingDuration), 'dd-MM-yyyy')
+                : '',
               attachments: item.attachments,
               incomingNumber: item.incomingNumber,
               isDocTransferred: item.isDocTransferred,
