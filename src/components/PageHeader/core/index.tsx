@@ -1,4 +1,3 @@
-import React from 'react';
 import { MenuProps } from 'antd';
 import i18n, { EN, VN } from 'assets/i18n/i18n.config';
 import { t } from 'i18next';

@@ -381,6 +381,7 @@
       "extend": "Request Extension",
       "end": "End",
       "transer_detail": "View Transfer Details",
+      "export": "Export report",
       "cancel": "Cancel"
     },
     "message": {
@@ -553,7 +554,8 @@
       "report": "Submit to Leadership",
       "cancel": "Cancel",
       "transfer_secretary": "Transfer to Secretary",
-      "view_transfer_detail": "View Transfer Details"
+      "view_transfer_detail": "View Transfer Details",
+      "export": "Export report"
     },
     "message": {
       "file_error": "Attachment upload failed.",
