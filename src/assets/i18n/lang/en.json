@@ -29,6 +29,7 @@
         "document_types": "Document Types",
         "departments": "Departments",
         "calendar": "Calendar",
+        "report": "Report",
         "statistics": "Statistics"
       }
     },
@@ -381,6 +382,7 @@
       "extend": "Request Extension",
       "end": "End",
       "transer_detail": "View Transfer Details",
+      "export": "Export report",
       "cancel": "Cancel"
     },
     "message": {
@@ -487,7 +489,8 @@
         "transferDetailBtn": "Transfer for Processing",
         "transferDetail": "View Details",
         "ordinalNumber": "No.",
-        "name": "Document Name"
+        "name": "Document Name",
+        "deadline": "Processing Deadline"
       },
       "tooltip": {
         "downloadAttachment": "Download Attached File"
@@ -554,7 +557,8 @@
       "report": "Submit to Leadership",
       "cancel": "Cancel",
       "transfer_secretary": "Transfer to Secretary",
-      "view_transfer_detail": "View Transfer Details"
+      "view_transfer_detail": "View Transfer Details",
+      "export": "Export report"
     },
     "message": {
       "file_error": "Attachment upload failed.",

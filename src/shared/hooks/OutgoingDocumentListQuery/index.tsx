@@ -60,6 +60,7 @@ export const useOutgoingDocRes = (isModal: boolean) => {
               isDocCollaborator: item.isDocCollaborator,
               isTransferable: item.isTransferable,
               outgoingNumber: item.outgoingNumber,
+              deadline: item.customProcessingDuration,
             };
           });
 

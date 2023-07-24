@@ -499,7 +499,8 @@
         "transferDetailBtn": "Chuyển xử lý",
         "transferDetail": "Xem chi tiết",
         "ordinalNumber": "STT",
-        "name": "Tên văn bản"
+        "name": "Tên văn bản",
+        "deadline": "Thời hạn xử lý"
       },
       "tooltip": {
         "downloadAttachment": "Tải tệp đính kèm"

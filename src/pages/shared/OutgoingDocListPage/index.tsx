@@ -16,11 +16,13 @@ import {
   ProcessingDocumentRoleEnum,
   UserDto,
 } from 'models/doc-main-models';
+import moment from 'moment';
 import { RecoilRoot } from 'recoil';
 import attachmentService from 'services/AttachmentService';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useOutgoingDocRes } from 'shared/hooks/OutgoingDocumentListQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import { YEAR_MONTH_DAY_FORMAT } from 'utils/DateTimeUtils';
 import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 
 import { getColorBaseOnStatus } from '../IncomingDocListPage/core/common';
@@ -179,6 +181,16 @@ const OutgoingDocListPage: React.FC = () => {
       width: '20%',
       render: (text) => {
         return <div dangerouslySetInnerHTML={{ __html: text }} />;
+      },
+    },
+    {
+      title: t('outgoingDocListPage.table.columns.deadline'),
+      dataIndex: 'deadline',
+      sorter: (a, b) =>
+        moment(a.deadline, YEAR_MONTH_DAY_FORMAT).diff(moment(b.deadline, YEAR_MONTH_DAY_FORMAT)),
+      render: (value, record) => {
+        console.log('value, record', value, record);
+        return value;
       },
     },
     {
