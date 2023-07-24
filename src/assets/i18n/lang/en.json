@@ -488,7 +488,8 @@
         "transferDetailBtn": "Transfer for Processing",
         "transferDetail": "View Details",
         "ordinalNumber": "No.",
-        "name": "Document Name"
+        "name": "Document Name",
+        "deadline": "Processing Deadline"
       },
       "tooltip": {
         "downloadAttachment": "Download Attached File"

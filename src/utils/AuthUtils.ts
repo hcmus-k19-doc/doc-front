@@ -1,5 +1,6 @@
-import i18next from 'i18next';
 import { TokenDto } from 'models/models';
+
+import { getCurrentLanguage, LANGS } from './LanguageUtils';
 
 const AUTH_LOCAL_STORAGE_KEY = 'doc-auth-react-v';
 
@@ -49,9 +50,8 @@ export const removeAuth = () => {
 };
 
 export function setupAxios(axios: any) {
-  const currentLanguage = i18next.language || window.localStorage.i18nextLng;
   axios.defaults.headers.Accept = 'application/json';
-  axios.defaults.headers['Accept-Language'] = currentLanguage || 'vi';
+  axios.defaults.headers['Accept-Language'] = getCurrentLanguage() || LANGS.VI;
 
   axios.interceptors.request.use(
     (config: { headers: { Authorization: string } }) => {
