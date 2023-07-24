@@ -86,6 +86,8 @@ function OutgoingDocDetailPage() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isReviewing, setIsReviewing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isReleasing, setIsReleasing] = useState(false);
   const [isReleased, setIsReleased] = useState(false);
 
   const linkedDocuments = useDocOutLinkedDocumentsQuery(+(docId || 1));
@@ -214,7 +216,7 @@ function OutgoingDocDetailPage() {
         id: +(docId || 0),
         releaseDate: values.releaseDate ? new Date(values.releaseDate) : null,
       };
-
+      setIsSaving(true);
       const response = await outgoingDocumentService.updateOutgoingDocument(document);
 
       if (response.status === 200) {
@@ -234,6 +236,8 @@ function OutgoingDocDetailPage() {
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -282,7 +286,7 @@ function OutgoingDocDetailPage() {
         id: +(docId || 0),
         ...formValues,
       };
-
+      setIsReleasing(true);
       const response = await outgoingDocumentService.publishOutgoingDocument(document);
 
       if (response.status === 200) {
@@ -304,6 +308,8 @@ function OutgoingDocDetailPage() {
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
+    } finally {
+      setIsReleasing(false);
     }
   };
 
@@ -313,7 +319,6 @@ function OutgoingDocDetailPage() {
       content: <div className='mt-3'>{t('outgoing_doc_detail_page.message.confirm_publish')}</div>,
       okText: t('outgoing_doc_detail_page.button.publish_modal'),
       cancelText: t('outgoing_doc_detail_page.button.cancel'),
-
       onOk: publishDocument,
     });
   };
@@ -747,6 +752,7 @@ function OutgoingDocDetailPage() {
                 size='large'
                 htmlType='button'
                 className='mr-5'
+                loading={isSaving || isReleasing}
                 onClick={() => onCancel()}>
                 {t('outgoing_doc_detail_page.button.cancel')}
               </Button>
@@ -769,6 +775,7 @@ function OutgoingDocDetailPage() {
                 size='large'
                 htmlType='button'
                 className='mr-5'
+                loading={isSaving}
                 onClick={() => {
                   form.submit();
                 }}>
@@ -783,6 +790,8 @@ function OutgoingDocDetailPage() {
                   size='large'
                   htmlType='button'
                   className='mr-5'
+                  loading={isReleasing}
+                  hidden={isEditing}
                   onClick={onPublishConfirm}>
                   {t('outgoing_doc_detail_page.button.publish')}
                 </Button>
@@ -792,13 +801,19 @@ function OutgoingDocDetailPage() {
                   size='large'
                   htmlType='button'
                   className='mr-5'
+                  hidden={isEditing}
                   onClick={onPublishReview}>
                   {t('outgoing_doc_detail_page.button.review')}
                 </Button>
               ))}
 
             {currentUser?.role !== DocSystemRoleEnum.VAN_THU && data?.data?.isTransferable && (
-              <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+              <Button
+                type='primary'
+                size='large'
+                htmlType='button'
+                onClick={handleOnOpenModal}
+                hidden={isEditing || isReviewing}>
                 {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
                   ? t('outgoing_doc_detail_page.button.view_transfer_detail')
                   : currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
@@ -811,7 +826,12 @@ function OutgoingDocDetailPage() {
           <Row className='my-3 mb-10'>
             {currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
               (data?.data?.isDocTransferred || data?.data?.isDocCollaborator) && (
-                <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  onClick={handleOnOpenModal}
+                  hidden={isEditing || isReviewing}>
                   {t('outgoing_doc_detail_page.button.view_transfer_detail')}
                 </Button>
               )}
