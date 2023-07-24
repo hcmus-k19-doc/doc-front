@@ -220,7 +220,7 @@ const IncomingDocListPage: React.FC = () => {
     <>
       <div className='text-lg text-primary'>{t('main_page.menu.items.incoming_document_list')}</div>
 
-      <IncomingDocumentSearchForm />
+      <IncomingDocumentSearchForm isLoading={isLoading} />
 
       <Divider />
 

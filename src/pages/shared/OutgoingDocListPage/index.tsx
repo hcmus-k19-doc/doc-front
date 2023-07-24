@@ -208,7 +208,7 @@ const OutgoingDocListPage: React.FC = () => {
     <>
       <div className='text-lg text-primary'>{t('main_page.menu.items.outgoing_document_list')}</div>
 
-      <OutgoingDocumentSearchForm />
+      <OutgoingDocumentSearchForm isLoading={isLoading} />
 
       <Divider />
 

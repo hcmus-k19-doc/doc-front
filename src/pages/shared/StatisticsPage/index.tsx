@@ -250,7 +250,7 @@ const StatisticsPage: React.FC = () => {
           />
           <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>
             <div className='transfer-doc-wrapper'>
-              <Button type='primary' className='transfer-doc-btn'>
+              <Button type='primary' className='transfer-doc-btn' loading={isLoading}>
                 <CSVLink
                   filename={`${t('statistics.message.file_name', {
                     user: currentUser?.fullName,

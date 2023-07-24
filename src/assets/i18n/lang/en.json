@@ -392,7 +392,8 @@
       "file_duplicate_error": "File has already been attached",
       "success": "Document received successfully",
       "error": "An error occurred, please try again.",
-      "closed_successfully": "Document has been closed"
+      "closed_successfully": "Document has been closed",
+      "confirm_finish": "Are you sure you want to close this document?"
     },
     "comment": {
       "title": "Comment on Document",

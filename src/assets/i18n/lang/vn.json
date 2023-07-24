@@ -29,7 +29,8 @@
         "document_types": "Loại văn bản",
         "departments": "Phòng ban",
         "calendar": "Lịch",
-        "report": "Báo cáo"
+        "report": "Báo cáo",
+        "statistics": "Thống kê"
       }
     },
     "BUTTON": {
@@ -209,7 +210,7 @@
   },
   "search_criteria_bar": {
     "incoming_number": "Số văn bản đến",
-    "outgoing_number": "Số văn bản đi",
+    "outgoing_number": "Số phát hành",
     "original_symbol_number": "Số ký hiệu gốc",
     "document_type": "Loại văn bản",
     "distribution_organization": "Cơ quan ban hành",
@@ -398,7 +399,8 @@
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tiếp nhận văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại.",
-      "closed_successfully": "Văn bản đã được kết thúc"
+      "closed_successfully": "Văn bản đã được kết thúc",
+      "confirm_finish": "Bạn có chắc chắn muốn kết thúc văn bản này?"
     },
     "comment": {
       "title": "Góp ý văn bản",

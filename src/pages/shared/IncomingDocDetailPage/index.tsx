@@ -89,6 +89,7 @@ function IncomingDocPage() {
   const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState(false);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
   const navigate = useNavigate();
@@ -336,6 +337,7 @@ function IncomingDocPage() {
       arrivingDate: new Date(values.arrivingDate),
       arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
     };
+    setIsSaving(true);
 
     const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
 
@@ -346,7 +348,9 @@ function IncomingDocPage() {
         showConfirmButton: false,
         timer: 2000,
       });
+      setIsEditing(false);
     }
+    setIsSaving(false);
   };
 
   const onFinishEditing = () => {
@@ -732,6 +736,7 @@ function IncomingDocPage() {
               size='large'
               htmlType='button'
               className='mr-5'
+              loading={isSaving}
               onClick={() => onCancel()}>
               {t('incomingDocDetailPage.button.cancel')}
             </Button>
@@ -741,6 +746,7 @@ function IncomingDocPage() {
             enableEditing={enableEditing}
             isEditing={isEditing}
             isClosed={isClosed}
+            isSaving={isSaving}
             onFinishEditing={onFinishEditing}
             documentDetail={selectedDocs[0]}
             onOpenTransferModal={handleOnOpenModal}
@@ -752,6 +758,7 @@ function IncomingDocPage() {
             enableEditing={enableEditing}
             isClosed={isClosed}
             isEditing={isEditing}
+            isSaving={isSaving}
             onFinishEditing={onFinishEditing}
             documentDetail={selectedDocs[0]}
             onOpenTransferModal={handleOnOpenModal}

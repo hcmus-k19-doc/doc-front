@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import { Button, Col, Collapse, DatePicker, Form, Input, Row, Select } from 'antd';
@@ -10,6 +10,8 @@ import { useOutgoingDocReq } from 'shared/hooks/OutgoingDocumentListQuery';
 import { OutgoingDocSearchState } from 'shared/hooks/OutgoingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
+import { SearchCriteriaProps } from '../../../../components/TransferDocModal/core/models';
+
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
@@ -17,12 +19,11 @@ const ExpandIcon = () => {
   return <FilterFilled style={{ color: PRIMARY_COLOR }} />;
 };
 
-const OutgoingDocumentSearchForm = () => {
+const OutgoingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }) => {
   const { t } = useTranslation();
   const { data: documentTypes } = useDocumentTypesRes();
   const [form] = useForm();
   const [outgoingDocReqQuery, setOutgoingDocReqQuery] = useOutgoingDocReq();
-  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <Collapse bordered={false} expandIcon={ExpandIcon}>
@@ -30,9 +31,7 @@ const OutgoingDocumentSearchForm = () => {
         <Form
           form={form}
           onFinish={(values: OutgoingDocSearchState) => {
-            setLoading(true);
             setOutgoingDocReqQuery({ ...outgoingDocReqQuery, ...values, page: 1 });
-            setLoading(false);
           }}
           layout='vertical'>
           <Row justify='space-between'>
@@ -84,14 +83,14 @@ const OutgoingDocumentSearchForm = () => {
               </Row>
             </Col>
             <Row>
-              <Button className='px-8 mx-5' htmlType='submit' type='primary' loading={loading}>
+              <Button className='px-8 mx-5' htmlType='submit' type='primary' loading={isLoading}>
                 {t('common.search_criteria.search')}
               </Button>
               <Button
                 onClick={() => form.resetFields()}
                 htmlType='submit'
                 type='default'
-                loading={loading}
+                loading={isLoading}
                 className='px-8 reset-btn'>
                 {t('common.search_criteria.reset')}
               </Button>
