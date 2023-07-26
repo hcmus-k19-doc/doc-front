@@ -178,7 +178,7 @@ const OutgoingDocListPage: React.FC = () => {
     {
       title: t('outgoingDocListPage.table.columns.summary'),
       dataIndex: 'summary',
-      width: '20%',
+      // width: '20%',
       render: (text) => {
         return <div dangerouslySetInnerHTML={{ __html: text }} />;
       },

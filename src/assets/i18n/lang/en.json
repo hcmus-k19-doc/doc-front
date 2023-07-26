@@ -383,7 +383,8 @@
       "end": "End",
       "transer_detail": "View Transfer Details",
       "export": "Export report",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "delete": "Delete"
     },
     "message": {
       "file_error": "Attachment failed.",
@@ -395,7 +396,9 @@
       "success": "Document received successfully",
       "error": "An error occurred, please try again.",
       "closed_successfully": "Document has been closed",
-      "confirm_finish": "Are you sure you want to close this document?"
+      "confirm_finish": "Are you sure you want to close this document?",
+      "confirm_delete_file": "Are you sure you want to delete this file?",
+      "delete_file_success": "File deleted successfully"
     },
     "comment": {
       "title": "Comment on Document",
@@ -558,7 +561,8 @@
       "cancel": "Cancel",
       "transfer_secretary": "Transfer to Secretary",
       "view_transfer_detail": "View Transfer Details",
-      "export": "Export report"
+      "export": "Export report",
+      "delete": "Delete"
     },
     "message": {
       "file_error": "Attachment upload failed.",
@@ -570,6 +574,8 @@
       "edit_success": "Document edited successfully",
       "error": "An error occurred, please try again",
       "confirm_publish": "Are you sure you want to publish this document?",
+      "confirm_delete_file": "Are you sure you want to delete this file?",
+      "delete_file_success": "File deleted successfully",
       "publish_success": "Document published successfully",
       "report_success": "Submitted to leadership successfully",
       "transfer_secretary_success": "Transferred to secretary successfully"

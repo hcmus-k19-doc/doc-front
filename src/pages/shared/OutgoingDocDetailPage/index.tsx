@@ -677,7 +677,11 @@ function OutgoingDocDetailPage() {
 
               <div className='mb-10'></div>
 
-              <Attachments attachments={data?.data?.attachments || []} isReadOnly={false} />
+              <Attachments
+                attachments={data?.data?.attachments || []}
+                isReadOnly={false}
+                isEditing={isEditing}
+              />
 
               <div className='mb-10'></div>
 

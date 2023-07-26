@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CloseCircleOutlined, DownloadOutlined, FileSearchOutlined } from '@ant-design/icons';
-import { Dropdown, Empty, List, MenuProps, Spin } from 'antd';
+import {
+  CloseCircleOutlined,
+  DownloadOutlined,
+  FileSearchOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
+import { Dropdown, Empty, List, MenuProps, Modal, Spin } from 'antd';
 import { AttachmentDto } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
+
+import { PRIMARY_COLOR } from '../../config/constant';
+import { useSweetAlert } from '../../shared/hooks/SwalAlert';
 
 import { downloadFileFromBlob, parseLocalDateTimeToFormatedDate } from './core/common';
 import { AttachmentsComponentProps } from './core/models';
@@ -11,17 +20,24 @@ import AttachmentPreviewModal from './AttachmentPreviewModal';
 
 import './index.css';
 
+const { confirm } = Modal;
+
 const Attachments: React.FC<AttachmentsComponentProps> = ({
   isReadOnly,
   attachments,
+  isEditing,
 }: {
   isReadOnly: boolean;
   attachments: AttachmentDto[];
+  isEditing: boolean;
 }) => {
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<AttachmentDto>();
   const [loading, setLoading] = useState<boolean>(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState<boolean>(false);
+  const showAlert = useSweetAlert();
+  const [attachmentList, setAttachmentList] = useState<AttachmentDto[]>(attachments);
+  const queryClient = useQueryClient();
 
   const handleCancel = () => {
     setIsPreviewModalOpen(false);
@@ -78,6 +94,43 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
     }
   };
 
+  const deleteFile = async (id: number) => {
+    try {
+      const response = await attachmentService.deleteAttachmentById(id);
+
+      if (response.status === 200) {
+        showAlert({
+          icon: 'success',
+          html: `${t('outgoing_doc_detail_page.message.delete_file_success')}`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setAttachmentList((prevElements) => prevElements.filter((element) => element.id !== id));
+      }
+    } catch (error) {
+      showAlert({
+        icon: 'error',
+        html: `${t('outgoing_doc_detail_page.message.error')}`,
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
+  const onDeleteAttachmentConfirm = (id: number) => {
+    confirm({
+      icon: <QuestionCircleOutlined style={{ color: PRIMARY_COLOR }} />,
+      content: (
+        <div className='mt-3'>{t('outgoing_doc_detail_page.message.confirm_delete_file')}</div>
+      ),
+      okText: t('outgoing_doc_detail_page.button.delete'),
+      cancelText: t('outgoing_doc_detail_page.button.cancel'),
+      onOk: async () => {
+        await deleteFile(id);
+      },
+    });
+  };
+
   return (
     <div className='linked-documents'>
       <div className='flex justify-between linked-header'>
@@ -87,7 +140,7 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
           <span className='ml-2 cursor-pointer text-link'></span>
         </div>
       </div>
-      {attachments.length === 0 ? (
+      {attachmentList.length === 0 ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={t('common.no_data.no_attachment')}
@@ -102,7 +155,7 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
 
           <List
             itemLayout='horizontal'
-            dataSource={attachments}
+            dataSource={attachmentList}
             renderItem={(item, index) => {
               return (
                 <List.Item
@@ -111,9 +164,9 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
                       <span
                         key={`delete-${item.id}`}
                         onClick={() => {
-                          console.log('delete document', item.alfrescoFileId);
+                          onDeleteAttachmentConfirm(item.id as number);
                         }}>
-                        <CloseCircleOutlined />
+                        <CloseCircleOutlined hidden={!isEditing} />
                       </span>
                     ),
                   ]}>
