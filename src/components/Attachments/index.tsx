@@ -6,7 +6,6 @@ import {
   FileSearchOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import { useQueryClient } from '@tanstack/react-query';
 import { Dropdown, Empty, List, MenuProps, Modal, Spin } from 'antd';
 import { AttachmentDto } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
@@ -24,11 +23,13 @@ const { confirm } = Modal;
 
 const Attachments: React.FC<AttachmentsComponentProps> = ({
   isReadOnly,
-  attachments,
+  attachmentList,
+  setAttachmentList,
   isEditing,
 }: {
   isReadOnly: boolean;
-  attachments: AttachmentDto[];
+  attachmentList: AttachmentDto[];
+  setAttachmentList: (attachmentList: AttachmentDto[]) => void;
   isEditing: boolean;
 }) => {
   const { t } = useTranslation();
@@ -36,8 +37,6 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState<boolean>(false);
   const showAlert = useSweetAlert();
-  const [attachmentList, setAttachmentList] = useState<AttachmentDto[]>(attachments);
-  const queryClient = useQueryClient();
 
   const handleCancel = () => {
     setIsPreviewModalOpen(false);
@@ -105,7 +104,7 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
           showConfirmButton: false,
           timer: 2000,
         });
-        setAttachmentList((prevElements) => prevElements.filter((element) => element.id !== id));
+        setAttachmentList(attachmentList.filter((element) => element.id !== id));
       }
     } catch (error) {
       showAlert({

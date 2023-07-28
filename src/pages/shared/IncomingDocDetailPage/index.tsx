@@ -24,9 +24,11 @@ import {
   Select,
   Skeleton,
   TimePicker,
+  Upload,
   UploadProps,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
 import Attachments from 'components/Attachments';
@@ -38,9 +40,10 @@ import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
-import { PRIMARY_COLOR } from 'config/constant';
+import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
+  AttachmentDto,
   Confidentiality,
   DistributionOrganizationDto,
   DocumentTypeDto,
@@ -88,6 +91,7 @@ function IncomingDocPage() {
   const [foldersQuery, documentTypesQuery, distributionOrgsQuery] = useDropDownFieldsQuery();
   const { isLoading, data, isFetching } = useIncomingDocumentDetailQuery(+(docId || 1));
   const [selectedDocs, setSelectedDocs] = useState<IncomingDocumentDto[]>([]);
+  const [attachmentList, setAttachmentList] = useState<AttachmentDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState(false);
   const transferDocModalItem = useRecoilValue(transferDocModalState);
@@ -99,14 +103,45 @@ function IncomingDocPage() {
 
   const [isClosed, setIsClosed] = useState(false);
 
+  const fetchForm = () => {
+    if (!isLoading) {
+      if (data?.data) {
+        const incomingDocument = {
+          ...data?.data,
+          status: t(`PROCESSING_STATUS.${data?.data.status}`),
+        };
+        setIsClosed(incomingDocument.status === t('PROCESSING_STATUS.CLOSED'));
+        setSelectedDocs([incomingDocument as unknown as IncomingDocumentDto]);
+        initForm(incomingDocument as unknown as IncomingDocumentDto);
+      } else {
+        globalNavigate('error');
+      }
+    }
+  };
+
+  const initForm = (incomingDocument: IncomingDocumentDto) => {
+    form.setFieldsValue({
+      name: incomingDocument.name,
+      folder: incomingDocument.folder?.id,
+      incomingNumber: incomingDocument.incomingNumber,
+      documentType: incomingDocument.documentType?.id,
+      distributionOrg: incomingDocument.distributionOrg?.id,
+      urgency: incomingDocument.urgency,
+      confidentiality: incomingDocument.confidentiality,
+      originalSymbolNumber: incomingDocument.originalSymbolNumber,
+      distributionDate: dayjs(incomingDocument.distributionDate),
+      arrivingDate: dayjs(incomingDocument.arrivingDate),
+      arrivingTime: dayjs(incomingDocument.arrivingTime, HH_MM_SS_FORMAT),
+      summary: incomingDocument.summary,
+      closeDate: incomingDocument.closeDate,
+      closeUsername: incomingDocument?.closeUsername,
+    });
+  };
+
   useEffect(() => {
-    const incomingDocument = {
-      ...data?.data,
-      status: t(`PROCESSING_STATUS.${data?.data.status}`),
-    };
-    setIsClosed(incomingDocument.status === t('PROCESSING_STATUS.CLOSED'));
-    setSelectedDocs([incomingDocument as unknown as IncomingDocumentDto]);
-  }, [data?.data]);
+    fetchForm();
+    setAttachmentList(data?.data?.attachments || []);
+  }, [isLoading, isClosed, data?.data]);
 
   // Transfer Doc Modal
   const queryClient = useQueryClient();
@@ -162,6 +197,8 @@ function IncomingDocPage() {
 
   const onCancel = () => {
     setIsEditing(false);
+    form.resetFields();
+    fetchForm();
   };
 
   const handleOnOkModal = async () => {
@@ -251,31 +288,6 @@ function IncomingDocPage() {
     });
   };
 
-  if (!isLoading) {
-    if (data?.data) {
-      const incomingDocument = data?.data;
-
-      form.setFieldsValue({
-        name: incomingDocument.name,
-        folder: incomingDocument.folder?.id,
-        incomingNumber: incomingDocument.incomingNumber,
-        documentType: incomingDocument.documentType?.id,
-        distributionOrg: incomingDocument.distributionOrg?.id,
-        urgency: incomingDocument.urgency,
-        confidentiality: incomingDocument.confidentiality,
-        originalSymbolNumber: incomingDocument.originalSymbolNumber,
-        distributionDate: dayjs(incomingDocument.distributionDate),
-        arrivingDate: dayjs(incomingDocument.arrivingDate),
-        arrivingTime: dayjs(incomingDocument.arrivingTime, HH_MM_SS_FORMAT),
-        summary: incomingDocument.summary,
-        closeDate: incomingDocument.closeDate,
-        closeUsername: incomingDocument?.closeUsername,
-      });
-    } else {
-      globalNavigate('error');
-    }
-  }
-
   const enableEditing = () => {
     setIsEditing(true);
   };
@@ -313,12 +325,50 @@ function IncomingDocPage() {
   const fileProps: UploadProps = {
     name: 'file',
     multiple: true,
+    maxCount: 3 - attachmentList.length,
     customRequest: dummyRequest,
+    beforeUpload: (file: RcFile) => {
+      const isValidSize = file.size < MAX_FILE_SIZE;
+      const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
+      // Check file duplicate
+      const isDuplicate = form
+        .getFieldValue('files')
+        ?.fileList?.find((f: UploadFile) => f.name === file.name);
+      // Check file max count
+      const isMaxCount =
+        form.getFieldValue('files')?.fileList?.length === undefined
+          ? attachmentList.length + 1 > 3
+          : form.getFieldValue('files')?.fileList?.length + attachmentList.length + 1 > 3;
+      const isExisted = attachmentList.find((attachment) => attachment.fileName === file.name);
+      if (isMaxCount) {
+        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
+      } else {
+        if (isDuplicate) {
+          message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+        } else {
+          if (isExisted) {
+            message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+          } else {
+            // Check file type
+            if (!isValidType) {
+              message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
+            } else {
+              // Check file size (max 5MB)
+              if (!isValidSize) {
+                message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
+              }
+            }
+          }
+        }
+      }
+
+      return (
+        (isValidType && isValidSize && !isDuplicate && !isExisted && !isMaxCount) ||
+        Upload.LIST_IGNORE
+      );
+    },
     onChange(info) {
       const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
       if (status === 'done') {
         message.success(`${info.file.name} ${t('incomingDocDetailPage.message.file_success')}`);
       } else if (status === 'error') {
@@ -328,17 +378,25 @@ function IncomingDocPage() {
   };
 
   const saveChange = async (values: any) => {
-    delete values.files;
+    setIsSaving(true);
 
-    const incomingDocument: IncomingDocumentPutDto = {
+    const incomingDocument = new FormData();
+
+    if (values.files !== undefined) {
+      values.files.fileList.forEach((file: any) => {
+        incomingDocument.append('attachments', file.originFileObj);
+      });
+      delete values.files;
+    }
+
+    const incomingDocumentPutDto: IncomingDocumentPutDto = {
       ...values,
       id: +(docId || 0),
       distributionDate: new Date(values.distributionDate),
       arrivingDate: new Date(values.arrivingDate),
       arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
     };
-    setIsSaving(true);
-
+    incomingDocument.append('incomingDocumentPutDto', JSON.stringify(incomingDocumentPutDto));
     const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
 
     if (response.status === 200) {
@@ -349,6 +407,9 @@ function IncomingDocPage() {
         timer: 2000,
       });
       setIsEditing(false);
+      form.resetFields();
+      fetchForm();
+      queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 0)]);
     }
     setIsSaving(false);
   };
@@ -640,16 +701,7 @@ function IncomingDocPage() {
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item
-              label={t('incomingDocDetailPage.form.files')}
-              name='files'
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('incomingDocDetailPage.form.files_required') as string,
-                },
-              ]}>
+            <Form.Item label={t('incomingDocDetailPage.form.files')} name='files'>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
@@ -661,7 +713,8 @@ function IncomingDocPage() {
             <div className='mb-10'></div>
 
             <Attachments
-              attachments={data?.data?.attachments || []}
+              attachmentList={attachmentList}
+              setAttachmentList={setAttachmentList}
               isReadOnly={false}
               isEditing={isEditing}
             />

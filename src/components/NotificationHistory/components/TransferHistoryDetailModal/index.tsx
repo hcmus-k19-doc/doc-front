@@ -83,7 +83,14 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
       fixed: 'right',
       render: (text, record, index) => {
         return (
-          <Attachments attachments={record?.attachments} isReadOnly={true} isEditing={false} />
+          <Attachments
+            attachmentList={record?.attachments}
+            setAttachmentList={() => {
+              return;
+            }}
+            isReadOnly={true}
+            isEditing={false}
+          />
         );
       },
     },
