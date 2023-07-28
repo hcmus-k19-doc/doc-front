@@ -227,7 +227,8 @@
     },
     "name_of_handler": "Tên người xử lý",
     "statistic_date": "Thời gian thống kê",
-    "doc_types": "Loại văn bản"
+    "doc_types": "Loại văn bản",
+    "status": "Trạng thái"
   },
   "incomingDocListPage": {
     "table": {

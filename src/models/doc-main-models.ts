@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-26 21:09:38.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-28 21:58:46.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -272,6 +272,7 @@ export interface SearchCriteriaDto {
     processingDurationFrom: DateAsString;
     processingDurationTo: DateAsString;
     summary: string;
+    processingStatus: ProcessingStatus;
 }
 
 export interface SendingLevelDto extends DocAbstractDto {
