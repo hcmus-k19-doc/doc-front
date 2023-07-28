@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-27 19:40:55.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-26 21:09:38.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -260,30 +260,6 @@ export interface ProcessingUserDto {
     department: string;
     docSystemRole: DocSystemRoleEnum;
     roleTitle: string;
-}
-
-export interface ReturnRequestGetDto {
-    id: number;
-    currentProcessingUserId: number;
-    currentProcessingUserFullName: string;
-    currentProcessingUserRole: DocSystemRoleEnum;
-    currentProcessingUserRoleTitle: string;
-    previousProcessingUserId: number;
-    previousProcessingUserFullName: string;
-    previousProcessingUserRole: DocSystemRoleEnum;
-    previousProcessingUserRoleTitle: string;
-    createdAt: string;
-    documentId: number;
-    type: ProcessingDocumentTypeEnum;
-    reason: string;
-}
-
-export interface ReturnRequestPostDto {
-    currentProcessingUserId: number;
-    previousProcessingUserId: number;
-    documentId: number;
-    type: ProcessingDocumentTypeEnum;
-    reason: string;
 }
 
 export interface SearchCriteriaDto {

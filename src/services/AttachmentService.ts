@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { PRIMARY_COLOR, REACT_APP_DOC_FILE_SERVICE_URL } from 'config/constant';
+import {
+  PRIMARY_COLOR,
+  REACT_APP_DOC_FILE_SERVICE_URL,
+  REACT_APP_DOC_MAIN_SERVICE_URL,
+} from 'config/constant';
 import { t } from 'i18next';
 import { ParentFolderEnum } from 'models/doc-file-models';
 import { AttachmentDto } from 'models/doc-main-models';
@@ -8,6 +12,7 @@ import { TableRowDataType as OutgoingTableRowType } from 'pages/shared/OutgoingD
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 const DOC_FILE_SERVICE_FILE_URL = `${REACT_APP_DOC_FILE_SERVICE_URL}/files`;
+const ATTACHMENT_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/attachments`;
 const S3_URL = `${DOC_FILE_SERVICE_FILE_URL}/s3`;
 
 async function downloadAttachments(attachmentDtoList: AttachmentDto[], incomingDocId: string) {
@@ -63,7 +68,13 @@ export async function handleDownloadAttachment(
   const showAlert = useSweetAlert();
   setLoading?.(true);
   try {
-    const responseStatus = await downloadZipFileFromS3(parentFolder, record.id);
+    const fileNameList = await axios.get(`${ATTACHMENT_URL}/${parentFolder}/${record.id}`);
+
+    const responseStatus = await downloadZipFileFromS3IgnoreDeleted(
+      parentFolder,
+      record.id,
+      fileNameList.data
+    );
 
     if (responseStatus === 204) {
       showAlert({
@@ -96,8 +107,13 @@ export async function handleDownloadAttachmentInTransferHistory(
   const showAlert = useSweetAlert();
   setLoading?.(true);
   try {
-    const responseStatus = await downloadZipFileFromS3(parentFolder, id);
+    const fileNameList = await axios.get(`${ATTACHMENT_URL}/${parentFolder}/${id}`);
 
+    const responseStatus = await downloadZipFileFromS3IgnoreDeleted(
+      parentFolder,
+      id,
+      fileNameList.data
+    );
     if (responseStatus === 204) {
       showAlert({
         icon: 'error',
@@ -120,12 +136,38 @@ export async function handleDownloadAttachmentInTransferHistory(
   }
 }
 
+export async function deleteAttachmentById(id: number) {
+  return await axios.delete(`${ATTACHMENT_URL}/${id}`);
+}
+
+async function downloadZipFileFromS3IgnoreDeleted(
+  parentFolder: ParentFolderEnum,
+  folderName: number,
+  fileNameList: string[]
+) {
+  try {
+    const res = await axios.post(`${S3_URL}/download/${parentFolder}/${folderName}`, fileNameList, {
+      responseType: 'blob',
+    });
+
+    if (res.status !== 200) {
+      return res.status;
+    }
+
+    saveZipFileToDisk(res);
+    return res.status;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 const attachmentService = {
   downloadAttachments,
   saveZipFileToDisk,
   handleDownloadAttachment,
   getFileContentFromS3Key,
   handleDownloadAttachmentInTransferHistory,
+  deleteAttachmentById,
 };
 
 export default attachmentService;
