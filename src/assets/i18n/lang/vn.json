@@ -639,6 +639,11 @@
       "only_unprocessed_docs_can_be_transferred_to_manager": "Chỉ có thể chuyển văn bản chưa xử lý tới Chánh văn phòng ",
       "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Chỉ có thể chuyển văn bản đang xử lý tới Hiệu trưởng hoặc Văn thư",
       "some_user_is_already_assigned_to_this_doc": "Văn bản đã được phân công cho người này"
+    },
+    "button": {
+      "withdraw": "Rút lại",
+      "send_back": "Trả lại",
+      "extend_request": "Yêu cầu gia hạn"
     }
   },
   "internal_server_error_page": {

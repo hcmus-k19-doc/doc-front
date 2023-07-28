@@ -625,6 +625,11 @@
       "only_unprocessed_docs_can_be_transferred_to_manager": "Only unprocessed documents can be transferred to the Chief of Office",
       "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Only in-progress documents can be transferred to the Director or Secretary",
       "some_user_is_already_assigned_to_this_doc": "This document is already assigned to this user"
+    },
+    "button": {
+      "withdraw": "Withdraw",
+      "send_back": "Send Back",
+      "extend_request": "Extend Request"
     }
   },
   "internal_server_error_page": {

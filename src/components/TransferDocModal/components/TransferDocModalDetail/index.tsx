@@ -171,16 +171,30 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     );
   };
 
+  const renderButtons = () => {
+    const buttons = [];
+    // doi voi incoming document => chuyen vien khong duoc rut lai van ban
+    if (currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN) {
+      buttons.push(
+        <Button key='ok' type='primary' onClick={handleClose} danger>
+          {t('transfer_modal.button.withdraw')}
+        </Button>
+      );
+    }
+    buttons.push(
+      <Button key='ok' type='primary' onClick={handleClose}>
+        OK
+      </Button>
+    );
+    return buttons;
+  };
+
   return (
     <Modal
       title={`${transferLabel}`}
       open={isModalOpen}
       onCancel={handleClose}
-      footer={[
-        <Button key='ok' type='primary' onClick={handleClose}>
-          OK
-        </Button>,
-      ]}
+      footer={renderButtons()}
       width={1000}>
       <Divider />
       <Row className='mt-5'>
