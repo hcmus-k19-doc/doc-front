@@ -29,7 +29,7 @@ async function getOutgoingDocumentById(id: number) {
   return await axios.get<OutgoingDocumentGetDto>(`${OUTGOING_DOCUMENTS_URL}/${id}`);
 }
 
-async function updateOutgoingDocument(outgoingDocument: OutgoingDocumentPutDto) {
+async function updateOutgoingDocument(outgoingDocument: FormData) {
   return await axios.put<OutgoingDocumentGetDto>(
     `${OUTGOING_DOCUMENTS_URL}/update`,
     outgoingDocument

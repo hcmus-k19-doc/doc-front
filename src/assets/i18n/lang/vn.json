@@ -388,7 +388,8 @@
       "end": "Kết thúc",
       "transer_detail": "Xem chi tiết chuyển xử lý",
       "export": "In danh sách",
-      "cancel": "Hủy"
+      "cancel": "Hủy",
+      "delete": "Xóa"
     },
     "message": {
       "file_error": "đính kèm không thành công.",
@@ -400,7 +401,9 @@
       "success": "Tiếp nhận văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại.",
       "closed_successfully": "Văn bản đã được kết thúc",
-      "confirm_finish": "Bạn có chắc chắn muốn kết thúc văn bản này?"
+      "confirm_finish": "Bạn có chắc chắn muốn kết thúc văn bản này?",
+      "confirm_delete_file": "Bạn có chắc chắn muốn xoá tệp đính kèm này?",
+      "delete_file_success": "Xoá tệp đính kèm thành công"
     },
     "comment": {
       "title": "Góp ý văn bản",
@@ -571,7 +574,8 @@
       "cancel": "Hủy",
       "transfer_secretary": "Chuyển văn thư",
       "view_transfer_detail": "Xem chi tiết luân chuyển",
-      "export": "In danh sách"
+      "export": "In danh sách",
+      "delete": "Xóa"
     },
     "message": {
       "file_error": "đính kèm không thành công.",
@@ -583,7 +587,9 @@
       "edit_success": "Chỉnh sửa văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại",
       "confirm_publish": "Bạn có chắc chắn muốn phát hành văn bản này?",
+      "confirm_delete_file": "Bạn có chắc chắn muốn xoá tệp đính kèm này?",
       "publish_success": "Phát hành văn bản thành công",
+      "delete_file_success": "Xoá tệp đính kèm thành công",
       "report_success": "Trình lãnh đạo thành công",
       "transfer_secretary_success": "Chuyển văn thư thành công"
     },
