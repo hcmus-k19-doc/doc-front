@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-26 21:09:38.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-28 19:51:40.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -262,6 +262,33 @@ export interface ProcessingUserDto {
     roleTitle: string;
 }
 
+export interface ReturnRequestGetDto {
+    id: number;
+    currentProcessingUserId: number;
+    currentProcessingUserFullName: string;
+    currentProcessingUserRole: DocSystemRoleEnum;
+    currentProcessingUserRoleTitle: string;
+    previousProcessingUserId: number;
+    previousProcessingUserFullName: string;
+    previousProcessingUserRole: DocSystemRoleEnum;
+    previousProcessingUserRoleTitle: string;
+    createdAt: string;
+    documentId: number;
+    documentType: ProcessingDocumentTypeEnum;
+    reason: string;
+    returnRequestType: ReturnRequestType;
+}
+
+export interface ReturnRequestPostDto {
+    currentProcessingUserId: number;
+    previousProcessingUserId: number;
+    documentIds: number[];
+    documentType: ProcessingDocumentTypeEnum;
+    reason: string;
+    step: number;
+    returnRequestType: ReturnRequestType;
+}
+
 export interface SearchCriteriaDto {
     incomingNumber: string;
     originalSymbolNumber: string;
@@ -350,6 +377,7 @@ export interface TransferHistoryDto {
     receiverName: string;
     attachments: DocumentWithAttachmentDto[];
     createdTime: DateAsString;
+    returnRequestId: number;
 }
 
 export interface TransferHistorySearchCriteriaDto {
@@ -490,6 +518,11 @@ export const enum ProcessingDocumentRoleEnum {
     ASSIGNEE = "ASSIGNEE",
     REPORTER = "REPORTER",
     COLLABORATOR = "COLLABORATOR",
+}
+
+export const enum ReturnRequestType {
+    WITHDRAW = "WITHDRAW",
+    SEND_BACK = "SEND_BACK",
 }
 
 export const enum FileType {
