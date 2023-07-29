@@ -4,23 +4,40 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CommentItem } from 'components/DocComment/core';
 import { CommentDto, ProcessingDocumentTypeEnum } from 'models/doc-main-models';
 import moment from 'moment';
+import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import commentService from 'services/CommentService';
+
+import { PaginationState } from '../../models/states';
+import { IncomingDocQueryState } from '../IncomingDocumentListQuery/core/states';
 
 const QUERY_COMMENT_KEY = 'QUERY.COMMENT';
 
+type DocCommentQueryState = PaginationState;
+
+const queryState = atom<DocCommentQueryState>({
+  key: 'DOC_COMMENT_QUERY_STATE',
+  default: {
+    page: 1,
+    pageSize: commentService.COMMENT_PAGE_SIZE,
+  },
+});
+
+export const useDocCommentReq = () => useRecoilState(queryState);
+
 export function useCommentsRes(processingDocumentType: ProcessingDocumentTypeEnum, docId: number) {
-  const {
-    data: comments,
-    isFetching,
-    isLoading,
-  } = useQuery({
-    queryKey: [QUERY_COMMENT_KEY, processingDocumentType, docId],
+  const query = useRecoilValue<IncomingDocQueryState>(queryState);
+
+  return useQuery({
+    queryKey: [QUERY_COMMENT_KEY, processingDocumentType, docId, query.page, query.pageSize],
     queryFn: async () => {
       const { data } = await commentService.getCommentsByTypeAndDocumentId(
         processingDocumentType,
-        docId
+        docId,
+        query.page,
+        query.pageSize
       );
-      const res: CommentItem[] = data.map(
+
+      const res: CommentItem[] = data.payload.map(
         (item) =>
           ({
             id: item.id,
@@ -31,21 +48,13 @@ export function useCommentsRes(processingDocumentType: ProcessingDocumentTypeEnu
           } as CommentItem)
       );
 
-      return res;
+      return {
+        totalElements: data.totalElements,
+        totalPages: data.totalPages,
+        comments: res,
+      };
     },
   });
-
-  if (!comments) {
-    return {
-      comments: [],
-      isFetching,
-    };
-  }
-
-  return {
-    comments,
-    isFetching,
-  };
 }
 
 export function useCommentMutation(
