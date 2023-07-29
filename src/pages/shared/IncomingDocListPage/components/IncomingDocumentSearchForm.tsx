@@ -4,14 +4,14 @@ import { FilterFilled } from '@ant-design/icons';
 import { Button, Col, Collapse, DatePicker, Form, Input, Row, Select } from 'antd';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
+import { SearchCriteriaProps } from 'components/TransferDocModal/core/models';
 import { PRIMARY_COLOR } from 'config/constant';
+import { ProcessingStatus } from 'models/doc-main-models';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq } from 'shared/hooks/IncomingDocumentListQuery';
-import { SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import { IncomingDocSearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
-
-import { SearchCriteriaProps } from '../../../../components/TransferDocModal/core/models';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
@@ -32,7 +32,7 @@ const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }
       <Panel header={t('common.search_criteria.title')} key='1'>
         <Form
           form={form}
-          onFinish={(values: SearchState) => {
+          onFinish={(values: IncomingDocSearchState) => {
             setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
           }}
           layout='vertical'>
@@ -71,7 +71,7 @@ const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }
                     name='distributionOrgId'
                     label={t('search_criteria_bar.distribution_organization')}>
                     <Select>
-                      {distributionOrgs?.map((distributionOrg: any) => (
+                      {distributionOrgs?.map((distributionOrg) => (
                         <Select.Option key={distributionOrg.id} value={distributionOrg.id}>
                           {distributionOrg.name}
                         </Select.Option>
@@ -99,6 +99,30 @@ const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }
                       locale={locale}
                       className='flex flex-grow'
                     />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={7}>
+                  <Form.Item name='status' label={t('search_criteria_bar.status')}>
+                    <Select>
+                      {[
+                        'ALL',
+                        ProcessingStatus.UNPROCESSED,
+                        ProcessingStatus.IN_PROGRESS,
+                        ProcessingStatus.CLOSED,
+                      ].map((status: ProcessingStatus | string) => (
+                        <Select.Option key={status} value={status !== 'ALL' ? status : null}>
+                          {t(`PROCESSING_STATUS.${status}`)}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={1}></Col>
+                <Col span={7}>
+                  <Form.Item name='documentName' label={t('search_criteria_bar.document_name')}>
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>

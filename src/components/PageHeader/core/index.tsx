@@ -1,5 +1,5 @@
 import { MenuProps } from 'antd';
-import i18n, { EN, VN } from 'assets/i18n/i18n.config';
+import i18n, { EN, VI } from 'assets/i18n/i18n.config';
 import { t } from 'i18next';
 import { DocumentReminderStatusEnum } from 'models/doc-main-models';
 
@@ -8,7 +8,7 @@ export const languageItems: MenuProps['items'] = [
     key: 'vie',
     label: t('page_header.languages.vi'),
     onClick: () => {
-      if (i18n.language === VN) {
+      if (i18n.language === VI) {
         return;
       }
 

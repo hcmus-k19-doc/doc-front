@@ -206,7 +206,8 @@
     "CLOSED": "Đã xử lý",
     "WAITING_FOR_OUTGOING_NUMBER": "Chờ số đi",
     "READY_TO_RELEASE": "Sẵn sàng phát hành",
-    "RELEASED": "Đã phát hành"
+    "RELEASED": "Đã phát hành",
+    "ALL": "Tất cả"
   },
   "search_criteria_bar": {
     "incoming_number": "Số văn bản đến",
@@ -227,7 +228,9 @@
     },
     "name_of_handler": "Tên người xử lý",
     "statistic_date": "Thời gian thống kê",
-    "doc_types": "Loại văn bản"
+    "doc_types": "Loại văn bản",
+    "status": "Trạng thái",
+    "document_name": "Tên văn bản"
   },
   "incomingDocListPage": {
     "table": {

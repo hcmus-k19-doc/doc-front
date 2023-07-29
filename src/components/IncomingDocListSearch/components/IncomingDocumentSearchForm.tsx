@@ -8,7 +8,7 @@ import { PRIMARY_COLOR } from 'config/constant';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq } from 'shared/hooks/IncomingDocumentListQuery';
-import { SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import { IncomingDocSearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 const { Panel } = Collapse;
@@ -30,7 +30,7 @@ const IncomingDocumentSearchForm = () => {
       <Panel header={t('common.search_criteria.title')} key='1'>
         <Form
           form={form}
-          onFinish={(values: SearchState) => {
+          onFinish={(values: IncomingDocSearchState) => {
             setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
           }}
           layout='vertical'>
