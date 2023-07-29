@@ -44,7 +44,7 @@ const StatisticsSearchForm = () => {
                   <Form.Item
                     initialValue={[allUsers?.find((user) => user.value === currentUser?.id)?.value]}
                     name='expertIds'
-                    label={t('search_criteria_bar.expert_name')}>
+                    label={t('search_criteria_bar.name_of_handler')}>
                     <Select
                       mode='multiple'
                       style={{ width: '100%' }}

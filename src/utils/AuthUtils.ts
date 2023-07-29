@@ -1,5 +1,7 @@
 import { TokenDto } from 'models/models';
 
+import { getCurrentLanguage, LANGS } from './LanguageUtils';
+
 const AUTH_LOCAL_STORAGE_KEY = 'doc-auth-react-v';
 
 export const getAuth = () => {
@@ -49,7 +51,7 @@ export const removeAuth = () => {
 
 export function setupAxios(axios: any) {
   axios.defaults.headers.Accept = 'application/json';
-  axios.defaults.headers['Accept-Language'] = 'vi';
+  axios.defaults.headers['Accept-Language'] = getCurrentLanguage() || LANGS.VI;
 
   axios.interceptors.request.use(
     (config: { headers: { Authorization: string } }) => {

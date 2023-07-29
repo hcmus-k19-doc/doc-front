@@ -20,7 +20,7 @@ import {
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
-import { ALLOWED_FILE_TYPES, PRIMARY_COLOR } from 'config/constant';
+import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
 import {
   Confidentiality,
   DistributionOrganizationDto,
@@ -119,8 +119,8 @@ function ReceiveIncomingDocPage() {
         message.error(t('receiveIncomingDocPage.message.file_type_error') as string);
       }
 
-      // Check file size (max 3MB)
-      const isValidSize = file.size / 1024 / 1024 < 3;
+      // Check file size (max 5MB)
+      const isValidSize = file.size < MAX_FILE_SIZE;
       if (!isValidSize) {
         message.error(t('receiveIncomingDocPage.message.file_size_error') as string);
       }
@@ -471,7 +471,8 @@ function ReceiveIncomingDocPage() {
               className='mr-5'
               onClick={() => {
                 onCancel();
-              }}>
+              }}
+              disabled={loading}>
               {t('receiveIncomingDocPage.form.button.cancel')}
             </Button>
           </Row>

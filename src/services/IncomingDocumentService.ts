@@ -5,7 +5,6 @@ import {
   GetTransferDocumentDetailCustomResponse,
   GetTransferDocumentDetailRequest,
   IncomingDocumentDto,
-  IncomingDocumentPutDto,
   OutgoingDocumentGetDto,
   ProcessingDetailsDto,
   ProcessingDocumentTypeEnum,
@@ -44,7 +43,7 @@ async function createIncomingDocument(incomingDocument: FormData) {
   );
 }
 
-async function updateIncomingDocument(incomingDocument: IncomingDocumentPutDto) {
+async function updateIncomingDocument(incomingDocument: FormData) {
   return await axios.put<IncomingDocumentDto>(`${INCOMING_DOCUMENTS_URL}/update`, incomingDocument);
 }
 

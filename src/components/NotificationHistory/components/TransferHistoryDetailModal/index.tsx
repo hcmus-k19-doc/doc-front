@@ -11,7 +11,6 @@ import {
 } from 'components/NotificationHistory/core/models';
 import { PRIMARY_COLOR } from 'config/constant';
 import { format } from 'date-fns';
-import { ParentFolderEnum } from 'models/doc-file-models';
 import attachmentService from 'services/AttachmentService';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
@@ -83,7 +82,16 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
       key: 'attachmentDetail',
       fixed: 'right',
       render: (text, record, index) => {
-        return <Attachments attachments={record?.attachments} isReadOnly={true} />;
+        return (
+          <Attachments
+            attachmentList={record?.attachments}
+            setAttachmentList={() => {
+              return;
+            }}
+            isReadOnly={true}
+            isEditing={false}
+          />
+        );
       },
     },
   ];

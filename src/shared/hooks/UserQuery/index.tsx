@@ -13,7 +13,7 @@ import adminService from 'services/AdminService';
 import userService from 'services/UserService';
 import { PaginationStateUtils } from 'shared/models/states';
 
-import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
+import { IncomingDocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
 
 import { DocUserQueryState } from './core/states';
@@ -92,7 +92,7 @@ export function useTruongPhongs() {
 
 export function useUserMutation() {
   const queryClient = useQueryClient();
-  const query = useRecoilValue<DocQueryState>(queryState);
+  const query = useRecoilValue<IncomingDocQueryState>(queryState);
   const showAlert = useSweetAlert();
 
   return useMutation({
@@ -141,7 +141,7 @@ export function useUserMutation() {
 
 export function useUserDeleteMutation() {
   const queryClient = useQueryClient();
-  const query = useRecoilValue<DocQueryState>(queryState);
+  const query = useRecoilValue<IncomingDocQueryState>(queryState);
 
   return useMutation({
     mutationKey: ['MUTATION.USER_DELETE'],

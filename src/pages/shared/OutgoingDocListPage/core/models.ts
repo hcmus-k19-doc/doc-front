@@ -18,6 +18,7 @@ export type TableRowDataType = {
   isDocTransferred: boolean;
   isDocCollaborator: boolean;
   isTransferable: boolean;
+  deadline: string;
 };
 
 export type TableDataType = {

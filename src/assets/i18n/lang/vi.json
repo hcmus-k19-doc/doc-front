@@ -29,7 +29,8 @@
         "document_types": "Loại văn bản",
         "departments": "Phòng ban",
         "calendar": "Lịch",
-        "report": "Báo cáo"
+        "report": "Báo cáo",
+        "statistics": "Thống kê"
       }
     },
     "BUTTON": {
@@ -205,11 +206,12 @@
     "CLOSED": "Đã xử lý",
     "WAITING_FOR_OUTGOING_NUMBER": "Chờ số đi",
     "READY_TO_RELEASE": "Sẵn sàng phát hành",
-    "RELEASED": "Đã phát hành"
+    "RELEASED": "Đã phát hành",
+    "ALL": "Tất cả"
   },
   "search_criteria_bar": {
     "incoming_number": "Số văn bản đến",
-    "outgoing_number": "Số văn bản đi",
+    "outgoing_number": "Số phát hành",
     "original_symbol_number": "Số ký hiệu gốc",
     "document_type": "Loại văn bản",
     "distribution_organization": "Cơ quan ban hành",
@@ -224,9 +226,11 @@
       "role": "Vai trò",
       "department": "Phòng ban"
     },
-    "expert_name": "Tên người xử lý",
+    "name_of_handler": "Tên người xử lý",
     "statistic_date": "Thời gian thống kê",
-    "doc_types": "Loại văn bản"
+    "doc_types": "Loại văn bản",
+    "status": "Trạng thái",
+    "document_name": "Tên văn bản"
   },
   "incomingDocListPage": {
     "table": {
@@ -316,7 +320,7 @@
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tiếp nhận văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại."
@@ -387,18 +391,22 @@
       "end": "Kết thúc",
       "transer_detail": "Xem chi tiết chuyển xử lý",
       "export": "In danh sách",
-      "cancel": "Hủy"
+      "cancel": "Hủy",
+      "delete": "Xóa"
     },
     "message": {
       "file_error": "đính kèm không thành công.",
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tiếp nhận văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại.",
-      "closed_successfully": "Văn bản đã được kết thúc"
+      "closed_successfully": "Văn bản đã được kết thúc",
+      "confirm_finish": "Bạn có chắc chắn muốn kết thúc văn bản này?",
+      "confirm_delete_file": "Bạn có chắc chắn muốn xoá tệp đính kèm này?",
+      "delete_file_success": "Xoá tệp đính kèm thành công"
     },
     "comment": {
       "title": "Góp ý văn bản",
@@ -409,7 +417,7 @@
     "processing_step": {
       "title": "Tiến độ xử lý",
       "step_1": {
-        "title": "Giám đốc",
+        "title": "Hiệu trưởng",
         "description": "{{department}} - {{fullName}}"
       },
       "step_2": {
@@ -470,7 +478,7 @@
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "success": "Tạo văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại."
@@ -497,7 +505,8 @@
         "transferDetailBtn": "Chuyển xử lý",
         "transferDetail": "Xem chi tiết",
         "ordinalNumber": "STT",
-        "name": "Tên văn bản"
+        "name": "Tên văn bản",
+        "deadline": "Thời hạn xử lý"
       },
       "tooltip": {
         "downloadAttachment": "Tải tệp đính kèm"
@@ -568,19 +577,22 @@
       "cancel": "Hủy",
       "transfer_secretary": "Chuyển văn thư",
       "view_transfer_detail": "Xem chi tiết luân chuyển",
-      "export": "In danh sách"
+      "export": "In danh sách",
+      "delete": "Xóa"
     },
     "message": {
       "file_error": "đính kèm không thành công.",
       "file_success": "đã được đính kèm",
       "file_max_count_error": "Chỉ có thể đính kèm tối đa 3 tệp",
       "file_type_error": "Chỉ có thể đính kèm các tệp có định dạng .pdf, .jpg, .jpeg, .png",
-      "file_size_error": "Kích thước tệp không được vượt quá 3MB",
+      "file_size_error": "Kích thước tệp không được vượt quá 10MB",
       "file_duplicate_error": "Tệp đã được đính kèm",
       "edit_success": "Chỉnh sửa văn bản thành công",
       "error": "Đã có lỗi xảy ra, vui lòng thử lại",
       "confirm_publish": "Bạn có chắc chắn muốn phát hành văn bản này?",
+      "confirm_delete_file": "Bạn có chắc chắn muốn xoá tệp đính kèm này?",
       "publish_success": "Phát hành văn bản thành công",
+      "delete_file_success": "Xoá tệp đính kèm thành công",
       "report_success": "Trình lãnh đạo thành công",
       "transfer_secretary_success": "Chuyển văn thư thành công"
     },
@@ -612,7 +624,7 @@
       "processing_method_required": "Hãy chọn cách thức xử lý"
     },
     "sidebar": {
-      "director": "Ban giám đốc",
+      "director": "Hiệu trưởng",
       "chief_of_office": "Chánh văn phòng",
       "secretary": "Văn thư",
       "expert": "Chuyên viên"
@@ -625,10 +637,10 @@
       "collaborators_required": "Hãy chọn người tham gia",
       "processing_method_required": "Hãy chọn cách thức xử lý",
       "collaborator_can_not_has_same_value_with_assignee": "Người tham gia không được trùng với người nhận",
-      "only_unprocessed_docs_can_be_transferred_to_director": "Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc hoặc Văn thư cùng cấp",
+      "only_unprocessed_docs_can_be_transferred_to_director": "Chỉ có thể chuyển văn bản chưa xử lý tới Ban Hiệu trưởng hoặc Văn thư cùng cấp",
       "only_in_progress_docs_can_be_transferred_to_manager_or_secretary_or_expert": "Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng, Văn thư hoặc Chuyên viên",
       "only_unprocessed_docs_can_be_transferred_to_manager": "Chỉ có thể chuyển văn bản chưa xử lý tới Chánh văn phòng ",
-      "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Chỉ có thể chuyển văn bản đang xử lý tới Ban Giám đốc hoặc Văn thư",
+      "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Chỉ có thể chuyển văn bản đang xử lý tới Hiệu trưởng hoặc Văn thư",
       "some_user_is_already_assigned_to_this_doc": "Văn bản đã được phân công cho người này"
     }
   },
@@ -754,8 +766,8 @@
     },
     "table": {
       "columns": {
-        "ordinal_Number": "STT",
-        "expert_name": "Tên người xử lý",
+        "ordinal_number": "STT",
+        "name_of_handler": "Tên người xử lý",
         "unprocessed": "Chưa xử lý",
         "closed": "Đã xử lý",
         "on_time": "Đúng hạn",

@@ -88,6 +88,10 @@ export interface TransferDocScreenFormProps {
   processingMethod: string;
 }
 
+export interface SearchCriteriaProps {
+  isLoading: boolean;
+}
+
 // export const processMethodOptions: SelectProps['options'] = [
 //   { value: ProcessMethod.BAO_CAO_KET_QUA, label: 'Báo cáo kết quả thực hiện' },
 //   { value: ProcessMethod.LUU_THAM_KHAO, label: 'Lưu tham khảo' },

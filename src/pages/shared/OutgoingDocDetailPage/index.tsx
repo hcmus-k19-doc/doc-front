@@ -23,9 +23,11 @@ import {
   Row,
   Select,
   Skeleton,
+  Upload,
   UploadProps,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
 import Attachments from 'components/Attachments';
@@ -36,9 +38,10 @@ import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferOutgoingDocModalDetail from 'components/TransferDocModal/components/TransferOutgoingDocModalDetail';
-import { PRIMARY_COLOR } from 'config/constant';
+import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
 import {
+  AttachmentDto,
   Confidentiality,
   DepartmentDto,
   DocSystemRoleEnum,
@@ -86,6 +89,8 @@ function OutgoingDocDetailPage() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isReviewing, setIsReviewing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isReleasing, setIsReleasing] = useState(false);
   const [isReleased, setIsReleased] = useState(false);
 
   const linkedDocuments = useDocOutLinkedDocumentsQuery(+(docId || 1));
@@ -106,6 +111,7 @@ function OutgoingDocDetailPage() {
 
   const [modal, contextHolder] = Modal.useModal();
   const [loading, setLoading] = useState<boolean>(false);
+  const [attachmentList, setAttachmentList] = useState<AttachmentDto[]>([]);
 
   const fetchForm = () => {
     if (!isLoading) {
@@ -132,6 +138,7 @@ function OutgoingDocDetailPage() {
 
   useEffect(() => {
     fetchForm();
+    setAttachmentList(data?.data?.attachments || []);
   }, [isLoading, isReleased, data?.data]);
 
   const initForm = (outgoingDocument: OutgoingDocumentGetDto) => {
@@ -191,31 +198,77 @@ function OutgoingDocDetailPage() {
   const fileProps: UploadProps = {
     name: 'file',
     multiple: true,
+    maxCount: 3 - attachmentList.length,
     customRequest: dummyRequest,
+    beforeUpload: (file: RcFile) => {
+      const isValidSize = file.size < MAX_FILE_SIZE;
+      const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
+      // Check file duplicate
+      const isDuplicate = form
+        .getFieldValue('files')
+        ?.fileList?.find((f: UploadFile) => f.name === file.name);
+      // Check file max count
+      const isMaxCount =
+        form.getFieldValue('files')?.fileList?.length === undefined
+          ? attachmentList.length + 1 > 3
+          : form.getFieldValue('files')?.fileList?.length + attachmentList.length + 1 > 3;
+      const isExisted = attachmentList.find((attachment) => attachment.fileName === file.name);
+      if (isMaxCount) {
+        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
+      } else {
+        if (isDuplicate) {
+          message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+        } else {
+          if (isExisted) {
+            message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+          } else {
+            // Check file type
+            if (!isValidType) {
+              message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
+            } else {
+              // Check file size (max 5MB)
+              if (!isValidSize) {
+                message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
+              }
+            }
+          }
+        }
+      }
+
+      return (
+        (isValidType && isValidSize && !isDuplicate && !isExisted && !isMaxCount) ||
+        Upload.LIST_IGNORE
+      );
+    },
     onChange(info) {
       const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
       if (status === 'done') {
-        message.success(`${info.file.name} ${t('outgoing_doc_detail_page.message.file_success')}`);
+        message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('outgoing_doc_detail_page.message.file_error')}`);
+        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
       }
     },
   };
 
   const saveChange = async (values: any) => {
     try {
-      delete values.files;
+      setIsSaving(true);
 
-      const document: OutgoingDocumentPutDto = {
+      const outgoingDocument = new FormData();
+      if (values.files !== undefined) {
+        values.files.fileList.forEach((file: any) => {
+          outgoingDocument.append('attachments', file.originFileObj);
+        });
+        delete values.files;
+      }
+
+      const outgoingDocumentPutDto: OutgoingDocumentPutDto = {
         ...values,
         id: +(docId || 0),
         releaseDate: values.releaseDate ? new Date(values.releaseDate) : null,
       };
-
-      const response = await outgoingDocumentService.updateOutgoingDocument(document);
+      outgoingDocument.append('outgoingDocumentPutDto', JSON.stringify(outgoingDocumentPutDto));
+      const response = await outgoingDocumentService.updateOutgoingDocument(outgoingDocument);
 
       if (response.status === 200) {
         showAlert({
@@ -225,6 +278,8 @@ function OutgoingDocDetailPage() {
           timer: 2000,
         });
         setIsEditing(false);
+        form.resetFields();
+        fetchForm();
         queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
@@ -234,6 +289,8 @@ function OutgoingDocDetailPage() {
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -282,7 +339,7 @@ function OutgoingDocDetailPage() {
         id: +(docId || 0),
         ...formValues,
       };
-
+      setIsReleasing(true);
       const response = await outgoingDocumentService.publishOutgoingDocument(document);
 
       if (response.status === 200) {
@@ -304,6 +361,8 @@ function OutgoingDocDetailPage() {
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
+    } finally {
+      setIsReleasing(false);
     }
   };
 
@@ -313,7 +372,6 @@ function OutgoingDocDetailPage() {
       content: <div className='mt-3'>{t('outgoing_doc_detail_page.message.confirm_publish')}</div>,
       okText: t('outgoing_doc_detail_page.button.publish_modal'),
       cancelText: t('outgoing_doc_detail_page.button.cancel'),
-
       onOk: publishDocument,
     });
   };
@@ -672,7 +730,12 @@ function OutgoingDocDetailPage() {
 
               <div className='mb-10'></div>
 
-              <Attachments attachments={data?.data?.attachments || []} isReadOnly={false} />
+              <Attachments
+                attachmentList={attachmentList}
+                setAttachmentList={setAttachmentList}
+                isReadOnly={false}
+                isEditing={isEditing}
+              />
 
               <div className='mb-10'></div>
 
@@ -747,6 +810,7 @@ function OutgoingDocDetailPage() {
                 size='large'
                 htmlType='button'
                 className='mr-5'
+                loading={isSaving || isReleasing}
                 onClick={() => onCancel()}>
                 {t('outgoing_doc_detail_page.button.cancel')}
               </Button>
@@ -769,6 +833,7 @@ function OutgoingDocDetailPage() {
                 size='large'
                 htmlType='button'
                 className='mr-5'
+                loading={isSaving}
                 onClick={() => {
                   form.submit();
                 }}>
@@ -783,6 +848,8 @@ function OutgoingDocDetailPage() {
                   size='large'
                   htmlType='button'
                   className='mr-5'
+                  loading={isReleasing}
+                  hidden={isEditing}
                   onClick={onPublishConfirm}>
                   {t('outgoing_doc_detail_page.button.publish')}
                 </Button>
@@ -792,13 +859,19 @@ function OutgoingDocDetailPage() {
                   size='large'
                   htmlType='button'
                   className='mr-5'
+                  hidden={isEditing}
                   onClick={onPublishReview}>
                   {t('outgoing_doc_detail_page.button.review')}
                 </Button>
               ))}
 
             {currentUser?.role !== DocSystemRoleEnum.VAN_THU && data?.data?.isTransferable && (
-              <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+              <Button
+                type='primary'
+                size='large'
+                htmlType='button'
+                onClick={handleOnOpenModal}
+                hidden={isEditing || isReviewing}>
                 {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
                   ? t('outgoing_doc_detail_page.button.view_transfer_detail')
                   : currentUser?.role === DocSystemRoleEnum.HIEU_TRUONG
@@ -811,7 +884,12 @@ function OutgoingDocDetailPage() {
           <Row className='my-3 mb-10'>
             {currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
               (data?.data?.isDocTransferred || data?.data?.isDocCollaborator) && (
-                <Button type='primary' size='large' htmlType='button' onClick={handleOnOpenModal}>
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  onClick={handleOnOpenModal}
+                  hidden={isEditing || isReviewing}>
                   {t('outgoing_doc_detail_page.button.view_transfer_detail')}
                 </Button>
               )}

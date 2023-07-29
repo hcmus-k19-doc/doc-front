@@ -70,7 +70,7 @@ export default {
   user: {
     invalid: 'Tài khoản không hợp lệ',
     role: {
-      giam_doc: 'Giám đốc',
+      giam_doc: 'Hiệu trưởng',
       chuyen_vien: 'Chuyên viên',
       truong_phong: 'Trưởng phòng',
       van_thu: 'Văn thư',
@@ -299,7 +299,7 @@ export default {
       processing_method: 'Cách thức xử lý',
     },
     sidebar: {
-      director: 'Ban giám đốc',
+      director: 'Hiệu trưởng',
       chief_of_office: 'Chánh văn phòng',
       secretary: 'Văn thư',
     },
@@ -312,7 +312,7 @@ export default {
       collaborator_can_not_has_same_value_with_assignee:
         'Người tham gia không được trùng với người nhận',
       only_unprocessed_docs_can_be_transferred_to_director:
-        'Chỉ có thể chuyển văn bản chưa xử lý tới Ban Giám đốc',
+        'Chỉ có thể chuyển văn bản chưa xử lý tới Hiệu trưởng',
       only_in_progress_docs_can_be_transferred_to_manager_or_secretary:
         'Chỉ có thể chuyển văn bản đang xử lý tới Chánh văn phòng hoặc Văn thư',
     },

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
 import { Button, Col, Collapse, DatePicker, Form, Input, Row, Select } from 'antd';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
+import { SearchCriteriaProps } from 'components/TransferDocModal/core/models';
 import { PRIMARY_COLOR } from 'config/constant';
+import { ProcessingStatus } from 'models/doc-main-models';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq } from 'shared/hooks/IncomingDocumentListQuery';
-import { SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import { IncomingDocSearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 const { Panel } = Collapse;
@@ -18,23 +20,20 @@ const ExpandIcon = () => {
   return <FilterFilled style={{ color: PRIMARY_COLOR }} />;
 };
 
-const IncomingDocumentSearchForm = () => {
+const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }) => {
   const { t } = useTranslation();
   const { data: documentTypes } = useDocumentTypesRes();
   const { distributionOrgs } = useDistributionOrgRes();
   const [form] = useForm();
   const [incomingDocReqQuery, setIncomingDocReqQuery] = useIncomingDocReq();
-  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <Collapse bordered={false} expandIcon={ExpandIcon}>
       <Panel header={t('common.search_criteria.title')} key='1'>
         <Form
           form={form}
-          onFinish={(values: SearchState) => {
-            setLoading(true);
+          onFinish={(values: IncomingDocSearchState) => {
             setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
-            setLoading(false);
           }}
           layout='vertical'>
           <Row justify='space-between'>
@@ -72,7 +71,7 @@ const IncomingDocumentSearchForm = () => {
                     name='distributionOrgId'
                     label={t('search_criteria_bar.distribution_organization')}>
                     <Select>
-                      {distributionOrgs?.map((distributionOrg: any) => (
+                      {distributionOrgs?.map((distributionOrg) => (
                         <Select.Option key={distributionOrg.id} value={distributionOrg.id}>
                           {distributionOrg.name}
                         </Select.Option>
@@ -104,20 +103,44 @@ const IncomingDocumentSearchForm = () => {
                 </Col>
               </Row>
               <Row>
+                <Col span={7}>
+                  <Form.Item name='status' label={t('search_criteria_bar.status')}>
+                    <Select>
+                      {[
+                        'ALL',
+                        ProcessingStatus.UNPROCESSED,
+                        ProcessingStatus.IN_PROGRESS,
+                        ProcessingStatus.CLOSED,
+                      ].map((status: ProcessingStatus | string) => (
+                        <Select.Option key={status} value={status !== 'ALL' ? status : null}>
+                          {t(`PROCESSING_STATUS.${status}`)}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={1}></Col>
+                <Col span={7}>
+                  <Form.Item name='documentName' label={t('search_criteria_bar.document_name')}>
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
                 <Col span={23}>
                   <Form.Item name='summary' label={t('search_criteria_bar.summary')}>
                     <TextArea rows={4} />
                   </Form.Item>
                 </Col>
               </Row>
-              <Button className='px-8 mr-5' htmlType='submit' type='primary' loading={loading}>
+              <Button className='px-8 mr-5' htmlType='submit' type='primary' loading={isLoading}>
                 {t('common.search_criteria.search')}
               </Button>
               <Button
                 onClick={() => form.resetFields()}
                 htmlType='submit'
                 type='default'
-                loading={loading}
+                loading={isLoading}
                 className='px-8 reset-btn'>
                 {t('common.search_criteria.reset')}
               </Button>
