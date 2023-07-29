@@ -49,6 +49,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [processingDuration, setProcessingDuration] = useState<string>('');
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
@@ -172,18 +173,31 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     );
   };
 
+  const handleReturnRequest = () => {
+    return null;
+  };
+
   const renderButtons = () => {
     const buttons = [];
     // doi voi incoming document => chuyen vien khong duoc rut lai van ban
-    if (currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN) {
+    // neu cap tren chua xu ly => co the rut lai
+    if (
+      currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
+      transferredDoc?.isDocTransferredByNextUserInFlow === false
+    ) {
       buttons.push(
-        <Button key='ok' type='primary' onClick={handleClose} danger>
+        <Button
+          key='widthdraw'
+          type='primary'
+          onClick={handleClose}
+          className='danger-button'
+          loading={isLoading}>
           {t('transfer_modal.button.withdraw')}
         </Button>
       );
     }
     buttons.push(
-      <Button key='ok' type='primary' onClick={handleClose}>
+      <Button key='ok' type='primary' onClick={handleClose} loading={isLoading}>
         OK
       </Button>
     );

@@ -52,6 +52,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [transferDate, setTransferDate] = useState<string>('');
   useEffect(() => {
@@ -170,16 +171,43 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
     );
   };
 
+  const handleReturnRequest = () => {
+    return null;
+  };
+
+  const renderButtons = () => {
+    const buttons = [];
+    // doi voi outgoing document => van thu khong duoc rut lai van ban
+    // neu cap tren chua xu ly => co the rut lai
+    if (
+      currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
+      transferredDoc?.isDocTransferredByNextUserInFlow === false
+    ) {
+      buttons.push(
+        <Button
+          key='widthdraw'
+          type='primary'
+          onClick={handleClose}
+          className='danger-button'
+          loading={isLoading}>
+          {t('transfer_modal.button.withdraw')}
+        </Button>
+      );
+    }
+    buttons.push(
+      <Button key='ok' type='primary' onClick={handleClose} loading={isLoading}>
+        OK
+      </Button>
+    );
+    return buttons;
+  };
+
   return (
     <Modal
       title={`${transferLabel}`}
       open={isModalOpen}
       onCancel={handleClose}
-      footer={[
-        <Button key='ok' type='primary' onClick={handleClose}>
-          OK
-        </Button>,
-      ]}
+      footer={renderButtons()}
       width={1000}>
       <Divider />
       <Row className='mt-5'>
