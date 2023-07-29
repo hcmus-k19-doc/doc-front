@@ -201,6 +201,7 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
               <Typography.Text strong>{`${t('attachments.title')}:`}</Typography.Text>
               <Table
                 dataSource={dataSource}
+                loading={props.isTransferHistoryLoading}
                 columns={columns}
                 pagination={false}
                 rowClassName={() => 'row-hover'}
