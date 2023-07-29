@@ -39,6 +39,7 @@ const PageHeader: React.FC = () => {
   const { currentUser } = useAuth();
   const [transferHistory, setTransferHistory] = useState<TransferHistoryDto[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isTransferHistoryLoading, setIsTransferHistoryLoading] = useState(false);
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -100,6 +101,7 @@ const PageHeader: React.FC = () => {
   };
 
   const appendData = async () => {
+    setIsTransferHistoryLoading(true);
     try {
       const searchCriteria: TransferHistorySearchCriteriaDto = {
         userId: currentUser?.id || -1,
@@ -117,12 +119,18 @@ const PageHeader: React.FC = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsTransferHistoryLoading(false);
     }
   };
 
   useEffect(() => {
     appendData();
   }, []);
+
+  // useEffect(() => {
+  //   appendData();
+  // }, [showNotifications]);
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
@@ -179,6 +187,7 @@ const PageHeader: React.FC = () => {
                 onScroll={onScroll}
                 notifications={transferHistory}
                 handleNotificationClose={handleNotificationClose}
+                isTransferHistoryLoading={isTransferHistoryLoading}
               />
             }
             showArrow={false}>

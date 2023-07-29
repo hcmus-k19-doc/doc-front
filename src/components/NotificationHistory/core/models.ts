@@ -6,6 +6,7 @@ export interface NotificationHistoryProps {
   notifications: any[];
   onScroll: (e: React.UIEvent<HTMLElement, UIEvent>) => void;
   handleNotificationClose: () => void;
+  isTransferHistoryLoading: boolean;
 }
 
 export interface TransferHistoryDetailModalProps {
@@ -13,6 +14,7 @@ export interface TransferHistoryDetailModalProps {
   handleClose: () => void;
   form: FormInstance;
   transferHistory: TransferHistoryDto;
+  isTransferHistoryLoading: boolean;
 }
 
 export interface UserItem {
