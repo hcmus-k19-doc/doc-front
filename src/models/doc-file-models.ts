@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-29 09:47:01.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-29 14:37:24.
 
 export const enum ParentFolderEnum {
     ICD = "ICD",
