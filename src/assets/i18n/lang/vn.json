@@ -644,6 +644,10 @@
       "withdraw": "Rút lại",
       "send_back": "Trả lại",
       "extend_request": "Yêu cầu gia hạn"
+    },
+    "error": {
+      "document_already_processed_by_next_user_in_flow": "Văn bản đã được xử lý bởi người tiếp theo trong luồng xử lý",
+      "document_already_processed_by_you": "Văn bản đã được xử lý bởi bạn và không thể trả lại"
     }
   },
   "internal_server_error_page": {

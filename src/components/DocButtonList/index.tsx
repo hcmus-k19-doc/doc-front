@@ -41,6 +41,7 @@ const DocButtonList = ({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isClosing, setIsClosing] = useState(false);
+  console.log('DocButtonList', documentDetail);
 
   // TODO: Move this function to detail page
   async function finishDocument() {

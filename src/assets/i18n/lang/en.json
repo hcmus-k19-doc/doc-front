@@ -630,6 +630,10 @@
       "withdraw": "Withdraw",
       "send_back": "Send Back",
       "extend_request": "Extend Request"
+    },
+    "error": {
+      "document_already_processed_by_next_user_in_flow": "This document has already been processed by the next user in the flow",
+      "document_already_processed_by_you": "This document has already been processed by you and cannot be sent back"
     }
   },
   "internal_server_error_page": {

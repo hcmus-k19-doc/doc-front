@@ -7,13 +7,18 @@ import format from 'date-fns/format';
 import dayjs from 'dayjs';
 import {
   DocSystemRoleEnum,
+  ProcessingDocumentTypeEnum,
+  ReturnRequestPostDto,
+  ReturnRequestType,
   TransferDocumentMenuConfig,
   TransferDocumentModalSettingDto,
+  UserDto,
 } from 'models/doc-main-models';
 import { transferDocDetailModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
+import { getStep } from 'utils/TransferDocUtils';
 
 import DirectorScreenComponent from '../../components/DirectorScreenComponent';
 import ExpertScreenComponent from '../../components/ExpertScreenComponent';
@@ -172,6 +177,15 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
   };
 
   const handleReturnRequest = () => {
+    const returnRequestPostDto: ReturnRequestPostDto = {
+      currentProcessingUserId: 13,
+      previousProcessingUserId: 3,
+      documentIds: [],
+      documentType: ProcessingDocumentTypeEnum.INCOMING_DOCUMENT,
+      reason: '',
+      step: getStep(currentUser as UserDto, null, true),
+      returnRequestType: ReturnRequestType.WITHDRAW,
+    };
     return null;
   };
 
@@ -191,6 +205,23 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
           className='danger-button'
           loading={isLoading}>
           {t('transfer_modal.button.withdraw')}
+        </Button>
+      );
+    }
+    // doi voi outgoing document => chuyen vien khong duoc tra lai van ban
+    // neu ban chua xu ly => co the tra lai
+    if (
+      currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
+      transferredDoc?.isDocTransferred === false
+    ) {
+      buttons.push(
+        <Button
+          key='send_back'
+          type='primary'
+          onClick={handleClose}
+          className='danger-button'
+          loading={isLoading}>
+          {t('transfer_modal.button.send_back')}
         </Button>
       );
     }
