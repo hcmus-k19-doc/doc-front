@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-28 21:58:46.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-29 22:44:32.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -174,6 +174,8 @@ export interface OutgoingDocSearchCriteriaDto {
     releaseDateFrom: DateAsString;
     releaseDateTo: DateAsString;
     summary: string;
+    status: OutgoingDocumentStatusEnum;
+    documentName: string;
 }
 
 export interface OutgoingDocumentGetDto extends DocAbstractDto {
@@ -272,7 +274,8 @@ export interface SearchCriteriaDto {
     processingDurationFrom: DateAsString;
     processingDurationTo: DateAsString;
     summary: string;
-    processingStatus: ProcessingStatus;
+    status: ProcessingStatus;
+    documentName: string;
 }
 
 export interface SendingLevelDto extends DocAbstractDto {
@@ -482,8 +485,6 @@ export const enum DocSystemRoleEnum {
 export const enum OutgoingDocumentStatusEnum {
     UNPROCESSED = "UNPROCESSED",
     IN_PROGRESS = "IN_PROGRESS",
-    WAITING_FOR_OUTGOING_NUMBER = "WAITING_FOR_OUTGOING_NUMBER",
-    READY_TO_RELEASE = "READY_TO_RELEASE",
     RELEASED = "RELEASED",
 }
 

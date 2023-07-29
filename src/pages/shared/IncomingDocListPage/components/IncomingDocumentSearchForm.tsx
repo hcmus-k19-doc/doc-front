@@ -10,7 +10,7 @@ import { ProcessingStatus } from 'models/doc-main-models';
 import { useDistributionOrgRes } from 'shared/hooks/DistributionOrgsQuery';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useIncomingDocReq } from 'shared/hooks/IncomingDocumentListQuery';
-import { SearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
+import { IncomingDocSearchState } from 'shared/hooks/IncomingDocumentListQuery/core/states';
 import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 const { Panel } = Collapse;
@@ -32,7 +32,7 @@ const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }
       <Panel header={t('common.search_criteria.title')} key='1'>
         <Form
           form={form}
-          onFinish={(values: SearchState) => {
+          onFinish={(values: IncomingDocSearchState) => {
             setIncomingDocReqQuery({ ...incomingDocReqQuery, ...values, page: 1 });
           }}
           layout='vertical'>
@@ -107,11 +107,12 @@ const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }
                   <Form.Item name='status' label={t('search_criteria_bar.status')}>
                     <Select>
                       {[
+                        'ALL',
                         ProcessingStatus.UNPROCESSED,
                         ProcessingStatus.IN_PROGRESS,
                         ProcessingStatus.CLOSED,
-                      ].map((status) => (
-                        <Select.Option key={status} value={status}>
+                      ].map((status: ProcessingStatus | string) => (
+                        <Select.Option key={status} value={status !== 'ALL' ? status : null}>
                           {t(`PROCESSING_STATUS.${status}`)}
                         </Select.Option>
                       ))}
@@ -119,6 +120,11 @@ const IncomingDocumentSearchForm: React.FC<SearchCriteriaProps> = ({ isLoading }
                   </Form.Item>
                 </Col>
                 <Col span={1}></Col>
+                <Col span={7}>
+                  <Form.Item name='documentName' label={t('search_criteria_bar.document_name')}>
+                    <Input />
+                  </Form.Item>
+                </Col>
               </Row>
               <Row>
                 <Col span={23}>

@@ -1,6 +1,6 @@
 {
   "LOGIN": {
-    "SUBTITLE": "Approval and Release of Documents System",
+    "SUBTITLE": "Document approval and Publication system",
     "SUBMITTER": {
       "SUBMIT_TEXT": "Log in"
     },
@@ -64,7 +64,7 @@
       "title": "Search Criteria",
       "search": "Search",
       "reset": "Reset",
-      "report": "Report",
+      "report": "Report Criteria",
       "export": "Export"
     },
     "button": {
@@ -84,7 +84,7 @@
       "no_work": "No pending tasks",
       "no_notification": "No notifications"
     },
-    "footer": "HCMUS © {{year}} Approval and Release of Documents System",
+    "footer": "HCMUS © {{year}} Document approval and Publication system",
     "comment": {
       "title": "Document Feedback",
       "button": {
@@ -205,7 +205,8 @@
     "CLOSED": "Closed",
     "WAITING_FOR_OUTGOING_NUMBER": "Waiting for Outgoing Number",
     "READY_TO_RELEASE": "Ready to Release",
-    "RELEASED": "Released"
+    "RELEASED": "Released",
+    "ALL": "All"
   },
   "search_criteria_bar": {
     "incoming_number": "Incoming Document Number",
@@ -226,7 +227,9 @@
     },
     "name_of_handler": "Handler",
     "statistic_date": "Statistic Date",
-    "doc_types": "Document Types"
+    "doc_types": "Document Types",
+    "status": "Status",
+    "document_name": "Document Name"
   },
   "incomingDocListPage": {
     "table": {

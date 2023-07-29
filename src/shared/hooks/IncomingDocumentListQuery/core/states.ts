@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs';
 import { ProcessingStatus } from 'models/doc-main-models';
 import { PaginationState } from 'shared/models/states';
 
-export type SearchState = {
+export type IncomingDocSearchState = {
   incomingNumber?: string;
   originalSymbolNumber?: string;
   documentTypeId?: number;
@@ -11,6 +11,7 @@ export type SearchState = {
   processingDuration?: Dayjs[];
   summary?: string;
   status?: ProcessingStatus;
+  documentName?: string;
 };
 
-export type DocQueryState = PaginationState & SearchState;
+export type IncomingDocQueryState = PaginationState & IncomingDocSearchState;
