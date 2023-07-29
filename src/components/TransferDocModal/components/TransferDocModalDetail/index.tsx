@@ -44,6 +44,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   type,
   loading,
 }) => {
+  console.log('TransferDocModalDetail', transferredDoc, transferDocumentDetail);
   const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [processingDuration, setProcessingDuration] = useState<string>('');

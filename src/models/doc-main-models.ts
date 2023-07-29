@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-28 19:51:40.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-29 09:47:19.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -116,6 +116,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     urgency: Urgency;
     confidentiality: Confidentiality;
     isDocTransferred: boolean;
+    isDocTransferredByNextUserInFlow: boolean;
     isDocCollaborator: boolean;
     isTransferable: boolean;
     isCloseable: boolean;
@@ -193,6 +194,7 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     status: OutgoingDocumentStatusEnum;
     attachments: AttachmentDto[];
     isDocTransferred: boolean;
+    isDocTransferredByNextUserInFlow: boolean;
     isDocCollaborator: boolean;
     isTransferable: boolean;
     isReleasable: boolean;
