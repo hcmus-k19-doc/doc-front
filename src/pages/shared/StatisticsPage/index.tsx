@@ -3,14 +3,14 @@ import { CSVLink } from 'react-csv';
 import { Button, Divider, Layout, message, Table, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { ColumnsType } from 'antd/es/table';
+import { useAuth } from 'components/AuthComponent';
 import PageHeader from 'components/PageHeader';
 import ReactECharts from 'echarts-for-react';
 import { t } from 'i18next';
 import { DocSystemRoleEnum, ProcessingStatus } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
+import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useChartStatisticsRes, useStatisticsRes } from 'shared/hooks/StatisticsQuery';
-
-import { useAuth } from '../../../components/AuthComponent';
 
 import DirectorStatisticsSearchForm from './components/DirectorStatisticsSearchForm';
 import StatisticsSearchForm from './components/StatisticsSearchForm';
@@ -26,6 +26,7 @@ const StatisticsPage: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const { data: documentTypes } = useDocumentTypesRes();
   const { currentUser } = useAuth();
 
   const incomingPieChartOptions = {
@@ -103,19 +104,22 @@ const StatisticsPage: React.FC = () => {
       orient: 'vertical',
       right: 'right',
     },
-    xAxis: {},
+    xAxis: [
+      {
+        type: 'category',
+        data: documentTypes?.map((documentType) => documentType.type),
+      },
+    ],
     yAxis: {},
-    series: documentTypeStatisticsWrapperDto?.seriesData.map((seriesData) => {
-      return {
-        name: seriesData.name,
-        type: 'bar',
-        data: [seriesData.value],
-        showBackground: true,
-        backgroundStyle: {
-          color: 'rgba(180, 180, 180, 0.2)',
-        },
-      };
-    }),
+    series: documentTypeStatisticsWrapperDto?.seriesData.map((seriesData) => ({
+      name: seriesData.name,
+      type: 'bar',
+      data: [seriesData.value],
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)',
+      },
+    })),
   };
 
   const columns: ColumnsType<TableRowDataType> = [
