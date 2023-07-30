@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { ArrowUpOutlined, SwapOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Col, Divider, Menu, Modal, Row, Spin, Typography } from 'antd';
@@ -64,6 +65,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
 
+  const { docId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const showAlert = useSweetAlert();
@@ -223,6 +225,9 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
       setReturnRequestReason('');
       hideReturnRequestModal();
       handleClose();
+      if (docId) {
+        queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId as string)]);
+      }
       queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
     } catch (error) {
       if (axios.isAxiosError(error)) {

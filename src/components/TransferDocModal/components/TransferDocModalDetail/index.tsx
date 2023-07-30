@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { ArrowUpOutlined, SwapOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Col, Divider, Menu, Modal, Row, Spin, Typography } from 'antd';
@@ -57,7 +58,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   type,
   loading,
 }) => {
-  // console.log('TransferDocModalDetail', transferredDoc, transferDocumentDetail);
+  console.log('TransferDocModalDetail', transferredDoc, transferDocumentDetail);
   const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [processingDuration, setProcessingDuration] = useState<string>('');
@@ -69,6 +70,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
   const showAlert = useSweetAlert();
+  const { docId } = useParams();
   const [isReturnRequestModalOpen, setIsReturnRequestModalOpen] = useState<boolean>(false);
   const [returnRequestReason, setReturnRequestReason] = useState<string>('');
   const showReturnRequestModal = () => {
@@ -225,6 +227,9 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
       setReturnRequestReason('');
       hideReturnRequestModal();
       handleClose();
+      if (docId) {
+        queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId as string)]);
+      }
       queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_LIST']);
     } catch (error) {
       if (axios.isAxiosError(error)) {
