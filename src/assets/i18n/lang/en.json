@@ -629,12 +629,22 @@
     "button": {
       "withdraw": "Withdraw",
       "send_back": "Send Back",
-      "extend_request": "Extend Request"
+      "extend_request": "Extend Request",
+      "ok": "OK",
+      "cancel": "Cancel",
+      "close_modal": "Close"
     },
     "error": {
       "document_already_processed_by_next_user_in_flow": "This document has already been processed by the next user in the flow",
       "document_already_processed_by_you": "This document has already been processed by you and cannot be sent back"
     }
+  },
+  "withdraw": {
+    "title": "Withdraw Document",
+    "input_reason": "Input reason",
+    "confirm": "Are you sure you want to withdraw this document?",
+    "success": "Document withdrawn successfully",
+    "error": "An error occurred, please try again"
   },
   "internal_server_error_page": {
     "title": "Server Error",
@@ -792,7 +802,8 @@
   },
   "processing_document": {
     "document_already_closed": "The document has been processed and cannot perform this operation.",
-    "illegal_step": "Cannot perform this operation."
+    "illegal_step": "Cannot perform this operation.",
+    "not_found": "No documents found"
   },
   "calendar": {
     "reminder_status": {
@@ -839,5 +850,26 @@
   },
   "notification": {
     "mark_all_as_read": "Mark All as Read"
+  },
+  "link-document": {
+    "unlink_modal": {
+      "title": "Unlink Document",
+      "content": "Are you sure you want to unlink this document?",
+      "ok_text": "Unlink",
+      "cancel_text": "Go back"
+    }
+  },
+  "attachments": {
+    "created_date": "Created Date",
+    "title": "Attached Documents",
+    "at_time": "at",
+    "download": "Download",
+    "preview": "Preview"
+  },
+  "incoming_document": {
+    "not_found": "No incoming documents found"
+  },
+  "outgoing_document": {
+    "not_found": "No outgoing documents found"
   }
 }

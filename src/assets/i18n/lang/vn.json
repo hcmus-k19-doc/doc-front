@@ -643,12 +643,22 @@
     "button": {
       "withdraw": "Rút lại",
       "send_back": "Trả lại",
-      "extend_request": "Yêu cầu gia hạn"
+      "extend_request": "Yêu cầu gia hạn",
+      "ok": "Đồng ý",
+      "cancel": "Hủy",
+      "close_modal": "Đóng"
     },
     "error": {
       "document_already_processed_by_next_user_in_flow": "Văn bản đã được xử lý bởi người tiếp theo trong luồng xử lý",
       "document_already_processed_by_you": "Văn bản đã được xử lý bởi bạn và không thể trả lại"
     }
+  },
+  "withdraw": {
+    "title": "Rút lại văn bản",
+    "input_reason": "Nhập lý do rút lại",
+    "confirm": "Bạn có chắc chắn muốn rút lại văn bản này?",
+    "success": "Rút lại văn bản thành công",
+    "error": "Đã có lỗi xảy ra, vui lòng thử lại"
   },
   "internal_server_error_page": {
     "title": "Lỗi máy chủ",
@@ -806,7 +816,8 @@
   },
   "processing_document": {
     "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
-    "illegal_step": "Không thể thực hiện thao tác này"
+    "illegal_step": "Không thể thực hiện thao tác này",
+    "not_found": "Không tìm thấy văn bản"
   },
   "calendar": {
     "reminder_status": {
@@ -882,5 +893,11 @@
     "at_time": "lúc",
     "download": "Tải về",
     "preview": "Xem trước"
+  },
+  "incoming_document": {
+    "not_found": "Không tìm thấy văn bản đến"
+  },
+  "outgoing_document": {
+    "not_found": "Không tìm thấy văn bản đi"
   }
 }

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpOutlined, SwapOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, Menu, Modal, Row, Spin } from 'antd';
+import { useQueryClient } from '@tanstack/react-query';
+import { Button, Col, Divider, Menu, Modal, Row, Spin, Typography } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
+import { PRIMARY_COLOR } from 'config/constant';
 import format from 'date-fns/format';
 import dayjs from 'dayjs';
 import {
@@ -16,6 +20,8 @@ import {
 } from 'models/doc-main-models';
 import { transferDocDetailModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilState } from 'recoil';
+import returnRequestService from 'services/ReturnRequestService';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { useTransferSettingRes } from 'shared/hooks/TransferDocQuery';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 import { getStep } from 'utils/TransferDocUtils';
@@ -33,6 +39,8 @@ import {
 } from '../../core/models';
 
 import './index.css';
+
+const { Title } = Typography;
 const componentMap: ComponentMap = {
   1: DirectorScreenComponent,
   2: ManagerScreenComponent,
@@ -49,17 +57,33 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   type,
   loading,
 }) => {
-  console.log('TransferDocModalDetail', transferredDoc, transferDocumentDetail);
+  // console.log('TransferDocModalDetail', transferredDoc, transferDocumentDetail);
   const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [processingDuration, setProcessingDuration] = useState<string>('');
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const queryClient = useQueryClient();
   const [, setTransferDocModalItem] = useRecoilState(transferDocDetailModalState);
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [detailModalSetting, setDetailModalSetting] = useState<TransferDocumentModalSettingDto>();
   const { currentUser } = useAuth();
+  const showAlert = useSweetAlert();
+  const [isReturnRequestModalOpen, setIsReturnRequestModalOpen] = useState<boolean>(false);
+  const [returnRequestReason, setReturnRequestReason] = useState<string>('');
+  const showReturnRequestModal = () => {
+    setIsReturnRequestModalOpen(true);
+  };
+
+  const hideReturnRequestModal = () => {
+    setIsReturnRequestModalOpen(false);
+  };
+
+  const onReturnRequestReasonChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setReturnRequestReason(e.target.value);
+  };
 
   const [transferDate, setTransferDate] = useState<string>('');
   useEffect(() => {
@@ -184,11 +208,38 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
       previousProcessingUserId: currentUser?.id || -1,
       documentIds: [transferDocumentDetail?.baseInfo?.documentId || -1],
       documentType: ProcessingDocumentTypeEnum.INCOMING_DOCUMENT,
-      reason: '',
+      reason: returnRequestReason,
       step: getStep(currentUser as UserDto, null, true),
       returnRequestType: ReturnRequestType.WITHDRAW,
     };
-    return null;
+    setIsLoading(true);
+    try {
+      const response = await returnRequestService.createReturnRequest(returnRequestPostDto);
+      console.log('returnRequestPostDto', returnRequestPostDto, response);
+
+      showAlert({
+        icon: 'success',
+        html: t('withdraw.success'),
+        showConfirmButton: true,
+      });
+      setReturnRequestReason('');
+      hideReturnRequestModal();
+      handleClose();
+      queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_LIST']);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        showAlert({
+          icon: 'warning',
+          html: t(error.response?.data.message || 'withdraw.error'),
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
+      } else {
+        console.error(error);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderButtons = () => {
@@ -197,13 +248,14 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     // neu cap tren chua xu ly => co the rut lai
     if (
       currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
-      transferredDoc?.isDocTransferredByNextUserInFlow === false
+      transferredDoc?.isDocTransferredByNextUserInFlow === false &&
+      !transferredDoc?.isDocCollaborator
     ) {
       buttons.push(
         <Button
           key='widthdraw'
           type='primary'
-          onClick={handleClose}
+          onClick={showReturnRequestModal}
           className='danger-button'
           loading={isLoading}>
           {t('transfer_modal.button.withdraw')}
@@ -214,7 +266,8 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     // neu ban chua xu ly => co the tra lai
     if (
       currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
-      transferredDoc?.isDocTransferred === false
+      transferredDoc?.isDocTransferred === false &&
+      !transferredDoc?.isDocCollaborator
     ) {
       buttons.push(
         <Button
@@ -229,41 +282,64 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     }
     buttons.push(
       <Button key='ok' type='primary' onClick={handleClose} loading={isLoading}>
-        OK
+        {t('transfer_modal.button.close_modal')}
       </Button>
     );
     return buttons;
   };
 
   return (
-    <Modal
-      title={`${transferLabel}`}
-      open={isModalOpen}
-      onCancel={handleClose}
-      footer={renderButtons()}
-      width={1000}>
-      <Divider />
-      <Row className='mt-5'>
-        <Col span='5'>
-          <Menu
-            className='h-full'
-            onSelect={handleMenuOnSelect}
-            defaultSelectedKeys={defaultSelectedKeys}
-            mode='inline'
-            theme='light'
-            items={items}
-          />
-        </Col>
-        <Col span='1'></Col>
-        <Col span='18'>
-          {loading ? ( // Render loading indicator when isLoading is true
-            <Spin className={'spin'} />
-          ) : (
-            handleSwitchScreen() // Render your content when isLoading is false
-          )}
-        </Col>
-      </Row>
-    </Modal>
+    <>
+      <Modal
+        title={`${transferLabel}`}
+        open={isModalOpen}
+        onCancel={handleClose}
+        footer={renderButtons()}
+        width={1000}>
+        <Divider />
+        <Row className='mt-5'>
+          <Col span='5'>
+            <Menu
+              className='h-full'
+              onSelect={handleMenuOnSelect}
+              defaultSelectedKeys={defaultSelectedKeys}
+              mode='inline'
+              theme='light'
+              items={items}
+            />
+          </Col>
+          <Col span='1'></Col>
+          <Col span='18'>
+            {loading ? ( // Render loading indicator when isLoading is true
+              <Spin className={'spin'} />
+            ) : (
+              handleSwitchScreen() // Render your content when isLoading is false
+            )}
+          </Col>
+        </Row>
+      </Modal>
+      <Modal
+        title=''
+        centered
+        open={isReturnRequestModalOpen}
+        onOk={handleReturnRequest}
+        okText={t('transfer_modal.button.ok')}
+        cancelText={t('transfer_modal.button.cancel')}
+        onCancel={hideReturnRequestModal}
+        bodyStyle={{ marginBottom: 30 }}
+        cancelButtonProps={{ loading: isLoading }}
+        confirmLoading={isLoading}>
+        <Title level={5}>{t('withdraw.input_reason')}</Title>
+        <TextArea
+          showCount
+          maxLength={100}
+          style={{ height: '80px !important', resize: 'none' }}
+          onChange={onReturnRequestReasonChange}
+          value={returnRequestReason}
+          allowClear
+        />
+      </Modal>
+    </>
   );
 };
 
