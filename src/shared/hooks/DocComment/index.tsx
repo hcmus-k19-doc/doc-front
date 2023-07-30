@@ -8,7 +8,6 @@ import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import commentService from 'services/CommentService';
 
 import { PaginationState } from '../../models/states';
-import { IncomingDocQueryState } from '../IncomingDocumentListQuery/core/states';
 
 const QUERY_COMMENT_KEY = 'QUERY.COMMENT';
 
@@ -25,7 +24,7 @@ const queryState = atom<DocCommentQueryState>({
 export const useDocCommentReq = () => useRecoilState(queryState);
 
 export function useCommentsRes(processingDocumentType: ProcessingDocumentTypeEnum, docId: number) {
-  const query = useRecoilValue<IncomingDocQueryState>(queryState);
+  const query = useRecoilValue<DocCommentQueryState>(queryState);
 
   return useQuery({
     queryKey: [QUERY_COMMENT_KEY, processingDocumentType, docId, query.page, query.pageSize],
@@ -62,6 +61,7 @@ export function useCommentMutation(
   documentId: number
 ) {
   const queryClient = useQueryClient();
+  const query = useRecoilValue<DocCommentQueryState>(queryState);
   return useMutation({
     mutationKey: ['MUTATION.COMMENT'],
     mutationFn: async (commentDto: Partial<CommentDto>) => {
@@ -69,7 +69,13 @@ export function useCommentMutation(
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_COMMENT_KEY, processingDocumentType, documentId]);
+      queryClient.invalidateQueries([
+        QUERY_COMMENT_KEY,
+        processingDocumentType,
+        documentId,
+        query.page,
+        query.pageSize,
+      ]);
     },
   });
 }
