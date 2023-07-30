@@ -89,7 +89,9 @@
       "title": "Document Feedback",
       "button": {
         "title": "Provide Feedback"
-      }
+      },
+      "reply_title": "reply",
+      "replies_title": "replies"
     },
     "processing_step": {
       "processing_step_in": {

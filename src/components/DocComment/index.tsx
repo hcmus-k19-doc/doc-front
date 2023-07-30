@@ -6,9 +6,8 @@ import EventInfo from '@ckeditor/ckeditor5-utils/src/eventinfo';
 import { Button, Form, List, Pagination, Skeleton } from 'antd';
 import { t } from 'i18next';
 import { CommentDto } from 'models/doc-main-models';
+import commentService from 'services/CommentService';
 import { useCommentMutation, useCommentsRes, useDocCommentReq } from 'shared/hooks/DocComment';
-
-import commentService from '../../services/CommentService';
 
 import { CommentListProps, DocCommentProps, EditorProps } from './core';
 
@@ -39,7 +38,9 @@ function CommentList({ comments, loading }: CommentListProps) {
       <List
         loading={loading}
         dataSource={comments}
-        header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+        header={`${comments.length} ${
+          comments.length > 1 ? t('common.comment.replies_title') : t('common.comment.reply_title')
+        }`}
         itemLayout='horizontal'
         renderItem={(props) => (
           <Comment

@@ -90,7 +90,9 @@
       "title": "Góp ý văn bản",
       "button": {
         "title": "Góp ý"
-      }
+      },
+      "reply_title": "trả lời",
+      "replies_title": "trả lời"
     },
     "processing_step": {
       "processing_step_in": {
