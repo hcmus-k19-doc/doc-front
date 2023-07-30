@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { SelectProps } from 'antd';
 
 import processingMethodService from '../../../services/ProcessingMethodService';
 

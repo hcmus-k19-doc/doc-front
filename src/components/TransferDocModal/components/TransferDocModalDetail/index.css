@@ -8,3 +8,11 @@
 .transfer-icon {
   font-size: 24px !important;
 }
+
+.danger-button {
+  background-color: #ff4d4f !important;
+}
+
+.danger-button:hover {
+  background-color: #ff7875 !important;
+}

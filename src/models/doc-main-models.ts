@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-29 22:44:32.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-30 21:35:48.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -116,6 +116,7 @@ export interface IncomingDocumentDto extends DocAbstractDto {
     urgency: Urgency;
     confidentiality: Confidentiality;
     isDocTransferred: boolean;
+    isDocTransferredByNextUserInFlow: boolean;
     isDocCollaborator: boolean;
     isTransferable: boolean;
     isCloseable: boolean;
@@ -195,6 +196,7 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     status: OutgoingDocumentStatusEnum;
     attachments: AttachmentDto[];
     isDocTransferred: boolean;
+    isDocTransferredByNextUserInFlow: boolean;
     isDocCollaborator: boolean;
     isTransferable: boolean;
     isReleasable: boolean;
@@ -262,6 +264,33 @@ export interface ProcessingUserDto {
     department: string;
     docSystemRole: DocSystemRoleEnum;
     roleTitle: string;
+}
+
+export interface ReturnRequestGetDto {
+    id: number;
+    currentProcessingUserId: number;
+    currentProcessingUserFullName: string;
+    currentProcessingUserRole: DocSystemRoleEnum;
+    currentProcessingUserRoleTitle: string;
+    previousProcessingUserId: number;
+    previousProcessingUserFullName: string;
+    previousProcessingUserRole: DocSystemRoleEnum;
+    previousProcessingUserRoleTitle: string;
+    createdAt: string;
+    documentId: number;
+    documentType: ProcessingDocumentTypeEnum;
+    reason: string;
+    returnRequestType: ReturnRequestType;
+}
+
+export interface ReturnRequestPostDto {
+    currentProcessingUserId: number;
+    previousProcessingUserId?: number;
+    documentIds: number[];
+    documentType: ProcessingDocumentTypeEnum;
+    reason: string;
+    step: number;
+    returnRequestType: ReturnRequestType;
 }
 
 export interface SearchCriteriaDto {
@@ -354,6 +383,7 @@ export interface TransferHistoryDto {
     receiverName: string;
     attachments: DocumentWithAttachmentDto[];
     createdTime: DateAsString;
+    returnRequestId: number;
 }
 
 export interface TransferHistorySearchCriteriaDto {
@@ -492,6 +522,11 @@ export const enum ProcessingDocumentRoleEnum {
     ASSIGNEE = "ASSIGNEE",
     REPORTER = "REPORTER",
     COLLABORATOR = "COLLABORATOR",
+}
+
+export const enum ReturnRequestType {
+    WITHDRAW = "WITHDRAW",
+    SEND_BACK = "SEND_BACK",
 }
 
 export const enum FileType {

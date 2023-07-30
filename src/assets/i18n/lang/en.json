@@ -630,7 +630,35 @@
       "only_unprocessed_docs_can_be_transferred_to_manager": "Only unprocessed documents can be transferred to the Chief of Office",
       "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Only in-progress documents can be transferred to the Director or Secretary",
       "some_user_is_already_assigned_to_this_doc": "This document is already assigned to this user"
+    },
+    "button": {
+      "withdraw": "Withdraw",
+      "send_back": "Send Back",
+      "extend_request": "Extend Request",
+      "ok": "OK",
+      "cancel": "Cancel",
+      "close_modal": "Close"
+    },
+    "error": {
+      "document_already_processed_by_next_user_in_flow": "This document has already been processed by the next user in the flow",
+      "document_already_processed_by_you": "This document has already been processed by you and cannot be sent back",
+      "you_are_not_authorized_to_create_send_back_request": "You are not authorized to create a send back request for this document",
+      "document_already_closed_or_released": "This document has already been closed or released"
     }
+  },
+  "withdraw": {
+    "title": "Withdraw Document",
+    "input_reason": "Input reason",
+    "confirm": "Are you sure you want to withdraw this document?",
+    "success": "Document withdrawn successfully",
+    "error": "An error occurred, please try again"
+  },
+  "send_back": {
+    "title": "Send Back Document",
+    "input_reason": "Input reason",
+    "confirm": "Are you sure you want to send this document back?",
+    "success": "Document sent back successfully",
+    "error": "An error occurred, please try again"
   },
   "internal_server_error_page": {
     "title": "Server Error",
@@ -788,7 +816,8 @@
   },
   "processing_document": {
     "document_already_closed": "The document has been processed and cannot perform this operation.",
-    "illegal_step": "Cannot perform this operation."
+    "illegal_step": "Cannot perform this operation.",
+    "not_found": "No documents found"
   },
   "calendar": {
     "reminder_status": {
@@ -835,5 +864,26 @@
   },
   "notification": {
     "mark_all_as_read": "Mark All as Read"
+  },
+  "link-document": {
+    "unlink_modal": {
+      "title": "Unlink Document",
+      "content": "Are you sure you want to unlink this document?",
+      "ok_text": "Unlink",
+      "cancel_text": "Go back"
+    }
+  },
+  "attachments": {
+    "created_date": "Created Date",
+    "title": "Attached Documents",
+    "at_time": "at",
+    "download": "Download",
+    "preview": "Preview"
+  },
+  "incoming_document": {
+    "not_found": "No incoming documents found"
+  },
+  "outgoing_document": {
+    "not_found": "No outgoing documents found"
   }
 }

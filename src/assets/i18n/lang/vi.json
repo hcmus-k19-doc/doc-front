@@ -644,7 +644,35 @@
       "only_unprocessed_docs_can_be_transferred_to_manager": "Chỉ có thể chuyển văn bản chưa xử lý tới Chánh văn phòng ",
       "only_in_progress_docs_can_be_transferred_to_director_or_secretary": "Chỉ có thể chuyển văn bản đang xử lý tới Hiệu trưởng hoặc Văn thư",
       "some_user_is_already_assigned_to_this_doc": "Văn bản đã được phân công cho người này"
+    },
+    "button": {
+      "withdraw": "Rút lại",
+      "send_back": "Trả lại",
+      "extend_request": "Yêu cầu gia hạn",
+      "ok": "Đồng ý",
+      "cancel": "Hủy",
+      "close_modal": "Đóng"
+    },
+    "error": {
+      "document_already_processed_by_next_user_in_flow": "Văn bản đã được xử lý bởi người tiếp theo trong luồng xử lý",
+      "document_already_processed_by_you": "Văn bản đã được xử lý bởi bạn và không thể trả lại",
+      "you_are_not_authorized_to_create_send_back_request": "Bạn không có quyền yêu cầu trả lại văn bản này",
+      "document_already_closed_or_released": "Văn bản đã được kết thúc hoặc phát hành"
     }
+  },
+  "withdraw": {
+    "title": "Rút lại văn bản",
+    "input_reason": "Nhập lý do rút lại",
+    "confirm": "Bạn có chắc chắn muốn rút lại văn bản này?",
+    "success": "Rút lại văn bản thành công",
+    "error": "Đã có lỗi xảy ra, vui lòng thử lại"
+  },
+  "send_back": {
+    "title": "Trả lại văn bản",
+    "input_reason": "Trích ký - đề nghị",
+    "confirm": "Bạn có chắc chắn muốn trả lại văn bản này?",
+    "success": "Trả lại văn bản thành công",
+    "error": "Đã có lỗi xảy ra, vui lòng thử lại"
   },
   "internal_server_error_page": {
     "title": "Lỗi máy chủ",
@@ -802,7 +830,8 @@
   },
   "processing_document": {
     "document_already_closed": "Văn bản đã được xử lý, không thể thực hiện thao tác này",
-    "illegal_step": "Không thể thực hiện thao tác này"
+    "illegal_step": "Không thể thực hiện thao tác này",
+    "not_found": "Không tìm thấy văn bản"
   },
   "calendar": {
     "reminder_status": {
@@ -878,5 +907,11 @@
     "at_time": "lúc",
     "download": "Tải về",
     "preview": "Xem trước"
+  },
+  "incoming_document": {
+    "not_found": "Không tìm thấy văn bản đến"
+  },
+  "outgoing_document": {
+    "not_found": "Không tìm thấy văn bản đi"
   }
 }

@@ -217,6 +217,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
                   filterOption={(inputValue, option) =>
                     option?.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                   }
+                  allowClear
                 />
                 {/*<Select style={{ width: '100%' }} allowClear options={processingMethods} />*/}
               </Form.Item>

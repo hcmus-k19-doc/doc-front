@@ -103,6 +103,9 @@ function IncomingDocPage() {
 
   const [isClosed, setIsClosed] = useState(false);
 
+  // return request or send back request section
+  console.log('IncomingDocPage', data);
+
   const fetchForm = () => {
     if (!isLoading) {
       if (data?.data) {
@@ -141,6 +144,7 @@ function IncomingDocPage() {
   useEffect(() => {
     fetchForm();
     setAttachmentList(data?.data?.attachments || []);
+    handleLoadTransferDocumentDetail(data?.data as IncomingDocumentDto);
   }, [isLoading, isClosed, data?.data]);
 
   // Transfer Doc Modal
@@ -153,10 +157,9 @@ function IncomingDocPage() {
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
 
-  const handleOnOpenModal = async () => {
-    setIsModalOpen(true);
-
-    if (selectedDocs[0].isDocTransferred || selectedDocs[0].isDocCollaborator) {
+  const handleLoadTransferDocumentDetail = async (selectedDoc: IncomingDocumentDto) => {
+    console.log('selectedDoc', selectedDoc);
+    if (selectedDoc?.isDocTransferred || selectedDoc?.isDocCollaborator) {
       const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
         documentId: +(docId || 1),
         userId: currentUser?.id as number,
@@ -164,7 +167,7 @@ function IncomingDocPage() {
         step: getStep(currentUser as UserDto, null, true),
       };
 
-      if (selectedDocs[0].isDocCollaborator) {
+      if (selectedDoc?.isDocCollaborator) {
         getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
         getTransferDocumentDetailRequest.step = getStep(currentUser as UserDto, null, false);
       }
@@ -187,6 +190,10 @@ function IncomingDocPage() {
         setLoading(false);
       }
     }
+  };
+  const handleOnOpenModal = async () => {
+    setIsModalOpen(true);
+    await handleLoadTransferDocumentDetail(selectedDocs[0]);
   };
 
   const handleOnCancelModal = () => {
@@ -807,6 +814,11 @@ function IncomingDocPage() {
             onFinishEditing={onFinishEditing}
             documentDetail={selectedDocs[0]}
             onOpenTransferModal={handleOnOpenModal}
+            transferDocumentDetail={
+              transferDocumentDetail as GetTransferDocumentDetailCustomResponse
+            }
+            isLoading={loading}
+            setIsLoading={setLoading}
           />
         </Row>
       ) : (
@@ -819,6 +831,11 @@ function IncomingDocPage() {
             onFinishEditing={onFinishEditing}
             documentDetail={selectedDocs[0]}
             onOpenTransferModal={handleOnOpenModal}
+            transferDocumentDetail={
+              transferDocumentDetail as GetTransferDocumentDetailCustomResponse
+            }
+            isLoading={loading}
+            setIsLoading={setLoading}
           />
         </Row>
       )}

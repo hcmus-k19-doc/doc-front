@@ -23,10 +23,12 @@ import {
   Row,
   Select,
   Skeleton,
+  Typography,
   Upload,
   UploadProps,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import TextArea from 'antd/es/input/TextArea';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
@@ -55,6 +57,8 @@ import {
   ProcessingDocumentRoleEnum,
   ProcessingDocumentTypeEnum,
   PublishDocumentDto,
+  ReturnRequestPostDto,
+  ReturnRequestType,
   TransferDocDto,
   Urgency,
   UserDto,
@@ -62,6 +66,7 @@ import {
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
+import returnRequestService from 'services/ReturnRequestService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/OutgoingDocument';
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
@@ -75,7 +80,7 @@ import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 import './index.css';
 
 const { confirm } = Modal;
-
+const { Title } = Typography;
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
   const { currentUser } = useAuth();
@@ -113,6 +118,78 @@ function OutgoingDocDetailPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [attachmentList, setAttachmentList] = useState<AttachmentDto[]>([]);
 
+  // RETURN REQUEST SECTION
+  const [returnType, setReturnType] = useState<ReturnRequestType>(ReturnRequestType.SEND_BACK);
+  const [isReturnRequestModalOpen, setIsReturnRequestModalOpen] = useState<boolean>(false);
+  const [returnRequestReason, setReturnRequestReason] = useState<string>('');
+  const showReturnRequestModal = () => {
+    setIsReturnRequestModalOpen(true);
+  };
+
+  const hideReturnRequestModal = () => {
+    setIsReturnRequestModalOpen(false);
+  };
+
+  const onReturnRequestReasonChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setReturnRequestReason(e.target.value);
+  };
+
+  const handleReturnRequest = async () => {
+    const returnRequestPostDto: ReturnRequestPostDto = {
+      currentProcessingUserId: transferDocumentDetail?.assigneeId || -1,
+      previousProcessingUserId: currentUser?.id || -1,
+      documentIds: [data?.data?.id || -1],
+      documentType: ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT,
+      reason: returnRequestReason,
+      step: getStepOutgoingDocument(currentUser as UserDto, true),
+      returnRequestType: returnType,
+    };
+    if (returnType === ReturnRequestType.SEND_BACK) {
+      returnRequestPostDto.currentProcessingUserId = currentUser?.id || -1;
+      returnRequestPostDto.previousProcessingUserId = -1;
+      returnRequestPostDto.step = getStepOutgoingDocument(currentUser as UserDto, false);
+    }
+    setLoading(true);
+    try {
+      const response = await returnRequestService.createReturnRequest(returnRequestPostDto);
+      console.log('returnRequestPostDto', returnRequestPostDto, response);
+
+      showAlert({
+        icon: 'success',
+        html:
+          returnType === ReturnRequestType.WITHDRAW
+            ? t('withdraw.success')
+            : t('send_back.success'),
+        showConfirmButton: true,
+      });
+      setReturnRequestReason('');
+      hideReturnRequestModal();
+      if (docId) {
+        queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId as string)]);
+      }
+      queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        showAlert({
+          icon: 'warning',
+          html: t(
+            error.response?.data.message ||
+              (returnType === ReturnRequestType.WITHDRAW ? 'withdraw.error' : 'send_back.error')
+          ),
+          confirmButtonColor: PRIMARY_COLOR,
+          confirmButtonText: 'OK',
+        });
+      } else {
+        console.error(error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  // END RETURN REQUEST SECTION
+
   const fetchForm = () => {
     if (!isLoading) {
       if (data?.data) {
@@ -139,6 +216,7 @@ function OutgoingDocDetailPage() {
   useEffect(() => {
     fetchForm();
     setAttachmentList(data?.data?.attachments || []);
+    handleLoadTransferDocumentDetail(data?.data as OutgoingDocumentGetDto);
   }, [isLoading, isReleased, data?.data]);
 
   const initForm = (outgoingDocument: OutgoingDocumentGetDto) => {
@@ -376,10 +454,8 @@ function OutgoingDocDetailPage() {
     });
   };
 
-  const handleOnOpenModal = async () => {
-    setIsModalOpen(true);
-
-    if (selectedDocs[0].isDocTransferred || selectedDocs[0].isDocCollaborator) {
+  const handleLoadTransferDocumentDetail = async (selectedDoc: OutgoingDocumentGetDto) => {
+    if (selectedDoc?.isDocTransferred || selectedDoc?.isDocCollaborator) {
       const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
         documentId: +(docId || 1),
         userId: currentUser?.id as number,
@@ -387,7 +463,7 @@ function OutgoingDocDetailPage() {
         step: getStepOutgoingDocument(currentUser as UserDto, true),
       };
 
-      if (selectedDocs[0].isDocCollaborator) {
+      if (selectedDoc?.isDocCollaborator) {
         getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
         getTransferDocumentDetailRequest.step = getStepOutgoingDocument(
           currentUser as UserDto,
@@ -412,6 +488,11 @@ function OutgoingDocDetailPage() {
         setLoading(false);
       }
     }
+  };
+
+  const handleOnOpenModal = async () => {
+    setIsModalOpen(true);
+    await handleLoadTransferDocumentDetail(selectedDocs[0]);
   };
 
   const handleOnCancelModal = () => {
@@ -870,6 +951,7 @@ function OutgoingDocDetailPage() {
                 type='primary'
                 size='large'
                 htmlType='button'
+                className='mr-5'
                 onClick={handleOnOpenModal}
                 hidden={isEditing || isReviewing}>
                 {data?.data?.isDocTransferred || data?.data?.isDocCollaborator
@@ -879,6 +961,41 @@ function OutgoingDocDetailPage() {
                   : t('outgoing_doc_detail_page.button.report')}
               </Button>
             )}
+            {currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
+              data?.data?.isDocTransferredByNextUserInFlow === false &&
+              !data?.data?.isDocCollaborator &&
+              data?.data?.isDocTransferred && (
+                <Button
+                  key='widthdraw'
+                  type='primary'
+                  size='large'
+                  onClick={() => {
+                    setReturnType(ReturnRequestType.WITHDRAW);
+                    showReturnRequestModal();
+                  }}
+                  className='danger-button mr-5'
+                  loading={loading || isLoading}>
+                  {t('transfer_modal.button.withdraw')}
+                </Button>
+              )}
+
+            {currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
+              data?.data?.isDocTransferred === false &&
+              !data?.data?.isDocCollaborator &&
+              data?.data?.isTransferable && (
+                <Button
+                  key='send_back'
+                  type='primary'
+                  size='large'
+                  onClick={() => {
+                    setReturnType(ReturnRequestType.SEND_BACK);
+                    showReturnRequestModal();
+                  }}
+                  className='danger-button mr-5'
+                  loading={loading || isLoading}>
+                  {t('transfer_modal.button.send_back')}
+                </Button>
+              )}
           </Row>
         ) : (
           <Row className='my-3 mb-10'>
@@ -954,6 +1071,31 @@ function OutgoingDocDetailPage() {
 
         {contextHolder}
       </Skeleton>
+      <Modal
+        title=''
+        centered
+        open={isReturnRequestModalOpen}
+        onOk={handleReturnRequest}
+        okText={t('transfer_modal.button.ok')}
+        cancelText={t('transfer_modal.button.cancel')}
+        onCancel={hideReturnRequestModal}
+        // bodyStyle={{ marginBottom: 20 }}
+        cancelButtonProps={{ loading: isLoading }}
+        confirmLoading={isLoading}>
+        <Title level={5}>
+          {returnType === ReturnRequestType.WITHDRAW
+            ? t('withdraw.input_reason')
+            : t('send_back.input_reason')}
+        </Title>
+        <TextArea
+          // showCount
+          maxLength={200}
+          style={{ height: 100, resize: 'none' }}
+          onChange={onReturnRequestReasonChange}
+          value={returnRequestReason}
+          allowClear
+        />
+      </Modal>
     </>
   );
 }
