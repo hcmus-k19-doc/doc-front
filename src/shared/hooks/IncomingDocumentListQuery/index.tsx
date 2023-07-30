@@ -9,9 +9,9 @@ import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 
 import { PAGE_SIZE_MODAL } from '../../models/states';
 
-import { DocQueryState } from './core/states';
+import { IncomingDocQueryState } from './core/states';
 
-const queryState = atom<DocQueryState>({
+const queryState = atom<IncomingDocQueryState>({
   key: 'DOC_QUERY_STATE',
   default: {
     page: 1,
@@ -23,7 +23,7 @@ export const useIncomingDocReq = () => useRecoilState(queryState);
 
 export const useIncomingDocRes = (isModal: boolean) => {
   const { t } = useTranslation();
-  const query = useRecoilValue<DocQueryState>(queryState);
+  const query = useRecoilValue<IncomingDocQueryState>(queryState);
 
   return useQuery({
     queryKey: ['QUERIES.INCOMING_DOCUMENT_LIST', query],

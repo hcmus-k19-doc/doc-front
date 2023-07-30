@@ -1,13 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  DownCircleTwoTone,
-  UpCircleTwoTone,
-} from '@ant-design/icons';
-import { Avatar, Empty, List } from 'antd';
+import { DownCircleTwoTone, UpCircleTwoTone } from '@ant-design/icons';
+import { Empty, List } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
 import { ContainerHeight } from 'components/PageHeader/core/common';
@@ -40,6 +35,13 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
     setIsModalOpen(false);
     modalForm.resetFields();
   };
+
+  useEffect(() => {
+    const newTransferHistory = props.notifications.find(
+      (item) => item.id === selectedTransferHistory?.id
+    );
+    setSelectedTransferHistory(newTransferHistory);
+  }, [props.notifications]);
 
   return (
     <>
@@ -100,6 +102,7 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
             isModalOpen={isModalOpen}
             handleClose={handleOnCancelModal}
             transferHistory={selectedTransferHistory as TransferHistoryDto}
+            isTransferHistoryLoading={props.isTransferHistoryLoading}
           />
         </>
       ) : (

@@ -1,4 +1,4 @@
-import { DocSystemRoleEnum } from "./doc-main-models";
+import {DocSystemRoleEnum} from './doc-main-models';
 
 export interface TokenDto {
   access_token: string;

@@ -192,9 +192,6 @@ const IncomingDocListPage: React.FC = () => {
       dataIndex: 'deadline',
       sorter: (a, b) =>
         moment(a.deadline, YEAR_MONTH_DAY_FORMAT).diff(moment(b.deadline, YEAR_MONTH_DAY_FORMAT)),
-      render: (value, record) => {
-        return value;
-      },
     },
     {
       title: t('incomingDocListPage.table.columns.transferDetailBtn'),

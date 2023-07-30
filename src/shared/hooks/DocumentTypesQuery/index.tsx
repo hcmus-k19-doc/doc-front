@@ -12,7 +12,7 @@ import adminService from 'services/AdminService';
 import documentTypeService from 'services/DocumentTypeService';
 import { PaginationStateUtils } from 'shared/models/states';
 
-import { DocQueryState } from '../IncomingDocumentListQuery/core/states';
+import { IncomingDocQueryState } from '../IncomingDocumentListQuery/core/states';
 import { useSweetAlert } from '../SwalAlert';
 
 import { DocDocumentTypeQueryState } from './core/states';
@@ -116,7 +116,7 @@ export function useDocumentTypeMutation() {
 
 export function useDocumentTypeDeleteMutation() {
   const queryClient = useQueryClient();
-  const query = useRecoilValue<DocQueryState>(queryState);
+  const query = useRecoilValue<IncomingDocQueryState>(queryState);
 
   return useMutation({
     mutationKey: ['MUTATION.DOCUMENT_TYPE_DELETE'],

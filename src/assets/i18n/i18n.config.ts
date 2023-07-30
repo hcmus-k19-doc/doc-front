@@ -4,20 +4,23 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 
 import en from './lang/en.json';
-import vn from './lang/vn.json';
+import vi from './lang/vi.json';
+
+export const VI = 'vi';
+export const EN = 'en';
 
 i18n
   .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'vn',
+    fallbackLng: VI,
     interpolation: {
       escapeValue: false,
     },
     resources: {
-      vn: {
-        translation: vn,
+      vi: {
+        translation: vi,
       },
       en: {
         translation: en,
@@ -35,9 +38,6 @@ i18n
   })
   .catch((err) => console.error(err));
 
-i18n.languages = ['vn', 'en'];
-
-export const VN = 'vn';
-export const EN = 'en';
+i18n.languages = [VI, EN];
 
 export default i18n;
