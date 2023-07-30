@@ -655,7 +655,9 @@
     },
     "error": {
       "document_already_processed_by_next_user_in_flow": "Văn bản đã được xử lý bởi người tiếp theo trong luồng xử lý",
-      "document_already_processed_by_you": "Văn bản đã được xử lý bởi bạn và không thể trả lại"
+      "document_already_processed_by_you": "Văn bản đã được xử lý bởi bạn và không thể trả lại",
+      "you_are_not_authorized_to_create_send_back_request": "Bạn không có quyền yêu cầu trả lại văn bản này",
+      "document_already_closed_or_released": "Văn bản đã được kết thúc hoặc phát hành"
     }
   },
   "withdraw": {
@@ -663,6 +665,13 @@
     "input_reason": "Nhập lý do rút lại",
     "confirm": "Bạn có chắc chắn muốn rút lại văn bản này?",
     "success": "Rút lại văn bản thành công",
+    "error": "Đã có lỗi xảy ra, vui lòng thử lại"
+  },
+  "send_back": {
+    "title": "Trả lại văn bản",
+    "input_reason": "Trích ký - đề nghị",
+    "confirm": "Bạn có chắc chắn muốn trả lại văn bản này?",
+    "success": "Trả lại văn bản thành công",
     "error": "Đã có lỗi xảy ra, vui lòng thử lại"
   },
   "internal_server_error_page": {

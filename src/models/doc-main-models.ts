@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-29 22:44:32.
+// Generated using typescript-generator version 3.1.1185 on 2023-07-30 21:35:48.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -285,7 +285,7 @@ export interface ReturnRequestGetDto {
 
 export interface ReturnRequestPostDto {
     currentProcessingUserId: number;
-    previousProcessingUserId: number;
+    previousProcessingUserId?: number;
     documentIds: number[];
     documentType: ProcessingDocumentTypeEnum;
     reason: string;

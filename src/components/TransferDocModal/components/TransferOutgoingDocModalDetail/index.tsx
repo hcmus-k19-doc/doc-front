@@ -329,14 +329,14 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
         okText={t('transfer_modal.button.ok')}
         cancelText={t('transfer_modal.button.cancel')}
         onCancel={hideReturnRequestModal}
-        bodyStyle={{ marginBottom: 30 }}
+        // bodyStyle={{ marginBottom: 30 }}
         cancelButtonProps={{ loading: isLoading }}
         confirmLoading={isLoading}>
         <Title level={5}>{t('withdraw.input_reason')}</Title>
         <TextArea
-          showCount
-          maxLength={100}
-          style={{ height: '80px !important', resize: 'none' }}
+          // showCount
+          maxLength={200}
+          style={{ height: 100, resize: 'none' }}
           onChange={onReturnRequestReasonChange}
           value={returnRequestReason}
           allowClear

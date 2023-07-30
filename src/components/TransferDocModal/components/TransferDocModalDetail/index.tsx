@@ -269,22 +269,22 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     }
     // doi voi incoming document => van thu khong duoc tra lai van ban
     // neu ban chua xu ly => co the tra lai
-    if (
-      currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
-      transferredDoc?.isDocTransferred === false &&
-      !transferredDoc?.isDocCollaborator
-    ) {
-      buttons.push(
-        <Button
-          key='send_back'
-          type='primary'
-          onClick={handleClose}
-          className='danger-button'
-          loading={isLoading}>
-          {t('transfer_modal.button.send_back')}
-        </Button>
-      );
-    }
+    // if (
+    //   currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
+    //   transferredDoc?.isDocTransferred === false &&
+    //   !transferredDoc?.isDocCollaborator
+    // ) {
+    //   buttons.push(
+    //     <Button
+    //       key='send_back'
+    //       type='primary'
+    //       onClick={handleClose}
+    //       className='danger-button'
+    //       loading={isLoading}>
+    //       {t('transfer_modal.button.send_back')}
+    //     </Button>
+    //   );
+    // }
     buttons.push(
       <Button key='ok' type='primary' onClick={handleClose} loading={isLoading}>
         {t('transfer_modal.button.close_modal')}
@@ -331,14 +331,14 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
         okText={t('transfer_modal.button.ok')}
         cancelText={t('transfer_modal.button.cancel')}
         onCancel={hideReturnRequestModal}
-        bodyStyle={{ marginBottom: 30 }}
+        // bodyStyle={{ marginBottom: 30 }}
         cancelButtonProps={{ loading: isLoading }}
         confirmLoading={isLoading}>
         <Title level={5}>{t('withdraw.input_reason')}</Title>
         <TextArea
-          showCount
-          maxLength={100}
-          style={{ height: '80px !important', resize: 'none' }}
+          // showCount
+          maxLength={200}
+          style={{ height: 100, resize: 'none' }}
           onChange={onReturnRequestReasonChange}
           value={returnRequestReason}
           allowClear

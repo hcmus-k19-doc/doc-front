@@ -641,7 +641,9 @@
     },
     "error": {
       "document_already_processed_by_next_user_in_flow": "This document has already been processed by the next user in the flow",
-      "document_already_processed_by_you": "This document has already been processed by you and cannot be sent back"
+      "document_already_processed_by_you": "This document has already been processed by you and cannot be sent back",
+      "you_are_not_authorized_to_create_send_back_request": "You are not authorized to create a send back request for this document",
+      "document_already_closed_or_released": "This document has already been closed or released"
     }
   },
   "withdraw": {
@@ -649,6 +651,13 @@
     "input_reason": "Input reason",
     "confirm": "Are you sure you want to withdraw this document?",
     "success": "Document withdrawn successfully",
+    "error": "An error occurred, please try again"
+  },
+  "send_back": {
+    "title": "Send Back Document",
+    "input_reason": "Input reason",
+    "confirm": "Are you sure you want to send this document back?",
+    "success": "Document sent back successfully",
     "error": "An error occurred, please try again"
   },
   "internal_server_error_page": {
