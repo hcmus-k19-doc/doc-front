@@ -11,3 +11,29 @@
   margin-top: 9px;
   font-size: 35px;
 }
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #348afc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.read {
+  font-weight: normal;
+}
+
+.unread {
+  font-weight: 500;
+}
+
+.spin {
+  padding: 30px 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

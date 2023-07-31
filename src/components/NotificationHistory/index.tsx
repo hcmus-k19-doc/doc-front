@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DownCircleTwoTone, UpCircleTwoTone } from '@ant-design/icons';
-import { Empty, List } from 'antd';
+import { Empty, List, Spin } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
 import { ContainerHeight } from 'components/PageHeader/core/common';
 import { TransferHistoryDto } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
+
+import userService from '../../services/UserService';
 
 import TransferHistoryDetailModal from './components/TransferHistoryDetailModal';
 import { NotificationHistoryProps } from './core/models';
@@ -23,8 +25,17 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const [selectedTransferHistory, setSelectedTransferHistory] = useState<TransferHistoryDto>();
+  const [loading, setLoading] = useState(false);
 
-  const handleOnOpenModal = (event: any, transferHistory: TransferHistoryDto) => {
+  const handleOnOpenModal = async (event: any, transferHistory: TransferHistoryDto) => {
+    if (!transferHistory.isRead) {
+      try {
+        await userService.updateNotificationStatus(transferHistory.id);
+        props.setUnreadNotificationCount(props.unreadNotificationCount - 1);
+      } catch (error) {
+        console.error(error);
+      }
+    }
     event.preventDefault();
     props.handleNotificationClose();
     setIsModalOpen(true);
@@ -34,6 +45,18 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
   const handleOnCancelModal = () => {
     setIsModalOpen(false);
     modalForm.resetFields();
+  };
+
+  const handleMarkAllAsRead = async () => {
+    setLoading(true);
+    try {
+      await userService.updateAllNotificationStatus();
+      props.setUnreadNotificationCount(0);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -55,7 +78,10 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
               itemKey='id'
               onScroll={props.onScroll}>
               {(item: TransferHistoryDto) => (
-                <List.Item key={item.id}>
+                <List.Item
+                  className={item.isRead ? 'read' : 'unread'}
+                  key={item.id}
+                  onClick={(event) => handleOnOpenModal(event, item)}>
                   <List.Item.Meta
                     avatar={
                       item.senderId === currentUser?.id ? (
@@ -84,17 +110,17 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                         : t('transfer_history.process'),
                     })}
                   />
-                  <div>
-                    <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
-                      {t('transfer_history.button.view_detail')}
-                    </a>
-                  </div>
+                  <div hidden={item.isRead} className='circle'></div>
                 </List.Item>
               )}
             </VirtualList>
           </List>
           <div className='notification-actions'>
-            <a href='#'>{t('notification.mark_all_as_read')}</a>
+            {loading ? ( // Render loading indicator when isLoading is true
+              <Spin className={'spin'} />
+            ) : (
+              <a onClick={handleMarkAllAsRead}>{t('notification.mark_all_as_read')}</a>
+            )}
           </div>
 
           <TransferHistoryDetailModal
