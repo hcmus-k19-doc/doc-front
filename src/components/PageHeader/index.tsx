@@ -40,6 +40,7 @@ const PageHeader: React.FC = () => {
   const [transferHistory, setTransferHistory] = useState<TransferHistoryDto[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isTransferHistoryLoading, setIsTransferHistoryLoading] = useState(false);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState<number>(0);
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -94,6 +95,7 @@ const PageHeader: React.FC = () => {
   const handleNotificationClick = () => {
     appendData();
     setShowNotifications(true);
+    getUnreadNotificationCount();
   };
 
   const handleNotificationClose = () => {
@@ -124,9 +126,19 @@ const PageHeader: React.FC = () => {
     }
   };
 
+  const getUnreadNotificationCount = async () => {
+    try {
+      const response = await userService.getUnreadNotificationCount();
+      setUnreadNotificationCount(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     appendData();
-  }, []);
+    getUnreadNotificationCount();
+  }, [unreadNotificationCount]);
 
   // useEffect(() => {
   //   appendData();
@@ -172,10 +184,7 @@ const PageHeader: React.FC = () => {
           <GlobalOutlined />
         </Dropdown>
 
-        <Badge
-          count={transferHistory.length > 0 ? transferHistory.length : undefined}
-          overflowCount={transferHistory.length > 0 ? transferHistory.length : undefined}
-          size='small'>
+        <Badge count={unreadNotificationCount} overflowCount={10} size='small'>
           <Popover
             overlayInnerStyle={{ width: '700px' }}
             placement='bottomRight'
@@ -188,6 +197,8 @@ const PageHeader: React.FC = () => {
                 notifications={transferHistory}
                 handleNotificationClose={handleNotificationClose}
                 isTransferHistoryLoading={isTransferHistoryLoading}
+                unreadNotificationCount={unreadNotificationCount}
+                setUnreadNotificationCount={setUnreadNotificationCount}
               />
             }
             showArrow={false}>

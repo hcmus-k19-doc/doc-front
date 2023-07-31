@@ -7,6 +7,8 @@ export interface NotificationHistoryProps {
   onScroll: (e: React.UIEvent<HTMLElement, UIEvent>) => void;
   handleNotificationClose: () => void;
   isTransferHistoryLoading: boolean;
+  unreadNotificationCount: number;
+  setUnreadNotificationCount: (count: number) => void;
 }
 
 export interface TransferHistoryDetailModalProps {

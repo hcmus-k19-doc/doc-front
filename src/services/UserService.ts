@@ -55,6 +55,22 @@ async function getTransferHistory(
     .then((response) => response.data);
 }
 
+async function getUnreadNotificationCount() {
+  const res = await axios.get<number>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/users/get-transfer-history/quantity`
+  );
+  return res.data;
+}
+
+async function updateNotificationStatus(transferHistoryId: number) {
+  await axios.put(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/users/update-transfer-history-is-read/${transferHistoryId}`
+  );
+}
+async function updateAllNotificationStatus() {
+  await axios.put(`${REACT_APP_DOC_MAIN_SERVICE_URL}/users/update-transfer-history-is-read`);
+}
+
 async function getAllUsers() {
   const res = await axios.get<UserDto[]>(`${REACT_APP_DOC_MAIN_SERVICE_URL}/users/all`);
   return res.data;
@@ -77,6 +93,9 @@ const userService = {
   getUsersByRoleWithDepartment,
   updatePassword,
   getTransferHistory,
+  getUnreadNotificationCount,
+  updateNotificationStatus,
+  updateAllNotificationStatus,
   getAllUsers,
   getStatistics,
 };
