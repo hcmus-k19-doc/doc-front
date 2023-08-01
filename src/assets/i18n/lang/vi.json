@@ -143,7 +143,14 @@
           }
         }
       },
-      "not_processing_yet": "Văn bản chưa được xử lý"
+      "not_processing_yet": "Văn bản chưa được xử lý",
+      "dot_description": "Bước {{step}}: {{status}}",
+      "status": {
+        "wait": "Chờ xử lý",
+        "process": "Đang xử lý",
+        "finish": "Đã xử lý",
+        "error": "Lỗi"
+      }
     }
   },
   "user": {

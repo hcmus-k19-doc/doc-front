@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-31 20:45:20.
+// Generated using typescript-generator version 3.1.1185 on 2023-08-01 22:04:11.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -251,6 +251,7 @@ export interface ProcessingDetailsDto {
     outgoingNumber: string;
     step: number;
     processingUser: ProcessingUserDto;
+    isDocClosedOrReleased: boolean;
 }
 
 export interface ProcessingMethodDto extends DocAbstractDto {

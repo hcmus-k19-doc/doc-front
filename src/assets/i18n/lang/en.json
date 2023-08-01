@@ -142,7 +142,14 @@
           }
         }
       },
-      "not_processing_yet": "Document not processed yet"
+      "not_processing_yet": "Document not processed yet",
+      "dot_description": "Step {{step}}: {{status}}",
+      "status": {
+        "wait": "Waiting",
+        "process": "Processing",
+        "finish": "Completed",
+        "error": "Error"
+      }
     }
   },
   "user": {

@@ -7,4 +7,5 @@ export interface ProcessingDetailsRowDataType {
   role: string;
   docSystemRole: string;
   roleTitle: string;
+  isDocClosedOrReleased: boolean;
 }
