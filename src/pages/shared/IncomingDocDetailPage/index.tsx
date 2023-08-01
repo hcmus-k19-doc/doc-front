@@ -68,7 +68,12 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import DateValidator from 'shared/validators/DateValidator';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
-import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
+import {
+  DAY_MONTH_YEAR_FORMAT,
+  formatDateToDDMMYYYY,
+  HH_MM_SS_FORMAT,
+  isValidDateFormat,
+} from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 import { getStep } from 'utils/TransferDocUtils';
 
@@ -102,9 +107,6 @@ function IncomingDocPage() {
   const [selectedDocumentsToLink, setSelectedDocumentsToLink] = useState([]);
 
   const [isClosed, setIsClosed] = useState(false);
-
-  // return request or send back request section
-  console.log('IncomingDocPage', data);
 
   const fetchForm = () => {
     if (!isLoading) {
@@ -144,7 +146,7 @@ function IncomingDocPage() {
   useEffect(() => {
     fetchForm();
     setAttachmentList(data?.data?.attachments || []);
-    handleLoadTransferDocumentDetail(data?.data as IncomingDocumentDto);
+    // handleLoadTransferDocumentDetail(data?.data as IncomingDocumentDto);
   }, [isLoading, isClosed, data?.data]);
 
   // Transfer Doc Modal
@@ -157,9 +159,8 @@ function IncomingDocPage() {
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
 
-  const handleLoadTransferDocumentDetail = async (selectedDoc: IncomingDocumentDto) => {
-    console.log('selectedDoc', selectedDoc);
-    if (selectedDoc?.isDocTransferred || selectedDoc?.isDocCollaborator) {
+  const handleLoadTransferDocumentDetail = async (callback?: () => void) => {
+    if (selectedDocs?.[0]?.isDocTransferred || selectedDocs?.[0]?.isDocCollaborator) {
       const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
         documentId: +(docId || 1),
         userId: currentUser?.id as number,
@@ -167,7 +168,7 @@ function IncomingDocPage() {
         step: getStep(currentUser as UserDto, null, true),
       };
 
-      if (selectedDoc?.isDocCollaborator) {
+      if (selectedDocs?.[0]?.isDocCollaborator) {
         getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
         getTransferDocumentDetailRequest.step = getStep(currentUser as UserDto, null, false);
       }
@@ -186,6 +187,8 @@ function IncomingDocPage() {
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
         });
+        queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 1)]);
+        callback && callback?.();
       } finally {
         setLoading(false);
       }
@@ -193,7 +196,7 @@ function IncomingDocPage() {
   };
   const handleOnOpenModal = async () => {
     setIsModalOpen(true);
-    await handleLoadTransferDocumentDetail(selectedDocs[0]);
+    await handleLoadTransferDocumentDetail();
   };
 
   const handleOnCancelModal = () => {
@@ -209,6 +212,11 @@ function IncomingDocPage() {
   };
 
   const handleOnOkModal = async () => {
+    if (!isValidDateFormat(modalForm.getFieldValue('processingTime'))) {
+      modalForm.setFieldsValue({
+        processingTime: formatDateToDDMMYYYY(modalForm.getFieldValue('processingTime')),
+      });
+    }
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
@@ -819,6 +827,7 @@ function IncomingDocPage() {
             }
             isLoading={loading}
             setIsLoading={setLoading}
+            handleLoadTransferDocumentDetail={handleLoadTransferDocumentDetail}
           />
         </Row>
       ) : (
@@ -836,6 +845,7 @@ function IncomingDocPage() {
             }
             isLoading={loading}
             setIsLoading={setLoading}
+            handleLoadTransferDocumentDetail={handleLoadTransferDocumentDetail}
           />
         </Row>
       )}

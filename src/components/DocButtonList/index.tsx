@@ -35,6 +35,7 @@ export interface DocButtonListProps {
   transferDocumentDetail: GetTransferDocumentDetailCustomResponse;
   isLoading: boolean;
   setIsLoading: any;
+  handleLoadTransferDocumentDetail: (callback: () => void) => Promise<void>;
 }
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -50,6 +51,7 @@ const DocButtonList = ({
   transferDocumentDetail,
   isLoading,
   setIsLoading,
+  handleLoadTransferDocumentDetail,
 }: DocButtonListProps) => {
   const { currentUser } = useAuth();
   const { docId } = useParams();
@@ -57,13 +59,14 @@ const DocButtonList = ({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isClosing, setIsClosing] = useState(false);
-  console.log('DocButtonList', documentDetail, transferDocumentDetail);
 
   const [returnType, setReturnType] = useState<ReturnRequestType>(ReturnRequestType.SEND_BACK);
   const [isReturnRequestModalOpen, setIsReturnRequestModalOpen] = useState<boolean>(false);
   const [returnRequestReason, setReturnRequestReason] = useState<string>('');
-  const showReturnRequestModal = () => {
+
+  const showReturnRequestModal = async () => {
     setIsReturnRequestModalOpen(true);
+    await handleLoadTransferDocumentDetail(hideReturnRequestModal);
   };
 
   const hideReturnRequestModal = () => {
@@ -94,7 +97,6 @@ const DocButtonList = ({
     setIsLoading(true);
     try {
       const response = await returnRequestService.createReturnRequest(returnRequestPostDto);
-      console.log('returnRequestPostDto', returnRequestPostDto, response);
 
       showAlert({
         icon: 'success',
@@ -106,10 +108,7 @@ const DocButtonList = ({
       });
       setReturnRequestReason('');
       hideReturnRequestModal();
-      if (docId) {
-        queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId as string)]);
-      }
-      queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_LIST']);
+      queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 1)]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         showAlert({
@@ -124,6 +123,8 @@ const DocButtonList = ({
       } else {
         console.error(error);
       }
+      queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 1)]);
+      hideReturnRequestModal();
     } finally {
       setIsLoading(false);
     }
@@ -259,7 +260,7 @@ const DocButtonList = ({
               showReturnRequestModal();
             }}
             className='danger-button'
-            loading={isLoading}>
+            loading={isLoading || isSaving || isClosing}>
             {t('transfer_modal.button.withdraw')}
           </Button>
         ),
@@ -276,7 +277,7 @@ const DocButtonList = ({
               showReturnRequestModal();
             }}
             className='danger-button'
-            loading={isLoading}>
+            loading={isLoading || isSaving || isClosing}>
             {t('transfer_modal.button.send_back')}
           </Button>
         ),

@@ -58,7 +58,6 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
   type,
   loading,
 }) => {
-  console.log('TransferDocModalDetail', transferredDoc, transferDocumentDetail);
   const { settings } = useTransferSettingRes('IncomingDocument');
   const [transferLabel, setTransferLabel] = useState<string>('');
   const [processingDuration, setProcessingDuration] = useState<string>('');
@@ -217,7 +216,6 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     setIsLoading(true);
     try {
       const response = await returnRequestService.createReturnRequest(returnRequestPostDto);
-      console.log('returnRequestPostDto', returnRequestPostDto, response);
 
       showAlert({
         icon: 'success',
