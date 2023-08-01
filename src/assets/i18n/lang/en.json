@@ -91,7 +91,8 @@
         "title": "Provide Feedback"
       },
       "reply_title": "reply",
-      "replies_title": "replies"
+      "replies_title": "replies",
+      "no_comment": "No feedback yet"
     },
     "processing_step": {
       "processing_step_in": {

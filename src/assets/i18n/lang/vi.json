@@ -92,7 +92,8 @@
         "title": "Góp ý"
       },
       "reply_title": "trả lời",
-      "replies_title": "trả lời"
+      "replies_title": "trả lời",
+      "no_comment": "Không có góp ý nào"
     },
     "processing_step": {
       "processing_step_in": {

@@ -30,7 +30,6 @@ export default function ProcessingStepComponent({ processingDocumentType }: Prop
   const { docId } = useParams();
   const { data, isLoading } = useProcessingDetailsRes(processingDocumentType, Number(docId), true);
 
-  console.log('data', data);
   function getStepItems(
     processingDocumentType: ProcessingDocumentTypeEnum,
     data: ProcessingDetailsRowDataType[] | undefined
