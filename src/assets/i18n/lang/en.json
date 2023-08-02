@@ -438,6 +438,10 @@
       "only_in_progress_docs_can_be_closed": "Only in-progress documents can be closed",
       "only_chuyen_vien_can_close_document": "Only specialists can close documents",
       "you_dont_have_permission_to_close_this_document": "You don't have permission to close this document"
+    },
+    "linked_document": {
+      "title": "Linked Document",
+      "add": "Add"
     }
   },
   "create_outgoing_doc_page": {
