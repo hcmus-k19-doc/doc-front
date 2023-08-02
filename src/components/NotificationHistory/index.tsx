@@ -96,7 +96,7 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
       if (item?.returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW) {
         return t('transfer_history.withdraw.message', {
           sender:
-            item?.returnRequest?.currentProcessingUserId === currentUser?.id
+            item?.senderId === currentUser?.id
               ? t('transfer_history.default_sender')
               : item.senderName,
           documentId: item.documentIds,
@@ -104,12 +104,12 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
       }
       return t('transfer_history.send_back.message', {
         sender:
-          item?.returnRequest?.currentProcessingUserId === currentUser?.id
+          item?.senderId === currentUser?.id
             ? t('transfer_history.default_sender')
             : item.senderName,
         receiver:
-          item?.returnRequest?.previousProcessingUserId !== currentUser?.id
-            ? item?.returnRequest?.previousProcessingUserFullName
+          item?.receiverId !== currentUser?.id
+            ? item?.receiverName
             : t('transfer_history.default_receiver'),
         documentId: item.documentIds,
       });
