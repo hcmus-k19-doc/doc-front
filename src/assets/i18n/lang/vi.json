@@ -860,7 +860,6 @@
   },
   "transfer_history": {
     "title": "Chuyển xử lý",
-
     "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
     "no_item": "Không có lịch sử chuyển xử lý nào",
     "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
@@ -895,6 +894,24 @@
         "tooltip": {
           "downloadAttachment": "Tải tệp đính kèm"
         }
+      }
+    },
+    "send_back": {
+      "title": "Yêu cầu trả lại",
+      "message": "{{sender}} đã trả lại văn bản số {{documentId}} cho {{receiver}}",
+      "modal": {
+        "title": "Yêu cầu trả lại văn bản",
+        "reason": "Trích ký - đề nghị",
+        "type": "Trả lại"
+      }
+    },
+    "withdraw": {
+      "title": "Yêu cầu rút lại",
+      "message": "{{sender}} đã rút lại văn bản số {{documentId}}",
+      "modal": {
+        "title": "Yêu cầu rút lại văn bản",
+        "reason": "Lý do",
+        "type": "Rút lại"
       }
     }
   },

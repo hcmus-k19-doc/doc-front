@@ -867,7 +867,38 @@
       "receiver": "Receiver",
       "transfer_type_1": "Transfer",
       "transfer_type_2": "Same Level",
-      "transfer_type": "Transfer Type"
+      "transfer_type": "Transfer Type",
+      "table": {
+        "columns": {
+          "id": "Document",
+          "type": "Document Type",
+          "fullText": "Full Text",
+          "attachmentDetail": "Attachment Detail"
+        },
+        "incoming_doc": "Incoming Documents",
+        "outgoing_doc": "Outgoing Documents",
+        "tooltip": {
+          "downloadAttachment": "Download Attachment"
+        }
+      }
+    },
+    "send_back": {
+      "title": "Request to Send Back",
+      "message": "{{sender}} has sent back document number {{documentId}} to {{receiver}}",
+      "modal": {
+        "title": "Request to Send Back Document",
+        "reason": "Signature - Suggestion",
+        "type": "Send Back"
+      }
+    },
+    "withdraw": {
+      "title": "Request to Withdraw",
+      "message": "{{sender}} has withdrawn document number {{documentId}}",
+      "modal": {
+        "title": "Request to Withdraw Document",
+        "reason": "Reason",
+        "type": "Withdraw"
+      }
     }
   },
   "notification": {
