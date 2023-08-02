@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-07-31 13:20:48.
+// Generated using typescript-generator version 3.1.1185 on 2023-08-02 19:43:14.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -251,6 +251,7 @@ export interface ProcessingDetailsDto {
     outgoingNumber: string;
     step: number;
     processingUser: ProcessingUserDto;
+    isDocClosedOrReleased: boolean;
 }
 
 export interface ProcessingMethodDto extends DocAbstractDto {
@@ -384,7 +385,8 @@ export interface TransferHistoryDto {
     receiverName: string;
     attachments: DocumentWithAttachmentDto[];
     createdTime: DateAsString;
-    returnRequestId: number;
+    returnRequest: ReturnRequestGetDto;
+    documentType: ProcessingDocumentTypeEnum;
 }
 
 export interface TransferHistorySearchCriteriaDto {

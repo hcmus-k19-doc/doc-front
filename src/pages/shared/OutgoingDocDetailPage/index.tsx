@@ -73,7 +73,11 @@ import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDet
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
-import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
+import {
+  DAY_MONTH_YEAR_FORMAT,
+  formatDateToDDMMYYYY,
+  isValidDateFormat,
+} from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
 import { getStepOutgoingDocument } from 'utils/TransferDocUtils';
 
@@ -122,8 +126,10 @@ function OutgoingDocDetailPage() {
   const [returnType, setReturnType] = useState<ReturnRequestType>(ReturnRequestType.SEND_BACK);
   const [isReturnRequestModalOpen, setIsReturnRequestModalOpen] = useState<boolean>(false);
   const [returnRequestReason, setReturnRequestReason] = useState<string>('');
-  const showReturnRequestModal = () => {
+
+  const showReturnRequestModal = async () => {
     setIsReturnRequestModalOpen(true);
+    await handleLoadTransferDocumentDetail();
   };
 
   const hideReturnRequestModal = () => {
@@ -154,7 +160,6 @@ function OutgoingDocDetailPage() {
     setLoading(true);
     try {
       const response = await returnRequestService.createReturnRequest(returnRequestPostDto);
-      console.log('returnRequestPostDto', returnRequestPostDto, response);
 
       showAlert({
         icon: 'success',
@@ -166,10 +171,7 @@ function OutgoingDocDetailPage() {
       });
       setReturnRequestReason('');
       hideReturnRequestModal();
-      if (docId) {
-        queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId as string)]);
-      }
-      queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_LIST']);
+      queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         showAlert({
@@ -184,6 +186,8 @@ function OutgoingDocDetailPage() {
       } else {
         console.error(error);
       }
+      queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
+      hideReturnRequestModal();
     } finally {
       setLoading(false);
     }
@@ -216,7 +220,6 @@ function OutgoingDocDetailPage() {
   useEffect(() => {
     fetchForm();
     setAttachmentList(data?.data?.attachments || []);
-    handleLoadTransferDocumentDetail(data?.data as OutgoingDocumentGetDto);
   }, [isLoading, isReleased, data?.data]);
 
   const initForm = (outgoingDocument: OutgoingDocumentGetDto) => {
@@ -454,8 +457,8 @@ function OutgoingDocDetailPage() {
     });
   };
 
-  const handleLoadTransferDocumentDetail = async (selectedDoc: OutgoingDocumentGetDto) => {
-    if (selectedDoc?.isDocTransferred || selectedDoc?.isDocCollaborator) {
+  const handleLoadTransferDocumentDetail = async () => {
+    if (selectedDocs?.[0]?.isDocTransferred || selectedDocs?.[0]?.isDocCollaborator) {
       const getTransferDocumentDetailRequest: GetTransferDocumentDetailRequest = {
         documentId: +(docId || 1),
         userId: currentUser?.id as number,
@@ -463,7 +466,7 @@ function OutgoingDocDetailPage() {
         step: getStepOutgoingDocument(currentUser as UserDto, true),
       };
 
-      if (selectedDoc?.isDocCollaborator) {
+      if (selectedDocs?.[0]?.isDocCollaborator) {
         getTransferDocumentDetailRequest.role = ProcessingDocumentRoleEnum.COLLABORATOR;
         getTransferDocumentDetailRequest.step = getStepOutgoingDocument(
           currentUser as UserDto,
@@ -484,6 +487,8 @@ function OutgoingDocDetailPage() {
           confirmButtonColor: PRIMARY_COLOR,
           confirmButtonText: 'OK',
         });
+        queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
+        hideReturnRequestModal();
       } finally {
         setLoading(false);
       }
@@ -492,7 +497,7 @@ function OutgoingDocDetailPage() {
 
   const handleOnOpenModal = async () => {
     setIsModalOpen(true);
-    await handleLoadTransferDocumentDetail(selectedDocs[0]);
+    await handleLoadTransferDocumentDetail();
   };
 
   const handleOnCancelModal = () => {
@@ -502,6 +507,11 @@ function OutgoingDocDetailPage() {
   };
 
   const handleOnOkModal = async () => {
+    if (!isValidDateFormat(modalForm.getFieldValue('processingTime'))) {
+      modalForm.setFieldsValue({
+        processingTime: formatDateToDDMMYYYY(modalForm.getFieldValue('processingTime')),
+      });
+    }
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
@@ -974,7 +984,7 @@ function OutgoingDocDetailPage() {
                     showReturnRequestModal();
                   }}
                   className='danger-button mr-5'
-                  loading={loading || isLoading}>
+                  loading={loading || isLoading || isSaving || isReleasing}>
                   {t('transfer_modal.button.withdraw')}
                 </Button>
               )}
@@ -982,7 +992,8 @@ function OutgoingDocDetailPage() {
             {currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
               data?.data?.isDocTransferred === false &&
               !data?.data?.isDocCollaborator &&
-              data?.data?.isTransferable && (
+              data?.data?.isTransferable &&
+              data?.data?.createdBy !== currentUser?.username && (
                 <Button
                   key='send_back'
                   type='primary'
@@ -992,7 +1003,7 @@ function OutgoingDocDetailPage() {
                     showReturnRequestModal();
                   }}
                   className='danger-button mr-5'
-                  loading={loading || isLoading}>
+                  loading={loading || isLoading || isSaving || isReleasing}>
                   {t('transfer_modal.button.send_back')}
                 </Button>
               )}

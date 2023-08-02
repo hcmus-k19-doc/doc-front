@@ -3,13 +3,13 @@ import { Comment } from '@ant-design/compatible';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import EventInfo from '@ckeditor/ckeditor5-utils/src/eventinfo';
-import { Button, Form, List, Pagination, Skeleton } from 'antd';
+import { Button, Empty, Form, List, Pagination, Skeleton } from 'antd';
 import { t } from 'i18next';
 import { CommentDto } from 'models/doc-main-models';
 import commentService from 'services/CommentService';
 import { useCommentMutation, useCommentsRes, useDocCommentReq } from 'shared/hooks/DocComment';
 
-import { CommentListProps, DocCommentProps, EditorProps } from './core';
+import { CommentItem, CommentListProps, DocCommentProps, EditorProps } from './core';
 
 import './index.css';
 
@@ -88,13 +88,15 @@ export default function DocComment({ docId, processingDocumentType }: DocComment
     setCommentReqQuery({ ...commentReqQuery, page, pageSize });
   }
 
+  const commentsLength = data?.comments?.length ?? 0;
   return (
     <>
-      {data?.comments.length && data?.comments.length <= 0 && (
-        <Skeleton loading={isFetching} active avatar></Skeleton>
+      {commentsLength <= 0 && (
+        <Empty description={t('common.comment.no_comment')} />
+        // <Skeleton loading={isFetching} active avatar></Skeleton>
       )}
-      {data?.comments.length && data?.comments.length > 0 && (
-        <CommentList comments={data?.comments} loading={isLoading} />
+      {commentsLength > 0 && (
+        <CommentList comments={data?.comments as CommentItem[]} loading={isLoading} />
       )}
       <Pagination
         className='flex justify-end'

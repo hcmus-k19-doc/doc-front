@@ -15,7 +15,11 @@ const customDot: StepsProps['progressDot'] = (dot, { status, index }) => (
   <Popover
     content={
       <span>
-        Step {index + 1} status: {status}
+        {t('common.processing_step.dot_description', {
+          step: index + 1,
+          status: t(`common.processing_step.status.${status}`),
+        })}
+        {/* Step {index + 1} status: {status} */}
       </span>
     }>
     {dot}
@@ -77,6 +81,7 @@ export default function ProcessingStepComponent({ processingDocumentType }: Prop
           title: t('common.processing_step.processing_step_in.step_3.title', {
             roleTitle: data?.[2]?.roleTitle,
           }),
+          status: data?.[2]?.isDocClosedOrReleased ? 'finish' : 'process',
           description: (
             <>
               <div>
@@ -114,6 +119,7 @@ export default function ProcessingStepComponent({ processingDocumentType }: Prop
                 </div>
               </>
             ),
+            status: item.isDocClosedOrReleased ? 'finish' : 'process',
           },
         ];
       }, []);

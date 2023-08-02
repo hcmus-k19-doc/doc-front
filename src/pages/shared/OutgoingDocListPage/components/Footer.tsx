@@ -15,6 +15,7 @@ import { useOutgoingDocReq, useOutgoingDocRes } from 'shared/hooks/OutgoingDocum
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
+import { formatDateToDDMMYYYY, isValidDateFormat } from 'utils/DateTimeUtils';
 
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
@@ -48,6 +49,11 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData 
   };
 
   const handleOnOkModal = async () => {
+    if (!isValidDateFormat(modalForm.getFieldValue('processingTime'))) {
+      modalForm.setFieldsValue({
+        processingTime: formatDateToDDMMYYYY(modalForm.getFieldValue('processingTime')),
+      });
+    }
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),

@@ -92,7 +92,8 @@
         "title": "Góp ý"
       },
       "reply_title": "trả lời",
-      "replies_title": "trả lời"
+      "replies_title": "trả lời",
+      "no_comment": "Không có góp ý nào"
     },
     "processing_step": {
       "processing_step_in": {
@@ -143,7 +144,14 @@
           }
         }
       },
-      "not_processing_yet": "Văn bản chưa được xử lý"
+      "not_processing_yet": "Văn bản chưa được xử lý",
+      "dot_description": "Bước {{step}}: {{status}}",
+      "status": {
+        "wait": "Chờ xử lý",
+        "process": "Đang xử lý",
+        "finish": "Đã xử lý",
+        "error": "Lỗi"
+      }
     }
   },
   "user": {
@@ -852,7 +860,6 @@
   },
   "transfer_history": {
     "title": "Chuyển xử lý",
-
     "message": "{{sender}} đã chuyển {{level}} văn bản số {{documentId}} cho {{receiver}}",
     "no_item": "Không có lịch sử chuyển xử lý nào",
     "loaded_more_item": "Đã tải thêm {{number}} lịch sử chuyển xử lý",
@@ -887,6 +894,27 @@
         "tooltip": {
           "downloadAttachment": "Tải tệp đính kèm"
         }
+      },
+      "return_request_sender": "Người yêu cầu",
+      "return_request_date": "Ngày yêu cầu",
+      "return_request_type": "Loại yêu cầu"
+    },
+    "send_back": {
+      "title": "Yêu cầu trả lại",
+      "message": "{{sender}} đã trả lại văn bản số {{documentId}} cho {{receiver}}",
+      "modal": {
+        "title": "Yêu cầu trả lại văn bản",
+        "reason": "Trích ký - đề nghị",
+        "type": "Trả lại"
+      }
+    },
+    "withdraw": {
+      "title": "Yêu cầu rút lại",
+      "message": "{{sender}} đã rút lại văn bản số {{documentId}}",
+      "modal": {
+        "title": "Yêu cầu rút lại văn bản",
+        "reason": "Lý do",
+        "type": "Rút lại"
       }
     }
   },

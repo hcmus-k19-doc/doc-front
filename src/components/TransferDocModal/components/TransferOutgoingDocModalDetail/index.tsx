@@ -215,7 +215,6 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
     setIsLoading(true);
     try {
       const response = await returnRequestService.createReturnRequest(returnRequestPostDto);
-      console.log('returnRequestPostDto', returnRequestPostDto, response);
 
       showAlert({
         icon: 'success',

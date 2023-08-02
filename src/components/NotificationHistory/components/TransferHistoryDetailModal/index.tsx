@@ -11,6 +11,7 @@ import {
 } from 'components/NotificationHistory/core/models';
 import { PRIMARY_COLOR } from 'config/constant';
 import { format } from 'date-fns';
+import { ReturnRequestType } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
 
@@ -101,17 +102,42 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
       setDataSource(createDataSourceFromTransferHistory(transferHistory));
     }
   }, [transferHistory]);
+
+  const getModalTitle = () => {
+    if (transferHistory?.returnRequest === null) {
+      return t('transfer_history.modal.modal_title');
+    } else {
+      if (transferHistory?.returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW) {
+        return t('transfer_history.withdraw.modal.title');
+      }
+      return t('transfer_history.send_back.modal.title');
+    }
+  };
+
+  const getTypeTitle = () => {
+    if (transferHistory?.returnRequest === null) {
+      return transferHistory?.isTransferToSameLevel === true
+        ? t('transfer_history.modal.transfer_type_2')
+        : t('transfer_history.modal.transfer_type_1');
+    } else {
+      if (transferHistory?.returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW) {
+        return t('transfer_history.withdraw.modal.type');
+      }
+      return t('transfer_history.send_back.modal.type');
+    }
+  };
+
   return (
     <Modal
       className='transfer-history-detail-modal'
-      title={t('transfer_history.modal.modal_title')}
+      title={getModalTitle()}
       style={{ top: 20 }}
       open={props.isModalOpen}
       onCancel={props.handleClose}
       width={600}
       footer={[
         <Button key='ok' type='primary' onClick={props.handleClose}>
-          OK
+          {t('common.modal.ok_text')}
         </Button>,
       ]}>
       {!transferHistory ? (
@@ -122,7 +148,11 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
             <Col span={12}>
               <Row className='mb-3'>
                 <Col span='12'>
-                  <Text strong>{`${t('transfer_history.modal.sender')}:`}</Text>
+                  <Text strong>{`${
+                    transferHistory?.returnRequest === null
+                      ? t('transfer_history.modal.sender')
+                      : t('transfer_history.modal.return_request_sender')
+                  }:`}</Text>
                 </Col>
                 <Col span='12'>{transferHistory?.senderName}</Col>
               </Row>
@@ -147,7 +177,11 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
               <Row className='mb-3'>
                 <Col span='12'>
                   <Typography.Text strong>
-                    {`${t('transfer_history.modal.transfer_date')}:`}
+                    {`${
+                      transferHistory?.returnRequest === null
+                        ? t('transfer_history.modal.transfer_date')
+                        : t('transfer_history.modal.return_request_date')
+                    }:`}
                   </Typography.Text>
                 </Col>
                 <Col span='12'>
@@ -155,33 +189,35 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
                 </Col>
               </Row>
 
-              <Row className='mb-3'>
-                <Col span='12'>
-                  <Typography.Text strong>
-                    {`${t('transfer_history.modal.processing_duration')}:`}
-                  </Typography.Text>
-                </Col>
-                <Col span='12'>
-                  {transferHistory?.isInfiniteProcessingTime === true
-                    ? t('transfer_history.modal.infinite_processing_time')
-                    : format(
-                        new Date(transferHistory?.processingDuration),
-                        DAY_MONTH_YEAR_FORMAT_2
-                      )}
-                </Col>
-              </Row>
+              {transferHistory?.returnRequest === null && (
+                <Row className='mb-3'>
+                  <Col span='12'>
+                    <Typography.Text strong>
+                      {`${t('transfer_history.modal.processing_duration')}:`}
+                    </Typography.Text>
+                  </Col>
+                  <Col span='12'>
+                    {transferHistory?.isInfiniteProcessingTime === true
+                      ? t('transfer_history.modal.infinite_processing_time')
+                      : format(
+                          new Date(transferHistory?.processingDuration),
+                          DAY_MONTH_YEAR_FORMAT_2
+                        )}
+                  </Col>
+                </Row>
+              )}
 
               <Row className='mb-3'>
                 <Col span='12'>
                   <Typography.Text strong>
-                    {`${t('transfer_history.modal.transfer_type')}:`}
+                    {`${
+                      transferHistory?.returnRequest === null
+                        ? t('transfer_history.modal.transfer_type')
+                        : t('transfer_history.modal.return_request_type')
+                    }:`}
                   </Typography.Text>
                 </Col>
-                <Col span='12'>
-                  {transferHistory?.isTransferToSameLevel === true
-                    ? t('transfer_history.modal.transfer_type_2')
-                    : t('transfer_history.modal.transfer_type_1')}
-                </Col>
+                <Col span='12'>{getTypeTitle()}</Col>
               </Row>
 
               {transferHistory?.processingMethod && (
@@ -196,6 +232,19 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
               )}
             </Col>
           </Row>
+          {transferHistory?.returnRequest !== null && (
+            <Row className='mb-3'>
+              <Col className='mr-2'>
+                <Typography.Text strong>
+                  {transferHistory?.returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW
+                    ? `${t('transfer_history.withdraw.modal.reason')}:`
+                    : `${t('transfer_history.send_back.modal.reason')}:`}
+                </Typography.Text>
+              </Col>
+              <Col>{transferHistory?.returnRequest?.reason}</Col>
+            </Row>
+          )}
+
           <Row>
             <Col span={24}>
               <Typography.Text strong>{`${t('attachments.title')}:`}</Typography.Text>

@@ -91,7 +91,8 @@
         "title": "Provide Feedback"
       },
       "reply_title": "reply",
-      "replies_title": "replies"
+      "replies_title": "replies",
+      "no_comment": "No feedback yet"
     },
     "processing_step": {
       "processing_step_in": {
@@ -142,7 +143,14 @@
           }
         }
       },
-      "not_processing_yet": "Document not processed yet"
+      "not_processing_yet": "Document not processed yet",
+      "dot_description": "Step {{step}}: {{status}}",
+      "status": {
+        "wait": "Waiting",
+        "process": "Processing",
+        "finish": "Completed",
+        "error": "Error"
+      }
     }
   },
   "user": {
@@ -430,6 +438,10 @@
       "only_in_progress_docs_can_be_closed": "Only in-progress documents can be closed",
       "only_chuyen_vien_can_close_document": "Only specialists can close documents",
       "you_dont_have_permission_to_close_this_document": "You don't have permission to close this document"
+    },
+    "linked_document": {
+      "title": "Linked Document",
+      "add": "Add"
     }
   },
   "create_outgoing_doc_page": {
@@ -859,7 +871,41 @@
       "receiver": "Receiver",
       "transfer_type_1": "Transfer",
       "transfer_type_2": "Same Level",
-      "transfer_type": "Transfer Type"
+      "transfer_type": "Transfer Type",
+      "table": {
+        "columns": {
+          "id": "Document",
+          "type": "Document Type",
+          "fullText": "Full Text",
+          "attachmentDetail": "Attachment Detail"
+        },
+        "incoming_doc": "Incoming Documents",
+        "outgoing_doc": "Outgoing Documents",
+        "tooltip": {
+          "downloadAttachment": "Download Attachment"
+        }
+      },
+      "return_request_sender": "Request Sender",
+      "return_request_date": "Request Date",
+      "return_request_type": "Request Type"
+    },
+    "send_back": {
+      "title": "Request to Send Back",
+      "message": "{{sender}} has sent back document number {{documentId}} to {{receiver}}",
+      "modal": {
+        "title": "Request to Send Back Document",
+        "reason": "Signature - Suggestion",
+        "type": "Send Back"
+      }
+    },
+    "withdraw": {
+      "title": "Request to Withdraw",
+      "message": "{{sender}} has withdrawn document number {{documentId}}",
+      "modal": {
+        "title": "Request to Withdraw Document",
+        "reason": "Reason",
+        "type": "Withdraw"
+      }
     }
   },
   "notification": {

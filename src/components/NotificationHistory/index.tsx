@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DownCircleTwoTone, UpCircleTwoTone } from '@ant-design/icons';
 import { Empty, List, Spin } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useAuth } from 'components/AuthComponent';
 import { ContainerHeight } from 'components/PageHeader/core/common';
-import { TransferHistoryDto } from 'models/doc-main-models';
+import { ReturnRequestType, TransferHistoryDto } from 'models/doc-main-models';
 import VirtualList from 'rc-virtual-list';
 
 import userService from '../../services/UserService';
@@ -66,6 +65,57 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
     setSelectedTransferHistory(newTransferHistory);
   }, [props.notifications]);
 
+  const getTitle = (item: TransferHistoryDto) => {
+    if (item?.returnRequest === null) {
+      return t('transfer_history.title');
+    } else {
+      if (item?.returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW) {
+        return t('transfer_history.withdraw.title');
+      }
+      return t('transfer_history.send_back.title');
+    }
+  };
+
+  const getDescription = (item: TransferHistoryDto) => {
+    if (item?.returnRequest === null) {
+      return t('transfer_history.message', {
+        sender:
+          item.senderId === currentUser?.id
+            ? t('transfer_history.default_sender')
+            : item.senderName,
+        receiver:
+          item.receiverId !== currentUser?.id
+            ? item.receiverName
+            : t('transfer_history.default_receiver'),
+        documentId: item.documentIds.join(', '),
+        level: item.isTransferToSameLevel
+          ? t('transfer_history.same_level')
+          : t('transfer_history.process'),
+      });
+    } else {
+      if (item?.returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW) {
+        return t('transfer_history.withdraw.message', {
+          sender:
+            item?.senderId === currentUser?.id
+              ? t('transfer_history.default_sender')
+              : item.senderName,
+          documentId: item.documentIds,
+        });
+      }
+      return t('transfer_history.send_back.message', {
+        sender:
+          item?.senderId === currentUser?.id
+            ? t('transfer_history.default_sender')
+            : item.senderName,
+        receiver:
+          item?.receiverId !== currentUser?.id
+            ? item?.receiverName
+            : t('transfer_history.default_receiver'),
+        documentId: item.documentIds,
+      });
+    }
+  };
+
   return (
     <>
       {props.notifications.length > 0 ? (
@@ -90,25 +140,8 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                         <DownCircleTwoTone twoToneColor='#0096FF' className='avatar' />
                       )
                     }
-                    title={
-                      <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
-                        {t('transfer_history.title')}
-                      </a>
-                    }
-                    description={t('transfer_history.message', {
-                      sender:
-                        item.senderId === currentUser?.id
-                          ? t('transfer_history.default_sender')
-                          : item.senderName,
-                      receiver:
-                        item.receiverId !== currentUser?.id
-                          ? item.receiverName
-                          : t('transfer_history.default_receiver'),
-                      documentId: item.documentIds.join(', '),
-                      level: item.isTransferToSameLevel
-                        ? t('transfer_history.same_level')
-                        : t('transfer_history.process'),
-                    })}
+                    title={getTitle(item)}
+                    description={getDescription(item)}
                   />
                   <div hidden={item.isRead} className='circle'></div>
                 </List.Item>

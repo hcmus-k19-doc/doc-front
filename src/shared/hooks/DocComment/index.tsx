@@ -6,6 +6,7 @@ import { CommentDto, ProcessingDocumentTypeEnum } from 'models/doc-main-models';
 import moment from 'moment';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import commentService from 'services/CommentService';
+import { getCurrentLanguage } from 'utils/LanguageUtils';
 
 import { PaginationState } from '../../models/states';
 
@@ -43,7 +44,7 @@ export function useCommentsRes(processingDocumentType: ProcessingDocumentTypeEnu
             author: item.createdBy,
             avatar: <FontAwesomeIcon icon={faUser} size='xl' />,
             content: item.content,
-            datetime: moment(item.createdDate).fromNow(),
+            datetime: moment(item.createdDate).locale(getCurrentLanguage()).fromNow(),
           } as CommentItem)
       );
 
