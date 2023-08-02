@@ -25,10 +25,12 @@
 
 .read {
   font-weight: normal;
+  cursor: pointer;
 }
 
 .unread {
   font-weight: 500;
+  cursor: pointer;
 }
 
 .spin {

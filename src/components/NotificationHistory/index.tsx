@@ -90,11 +90,7 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
                         <DownCircleTwoTone twoToneColor='#0096FF' className='avatar' />
                       )
                     }
-                    title={
-                      <a href='#' onClick={(event) => handleOnOpenModal(event, item)}>
-                        {t('transfer_history.title')}
-                      </a>
-                    }
+                    title={t('transfer_history.title')}
                     description={t('transfer_history.message', {
                       sender:
                         item.senderId === currentUser?.id
