@@ -38,6 +38,7 @@ import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
 import LinkDocumentModal from 'components/LinkDocumentModal';
 import ProcessingStepComponent from 'components/ProcessingStepComponent';
+import ReturnRequest from 'components/ReturnRequest';
 import TransferDocModal from 'components/TransferDocModal';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
@@ -849,6 +850,11 @@ function IncomingDocPage() {
           />
         </Row>
       )}
+
+      <ReturnRequest
+        docId={Number(docId)}
+        processingDocumentType={ProcessingDocumentTypeEnum.INCOMING_DOCUMENT}
+      />
 
       <div className='text-lg text-primary'>
         {t('common.processing_step.processing_step_in.title')}
