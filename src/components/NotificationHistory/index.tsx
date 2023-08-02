@@ -20,7 +20,6 @@ const NotificationHistory: React.FC<NotificationHistoryProps> = (
 ) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  console.log('props', props);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();

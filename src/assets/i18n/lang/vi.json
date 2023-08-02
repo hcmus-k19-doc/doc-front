@@ -894,7 +894,10 @@
         "tooltip": {
           "downloadAttachment": "Tải tệp đính kèm"
         }
-      }
+      },
+      "return_request_sender": "Người yêu cầu",
+      "return_request_date": "Ngày yêu cầu",
+      "return_request_type": "Loại yêu cầu"
     },
     "send_back": {
       "title": "Yêu cầu trả lại",

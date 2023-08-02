@@ -880,7 +880,10 @@
         "tooltip": {
           "downloadAttachment": "Download Attachment"
         }
-      }
+      },
+      "return_request_sender": "Request Sender",
+      "return_request_date": "Request Date",
+      "return_request_type": "Request Type"
     },
     "send_back": {
       "title": "Request to Send Back",
