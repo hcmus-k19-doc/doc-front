@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { t } from 'i18next';
-import { ReturnRequestGetDto } from 'models/doc-main-models';
+import { ReturnRequestGetDto, ReturnRequestType } from 'models/doc-main-models';
 import returnRequestService from 'services/ReturnRequestService';
 
 import { ReturnRequestProps } from './core/models';
 
 import './index.css';
 const { Panel } = Collapse;
+
 export default function ReturnRequest({ docId, processingDocumentType }: ReturnRequestProps) {
-  const [returnRequest, setReturnRequest] = useState<ReturnRequestGetDto[]>([]);
+  const [returnRequests, setReturnRequests] = useState<ReturnRequestGetDto[]>([]);
 
   useEffect(() => {
     // call return request api
@@ -17,7 +18,7 @@ export default function ReturnRequest({ docId, processingDocumentType }: ReturnR
       .getReturnRequests(processingDocumentType, docId)
       .then((res) => {
         console.log(res);
-        setReturnRequest(res.data);
+        setReturnRequests(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -28,7 +29,45 @@ export default function ReturnRequest({ docId, processingDocumentType }: ReturnR
     console.log(key);
   };
 
-  if (returnRequest?.length <= 0) {
+  const renderWithdrawPanel = (returnRequest: ReturnRequestGetDto) => {
+    return (
+      <Panel
+        header={t('return_request.withdraw_message', {
+          sender: docId,
+          documentId: docId,
+        })}
+        key={returnRequest.id}>
+        <p>
+          {t('return_request.withdraw_message', {
+            sender: docId,
+            documentId: docId,
+          })}
+        </p>
+      </Panel>
+    );
+  };
+
+  const renderSendbackPanel = (returnRequest: ReturnRequestGetDto) => {
+    return (
+      <Panel
+        header={t('return_request.send_back_message', {
+          sender: docId,
+          documentId: docId,
+          receiver: docId,
+        })}
+        key={returnRequest.id}>
+        <p>
+          {t('return_request.send_back_message', {
+            sender: docId,
+            documentId: docId,
+            receiver: docId,
+          })}
+        </p>
+      </Panel>
+    );
+  };
+
+  if (returnRequests?.length <= 0) {
     return null;
   }
 
@@ -36,14 +75,15 @@ export default function ReturnRequest({ docId, processingDocumentType }: ReturnR
     <Collapse defaultActiveKey={[]} onChange={onChange} className='mb-10'>
       <Panel
         header={<span className='custom-panel-header'>{t('return_request.title')}</span>}
-        key='2'>
+        key='1-DEFAULT'>
         <Collapse>
-          <Panel header='Nested Panel 1' key='2-1'>
-            <p>This is the content of Nested Panel 1</p>
-          </Panel>
-          <Panel header='Nested Panel 2' key='2-2'>
-            <p>This is the content of Nested Panel 2</p>
-          </Panel>
+          {returnRequests.map((item) => {
+            if (item.returnRequestType === ReturnRequestType.WITHDRAW) {
+              return renderWithdrawPanel(item);
+            } else {
+              return renderSendbackPanel(item);
+            }
+          })}
         </Collapse>
       </Panel>
     </Collapse>
