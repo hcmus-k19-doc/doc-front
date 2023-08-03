@@ -1027,7 +1027,7 @@ function OutgoingDocDetailPage() {
 
         <ReturnRequest
           docId={Number(docId)}
-          processingDocumentType={ProcessingDocumentTypeEnum.INCOMING_DOCUMENT}
+          processingDocumentType={ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT}
         />
 
         <div className='text-lg text-primary'>
