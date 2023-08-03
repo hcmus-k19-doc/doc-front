@@ -941,5 +941,21 @@
   },
   "outgoing_document": {
     "not_found": "Không tìm thấy văn bản đi"
+  },
+  "return_request": {
+    "title": "Lịch sử yêu cầu trả lại/ rút lại",
+    "send_back_title": "Yêu cầu trả lại văn bản số {{documentId}}",
+    "withdraw_title": "Yêu cầu rút lại văn bản số {{documentId}}",
+    "send_back_reason": "Trích ký - đề nghị",
+    "withdraw_reason": "Lý do",
+    "time": "Thời gian",
+    "send_back_message": "{{sender}} đã yêu cầu trả lại văn bản số {{documentId}} cho {{receiver}}",
+    "withdraw_message": "{{sender}} đã yêu cầu rút lại văn bản số {{documentId}}",
+    "return_request_sender": "Người yêu cầu",
+    "return_request_receiver": "Người nhận",
+    "return_request_date": "Ngày yêu cầu",
+    "return_request_type": "Loại yêu cầu",
+    "withdraw_type": "Rút lại",
+    "send_back_type": "Trả lại"
   }
 }

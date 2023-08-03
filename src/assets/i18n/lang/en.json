@@ -931,5 +931,21 @@
   },
   "outgoing_document": {
     "not_found": "No outgoing documents found"
+  },
+  "return_request": {
+    "title": "Send back/Withdraw Request History",
+    "send_back_title": "Request to send back document No. {{documentId}}",
+    "withdraw_title": "Request to withdraw document No. {{documentId}}",
+    "send_back_reason": "Signature - Request",
+    "withdraw_reason": "Reason",
+    "time": "Time",
+    "send_back_message": "{{sender}} has requested to send back document No. {{documentId}} to {{receiver}}",
+    "withdraw_message": "{{sender}} has requested to withdraw document No. {{documentId}}",
+    "return_request_sender": "Request Sender",
+    "return_request_receiver": "Receiver",
+    "return_request_date": "Request Date",
+    "return_request_type": "Request Type",
+    "withdraw_type": "Withdraw",
+    "send_back_type": "Send Back"
   }
 }
