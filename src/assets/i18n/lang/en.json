@@ -940,6 +940,12 @@
     "withdraw_reason": "Reason",
     "time": "Time",
     "send_back_message": "{{sender}} has requested to send back document No. {{documentId}} to {{receiver}}",
-    "withdraw_message": "{{sender}} has requested to withdraw document No. {{documentId}}"
+    "withdraw_message": "{{sender}} has requested to withdraw document No. {{documentId}}",
+    "return_request_sender": "Request Sender",
+    "return_request_receiver": "Receiver",
+    "return_request_date": "Request Date",
+    "return_request_type": "Request Type",
+    "withdraw_type": "Withdraw",
+    "send_back_type": "Send Back"
   }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Collapse } from 'antd';
+import { Col, Collapse, Row, Typography } from 'antd';
+import { useAuth } from 'components/AuthComponent';
 import { t } from 'i18next';
 import { ReturnRequestGetDto, ReturnRequestType } from 'models/doc-main-models';
 import returnRequestService from 'services/ReturnRequestService';
@@ -8,9 +9,10 @@ import { ReturnRequestProps } from './core/models';
 
 import './index.css';
 const { Panel } = Collapse;
-
+const { Text } = Typography;
 export default function ReturnRequest({ docId, processingDocumentType }: ReturnRequestProps) {
   const [returnRequests, setReturnRequests] = useState<ReturnRequestGetDto[]>([]);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     // call return request api
@@ -29,20 +31,91 @@ export default function ReturnRequest({ docId, processingDocumentType }: ReturnR
     console.log(key);
   };
 
+  const renderPanelContent = (returnRequest: ReturnRequestGetDto) => {
+    return (
+      <Row>
+        <Col span={12}>
+          <Row className='mb-3'>
+            <Col span='4'>
+              <Text strong>{`${t('return_request.return_request_sender')}:`}</Text>
+            </Col>
+            <Col span='20'>
+              {returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW
+                ? returnRequest?.previousProcessingUserFullName
+                : returnRequest?.currentProcessingUserFullName}
+            </Col>
+          </Row>
+
+          <Row className='mb-3'>
+            <Col span='4'>
+              <Text strong>{`${t('return_request.return_request_receiver')}:`}</Text>
+            </Col>
+            <Col span='20'>
+              {returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW
+                ? returnRequest?.currentProcessingUserFullName
+                : returnRequest?.previousProcessingUserFullName}
+            </Col>
+          </Row>
+
+          <Row className='mb-3'>
+            <Col span='4'>
+              <Typography.Text strong>{`${t('transfer_history.modal.document')}:`}</Typography.Text>
+            </Col>
+            <Col span='20'>{returnRequest?.documentId}</Col>
+          </Row>
+        </Col>
+        <Col span={12}>
+          <Row className='mb-3'>
+            <Col span='4'>
+              <Typography.Text strong>
+                {`${t('transfer_history.modal.return_request_date')}:`}
+              </Typography.Text>
+            </Col>
+            <Col span='20'>
+              {/* {format(new Date(transferHistory?.createdDate), DAY_MONTH_YEAR_FORMAT_2)} */}
+              {returnRequest?.createdAt}
+            </Col>
+          </Row>
+
+          <Row className='mb-3'>
+            <Col span='4'>
+              <Typography.Text strong>
+                {`${t('return_request.return_request_type')}:`}
+              </Typography.Text>
+            </Col>
+            <Col span='20'>
+              {returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW
+                ? t('return_request.withdraw_type')
+                : t('return_request.send_back_type')}
+            </Col>
+          </Row>
+          <Row className='mb-3'>
+            <Col span='4'>
+              <Typography.Text strong>
+                {returnRequest?.returnRequestType === ReturnRequestType.WITHDRAW
+                  ? `${t('transfer_history.withdraw.modal.reason')}:`
+                  : `${t('transfer_history.send_back.modal.reason')}:`}
+              </Typography.Text>
+            </Col>
+            <Col span='20'>{returnRequest?.reason}</Col>
+          </Row>
+        </Col>
+      </Row>
+    );
+  };
+
   const renderWithdrawPanel = (returnRequest: ReturnRequestGetDto) => {
     return (
       <Panel
         header={t('return_request.withdraw_message', {
-          sender: docId,
+          sender:
+            returnRequest.previousProcessingUserId === currentUser?.id
+              ? t('transfer_history.default_sender')
+              : returnRequest.previousProcessingUserFullName,
           documentId: docId,
         })}
         key={returnRequest.id}>
-        <p>
-          {t('return_request.withdraw_message', {
-            sender: docId,
-            documentId: docId,
-          })}
-        </p>
+        {renderPanelContent(returnRequest)}
       </Panel>
     );
   };
@@ -51,18 +124,18 @@ export default function ReturnRequest({ docId, processingDocumentType }: ReturnR
     return (
       <Panel
         header={t('return_request.send_back_message', {
-          sender: docId,
+          sender:
+            returnRequest.currentProcessingUserId === currentUser?.id
+              ? t('transfer_history.default_sender')
+              : returnRequest.currentProcessingUserFullName,
+          receiver:
+            returnRequest.previousProcessingUserId === currentUser?.id
+              ? t('transfer_history.default_receiver')
+              : returnRequest.previousProcessingUserFullName,
           documentId: docId,
-          receiver: docId,
         })}
         key={returnRequest.id}>
-        <p>
-          {t('return_request.send_back_message', {
-            sender: docId,
-            documentId: docId,
-            receiver: docId,
-          })}
-        </p>
+        {renderPanelContent(returnRequest)}
       </Panel>
     );
   };

@@ -950,6 +950,12 @@
     "withdraw_reason": "Lý do",
     "time": "Thời gian",
     "send_back_message": "{{sender}} đã yêu cầu trả lại văn bản số {{documentId}} cho {{receiver}}",
-    "withdraw_message": "{{sender}} đã yêu cầu rút lại văn bản số {{documentId}}"
+    "withdraw_message": "{{sender}} đã yêu cầu rút lại văn bản số {{documentId}}",
+    "return_request_sender": "Người yêu cầu",
+    "return_request_receiver": "Người nhận",
+    "return_request_date": "Ngày yêu cầu",
+    "return_request_type": "Loại yêu cầu",
+    "withdraw_type": "Rút lại",
+    "send_back_type": "Trả lại"
   }
 }
