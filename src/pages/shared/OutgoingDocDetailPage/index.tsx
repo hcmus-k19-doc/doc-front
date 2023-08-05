@@ -73,6 +73,7 @@ import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import {
   DAY_MONTH_YEAR_FORMAT,
@@ -86,6 +87,7 @@ import './index.css';
 
 const { confirm } = Modal;
 const { Title } = Typography;
+
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
   const { currentUser } = useAuth();
@@ -365,9 +367,13 @@ function OutgoingDocDetailPage() {
         queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.status === 400
+          ? error.response.data.message
+          : t('create_outgoing_doc_page.message.error');
       showAlert({
         icon: 'error',
-        html: `${t('outgoing_doc_detail_page.message.error')}`,
+        html: errorMessage,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -603,8 +609,6 @@ function OutgoingDocDetailPage() {
     setSelectedDocumentsToLink(documents);
   };
 
-  console.log(linkedDocuments?.data);
-
   return (
     <>
       <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
@@ -657,12 +661,9 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      {
-                        required: true,
-                        message: `${t(
-                          'outgoing_doc_detail_page.form.original_symbol_number_required'
-                        )}`,
-                      },
+                      DocFormValidators.CommonValidator(
+                        t('outgoing_doc_detail_page.form.original_symbol_number_required')
+                      ),
                     ]}
                     label={
                       <>
@@ -705,7 +706,8 @@ function OutgoingDocDetailPage() {
                 <Col span={11}>
                   <Form.Item
                     label={t('outgoing_doc_detail_page.form.distribution_date')}
-                    name='releaseDate'>
+                    name='releaseDate'
+                    rules={[DocFormValidators.FutureOrPresentDateValidator()]}>
                     <DatePicker
                       format={DAY_MONTH_YEAR_FORMAT}
                       className='w-full'
@@ -729,9 +731,15 @@ function OutgoingDocDetailPage() {
                       },
                     ]}>
                     <Select>
-                      <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
-                      <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
-                      <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
+                      <Select.Option value={Urgency.HIGH}>
+                        {t(`outgoing_doc_detail_page.urgency.${Urgency.HIGH}`)}
+                      </Select.Option>
+                      <Select.Option value={Urgency.MEDIUM}>
+                        {t(`outgoing_doc_detail_page.urgency.${Urgency.MEDIUM}`)}
+                      </Select.Option>
+                      <Select.Option value={Urgency.LOW}>
+                        {t(`outgoing_doc_detail_page.urgency.${Urgency.LOW}`)}
+                      </Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -748,9 +756,15 @@ function OutgoingDocDetailPage() {
                       },
                     ]}>
                     <Select>
-                      <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
-                      <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
-                      <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
+                      <Select.Option value={Confidentiality.HIGH}>
+                        {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.HIGH}`)}
+                      </Select.Option>
+                      <Select.Option value={Confidentiality.MEDIUM}>
+                        {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.MEDIUM}`)}
+                      </Select.Option>
+                      <Select.Option value={Confidentiality.LOW}>
+                        {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.LOW}`)}
+                      </Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -761,10 +775,9 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      {
-                        required: true,
-                        message: `${t('outgoing_doc_detail_page.form.receive_org_required')}`,
-                      },
+                      DocFormValidators.CommonValidator(
+                        t('outgoing_doc_detail_page.form.receive_org_required')
+                      ),
                     ]}
                     label={t('outgoing_doc_detail_page.form.receive_org')}
                     name='recipient'>
@@ -776,10 +789,9 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      {
-                        required: true,
-                        message: `${t('outgoing_doc_detail_page.form.name_required')}`,
-                      },
+                      DocFormValidators.CommonValidator(
+                        t('outgoing_doc_detail_page.form.name_required')
+                      ),
                     ]}
                     label={t('outgoing_doc_detail_page.form.name')}
                     name='name'>
@@ -809,7 +821,7 @@ function OutgoingDocDetailPage() {
             </Col>
             <Col span={1}></Col>
             <Col span={7}>
-              <Form.Item label={t('outgoing_doc_detail_page.form.files')} name='files'>
+              <Form.Item label={t('outgoing_doc_detail_page.form.files')} name='files' required>
                 <Dragger {...fileProps}>
                   <p className='ant-upload-drag-icon'>
                     <InboxOutlined />

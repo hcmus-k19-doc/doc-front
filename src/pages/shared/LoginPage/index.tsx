@@ -12,10 +12,11 @@ import { t } from 'i18next';
 import securityService from 'services/SecurityService';
 import userService from 'services/UserService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 
 import './index.css';
 
-const I18N_PREFIX = 'LOGIN';
+const I18N_PREFIX = 'login';
 
 const LoginPage: React.FC = () => {
   const { saveAuth, setCurrentUser } = useAuth();
@@ -68,7 +69,7 @@ const LoginPage: React.FC = () => {
             <LoginForm
               submitter={{
                 searchConfig: {
-                  submitText: t(`${I18N_PREFIX}.SUBMITTER.SUBMIT_TEXT`),
+                  submitText: t(`${I18N_PREFIX}.submitter.submit_text`),
                 },
               }}
               onFinish={handleOnFinish}>
@@ -80,12 +81,12 @@ const LoginPage: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined className='prefixIcon' />,
                 }}
-                placeholder={t(`${I18N_PREFIX}.USERNAME.PLACEHOLDER`).toString()}
+                placeholder={t(`${I18N_PREFIX}.username.placeholder`).toString()}
                 rules={[
-                  {
-                    required: true,
-                    message: t(`${I18N_PREFIX}.USERNAME.RULE_MESSAGE`).toString(),
-                  },
+                  DocFormValidators.CommonValidator(t(`${I18N_PREFIX}.username.invalid_message`)),
+                  DocFormValidators.NoneBlankValidator(
+                    t(`${I18N_PREFIX}.username.invalid_message`)
+                  ),
                 ]}
               />
               <ProFormText.Password
@@ -96,12 +97,12 @@ const LoginPage: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined className='prefixIcon' />,
                 }}
-                placeholder={t(`${I18N_PREFIX}.PASSWORD.PLACEHOLDER`).toString()}
+                placeholder={t(`${I18N_PREFIX}.password.placeholder`).toString()}
                 rules={[
-                  {
-                    required: true,
-                    message: t(`${I18N_PREFIX}.PASSWORD.RULE_MESSAGE`).toString(),
-                  },
+                  DocFormValidators.CommonValidator(t(`${I18N_PREFIX}.password.invalid_message`)),
+                  DocFormValidators.NoneBlankValidator(
+                    t(`${I18N_PREFIX}.username.invalid_message`)
+                  ),
                 ]}
               />
             </LoginForm>

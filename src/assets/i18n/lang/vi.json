@@ -1,16 +1,16 @@
 {
-  "LOGIN": {
-    "SUBTITLE": "Hệ thống phê duyệt và phát hành văn thư",
-    "SUBMITTER": {
-      "SUBMIT_TEXT": "Đăng nhập"
+  "login": {
+    "subtitle": "Hệ thống phê duyệt và phát hành văn thư",
+    "submitter": {
+      "submit_text": "Đăng nhập"
     },
-    "USERNAME": {
-      "PLACEHOLDER": "Tên đăng nhập",
-      "RULE_MESSAGE": "Hãy điền tên đăng nhập"
+    "username": {
+      "placeholder": "Tên đăng nhập",
+      "invalid_message": "Tên đăng nhập không hợp lệ"
     },
-    "PASSWORD": {
-      "PLACEHOLDER": "Mật khẩu",
-      "RULE_MESSAGE": "Hãy điền mật khẩu"
+    "password": {
+      "placeholder": "Mật khẩu",
+      "invalid_message": "Mật khẩu không hợp lệ"
     }
   },
   "main_page": {
@@ -151,6 +151,11 @@
         "process": "Đang xử lý",
         "finish": "Đã xử lý",
         "error": "Lỗi"
+      }
+    },
+    "error": {
+      "date": {
+        "must_be_future": "Ngày phải là ngày tương lai"
       }
     }
   },
@@ -548,6 +553,16 @@
       "UNPROCESSED": "Chưa xử lý",
       "IN_PROGRESS": "Đang xử lý",
       "RELEASED": "Đã phát hành"
+    },
+    "urgency": {
+      "HIGH": "Cao",
+      "MEDIUM": "Trung bình",
+      "LOW": "Thấp"
+    },
+    "confidentiality": {
+      "HIGH": "Cao",
+      "MEDIUM": "Trung bình",
+      "LOW": "Thấp"
     },
     "form": {
       "doc_folder": "Sổ văn bản",

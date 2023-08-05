@@ -8,6 +8,7 @@ import returnRequestService from 'services/ReturnRequestService';
 import { ReturnRequestProps } from './core/models';
 
 import './index.css';
+
 const { Panel } = Collapse;
 const { Text } = Typography;
 export default function ReturnRequest({ docId, processingDocumentType }: ReturnRequestProps) {
@@ -18,13 +19,8 @@ export default function ReturnRequest({ docId, processingDocumentType }: ReturnR
     // call return request api
     returnRequestService
       .getReturnRequests(processingDocumentType, docId)
-      .then((res) => {
-        console.log(res);
-        setReturnRequests(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => setReturnRequests(res.data))
+      .catch((err) => console.log(err));
   }, [docId, processingDocumentType]);
 
   const onChange = (key: string | string[]) => {
