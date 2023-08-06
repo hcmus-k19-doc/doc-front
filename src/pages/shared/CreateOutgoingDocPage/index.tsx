@@ -243,7 +243,7 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   required
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('create_outgoing_doc_page.form.original_symbol_number_required')
                     ),
                   ]}
@@ -276,7 +276,7 @@ function CreateOutgoingDocPage() {
                   name='urgency'
                   required
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('create_outgoing_doc_page.form.urgency_required')
                     ),
                   ]}>
@@ -300,7 +300,7 @@ function CreateOutgoingDocPage() {
                   name='confidentiality'
                   required
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('create_outgoing_doc_page.form.confidentiality_required')
                     ),
                   ]}>
@@ -324,7 +324,7 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   required
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('create_outgoing_doc_page.form.receive_org_required')
                     ),
                   ]}
@@ -338,7 +338,7 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   required
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('create_outgoing_doc_page.form.name_required')
                     ),
                   ]}

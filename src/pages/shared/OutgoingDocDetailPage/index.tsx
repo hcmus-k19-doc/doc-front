@@ -679,7 +679,7 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      DocFormValidators.CommonValidator(
+                      DocFormValidators.NoneBlankValidator(
                         t('outgoing_doc_detail_page.form.original_symbol_number_required')
                       ),
                     ]}
@@ -793,7 +793,7 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      DocFormValidators.CommonValidator(
+                      DocFormValidators.NoneBlankValidator(
                         t('outgoing_doc_detail_page.form.receive_org_required')
                       ),
                     ]}
@@ -807,7 +807,7 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      DocFormValidators.CommonValidator(
+                      DocFormValidators.NoneBlankValidator(
                         t('outgoing_doc_detail_page.form.name_required')
                       ),
                     ]}

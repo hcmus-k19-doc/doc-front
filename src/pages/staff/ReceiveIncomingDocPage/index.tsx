@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -20,7 +19,9 @@ import {
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
+import axios from 'axios';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
+import { t } from 'i18next';
 import {
   Confidentiality,
   DistributionOrganizationDto,
@@ -40,7 +41,6 @@ import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 import './index.css';
 
 function ReceiveIncomingDocPage() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [form] = useForm();
   const showAlert = useSweetAlert();
@@ -108,7 +108,7 @@ function ReceiveIncomingDocPage() {
       if (isDuplicate) {
         DocFormValidators.addFilesFieldError(
           form,
-          t(t('receiveIncomingDocPage.message.file_duplicate_error'))
+          t('receiveIncomingDocPage.message.file_duplicate_error')
         );
       }
 
@@ -116,7 +116,7 @@ function ReceiveIncomingDocPage() {
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
         DocFormValidators.addFilesFieldError(
           form,
-          t(t('receiveIncomingDocPage.message.file_max_count_error'))
+          t('receiveIncomingDocPage.message.file_max_count_error')
         );
       }
 
@@ -125,16 +125,16 @@ function ReceiveIncomingDocPage() {
       if (!isValidType) {
         DocFormValidators.addFilesFieldError(
           form,
-          t(t('receiveIncomingDocPage.message.file_type_error'))
+          t('receiveIncomingDocPage.message.file_type_error')
         );
       }
 
-      // Check file size (max 5MB)
+      // Check file size (max 10MB)
       const isValidSize = file.size < MAX_FILE_SIZE;
       if (!isValidSize) {
         DocFormValidators.addFilesFieldError(
           form,
-          t(t('receiveIncomingDocPage.message.file_size_error'))
+          t('receiveIncomingDocPage.message.file_size_error')
         );
       }
 
@@ -159,6 +159,11 @@ function ReceiveIncomingDocPage() {
   const onFinish = async (values: any) => {
     setLoading(true);
     try {
+      if (values.files.fileList.length === 0) {
+        DocFormValidators.addFilesFieldError(form, t('receiveIncomingDocPage.form.filesRequired'));
+        return;
+      }
+
       const incomingDocument = new FormData();
       values.files.fileList.forEach((file: any) => {
         incomingDocument.append('attachments', file.originFileObj);
@@ -188,9 +193,14 @@ function ReceiveIncomingDocPage() {
       }
     } catch (error) {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.status === 400
+          ? error.response.data.message
+          : 'receiveIncomingDocPage.message.error';
+
       showAlert({
         icon: 'error',
-        html: `${t('receiveIncomingDocPage.message.error')}`,
+        html: t(errorMessage),
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -249,7 +259,7 @@ function ReceiveIncomingDocPage() {
                   label={t('receiveIncomingDocPage.form.incomingNumber')}
                   name='incomingNumber'
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('receiveIncomingDocPage.form.incomingNumberRequired')
                     ),
                   ]}
@@ -279,7 +289,7 @@ function ReceiveIncomingDocPage() {
                   required
                   name='originalSymbolNumber'
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('receiveIncomingDocPage.form.originalSymbolNumberRequired')
                     ),
                   ]}>
@@ -421,7 +431,7 @@ function ReceiveIncomingDocPage() {
                   required
                   name='name'
                   rules={[
-                    DocFormValidators.CommonValidator(
+                    DocFormValidators.NoneBlankValidator(
                       t('incomingDocDetailPage.form.name_required')
                     ),
                   ]}>

@@ -1,7 +1,7 @@
 import { FormInstance, Rule } from 'antd/es/form';
 import dayjs, { Dayjs } from 'dayjs';
 
-function CommonValidator(message: string): Rule {
+function NoneBlankValidator(message: string): Rule {
   return {
     required: true,
     whitespace: true,
@@ -11,7 +11,7 @@ function CommonValidator(message: string): Rule {
   };
 }
 
-function NoneBlankValidator(message: string): Rule {
+function NoneWhiteSpaceValidator(message: string): Rule {
   return {
     required: true,
     whitespace: true,
@@ -63,8 +63,8 @@ function addFilesFieldError(form: FormInstance<any>, ...message: string[]) {
 }
 
 const DocFormValidators = {
-  CommonValidator,
   NoneBlankValidator,
+  NoneWhiteSpaceValidator,
   FutureOrPresentDateValidator,
   FutureDateValidator,
   addFilesFieldError,
