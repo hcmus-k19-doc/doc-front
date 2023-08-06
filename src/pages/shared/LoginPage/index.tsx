@@ -83,11 +83,8 @@ const LoginPage: React.FC = () => {
                 }}
                 placeholder={t(`${I18N_PREFIX}.username.placeholder`).toString()}
                 rules={[
-                  DocFormValidators.NoneBlankValidator(
-                    t(`${I18N_PREFIX}.username.invalid_message`)
-                  ),
-                  DocFormValidators.NoneWhiteSpaceValidator(
-                    t(`${I18N_PREFIX}.username.invalid_message`)
+                  DocFormValidators.NoneBlankOrWhiteSpaceValidator(
+                    `${t(`${I18N_PREFIX}.username.invalid_message`)}`
                   ),
                 ]}
               />
@@ -100,14 +97,9 @@ const LoginPage: React.FC = () => {
                   prefix: <LockOutlined className='prefixIcon' />,
                 }}
                 placeholder={t(`${I18N_PREFIX}.password.placeholder`).toString()}
-                rules={[
-                  DocFormValidators.NoneBlankValidator(
-                    t(`${I18N_PREFIX}.password.invalid_message`)
-                  ),
-                  DocFormValidators.NoneWhiteSpaceValidator(
-                    t(`${I18N_PREFIX}.username.invalid_message`)
-                  ),
-                ]}
+                rules={DocFormValidators.PasswordValidators(
+                  `${t('login.password.invalid_message')}`
+                )}
               />
             </LoginForm>
           </ProConfigProvider>

@@ -191,11 +191,12 @@
       "role_required": "Please select a role",
       "role_title_invalid": "Invalid role title. The role title must be between 1 and 200 characters",
       "department_required": "Please select a department",
-      "old_password": "Old Password",
-      "confirm_password": "Confirm Password",
-      "new_password": "New Password",
-      "change_password": "Change Password",
+      "old_password": "Old password",
+      "new_password": "New password",
+      "confirm_password": "Confirm new password",
+      "change_password": "Change password",
       "password_not_match": "Passwords do not match",
+      "password_not_change": "New password must be different from old password",
       "change_password_success": "Password changed successfully"
     },
     "username": {
@@ -206,7 +207,9 @@
     },
     "not_found": "User not found",
     "password": {
-      "incorrect": "Incorrect password"
+      "incorrect": "Incorrect password",
+      "invalid": "Password must be between 6 and 20 characters, including at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+      "required": "Please enter your password"
     }
   },
   "SENDING_LEVEL": {
