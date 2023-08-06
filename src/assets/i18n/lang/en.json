@@ -1,16 +1,16 @@
 {
-  "LOGIN": {
-    "SUBTITLE": "Document approval and Publication system",
-    "SUBMITTER": {
-      "SUBMIT_TEXT": "Log in"
+  "login": {
+    "subtitle": "Document approval and Publication system",
+    "submitter": {
+      "submit_text": "Log in"
     },
-    "USERNAME": {
-      "PLACEHOLDER": "Username",
-      "RULE_MESSAGE": "Please enter your username"
+    "username": {
+      "placeholder": "Username",
+      "invalid_message": "Please enter your username"
     },
-    "PASSWORD": {
-      "PLACEHOLDER": "Password",
-      "RULE_MESSAGE": "Please enter your password"
+    "password": {
+      "placeholder": "Password",
+      "invalid_message": "Please enter your password"
     }
   },
   "main_page": {
@@ -150,6 +150,11 @@
         "process": "Processing",
         "finish": "Completed",
         "error": "Error"
+      }
+    },
+    "error": {
+      "date": {
+        "must_be_future": "Date must be in the future"
       }
     }
   },
@@ -540,6 +545,16 @@
       "UNPROCESSED": "Not Processed",
       "IN_PROGRESS": "In Progress",
       "RELEASED": "Released"
+    },
+    "urgency": {
+      "HIGH": "Cao",
+      "MEDIUM": "Trung bình",
+      "LOW": "Thấp"
+    },
+    "confidentiality": {
+      "HIGH": "Cao",
+      "MEDIUM": "Trung bình",
+      "LOW": "Thấp"
     },
     "form": {
       "doc_folder": "Document Folder",

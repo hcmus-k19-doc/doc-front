@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   CloseCircleOutlined,
@@ -43,6 +42,7 @@ import TransferDocModal from 'components/TransferDocModal';
 import TransferDocModalDetail from 'components/TransferDocModal/components/TransferDocModalDetail';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
 import dayjs from 'dayjs';
+import { t } from 'i18next';
 import {
   AttachmentDto,
   Confidentiality,
@@ -78,13 +78,13 @@ import {
 import { globalNavigate } from 'utils/RoutingUtils';
 import { getStep } from 'utils/TransferDocUtils';
 
+import DocFormValidators from '../../../shared/validators/DocFormValidators';
 import { transferDocModalState } from '../IncomingDocListPage/core/states';
 
 import './index.css';
 
 function IncomingDocPage() {
   const { docId } = useParams();
-  const { t } = useTranslation();
   const [form] = useForm();
 
   const [modal, contextHolder] = Modal.useModal();
@@ -396,38 +396,52 @@ function IncomingDocPage() {
   const saveChange = async (values: any) => {
     setIsSaving(true);
 
-    const incomingDocument = new FormData();
+    try {
+      const incomingDocument = new FormData();
 
-    if (values.files !== undefined) {
-      values.files.fileList.forEach((file: any) => {
-        incomingDocument.append('attachments', file.originFileObj);
-      });
-      delete values.files;
-    }
+      if (values.files !== undefined) {
+        values.files.fileList.forEach((file: any) => {
+          incomingDocument.append('attachments', file.originFileObj);
+        });
+        delete values.files;
+      }
 
-    const incomingDocumentPutDto: IncomingDocumentPutDto = {
-      ...values,
-      id: +(docId || 0),
-      distributionDate: new Date(values.distributionDate),
-      arrivingDate: new Date(values.arrivingDate),
-      arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
-    };
-    incomingDocument.append('incomingDocumentPutDto', JSON.stringify(incomingDocumentPutDto));
-    const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
+      const incomingDocumentPutDto: IncomingDocumentPutDto = {
+        ...values,
+        id: +(docId ?? 0),
+        distributionDate: new Date(values.distributionDate),
+        arrivingDate: new Date(values.arrivingDate),
+        arrivingTime: values.arrivingTime?.format(HH_MM_SS_FORMAT),
+      };
+      incomingDocument.append('incomingDocumentPutDto', JSON.stringify(incomingDocumentPutDto));
+      const response = await incomingDocumentService.updateIncomingDocument(incomingDocument);
 
-    if (response.status === 200) {
+      if (response.status === 200) {
+        showAlert({
+          icon: 'success',
+          html: t('incomingDocDetailPage.message.success') as string,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setIsEditing(false);
+        form.resetFields();
+        fetchForm();
+        queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 0)]);
+      }
+    } catch (error) {
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.status === 400
+          ? error.response.data.message
+          : 'incomingDocDetailPage.message.error';
       showAlert({
-        icon: 'success',
-        html: t('incomingDocDetailPage.message.success') as string,
-        showConfirmButton: false,
-        timer: 2000,
+        icon: 'error',
+        html: t(errorMessage),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
       });
-      setIsEditing(false);
-      form.resetFields();
-      fetchForm();
-      queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_DETAIL', +(docId || 0)]);
+    } finally {
+      setIsSaving(false);
     }
-    setIsSaving(false);
   };
 
   const onFinishEditing = () => {
@@ -452,7 +466,7 @@ function IncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.docFolderRequired') as string,
+                      message: `${t('incomingDocDetailPage.form.docFolderRequired')}`,
                     },
                   ]}>
                   <Select disabled>{renderFolders()}</Select>
@@ -467,7 +481,7 @@ function IncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.documentTypeRequired') as string,
+                      message: `${t('incomingDocDetailPage.form.documentTypeRequired')}`,
                     },
                   ]}>
                   <Select>{renderDocumentTypes()}</Select>
@@ -478,9 +492,14 @@ function IncomingDocPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  required
                   label={t('incomingDocDetailPage.form.incomingNumber')}
-                  name='incomingNumber'>
+                  name='incomingNumber'
+                  rules={[
+                    DocFormValidators.NoneBlankValidator(
+                      t('incomingDocDetailPage.form.incomingNumberRequired')
+                    ),
+                  ]}
+                  required>
                   <Input disabled />
                 </Form.Item>
               </Col>
@@ -506,12 +525,9 @@ function IncomingDocPage() {
                   required
                   name='originalSymbolNumber'
                   rules={[
-                    {
-                      required: true,
-                      message: t(
-                        'incomingDocDetailPage.form.originalSymbolNumberRequired'
-                      ) as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      t('incomingDocDetailPage.form.originalSymbolNumberRequired')
+                    ),
                   ]}>
                   <Input />
                 </Form.Item>
@@ -541,16 +557,7 @@ function IncomingDocPage() {
                   required
                   rules={[
                     {
-                      message: t(
-                        'incomingDocDetailPage.form.distributionDateGreaterThanNowError'
-                      ) as string,
-                      validator: (_, value) => {
-                        const now = new Date();
-                        return DateValidator.validateBeforeAfter(value, now);
-                      },
-                    },
-                    {
-                      message: t('incomingDocDetailPage.form.distributionDateInvalid') as string,
+                      message: `${t('incomingDocDetailPage.form.distributionDateInvalid')}`,
                       validator: (_, value) => {
                         const arrivingDate = form.getFieldValue('arrivingDate');
                         return DateValidator.validateBeforeAfter(value, arrivingDate);
@@ -558,7 +565,7 @@ function IncomingDocPage() {
                     },
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.distributionDateRequired') as string,
+                      message: `${t('incomingDocDetailPage.form.distributionDateRequired')}`,
                     },
                   ]}>
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
@@ -574,16 +581,7 @@ function IncomingDocPage() {
                   required
                   rules={[
                     {
-                      message: t(
-                        'incomingDocDetailPage.form.arrivingDateGreaterThanNowError'
-                      ) as string,
-                      validator: (_, value) => {
-                        const now = new Date();
-                        return DateValidator.validateBeforeAfter(value, now);
-                      },
-                    },
-                    {
-                      message: t('incomingDocDetailPage.form.arrivingDateInvalid') as string,
+                      message: `${t('incomingDocDetailPage.form.arrivingDateInvalid')}`,
                       validator: (_, value) => {
                         const distributionDate = form.getFieldValue('distributionDate');
                         return DateValidator.validateBeforeAfter(distributionDate, value);
@@ -591,7 +589,7 @@ function IncomingDocPage() {
                     },
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.arrivingDateRequired') as string,
+                      message: `${t('incomingDocDetailPage.form.arrivingDateRequired')}`,
                     },
                   ]}>
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
@@ -608,7 +606,7 @@ function IncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('incomingDocDetailPage.form.arrivingTimeRequired') as string,
+                      message: `${t('incomingDocDetailPage.form.arrivingTimeRequired')}`,
                     },
                   ]}>
                   <TimePicker className='w-full' />
@@ -694,17 +692,16 @@ function IncomingDocPage() {
                   required
                   name='name'
                   rules={[
-                    {
-                      required: true,
-                      message: t('incomingDocDetailPage.form.name_required') as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      `${t('incomingDocDetailPage.form.name_required')}`
+                    ),
                   ]}>
                   <Input />
                 </Form.Item>
               </Col>
             </Row>
 
-            <Form.Item label={t('incomingDocDetailPage.form.summary')} name='summary'>
+            <Form.Item label={t('incomingDocDetailPage.form.summary')} name='summary' required>
               <CKEditor
                 disabled={!isEditing}
                 editor={ClassicEditor}

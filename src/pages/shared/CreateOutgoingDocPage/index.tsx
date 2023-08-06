@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -8,7 +7,9 @@ import { Button, Col, Form, Input, message, Row, Select, Upload, UploadProps } f
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
+import axios from 'axios';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
+import { t } from 'i18next';
 import {
   Confidentiality,
   DepartmentDto,
@@ -20,11 +21,11 @@ import {
 import outgoingDocumentService from 'services/OutgoingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 
 import './index.css';
 
 function CreateOutgoingDocPage() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [form] = useForm();
   const showAlert = useSweetAlert();
@@ -84,37 +85,49 @@ function CreateOutgoingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_duplicate_error')
+        );
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_max_count_error')
+        );
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_type_error')
+        );
       }
 
-      // Check file size (max 5MB)
+      // Check file size (max 10MB)
       const isValidSize = file.size < MAX_FILE_SIZE;
       if (!isValidSize) {
-        message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_size_error')
+        );
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
     },
     onChange(info) {
       const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
       if (status === 'done') {
         message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
+        DocFormValidators.addFilesFieldError(
+          form,
+          `${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`
+        );
       }
     },
   };
@@ -122,6 +135,15 @@ function CreateOutgoingDocPage() {
   const onFinish = async (values: any) => {
     setLoading(true);
     try {
+      if (values.files.fileList.length === 0) {
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.form.files_required')
+        );
+        setLoading(false);
+        return;
+      }
+
       const outgoingDocument = new FormData();
       if (values.files !== undefined) {
         values.files.fileList.forEach((file: any) => {
@@ -141,7 +163,7 @@ function CreateOutgoingDocPage() {
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('create_outgoing_doc_page.message.success') as string,
+          html: t('create_outgoing_doc_page.message.success'),
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
@@ -150,9 +172,13 @@ function CreateOutgoingDocPage() {
       }
     } catch (error) {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.status === 400
+          ? error.response.data.message
+          : t('create_outgoing_doc_page.message.error');
       showAlert({
         icon: 'error',
-        html: t('create_outgoing_doc_page.message.error') as string,
+        html: t(errorMessage),
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -189,32 +215,13 @@ function CreateOutgoingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('create_outgoing_doc_page.form.document_type_required') as string,
+                      message: t('create_outgoing_doc_page.form.document_type_required').toString(),
                     },
                   ]}>
                   <Select>{renderDocumentTypes()}</Select>
                 </Form.Item>
               </Col>
             </Row>
-
-            {/* <Row>
-              <Col span={11}>
-                <Form.Item
-                  required
-                  label={t('create_outgoing_doc_page.form.release_number')}
-                  name='incomingNumber'>
-                  <Input disabled />
-                </Form.Item>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={11}>
-                <Form.Item
-                  label={t('create_outgoing_doc_page.form.distribution_date')}
-                  name='distributionDate'>
-                  <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' disabled />
-                </Form.Item>
-              </Col>
-            </Row> */}
 
             <Row>
               <Col span={11}>
@@ -225,9 +232,7 @@ function CreateOutgoingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t(
-                        'create_outgoing_doc_page.form.distribution_org_required'
-                      ) as string,
+                      message: `${t('create_outgoing_doc_page.form.distribution_org_required')}`,
                     },
                   ]}>
                   <Select>{renderDepartment()}</Select>
@@ -238,12 +243,9 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   required
                   rules={[
-                    {
-                      required: true,
-                      message: t(
-                        'create_outgoing_doc_page.form.original_symbol_number_required'
-                      ) as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      t('create_outgoing_doc_page.form.original_symbol_number_required')
+                    ),
                   ]}
                   label={
                     <>
@@ -274,15 +276,20 @@ function CreateOutgoingDocPage() {
                   name='urgency'
                   required
                   rules={[
-                    {
-                      required: true,
-                      message: t('create_outgoing_doc_page.form.urgency_required') as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      t('create_outgoing_doc_page.form.urgency_required')
+                    ),
                   ]}>
                   <Select>
-                    <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
-                    <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
-                    <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
+                    <Select.Option value={Urgency.HIGH}>
+                      {t(`outgoing_doc_detail_page.urgency.${Urgency.HIGH}`)}
+                    </Select.Option>
+                    <Select.Option value={Urgency.MEDIUM}>
+                      {t(`outgoing_doc_detail_page.urgency.${Urgency.MEDIUM}`)}
+                    </Select.Option>
+                    <Select.Option value={Urgency.LOW}>
+                      {t(`outgoing_doc_detail_page.urgency.${Urgency.LOW}`)}
+                    </Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -293,17 +300,20 @@ function CreateOutgoingDocPage() {
                   name='confidentiality'
                   required
                   rules={[
-                    {
-                      required: true,
-                      message: t(
-                        'create_outgoing_doc_page.form.confidentiality_required'
-                      ) as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      t('create_outgoing_doc_page.form.confidentiality_required')
+                    ),
                   ]}>
                   <Select>
-                    <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
-                    <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
-                    <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
+                    <Select.Option value={Confidentiality.HIGH}>
+                      {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.HIGH}`)}
+                    </Select.Option>
+                    <Select.Option value={Confidentiality.MEDIUM}>
+                      {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.MEDIUM}`)}
+                    </Select.Option>
+                    <Select.Option value={Confidentiality.LOW}>
+                      {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.LOW}`)}
+                    </Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -314,10 +324,9 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   required
                   rules={[
-                    {
-                      required: true,
-                      message: t('create_outgoing_doc_page.form.receive_org_required') as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      t('create_outgoing_doc_page.form.receive_org_required')
+                    ),
                   ]}
                   label={t('create_outgoing_doc_page.form.receive_org')}
                   name='recipient'>
@@ -329,10 +338,9 @@ function CreateOutgoingDocPage() {
                 <Form.Item
                   required
                   rules={[
-                    {
-                      required: true,
-                      message: t('create_outgoing_doc_page.form.name_required') as string,
-                    },
+                    DocFormValidators.NoneBlankValidator(
+                      t('create_outgoing_doc_page.form.name_required')
+                    ),
                   ]}
                   label={t('create_outgoing_doc_page.form.name')}
                   name='name'>
@@ -341,7 +349,7 @@ function CreateOutgoingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary'>
+            <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary' required>
               <CKEditor
                 editor={ClassicEditor}
                 data={form.getFieldValue('summary') || ''}
@@ -353,7 +361,16 @@ function CreateOutgoingDocPage() {
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item label={t('create_outgoing_doc_page.form.files')} name='files'>
+            <Form.Item
+              label={t('create_outgoing_doc_page.form.files')}
+              name='files'
+              rules={[
+                {
+                  required: true,
+                  message: `${t('create_outgoing_doc_page.form.files_required')}`,
+                },
+              ]}
+              required>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
@@ -376,9 +393,7 @@ function CreateOutgoingDocPage() {
               type='default'
               size='large'
               className='mr-5'
-              onClick={() => {
-                onCancel();
-              }}
+              onClick={onCancel}
               disabled={loading}>
               {t('create_outgoing_doc_page.button.cancel')}
             </Button>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
@@ -73,6 +73,7 @@ import { useDocOutLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery
 import { useOutgoingDocumentDetailQuery } from 'shared/hooks/OutgoingDocumentDetailQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import {
   DAY_MONTH_YEAR_FORMAT,
@@ -86,6 +87,7 @@ import './index.css';
 
 const { confirm } = Modal;
 const { Title } = Typography;
+
 function OutgoingDocDetailPage() {
   const queryClient = useQueryClient();
   const { currentUser } = useAuth();
@@ -296,21 +298,36 @@ function OutgoingDocDetailPage() {
           : form.getFieldValue('files')?.fileList?.length + attachmentList.length + 1 > 3;
       const isExisted = attachmentList.find((attachment) => attachment.fileName === file.name);
       if (isMaxCount) {
-        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_max_count_error')
+        );
       } else {
         if (isDuplicate) {
-          message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+          DocFormValidators.addFilesFieldError(
+            form,
+            t('create_outgoing_doc_page.message.file_duplicate_error')
+          );
         } else {
           if (isExisted) {
-            message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+            DocFormValidators.addFilesFieldError(
+              form,
+              t('create_outgoing_doc_page.message.file_duplicate_error')
+            );
           } else {
             // Check file type
             if (!isValidType) {
-              message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
+              DocFormValidators.addFilesFieldError(
+                form,
+                t('create_outgoing_doc_page.message.file_type_error')
+              );
             } else {
-              // Check file size (max 5MB)
+              // Check file size (max 10MB)
               if (!isValidSize) {
-                message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
+                DocFormValidators.addFilesFieldError(
+                  form,
+                  t('create_outgoing_doc_page.message.file_size_error')
+                );
               }
             }
           }
@@ -327,7 +344,10 @@ function OutgoingDocDetailPage() {
       if (status === 'done') {
         message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
+        DocFormValidators.addFilesFieldError(
+          form,
+          `${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`
+        );
       }
     },
   };
@@ -365,9 +385,13 @@ function OutgoingDocDetailPage() {
         queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 0)]);
       }
     } catch (error) {
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.status === 400
+          ? error.response.data.message
+          : t('create_outgoing_doc_page.message.error');
       showAlert({
         icon: 'error',
-        html: `${t('outgoing_doc_detail_page.message.error')}`,
+        html: t(errorMessage),
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -603,8 +627,6 @@ function OutgoingDocDetailPage() {
     setSelectedDocumentsToLink(documents);
   };
 
-  console.log(linkedDocuments?.data);
-
   return (
     <>
       <Skeleton loading={isLoading || isFetching || linkedDocuments.isLoading} active>
@@ -657,12 +679,9 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      {
-                        required: true,
-                        message: `${t(
-                          'outgoing_doc_detail_page.form.original_symbol_number_required'
-                        )}`,
-                      },
+                      DocFormValidators.NoneBlankValidator(
+                        t('outgoing_doc_detail_page.form.original_symbol_number_required')
+                      ),
                     ]}
                     label={
                       <>
@@ -705,7 +724,8 @@ function OutgoingDocDetailPage() {
                 <Col span={11}>
                   <Form.Item
                     label={t('outgoing_doc_detail_page.form.distribution_date')}
-                    name='releaseDate'>
+                    name='releaseDate'
+                    rules={[DocFormValidators.FutureOrPresentDateValidator()]}>
                     <DatePicker
                       format={DAY_MONTH_YEAR_FORMAT}
                       className='w-full'
@@ -729,9 +749,15 @@ function OutgoingDocDetailPage() {
                       },
                     ]}>
                     <Select>
-                      <Select.Option value={Urgency.HIGH}>Cao</Select.Option>
-                      <Select.Option value={Urgency.MEDIUM}>Trung bình</Select.Option>
-                      <Select.Option value={Urgency.LOW}>Thấp</Select.Option>
+                      <Select.Option value={Urgency.HIGH}>
+                        {t(`outgoing_doc_detail_page.urgency.${Urgency.HIGH}`)}
+                      </Select.Option>
+                      <Select.Option value={Urgency.MEDIUM}>
+                        {t(`outgoing_doc_detail_page.urgency.${Urgency.MEDIUM}`)}
+                      </Select.Option>
+                      <Select.Option value={Urgency.LOW}>
+                        {t(`outgoing_doc_detail_page.urgency.${Urgency.LOW}`)}
+                      </Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -748,9 +774,15 @@ function OutgoingDocDetailPage() {
                       },
                     ]}>
                     <Select>
-                      <Select.Option value={Confidentiality.HIGH}>Cao</Select.Option>
-                      <Select.Option value={Confidentiality.MEDIUM}>Trung bình</Select.Option>
-                      <Select.Option value={Confidentiality.LOW}>Thấp</Select.Option>
+                      <Select.Option value={Confidentiality.HIGH}>
+                        {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.HIGH}`)}
+                      </Select.Option>
+                      <Select.Option value={Confidentiality.MEDIUM}>
+                        {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.MEDIUM}`)}
+                      </Select.Option>
+                      <Select.Option value={Confidentiality.LOW}>
+                        {t(`outgoing_doc_detail_page.confidentiality.${Confidentiality.LOW}`)}
+                      </Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -761,10 +793,9 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      {
-                        required: true,
-                        message: `${t('outgoing_doc_detail_page.form.receive_org_required')}`,
-                      },
+                      DocFormValidators.NoneBlankValidator(
+                        t('outgoing_doc_detail_page.form.receive_org_required')
+                      ),
                     ]}
                     label={t('outgoing_doc_detail_page.form.receive_org')}
                     name='recipient'>
@@ -776,10 +807,9 @@ function OutgoingDocDetailPage() {
                   <Form.Item
                     required
                     rules={[
-                      {
-                        required: true,
-                        message: `${t('outgoing_doc_detail_page.form.name_required')}`,
-                      },
+                      DocFormValidators.NoneBlankValidator(
+                        t('outgoing_doc_detail_page.form.name_required')
+                      ),
                     ]}
                     label={t('outgoing_doc_detail_page.form.name')}
                     name='name'>
@@ -796,7 +826,7 @@ function OutgoingDocDetailPage() {
                 </Col>
               </Row>
 
-              <Form.Item label={t('outgoing_doc_detail_page.form.summary')} name='summary'>
+              <Form.Item label={t('outgoing_doc_detail_page.form.summary')} name='summary' required>
                 <CKEditor
                   disabled={!isEditing}
                   editor={ClassicEditor}
