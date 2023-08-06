@@ -33,6 +33,7 @@ import incomingDocumentService from 'services/IncomingDocumentService';
 import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import DateValidator from 'shared/validators/DateValidator';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 import { DAY_MONTH_YEAR_FORMAT, HH_MM_SS_FORMAT } from 'utils/DateTimeUtils';
 import { constructIncomingNumber } from 'utils/IncomingNumberUtils';
 
@@ -73,7 +74,7 @@ function ReceiveIncomingDocPage() {
 
   const handleFolderChange = (value: any) => {
     const folder: FolderDto =
-      foldersQuery.data?.find((folder: FolderDto) => folder.id === value) || ({} as FolderDto);
+      foldersQuery.data?.find((folder: FolderDto) => folder.id === value) ?? ({} as FolderDto);
     form.setFieldValue('incomingNumber', constructIncomingNumber(folder));
   };
 
@@ -105,24 +106,36 @@ function ReceiveIncomingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('receiveIncomingDocPage.message.file_duplicate_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t(t('receiveIncomingDocPage.message.file_duplicate_error'))
+        );
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('receiveIncomingDocPage.message.file_max_count_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t(t('receiveIncomingDocPage.message.file_max_count_error'))
+        );
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('receiveIncomingDocPage.message.file_type_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t(t('receiveIncomingDocPage.message.file_type_error'))
+        );
       }
 
       // Check file size (max 5MB)
       const isValidSize = file.size < MAX_FILE_SIZE;
       if (!isValidSize) {
-        message.error(t('receiveIncomingDocPage.message.file_size_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t(t('receiveIncomingDocPage.message.file_size_error'))
+        );
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
@@ -135,7 +148,10 @@ function ReceiveIncomingDocPage() {
       if (status === 'done') {
         message.success(`${info.file.name} ${t('receiveIncomingDocPage.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('receiveIncomingDocPage.message.file_error')}`);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t(`${info.file.name} ${t('receiveIncomingDocPage.message.file_error')}`)
+        );
       }
     },
   };
@@ -163,7 +179,7 @@ function ReceiveIncomingDocPage() {
       if (response.status === 200) {
         showAlert({
           icon: 'success',
-          html: t('receiveIncomingDocPage.message.success') as string,
+          html: `${t('receiveIncomingDocPage.message.success')}`,
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
@@ -174,7 +190,7 @@ function ReceiveIncomingDocPage() {
       // Only in this case, deal to the UX, just show a popup instead of navigating to error page
       showAlert({
         icon: 'error',
-        html: t('receiveIncomingDocPage.message.error') as string,
+        html: `${t('receiveIncomingDocPage.message.error')}`,
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -202,7 +218,7 @@ function ReceiveIncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.docFolderRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.docFolderRequired')}`,
                     },
                   ]}>
                   <Select onChange={(value: number) => handleFolderChange(value)}>
@@ -219,7 +235,7 @@ function ReceiveIncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.documentTypeRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.documentTypeRequired')}`,
                     },
                   ]}>
                   <Select>{renderDocumentTypes()}</Select>
@@ -230,9 +246,14 @@ function ReceiveIncomingDocPage() {
             <Row>
               <Col span={11}>
                 <Form.Item
-                  required
                   label={t('receiveIncomingDocPage.form.incomingNumber')}
-                  name='incomingNumber'>
+                  name='incomingNumber'
+                  rules={[
+                    DocFormValidators.CommonValidator(
+                      t('receiveIncomingDocPage.form.incomingNumberRequired')
+                    ),
+                  ]}
+                  required>
                   <Input disabled />
                 </Form.Item>
               </Col>
@@ -258,12 +279,9 @@ function ReceiveIncomingDocPage() {
                   required
                   name='originalSymbolNumber'
                   rules={[
-                    {
-                      required: true,
-                      message: t(
-                        'receiveIncomingDocPage.form.originalSymbolNumberRequired'
-                      ) as string,
-                    },
+                    DocFormValidators.CommonValidator(
+                      t('receiveIncomingDocPage.form.originalSymbolNumberRequired')
+                    ),
                   ]}>
                   <Input />
                 </Form.Item>
@@ -279,7 +297,7 @@ function ReceiveIncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.distributionOrgRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.distributionOrgRequired')}`,
                     },
                   ]}>
                   <Select>{renderDistributionOrg()}</Select>
@@ -292,17 +310,11 @@ function ReceiveIncomingDocPage() {
                   name='distributionDate'
                   required
                   rules={[
+                    DocFormValidators.FutureOrPresentDateValidator(
+                      `${t('receiveIncomingDocPage.form.distributionDateGreaterThanNowError')}`
+                    ),
                     {
-                      message: t(
-                        'receiveIncomingDocPage.form.distributionDateGreaterThanNowError'
-                      ) as string,
-                      validator: (_, value) => {
-                        const now = new Date();
-                        return DateValidator.validateBeforeAfter(value, now);
-                      },
-                    },
-                    {
-                      message: t('receiveIncomingDocPage.form.distributionDateInvalid') as string,
+                      message: `${t('receiveIncomingDocPage.form.distributionDateInvalid')}`,
                       validator: (_, value) => {
                         const arrivingDate = form.getFieldValue('arrivingDate');
                         return DateValidator.validateBeforeAfter(value, arrivingDate);
@@ -310,7 +322,7 @@ function ReceiveIncomingDocPage() {
                     },
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.distributionDateRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.distributionDateRequired')}`,
                     },
                   ]}>
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
@@ -325,17 +337,11 @@ function ReceiveIncomingDocPage() {
                   name='arrivingDate'
                   required
                   rules={[
+                    DocFormValidators.FutureOrPresentDateValidator(
+                      `${t('receiveIncomingDocPage.form.arrivingDateGreaterThanNowError')}`
+                    ),
                     {
-                      message: t(
-                        'receiveIncomingDocPage.form.arrivingDateGreaterThanNowError'
-                      ) as string,
-                      validator: (_, value) => {
-                        const now = new Date();
-                        return DateValidator.validateBeforeAfter(value, now);
-                      },
-                    },
-                    {
-                      message: t('receiveIncomingDocPage.form.arrivingDateInvalid') as string,
+                      message: `${t('receiveIncomingDocPage.form.arrivingDateInvalid')}`,
                       validator: (_, value) => {
                         const distributionDate = form.getFieldValue('distributionDate');
                         return DateValidator.validateBeforeAfter(distributionDate, value);
@@ -343,7 +349,7 @@ function ReceiveIncomingDocPage() {
                     },
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.arrivingDateRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.arrivingDateRequired')}`,
                     },
                   ]}>
                   <DatePicker format={DAY_MONTH_YEAR_FORMAT} className='w-full' />
@@ -360,7 +366,7 @@ function ReceiveIncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.arrivingTimeRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.arrivingTimeRequired')}`,
                     },
                   ]}>
                   <TimePicker className='w-full' />
@@ -377,7 +383,7 @@ function ReceiveIncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.urgencyRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.urgencyRequired')}`,
                     },
                   ]}>
                   <Select>
@@ -396,7 +402,7 @@ function ReceiveIncomingDocPage() {
                   rules={[
                     {
                       required: true,
-                      message: t('receiveIncomingDocPage.form.confidentialityRequired') as string,
+                      message: `${t('receiveIncomingDocPage.form.confidentialityRequired')}`,
                     },
                   ]}>
                   <Select>
@@ -415,17 +421,16 @@ function ReceiveIncomingDocPage() {
                   required
                   name='name'
                   rules={[
-                    {
-                      required: true,
-                      message: t('incomingDocDetailPage.form.name_required') as string,
-                    },
+                    DocFormValidators.CommonValidator(
+                      t('incomingDocDetailPage.form.name_required')
+                    ),
                   ]}>
                   <Input />
                 </Form.Item>
               </Col>
             </Row>
 
-            <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary'>
+            <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary' required>
               <CKEditor
                 editor={ClassicEditor}
                 data={form.getFieldValue('summary') || ''}
@@ -444,7 +449,7 @@ function ReceiveIncomingDocPage() {
               rules={[
                 {
                   required: true,
-                  message: t('receiveIncomingDocPage.form.filesRequired') as string,
+                  message: `${t('receiveIncomingDocPage.form.filesRequired')}`,
                 },
               ]}>
               <Dragger {...fileProps}>

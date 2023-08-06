@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
@@ -298,21 +298,36 @@ function OutgoingDocDetailPage() {
           : form.getFieldValue('files')?.fileList?.length + attachmentList.length + 1 > 3;
       const isExisted = attachmentList.find((attachment) => attachment.fileName === file.name);
       if (isMaxCount) {
-        message.error(t('create_outgoing_doc_page.message.file_max_count_error') as string);
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_max_count_error')
+        );
       } else {
         if (isDuplicate) {
-          message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+          DocFormValidators.addFilesFieldError(
+            form,
+            t('create_outgoing_doc_page.message.file_duplicate_error')
+          );
         } else {
           if (isExisted) {
-            message.error(t('create_outgoing_doc_page.message.file_duplicate_error') as string);
+            DocFormValidators.addFilesFieldError(
+              form,
+              t('create_outgoing_doc_page.message.file_duplicate_error')
+            );
           } else {
             // Check file type
             if (!isValidType) {
-              message.error(t('create_outgoing_doc_page.message.file_type_error') as string);
+              DocFormValidators.addFilesFieldError(
+                form,
+                t('create_outgoing_doc_page.message.file_type_error')
+              );
             } else {
-              // Check file size (max 5MB)
+              // Check file size (max 10MB)
               if (!isValidSize) {
-                message.error(t('create_outgoing_doc_page.message.file_size_error') as string);
+                DocFormValidators.addFilesFieldError(
+                  form,
+                  t('create_outgoing_doc_page.message.file_size_error')
+                );
               }
             }
           }
@@ -329,7 +344,10 @@ function OutgoingDocDetailPage() {
       if (status === 'done') {
         message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
+        DocFormValidators.addFilesFieldError(
+          form,
+          `${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`
+        );
       }
     },
   };
@@ -373,7 +391,7 @@ function OutgoingDocDetailPage() {
           : t('create_outgoing_doc_page.message.error');
       showAlert({
         icon: 'error',
-        html: errorMessage,
+        html: t(errorMessage),
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -808,7 +826,7 @@ function OutgoingDocDetailPage() {
                 </Col>
               </Row>
 
-              <Form.Item label={t('outgoing_doc_detail_page.form.summary')} name='summary'>
+              <Form.Item label={t('outgoing_doc_detail_page.form.summary')} name='summary' required>
                 <CKEditor
                   disabled={!isEditing}
                   editor={ClassicEditor}
@@ -821,7 +839,7 @@ function OutgoingDocDetailPage() {
             </Col>
             <Col span={1}></Col>
             <Col span={7}>
-              <Form.Item label={t('outgoing_doc_detail_page.form.files')} name='files' required>
+              <Form.Item label={t('outgoing_doc_detail_page.form.files')} name='files'>
                 <Dragger {...fileProps}>
                   <p className='ant-upload-drag-icon'>
                     <InboxOutlined />

@@ -85,37 +85,49 @@ function CreateOutgoingDocPage() {
         .getFieldValue('files')
         ?.fileList?.find((f: UploadFile) => f.name === file.name);
       if (isDuplicate) {
-        message.error(t('create_outgoing_doc_page.message.file_duplicate_error'));
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_duplicate_error')
+        );
       }
 
       // Check file max count
       if (form.getFieldValue('files')?.fileList?.length >= 3) {
-        message.error(t('create_outgoing_doc_page.message.file_max_count_error'));
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_max_count_error')
+        );
       }
 
       // Check file type
       const isValidType = ALLOWED_FILE_TYPES.includes(file.type);
       if (!isValidType) {
-        message.error(t('create_outgoing_doc_page.message.file_type_error'));
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_type_error')
+        );
       }
 
       // Check file size (max 10MB)
       const isValidSize = file.size < MAX_FILE_SIZE;
       if (!isValidSize) {
-        message.error(t('create_outgoing_doc_page.message.file_size_error'));
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.message.file_size_error')
+        );
       }
 
       return (isValidType && isValidSize && !isDuplicate) || Upload.LIST_IGNORE;
     },
     onChange(info) {
       const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
       if (status === 'done') {
         message.success(`${info.file.name} ${t('create_outgoing_doc_page.message.file_success')}`);
       } else if (status === 'error') {
-        message.error(`${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`);
+        DocFormValidators.addFilesFieldError(
+          form,
+          `${info.file.name} ${t('create_outgoing_doc_page.message.file_error')}`
+        );
       }
     },
   };
@@ -123,6 +135,15 @@ function CreateOutgoingDocPage() {
   const onFinish = async (values: any) => {
     setLoading(true);
     try {
+      if (values.files.fileList.length === 0) {
+        DocFormValidators.addFilesFieldError(
+          form,
+          t('create_outgoing_doc_page.form.files_required')
+        );
+        setLoading(false);
+        return;
+      }
+
       const outgoingDocument = new FormData();
       if (values.files !== undefined) {
         values.files.fileList.forEach((file: any) => {
@@ -157,7 +178,7 @@ function CreateOutgoingDocPage() {
           : t('create_outgoing_doc_page.message.error');
       showAlert({
         icon: 'error',
-        html: errorMessage,
+        html: t(errorMessage),
         confirmButtonColor: PRIMARY_COLOR,
         confirmButtonText: 'OK',
       });
@@ -328,7 +349,7 @@ function CreateOutgoingDocPage() {
               </Col>
             </Row>
 
-            <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary'>
+            <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary' required>
               <CKEditor
                 editor={ClassicEditor}
                 data={form.getFieldValue('summary') || ''}
@@ -340,7 +361,16 @@ function CreateOutgoingDocPage() {
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item label={t('create_outgoing_doc_page.form.files')} name='files' required>
+            <Form.Item
+              label={t('create_outgoing_doc_page.form.files')}
+              name='files'
+              rules={[
+                {
+                  required: true,
+                  message: `${t('create_outgoing_doc_page.form.files_required')}`,
+                },
+              ]}
+              required>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
@@ -363,9 +393,7 @@ function CreateOutgoingDocPage() {
               type='default'
               size='large'
               className='mr-5'
-              onClick={() => {
-                onCancel();
-              }}
+              onClick={onCancel}
               disabled={loading}>
               {t('create_outgoing_doc_page.button.cancel')}
             </Button>
