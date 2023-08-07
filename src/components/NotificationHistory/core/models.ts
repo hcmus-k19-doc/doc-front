@@ -1,6 +1,10 @@
 import { FormInstance } from 'antd';
 import { ParentFolderEnum } from 'models/doc-file-models';
-import { AttachmentDto, TransferHistoryDto } from 'models/doc-main-models';
+import {
+  AttachmentDto,
+  ProcessingDocumentTypeEnum,
+  TransferHistoryDto,
+} from 'models/doc-main-models';
 
 export interface NotificationHistoryProps {
   notifications: any[];
@@ -38,7 +42,7 @@ export interface UserItem {
 export type TableRowDataType = {
   key: number;
   id: number;
-  type: string;
+  type: ProcessingDocumentTypeEnum;
   fullText: string;
   attachments: AttachmentDto[];
   parentFolderEnum: ParentFolderEnum;
