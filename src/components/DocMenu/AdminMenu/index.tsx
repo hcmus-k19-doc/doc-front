@@ -49,7 +49,7 @@ const AdminMenu = () => {
     setOpenKey(keys[1]);
   };
 
-  const directorMenuItems: MenuProps['items'] = [
+  const adminMenuItems: MenuProps['items'] = [
     {
       key: 'admin-management',
       icon: <EditOutlined />,
@@ -88,7 +88,7 @@ const AdminMenu = () => {
     mode: 'inline',
     defaultSelectedKeys: ['in-list'],
     defaultOpenKeys: ['docin'],
-    items: directorMenuItems,
+    items: adminMenuItems,
   };
 
   return (

@@ -140,10 +140,6 @@ const PageHeader: React.FC = () => {
     getUnreadNotificationCount();
   }, [unreadNotificationCount]);
 
-  // useEffect(() => {
-  //   appendData();
-  // }, [showNotifications]);
-
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
       // move the scrollbar up in order to continue scroll
