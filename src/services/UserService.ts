@@ -27,14 +27,17 @@ async function getUsersByRoleWithDepartment(role: DocSystemRoleEnum) {
 }
 
 async function updatePassword(oldPassword: string, confirmPassword: string, newPassword: string) {
-  if (oldPassword !== confirmPassword) {
+  if (newPassword !== confirmPassword) {
     throw new Error('user.detail.password_not_match');
+  } else if (oldPassword === newPassword) {
+    throw new Error('user.detail.password_not_change');
   } else {
     await axios.put(
       `${REACT_APP_DOC_MAIN_SERVICE_URL}/users/current/password`,
       qs.stringify({
         oldPassword,
         newPassword,
+        confirmPassword,
       })
     );
   }
@@ -67,6 +70,7 @@ async function updateNotificationStatus(transferHistoryId: number) {
     `${REACT_APP_DOC_MAIN_SERVICE_URL}/users/update-transfer-history-is-read/${transferHistoryId}`
   );
 }
+
 async function updateAllNotificationStatus() {
   await axios.put(`${REACT_APP_DOC_MAIN_SERVICE_URL}/users/update-transfer-history-is-read`);
 }

@@ -193,10 +193,11 @@
       "role_title_invalid": "Chức danh không hợp lệ. Chức danh phải có độ dài từ 1 đến 200 ký tự",
       "department_required": "Hãy chọn phòng ban",
       "old_password": "Mật khẩu cũ",
-      "confirm_password": "Xác nhận mật khẩu",
       "new_password": "Mật khẩu mới",
+      "confirm_password": "Xác nhận mật khẩu mới",
       "change_password": "Đổi mật khẩu",
       "password_not_match": "Mật khẩu không khớp",
+      "password_not_change": "Mật khẩu mới không được trùng với mật khẩu cũ",
       "change_password_success": "Đổi mật khẩu thành công"
     },
     "username": {
@@ -207,7 +208,9 @@
     },
     "not_found": "Không tìm thấy người dùng",
     "password": {
-      "incorrect": "Mật khẩu không chính xác"
+      "incorrect": "Mật khẩu không chính xác",
+      "invalid": "Mật khẩu phải có độ dài từ 6 đến 20 ký tự, phải chứa ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường, 1 số và 1 ký tự đặc biệt",
+      "required": "Hãy điền mật khẩu"
     }
   },
   "SENDING_LEVEL": {
