@@ -7,6 +7,7 @@ import {
   IncomingDocumentDto,
   OutgoingDocSearchCriteriaDto,
   OutgoingDocumentGetDto,
+  OutgoingDocumentGetListDto,
   PublishDocumentDto,
   TransferDocDto,
   TransferDocumentModalSettingDto,
@@ -51,9 +52,9 @@ function getOutgoingDocuments(
   searchCriteria: Partial<OutgoingDocSearchCriteriaDto>,
   page: number,
   pageSize: number
-): Promise<DocPaginationDto<OutgoingDocumentGetDto>> {
+): Promise<DocPaginationDto<OutgoingDocumentGetListDto>> {
   return axios
-    .post<DocPaginationDto<OutgoingDocumentGetDto>>(
+    .post<DocPaginationDto<OutgoingDocumentGetListDto>>(
       `${OUTGOING_DOCUMENTS_URL}/search`,
       searchCriteria,
       {

@@ -203,6 +203,22 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     customProcessingDuration: string;
 }
 
+
+export interface OutgoingDocumentGetListDto extends DocAbstractDto {
+    ordinalNumber: number;
+    name: string;
+    outgoingNumber: string;
+    originalSymbolNumber: string;
+    summary: string;
+    documentTypeName: string;
+    publishingDepartmentName: string;
+    status: OutgoingDocumentStatusEnum;
+    isDocTransferred: boolean;
+    isDocCollaborator: boolean;
+    isTransferable: boolean;
+    customProcessingDuration: string;
+}
+
 export interface OutgoingDocumentPostDto extends DocAbstractDto {
     name: string;
     documentType: number;
