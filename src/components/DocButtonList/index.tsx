@@ -53,7 +53,6 @@ const DocButtonList = ({
   setIsLoading,
   handleLoadTransferDocumentDetail,
 }: DocButtonListProps) => {
-  console.log('documentDetail', documentDetail, !isClosed);
   const { currentUser } = useAuth();
   const { docId } = useParams();
   const showAlert = useSweetAlert();
