@@ -1,4 +1,4 @@
-import { AttachmentDto, OutgoingDocumentGetDto } from 'models/doc-main-models';
+import { AttachmentDto } from 'models/doc-main-models';
 
 export type TableRowDataType = {
   ordinalNumber: number;

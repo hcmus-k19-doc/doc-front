@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
 import { TableDataType, TableRowDataType } from 'pages/shared/OutgoingDocListPage/core/models';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
@@ -46,22 +45,22 @@ export const useOutgoingDocRes = (isModal: boolean) => {
               name: item.name,
               key: item.id,
               id: item.id,
-              type: item.documentType.type,
+              type: item.documentTypeName,
               releaseNumber: item.outgoingNumber,
               originId: item.originalSymbolNumber,
-              releaseDate: format(new Date(item.releaseDate), 'dd-MM-yyyy'),
-              issuePlace: item.publishingDepartment.departmentName,
+              issuePlace: item.publishingDepartmentName,
+              releaseDate: '',
               summary: item.summary,
               fullText: '',
               status: t(`PROCESSING_STATUS.${item.status}`),
               objType: 'OutgoingDocument',
-              attachments: item.attachments,
+              attachments: [],
               isDocTransferred: item.isDocTransferred,
               isDocCollaborator: item.isDocCollaborator,
               isTransferable: item.isTransferable,
               outgoingNumber: item.outgoingNumber,
               deadline: item.customProcessingDuration,
-              isDocTransferredByNextUserInFlow: item.isDocTransferredByNextUserInFlow,
+              isDocTransferredByNextUserInFlow: false,
             };
           });
 
