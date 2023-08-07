@@ -81,7 +81,7 @@ export default function ProcessingStepComponent({ processingDocumentType }: Prop
           title: t('common.processing_step.processing_step_in.step_3.title', {
             roleTitle: data?.[2]?.roleTitle,
           }),
-          status: data?.[2]?.isDocClosedOrReleased ? 'finish' : 'process',
+          status: data?.[2]?.isDocClosedOrReleased ? 'finish' : 'wait',
           description: (
             <>
               <div>

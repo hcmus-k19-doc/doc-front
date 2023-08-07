@@ -53,6 +53,7 @@ const DocButtonList = ({
   setIsLoading,
   handleLoadTransferDocumentDetail,
 }: DocButtonListProps) => {
+  console.log('documentDetail', documentDetail, !isClosed);
   const { currentUser } = useAuth();
   const { docId } = useParams();
   const showAlert = useSweetAlert();
@@ -205,35 +206,35 @@ const DocButtonList = ({
             : t('incomingDocDetailPage.button.edit')}
         </Button>
       ),
-      !isClosed
-        ? documentDetail?.isTransferable && (
-            <Button
-              type='primary'
-              size='large'
-              className='mr-5'
-              key='4'
-              name='transfer'
-              hidden={isEditing}
-              loading={isClosing}
-              onClick={onOpenTransferModal}>
-              {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
-                ? t('incomingDocDetailPage.button.transer_detail')
-                : t('incomingDocDetailPage.button.transfer')}
-            </Button>
-          )
-        : (documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator) && (
-            <Button
-              type='primary'
-              size='large'
-              className='mr-5'
-              key='4'
-              name='transfer'
-              hidden={isEditing}
-              loading={isClosing}
-              onClick={onOpenTransferModal}>
-              {t('incomingDocDetailPage.button.transer_detail')}
-            </Button>
-          ),
+      !isClosed ? (
+        documentDetail?.isTransferable ? (
+          <Button
+            type='primary'
+            size='large'
+            className='mr-5'
+            key='4'
+            name='transfer'
+            hidden={isEditing}
+            loading={isClosing}
+            onClick={onOpenTransferModal}>
+            {documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator
+              ? t('incomingDocDetailPage.button.transer_detail')
+              : t('incomingDocDetailPage.button.transfer')}
+          </Button>
+        ) : documentDetail?.isDocTransferred || documentDetail?.isDocCollaborator ? (
+          <Button
+            type='primary'
+            size='large'
+            className='mr-5'
+            key='4'
+            name='transfer'
+            hidden={isEditing}
+            loading={isClosing}
+            onClick={onOpenTransferModal}>
+            {t('incomingDocDetailPage.button.transer_detail')}
+          </Button>
+        ) : null
+      ) : null,
       currentUser?.role === DocSystemRoleEnum.CHUYEN_VIEN && documentDetail?.isCloseable && (
         <Button
           type='primary'
