@@ -135,15 +135,6 @@ function CreateOutgoingDocPage() {
   const onFinish = async (values: any) => {
     setLoading(true);
     try {
-      if (values.files.fileList.length === 0) {
-        DocFormValidators.addFilesFieldError(
-          form,
-          t('create_outgoing_doc_page.form.files_required')
-        );
-        setLoading(false);
-        return;
-      }
-
       const outgoingDocument = new FormData();
       if (values.files !== undefined) {
         values.files.fileList.forEach((file: any) => {
@@ -361,16 +352,7 @@ function CreateOutgoingDocPage() {
           </Col>
           <Col span={1}></Col>
           <Col span={7}>
-            <Form.Item
-              label={t('create_outgoing_doc_page.form.files')}
-              name='files'
-              rules={[
-                {
-                  required: true,
-                  message: `${t('create_outgoing_doc_page.form.files_required')}`,
-                },
-              ]}
-              required>
+            <Form.Item label={t('create_outgoing_doc_page.form.files')} name='files'>
               <Dragger {...fileProps}>
                 <p className='ant-upload-drag-icon'>
                   <InboxOutlined />
