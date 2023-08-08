@@ -36,7 +36,9 @@ const AppRoutes = () => {
                 path='/processing-details/:incomingDocumentId'
                 element={<ProcessingDetailsPageWrapper />}
               />
-              <Route path='/' element={<StatisticsPage />} />
+              {currentUser?.role !== DocSystemRoleEnum.DOC_ADMIN && (
+                <Route path='/' element={<StatisticsPage />} />
+              )}
               <Route
                 path='/profile'
                 element={
