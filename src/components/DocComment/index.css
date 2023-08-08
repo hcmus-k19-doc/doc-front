@@ -3,6 +3,7 @@
 }
 
 .ant-comment-content-detail ul,
+
 .ant-comment-content-detail ul li {
   list-style-type: disc;
 }
@@ -12,6 +13,7 @@
 }
 
 .ant-comment-content-detail ol,
+
 .ant-comment-content-detail ol li {
   list-style-type: decimal;
 }
