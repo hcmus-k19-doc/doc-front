@@ -23,6 +23,8 @@ import { useDropDownFieldsQuery } from 'shared/hooks/DropdownFieldsQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import DocFormValidators from 'shared/validators/DocFormValidators';
 
+import DocCKEditor from '../../../components/DocCKEditor';
+
 import './index.css';
 
 function CreateOutgoingDocPage() {
@@ -341,10 +343,9 @@ function CreateOutgoingDocPage() {
             </Row>
 
             <Form.Item label={t('create_outgoing_doc_page.form.summary')} name='summary' required>
-              <CKEditor
-                editor={ClassicEditor}
+              <DocCKEditor
                 data={form.getFieldValue('summary') || ''}
-                onChange={(event, editor) => {
+                onChange={(_, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}
               />

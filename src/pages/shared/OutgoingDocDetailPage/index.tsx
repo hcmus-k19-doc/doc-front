@@ -8,8 +8,6 @@ import {
   PlusCircleOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Button,
@@ -34,6 +32,7 @@ import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
 import Attachments from 'components/Attachments';
 import { useAuth } from 'components/AuthComponent';
+import DocCKEditor from 'components/DocCKEditor';
 import DocComment from 'components/DocComment';
 import DocStatus from 'components/DocStatus';
 import LinkDocumentModal from 'components/LinkDocumentModal';
@@ -827,11 +826,10 @@ function OutgoingDocDetailPage() {
               </Row>
 
               <Form.Item label={t('outgoing_doc_detail_page.form.summary')} name='summary' required>
-                <CKEditor
+                <DocCKEditor
                   disabled={!isEditing}
-                  editor={ClassicEditor}
                   data={form.getFieldValue('summary') || ''}
-                  onChange={(event, editor) => {
+                  onChange={(_, editor) => {
                     form.setFieldValue('summary', editor.getData());
                   }}
                 />
