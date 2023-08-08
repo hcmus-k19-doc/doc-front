@@ -907,8 +907,8 @@
           "fullText": "Toàn văn",
           "attachmentDetail": "Chi tiết"
         },
-        "incoming_doc": "Văn bản đến",
-        "outgoing_doc": "Văn bản đi",
+        "incoming_document": "Văn bản đến",
+        "outgoing_document": "Văn bản đi",
         "tooltip": {
           "downloadAttachment": "Tải tệp đính kèm"
         }

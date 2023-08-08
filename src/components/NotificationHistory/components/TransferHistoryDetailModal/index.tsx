@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { ReturnRequestType } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
 import { DAY_MONTH_YEAR_FORMAT_2 } from 'utils/DateTimeUtils';
+import { globalNavigate, routingUtils } from 'utils/RoutingUtils';
 
 import './index.css';
 const { Text } = Typography;
@@ -39,7 +40,7 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
       key: 'type',
       width: 130,
       render: (text) => {
-        return <Text>{t(`transfer_history.modal.table.${text}`)}</Text>;
+        return <Text>{t(`transfer_history.modal.table.${text.toLowerCase()}`)}</Text>;
       },
     },
     {
@@ -254,6 +255,15 @@ const TransferHistoryDetailModal: React.FC<TransferHistoryDetailModalProps> = (
                 columns={columns}
                 pagination={false}
                 rowClassName={() => 'row-hover'}
+                onRow={(record) => {
+                  return {
+                    onDoubleClick: () => {
+                      const baseUrl = routingUtils.getUrl(record.type);
+                      props.handleClose();
+                      globalNavigate(`/main/${baseUrl}/${record.id}`);
+                    },
+                  };
+                }}
               />
             </Col>
           </Row>

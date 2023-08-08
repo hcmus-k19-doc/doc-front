@@ -897,8 +897,8 @@
           "fullText": "Full Text",
           "attachmentDetail": "Attachment Detail"
         },
-        "incoming_doc": "Incoming Documents",
-        "outgoing_doc": "Outgoing Documents",
+        "incoming_document": "Incoming Documents",
+        "outgoing_document": "Outgoing Documents",
         "tooltip": {
           "downloadAttachment": "Download Attachment"
         }

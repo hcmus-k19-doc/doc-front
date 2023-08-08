@@ -1002,6 +1002,20 @@ function OutgoingDocDetailPage() {
                   : t('outgoing_doc_detail_page.button.report')}
               </Button>
             )}
+
+            {!data?.data?.isTransferable &&
+              (data?.data?.isDocTransferred || data?.data?.isDocCollaborator) && (
+                <Button
+                  type='primary'
+                  size='large'
+                  htmlType='button'
+                  className='mr-5'
+                  onClick={handleOnOpenModal}
+                  hidden={isEditing || isReviewing}>
+                  {t('outgoing_doc_detail_page.button.view_transfer_detail')}
+                </Button>
+              )}
+
             {currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
               data?.data?.isDocTransferredByNextUserInFlow === false &&
               !data?.data?.isDocCollaborator &&

@@ -1,15 +1,15 @@
 import { ParentFolderEnum } from 'models/doc-file-models';
-import { TransferHistoryDto } from 'models/doc-main-models';
+import { ProcessingDocumentTypeEnum, TransferHistoryDto } from 'models/doc-main-models';
 
 import { TableRowDataType } from './models';
 
-const getDocTypeFromFolderId = (folderId: string): string => {
+const getDocTypeFromFolderId = (folderId: string): ProcessingDocumentTypeEnum => {
   const split = folderId?.split('/');
   const firstElement = split?.[0];
   if (firstElement === ParentFolderEnum.ICD) {
-    return 'incoming_doc';
+    return ProcessingDocumentTypeEnum.INCOMING_DOCUMENT;
   }
-  return 'outgoing_doc';
+  return ProcessingDocumentTypeEnum.OUTGOING_DOCUMENT;
 };
 
 const getParentFolderEnumFromFolderId = (folderId: string): ParentFolderEnum => {
