@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-08-07 22:40:12.
+// Generated using typescript-generator version 3.1.1185 on 2023-08-08 21:01:30.
 
 export interface CommentDto extends DocAbstractDto {
     content: string;
@@ -203,13 +203,11 @@ export interface OutgoingDocumentGetDto extends DocAbstractDto {
     customProcessingDuration: string;
 }
 
-
 export interface OutgoingDocumentGetListDto extends DocAbstractDto {
     ordinalNumber: number;
     name: string;
     outgoingNumber: string;
     originalSymbolNumber: string;
-    summary: string;
     documentTypeName: string;
     publishingDepartmentName: string;
     status: OutgoingDocumentStatusEnum;
@@ -217,6 +215,7 @@ export interface OutgoingDocumentGetListDto extends DocAbstractDto {
     isDocCollaborator: boolean;
     isTransferable: boolean;
     customProcessingDuration: string;
+    summary: string;
 }
 
 export interface OutgoingDocumentPostDto extends DocAbstractDto {

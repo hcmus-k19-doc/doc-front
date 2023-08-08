@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
   Button,
   Col,
@@ -20,6 +18,7 @@ import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadFile } from 'antd/es/upload';
 import Dragger from 'antd/es/upload/Dragger';
 import axios from 'axios';
+import DocCKEditor from 'components/DocCKEditor';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE, PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
 import {
@@ -441,10 +440,9 @@ function ReceiveIncomingDocPage() {
             </Row>
 
             <Form.Item label={t('receiveIncomingDocPage.form.summary')} name='summary' required>
-              <CKEditor
-                editor={ClassicEditor}
+              <DocCKEditor
                 data={form.getFieldValue('summary') || ''}
-                onChange={(event, editor) => {
+                onChange={(_, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}
               />

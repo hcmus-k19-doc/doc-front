@@ -7,8 +7,6 @@ import {
   PlusCircleOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Button,
@@ -68,6 +66,7 @@ import { useDocInLinkedDocumentsQuery } from 'shared/hooks/LinkedDocumentsQuery/
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import DateValidator from 'shared/validators/DateValidator';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import {
   DAY_MONTH_YEAR_FORMAT,
@@ -78,7 +77,7 @@ import {
 import { globalNavigate } from 'utils/RoutingUtils';
 import { getStep } from 'utils/TransferDocUtils';
 
-import DocFormValidators from '../../../shared/validators/DocFormValidators';
+import DocCKEditor from '../../../components/DocCKEditor';
 import { transferDocModalState } from '../IncomingDocListPage/core/states';
 
 import './index.css';
@@ -702,11 +701,10 @@ function IncomingDocPage() {
             </Row>
 
             <Form.Item label={t('incomingDocDetailPage.form.summary')} name='summary' required>
-              <CKEditor
+              <DocCKEditor
                 disabled={!isEditing}
-                editor={ClassicEditor}
                 data={form.getFieldValue('summary') || ''}
-                onChange={(event, editor) => {
+                onChange={(_, editor) => {
                   form.setFieldValue('summary', editor.getData());
                 }}
               />
