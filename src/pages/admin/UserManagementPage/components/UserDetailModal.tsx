@@ -56,7 +56,7 @@ export default function UserDetailModal({
               <Input disabled={isEditMode} />
             </Form.Item>
           </Col>
-          <Col>
+          {/* <Col>
             {isEditMode ? (
               <>
                 <Form.Item label={t('user.detail.password')} name='password'>
@@ -79,7 +79,7 @@ export default function UserDetailModal({
                 <Input.Password />
               </Form.Item>
             )}
-          </Col>
+          </Col> */}
           <Col>
             <Form.Item
               label={t('user.detail.email')}
