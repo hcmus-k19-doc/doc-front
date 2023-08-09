@@ -10,7 +10,9 @@
     },
     "password": {
       "placeholder": "Password",
-      "invalid_message": "Please enter your password"
+      "invalid_message": "Please enter your password",
+      "forgot_password": "Forgot password?",
+      "reset_password": "Reset password"
     }
   },
   "main_page": {
@@ -716,6 +718,17 @@
     "button": {
       "add": "Add User",
       "delete": "Delete User"
+    },
+    "user_function": {
+      "create_user_success": "Create user successfully",
+      "update_user_success": "Update user successfully",
+      "delete_user_success": "Delete user successfully",
+      "reset_password": {
+        "title": "Reset Password",
+        "content": "Are you sure you want to reset the password?",
+        "success": "Password reset successfully",
+        "error": "An error occurred, please try again"
+      }
     }
   },
   "processing_detail_page": {
@@ -759,7 +772,10 @@
         "id": "ID",
         "type": "Document Type",
         "type_required": "Please enter the document type"
-      }
+      },
+      "create_document_type_success": "Create document type successfully",
+      "update_document_type_success": "Update document type successfully",
+      "error": "An error occurred, please try again"
     }
   },
   "department_management": {
@@ -782,9 +798,13 @@
         "modal": {
           "title": "The manager belongs to another department",
           "content": "Once updated, the manager will be transferred to another department. Do you want to transfer the manager to this department?"
-        },
-        "users_are_available_in_department": "Users are available in department, please delete them before deleting department"
-      }
+        }
+      },
+      "users_are_available_in_department": "Users are available in department, please delete them before deleting department",
+      "create_department_success": "Create department successfully",
+      "update_department_success": "Update department successfully",
+      "delete_department_success": "Delete department successfully",
+      "error": "An error occurred, please try again"
     },
     "button": {
       "add": "Add Department",

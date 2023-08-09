@@ -72,6 +72,10 @@ async function updateUser(user: Partial<UserDto>) {
   return data;
 }
 
+async function resetUserPassword(userId: number) {
+  await axios.get(`${ADMIN_URL}/users/reset-password/${userId}`);
+}
+
 async function deleteUsers(userIds: number[]) {
   await axios.delete(`${ADMIN_URL}/users`, { data: userIds });
 }
@@ -124,6 +128,7 @@ const AdminService = {
   deleteDocumentTypeByIds,
   deleteDepartmentsByIds,
   isUserAlreadyTruongPhongOfAnotherDepartment,
+  resetUserPassword,
 };
 
 export default AdminService;

@@ -4,6 +4,7 @@ import { useForm } from 'antd/es/form/Form';
 import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import { RecoilRoot } from 'recoil';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { useUserRes } from 'shared/hooks/UserQuery';
 
 import Footer from './components/Footer';
@@ -49,6 +50,8 @@ function UserManagementPage() {
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
+  const [loading, setLoading] = useState(false);
+  const showAlert = useSweetAlert();
 
   const rowSelection = {
     selectedRowKeys: selectedUsers,
@@ -63,12 +66,20 @@ function UserManagementPage() {
   }
 
   async function handleOnOkModal() {
+    setLoading(true);
     try {
       await modalForm.validateFields();
       setIsModalOpen(false);
       modalForm.submit();
+      showAlert({
+        icon: 'success',
+        html: t('user_management.user_function.update_user_success'),
+        showConfirmButton: true,
+      });
     } catch (e) {
       console.error(e);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -106,6 +117,8 @@ function UserManagementPage() {
         handleCancel={handleOnCancelModal}
         handleOk={handleOnOkModal}
         isEditMode
+        loading={loading}
+        setLoading={setLoading}
       />
     </>
   );

@@ -1,9 +1,11 @@
-import React from 'react';
-import { Col, Divider, Form, FormInstance, Input, Modal, Row, Select } from 'antd';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { Button, Col, Divider, Form, FormInstance, Input, Modal, Row, Select } from 'antd';
 import { t } from 'i18next';
 import { DepartmentDto, DocSystemRoleEnum } from 'models/doc-main-models';
 import { ALL_SYSTEM_ROLES } from 'models/models';
+import AdminService from 'services/AdminService';
 import { useSelectionDepartmentRes } from 'shared/hooks/DepartmentQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { useUserMutation } from 'shared/hooks/UserQuery';
 
 import { UserTableRowDataType } from '../core/models';
@@ -14,6 +16,8 @@ interface Props {
   handleCancel: () => void;
   handleOk: () => void;
   isEditMode?: boolean;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function UserDetailModal({
@@ -22,16 +26,71 @@ export default function UserDetailModal({
   handleOk,
   handleCancel,
   isEditMode,
+  loading,
+  setLoading,
 }: Props) {
   const { data: departments } = useSelectionDepartmentRes();
   const userMutation = useUserMutation();
+  const showAlert = useSweetAlert();
+
+  async function handleResetPassword(userId: number) {
+    setLoading(true);
+    try {
+      await AdminService.resetUserPassword(userId);
+      showAlert({
+        icon: 'success',
+        html: t('user_management.user_function.reset_password.success'),
+        showConfirmButton: true,
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const confirm = () => {
+    Modal.confirm({
+      title: t('user_management.user_function.reset_password.title'),
+      content: t('user_management.user_function.reset_password.content'),
+      onOk() {
+        const userId = form.getFieldValue('id');
+        handleResetPassword(userId);
+      },
+    });
+  };
+
+  const renderButtons = (): ReactNode => {
+    const buttons = [];
+    if (isEditMode) {
+      buttons.push(
+        <Button
+          key='0'
+          type='primary'
+          onClick={confirm}
+          className='danger-button'
+          loading={loading}>
+          {t('login.password.reset_password')}
+        </Button>
+      );
+    }
+    buttons.push(
+      <Button key='1' onClick={handleCancel} loading={loading}>
+        {t('common.modal.cancel_text')}
+      </Button>,
+      <Button key='2' type='primary' onClick={handleOk} loading={loading}>
+        {t('common.modal.ok_text')}
+      </Button>
+    );
+    return buttons;
+  };
 
   return (
     <Modal
       title={t('user.detail.title')}
+      onCancel={handleCancel}
       open={isModalOpen}
-      onOk={handleOk}
-      onCancel={handleCancel}>
+      footer={renderButtons()}>
       <Divider />
       <Row className='mt-5'>
         <Form
@@ -55,30 +114,6 @@ export default function UserDetailModal({
               rules={[{ required: true, message: `${t('user.detail.username_required')}` }]}>
               <Input disabled={isEditMode} />
             </Form.Item>
-          </Col>
-          <Col>
-            {isEditMode ? (
-              <>
-                <Form.Item label={t('user.detail.password')} name='password'>
-                  <Input.Password />
-                </Form.Item>
-                <Form.Item name='version' noStyle>
-                  <Input hidden />
-                </Form.Item>
-              </>
-            ) : (
-              <Form.Item
-                label={t('user.detail.password')}
-                name='password'
-                rules={[
-                  {
-                    required: true,
-                    message: `${t('user.detail.password_required')}`,
-                  },
-                ]}>
-                <Input.Password />
-              </Form.Item>
-            )}
           </Col>
           <Col>
             <Form.Item

@@ -5,6 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import { RecoilRoot } from 'recoil';
 import { usePaginationDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import DocumentTypeDetailModal from './components/DocumentTypeDetailModal';
 import Footer from './components/Footer';
@@ -37,7 +38,7 @@ function DocumentTypeManagementPage() {
   const [selectedDocumentTypes, setSelectedDocumentTypes] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
-
+  const showAlert = useSweetAlert();
   const rowSelection = {
     selectedRowKeys: selectedDocumentTypes,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DocumentTypeTableRowDataType[]) => {
@@ -55,8 +56,18 @@ function DocumentTypeManagementPage() {
       await modalForm.validateFields();
       setIsModalOpen(false);
       modalForm.submit();
+      showAlert({
+        icon: 'success',
+        html: t('document_type_management.document_type.update_document_type_success'),
+        showConfirmButton: true,
+      });
     } catch (e) {
       console.error(e);
+      showAlert({
+        icon: 'error',
+        html: t('document_type_management.document_type.error'),
+        showConfirmButton: true,
+      });
     }
   }
 

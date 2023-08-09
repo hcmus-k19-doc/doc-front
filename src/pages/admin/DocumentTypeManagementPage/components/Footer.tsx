@@ -11,6 +11,7 @@ import {
   useDocumentTypesReq,
   usePaginationDocumentTypesRes,
 } from 'shared/hooks/DocumentTypesQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import { FooterProps } from '../core/models';
 
@@ -18,12 +19,12 @@ import DocumentTypeDetailModal from './DocumentTypeDetailModal';
 
 export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes }: FooterProps) {
   const [userReqQuery, setUserReqQuery] = useDocumentTypesReq();
-  const { data, refetch } = usePaginationDocumentTypesRes();
+  const { data, refetch, isFetching } = usePaginationDocumentTypesRes();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const documentTypeDeleteMutation = useDocumentTypeDeleteMutation();
   const [modal, contextHolder] = useModal();
-
+  const showAlert = useSweetAlert();
   function handleOnChange(page: number, pageSize: number) {
     setSelectedDocumentTypes([]);
     setUserReqQuery({ ...userReqQuery, page, pageSize });
@@ -44,8 +45,18 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
       await modalForm.validateFields();
       setIsModalOpen(false);
       modalForm.submit();
+      showAlert({
+        icon: 'success',
+        html: t('document_type_management.document_type.create_document_type_success'),
+        showConfirmButton: true,
+      });
     } catch (e) {
       console.error(e);
+      showAlert({
+        icon: 'error',
+        html: t('document_type_management.document_type.error'),
+        showConfirmButton: true,
+      });
     }
   }
 
@@ -58,23 +69,24 @@ export default function Footer({ selectedDocumentTypes, setSelectedDocumentTypes
       <Space wrap>
         <Button
           type='primary'
+          loading={isFetching}
           onClick={() => refetch()}
-          icon={<FontAwesomeIcon icon={faRefresh} />}>
+          icon={<FontAwesomeIcon icon={faRefresh} style={{ marginRight: 5 }} />}>
           {t('common.button.refresh')}
         </Button>
 
-        <Button type='primary' onClick={handleOnOpenModal}>
+        <Button type='primary' onClick={handleOnOpenModal} loading={isFetching}>
           {t('document_type_management.button.add')}
         </Button>
 
-        <Button
+        {/* <Button
           type='primary'
           className='danger-button'
           danger
           onClick={handleOnClickDeleteUser}
           disabled={selectedDocumentTypes.length === 0}>
           {t('document_type_management.button.delete')}
-        </Button>
+        </Button> */}
       </Space>
 
       <Pagination
