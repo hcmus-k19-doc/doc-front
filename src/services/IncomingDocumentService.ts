@@ -36,6 +36,14 @@ function getIncomingDocuments(
     .then((response) => response.data);
 }
 
+function getAllIncomingDocuments(
+  searchCriteria: Partial<SearchCriteriaDto>
+): Promise<IncomingDocumentDto[]> {
+  return axios
+    .post<IncomingDocumentDto[]>(`${INCOMING_DOCUMENTS_URL}/search/all`, searchCriteria)
+    .then((response) => response.data);
+}
+
 async function createIncomingDocument(incomingDocument: FormData) {
   return await axios.post<IncomingDocumentDto>(
     `${INCOMING_DOCUMENTS_URL}/create`,
@@ -158,6 +166,7 @@ const incomingDocumentService = {
   getLinkedDocuments,
   linkDocuments,
   unlinkDocument,
+  getAllIncomingDocuments,
 };
 
 export default incomingDocumentService;

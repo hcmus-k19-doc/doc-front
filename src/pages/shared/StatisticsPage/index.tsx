@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { Button, Divider, Layout, message, Table, theme } from 'antd';
+import { Button, Divider, Layout, Table, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { ColumnsType } from 'antd/es/table';
 import { useAuth } from 'components/AuthComponent';
@@ -11,6 +11,9 @@ import { DocSystemRoleEnum, ProcessingStatus } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
 import { useChartStatisticsRes, useStatisticsRes } from 'shared/hooks/StatisticsQuery';
+
+import { PRIMARY_COLOR } from '../../../config/constant';
+import { useSweetAlert } from '../../../shared/hooks/SwalAlert';
 
 import DirectorStatisticsSearchForm from './components/DirectorStatisticsSearchForm';
 import StatisticsSearchForm from './components/StatisticsSearchForm';
@@ -28,6 +31,8 @@ const StatisticsPage: React.FC = () => {
   } = theme.useToken();
   const { data: documentTypes } = useDocumentTypesRes();
   const { currentUser } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const showAlert = useSweetAlert();
 
   const incomingPieChartOptions = {
     title: {
@@ -175,42 +180,67 @@ const StatisticsPage: React.FC = () => {
 
   const headers = [
     {
-      label: t('statistics.table.columns.ordinal_number'),
+      label: t('statistics.csvHeader.ordinal_number'),
       key: 'ordinalNumber',
     },
     {
-      label: t('statistics.table.columns.name_of_handler'),
+      label: t('statistics.csvHeader.name_of_handler'),
       key: 'expertName',
     },
     {
-      label: t('statistics.table.columns.on_time'),
+      label: t('statistics.csvHeader.on_time'),
       key: 'onTime',
     },
     {
-      label: t('statistics.table.columns.overdue'),
+      label: t('statistics.csvHeader.overdue_closed'),
       key: 'overdueClosedDoc',
     },
     {
-      label: t('statistics.table.columns.total'),
+      label: t('statistics.csvHeader.total_closed'),
       key: 'totalClosedDoc',
     },
     {
-      label: t('statistics.table.columns.unexpired'),
+      label: t('statistics.csvHeader.unexpired'),
       key: 'unexpired',
     },
     {
-      label: t('statistics.table.columns.overdue'),
+      label: t('statistics.csvHeader.overdue_unprocessed'),
       key: 'overdueUnprocessedDoc',
     },
     {
-      label: t('statistics.table.columns.total'),
+      label: t('statistics.csvHeader.total_unprocessed'),
       key: 'totalUnprocessedDoc',
     },
     {
-      label: t('statistics.table.columns.on_time_processing_percentage'),
+      label: t('statistics.csvHeader.on_time_processing_percentage'),
       key: 'onTimeProcessingPercentage',
     },
   ];
+
+  const handleExportToCSV = async () => {
+    setLoading(true);
+    try {
+      await showAlert({
+        icon: 'success',
+        html:
+          t('statistics.message.file_name', {
+            user: currentUser?.fullName,
+          }) +
+          ' ' +
+          t('statistics.message.file_downloaded'),
+        showConfirmButton: true,
+      });
+    } catch (error) {
+      await showAlert({
+        icon: 'error',
+        html: t('statistics.message.file_download_failed'),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Layout>
@@ -254,20 +284,18 @@ const StatisticsPage: React.FC = () => {
           />
           <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>
             <div className='transfer-doc-wrapper'>
-              <Button type='primary' className='transfer-doc-btn' loading={isLoading}>
+              <Button
+                type='primary'
+                className='transfer-doc-btn'
+                loading={isLoading || loading}
+                disabled={isLoading || loading}>
                 <CSVLink
                   filename={`${t('statistics.message.file_name', {
                     user: currentUser?.fullName,
                   })}`}
                   headers={headers}
                   data={DocStatisticsData?.rowsData || []}
-                  onClick={() => {
-                    message.success(
-                      `${t('statistics.message.file_name', {
-                        user: currentUser?.fullName,
-                      })} ${t('statistics.message.file_downloading')}`
-                    );
-                  }}>
+                  onClick={handleExportToCSV}>
                   {t('statistics.button.export')}
                 </CSVLink>
               </Button>

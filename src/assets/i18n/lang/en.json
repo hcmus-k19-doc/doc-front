@@ -824,11 +824,24 @@
         "on_time_processing_percentage": "On Time Processing Percentage"
       }
     },
+    "csvHeader": {
+      "ordinal_number": "No.",
+      "name_of_handler": "Handler",
+      "on_time": "On Time (Processed)",
+      "overdue_closed": "Overdue (Processed)",
+      "total_closed": "Total (Processed)",
+      "unexpired": "Unexpired (Unprocessed)",
+      "overdue_unprocessed": "Overdue (Unprocessed)",
+      "total_unprocessed": "Total (Unprocessed)",
+      "on_time_processing_percentage": "On Time Processing Percentage"
+    },
     "button": {
-      "export": "Export report"
+      "export": "Export report",
+      "select_all": "Select All"
     },
     "message": {
-      "file_downloading": "File downloading...",
+      "file_downloaded": "File downloaded successfully",
+      "file_download_failed": "File download failed",
       "file_name": "ThongKeTinhHinhThuLyVanBan_{{user}}.csv"
     }
   },
