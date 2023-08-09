@@ -11,6 +11,7 @@ import {
   useDepartmentReq,
   usePaginationDepartments,
 } from 'shared/hooks/DepartmentQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import { FooterProps } from '../core/models';
 
@@ -18,12 +19,12 @@ import DepartmentDetailModal from './DepartmentDetailModal';
 
 export default function Footer({ selectedDepartments, setSelectedDepartments }: FooterProps) {
   const [departmentReqQuery, setDepartmentReqQuery] = useDepartmentReq();
-  const { data, refetch } = usePaginationDepartments();
+  const { data, refetch, isFetching } = usePaginationDepartments();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const departmentsDeleteMutation = useDeleteDepartmentsMutation();
   const [modal, contextHolder] = useModal();
-
+  const showAlert = useSweetAlert();
   function handleOnChange(page: number, pageSize: number) {
     setSelectedDepartments([]);
     setDepartmentReqQuery({ ...departmentReqQuery, page, pageSize });
@@ -44,13 +45,38 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
       await modalForm.validateFields();
       setIsModalOpen(false);
       modalForm.submit();
+      showAlert({
+        icon: 'success',
+        html: t('department_management.department.create_department_success'),
+        showConfirmButton: true,
+      });
     } catch (e) {
       console.error(e);
+      showAlert({
+        icon: 'error',
+        html: t('department_management.department.error'),
+        showConfirmButton: true,
+      });
     }
   }
 
   function handleOnDelete() {
-    useOnClickDelete(() => departmentsDeleteMutation.mutate(selectedDepartments), modal);
+    useOnClickDelete(() => {
+      try {
+        departmentsDeleteMutation.mutate(selectedDepartments);
+        showAlert({
+          icon: 'success',
+          html: t('department_management.department.delete_department_success'),
+          showConfirmButton: true,
+        });
+      } catch (error) {
+        showAlert({
+          icon: 'error',
+          html: t('department_management.department.error'),
+          showConfirmButton: true,
+        });
+      }
+    }, modal);
   }
 
   return (
@@ -58,12 +84,13 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
       <Space wrap>
         <Button
           type='primary'
+          loading={isFetching}
           onClick={() => refetch()}
-          icon={<FontAwesomeIcon icon={faRefresh} />}>
+          icon={<FontAwesomeIcon icon={faRefresh} style={{ marginRight: 5 }} />}>
           {t('common.button.refresh')}
         </Button>
 
-        <Button type='primary' onClick={handleOnOpenModal}>
+        <Button type='primary' onClick={handleOnOpenModal} loading={isFetching}>
           {t('department_management.button.add')}
         </Button>
 
@@ -71,6 +98,7 @@ export default function Footer({ selectedDepartments, setSelectedDepartments }: 
           type='primary'
           className='danger-button'
           danger
+          loading={isFetching}
           onClick={handleOnDelete}
           disabled={selectedDepartments.length === 0}>
           {t('department_management.button.delete')}

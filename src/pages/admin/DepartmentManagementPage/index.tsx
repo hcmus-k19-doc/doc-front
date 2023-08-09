@@ -5,6 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { t } from 'i18next';
 import { RecoilRoot } from 'recoil';
 import { usePaginationDepartments } from 'shared/hooks/DepartmentQuery';
+import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 import DepartmentDetailModal from './components/DepartmentDetailModal';
 import Footer from './components/Footer';
@@ -42,6 +43,7 @@ function DepartmentManagementPage() {
   const [selectedDepartments, setSelectedDepartments] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
+  const showAlert = useSweetAlert();
 
   const rowSelection = {
     selectedRowKeys: selectedDepartments,
@@ -60,8 +62,18 @@ function DepartmentManagementPage() {
       await modalForm.validateFields();
       setIsModalOpen(false);
       modalForm.submit();
+      showAlert({
+        icon: 'success',
+        html: t('department_management.department.update_department_success'),
+        showConfirmButton: true,
+      });
     } catch (e) {
       console.error(e);
+      showAlert({
+        icon: 'error',
+        html: t('department_management.department.error'),
+        showConfirmButton: true,
+      });
     }
   }
 

@@ -10,7 +10,9 @@
     },
     "password": {
       "placeholder": "Mật khẩu",
-      "invalid_message": "Mật khẩu không hợp lệ"
+      "invalid_message": "Mật khẩu không hợp lệ",
+      "forgot_password": "Quên mật khẩu?",
+      "reset_password": "Đặt lại mật khẩu"
     }
   },
   "main_page": {
@@ -728,6 +730,18 @@
     "button": {
       "add": "Thêm người dùng",
       "delete": "Xóa người dùng"
+    },
+    "user_function": {
+      "create_user_success": "Tạo người dùng thành công",
+      "update_user_success": "Cập nhật người dùng thành công",
+      "delete_user_success": "Xóa người dùng thành công",
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại",
+      "reset_password": {
+        "title": "Đặt lại mật khẩu",
+        "content": "Bạn có chắc chắn muốn đặt lại mật khẩu của người dùng này?",
+        "success": "Đặt lại mật khẩu thành công",
+        "error": "Đặt lại mật khẩu thất bại"
+      }
     }
   },
   "processing_detail_page": {
@@ -771,7 +785,10 @@
         "id": "ID",
         "type": "Tên loại văn bản",
         "type_required": "Hãy nhập tên loại văn bản"
-      }
+      },
+      "create_document_type_success": "Tạo loại văn bản thành công",
+      "update_document_type_success": "Cập nhật loại văn bản thành công",
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại"
     }
   },
   "department_management": {
@@ -796,7 +813,11 @@
           "content": "Một khi đã cập nhật trưởng phòng sẽ bị chuyển sang phòng ban khác. Bạn có muốn chuyển trưởng phòng sang phòng ban này không?"
         }
       },
-      "users_are_available_in_department": "Người vẫn tồn tại trong phòng ban, vui lòng xóa người dùng trước khi xóa phòng ban"
+      "users_are_available_in_department": "Người dùng vẫn tồn tại trong phòng ban, vui lòng xóa người dùng trước khi xóa phòng ban",
+      "create_department_success": "Tạo phòng ban thành công",
+      "update_department_success": "Cập nhật phòng ban thành công",
+      "delete_department_success": "Xóa phòng ban thành công",
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại"
     },
     "button": {
       "add": "Thêm phòng ban",
