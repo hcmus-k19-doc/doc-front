@@ -162,12 +162,63 @@ export function useAllUsers() {
     },
   });
 
-  const allUsers: SelectProps['options'] = data?.map((user) => ({
-    value: user.id,
-    label: user.fullName + ' - ' + user.department.departmentName,
-  }));
+  // const allUsers: SelectProps['options'] = data?.map((user) => ({
+  //   value: user.id,
+  //   label: user.fullName + ' - ' + user.department.departmentName,
+  // }));
+
+  // const allUsers = data?.reduce((options, user) => {
+  //   const departmentIndex = options.findIndex(
+  //     (option) => option.label === user.department.departmentName
+  //   );
+  //
+  //   if (departmentIndex !== -1) {
+  //     options[departmentIndex].options.push({
+  //       value: user.id,
+  //       label: user.fullName,
+  //     });
+  //   } else {
+  //     options.push({
+  //       label: user.department.departmentName,
+  //       options: [
+  //         {
+  //           value: user.id,
+  //           label: user.fullName,
+  //         },
+  //       ],
+  //     });
+  //   }
+  //
+  //   return options;
+  // }, []);
+
+  const allUsers: SelectProps['options'] = [];
+
+  data?.forEach((user) => {
+    const departmentIndex = allUsers.findIndex(
+      (option) => option.label === user.department.departmentName
+    );
+
+    if (departmentIndex !== -1) {
+      allUsers[departmentIndex].options.push({
+        value: user.id,
+        label: user.fullName,
+      });
+    } else {
+      allUsers.push({
+        label: user.department.departmentName,
+        options: [
+          {
+            value: user.id,
+            label: user.fullName,
+          },
+        ],
+      });
+    }
+  });
 
   return {
     allUsers,
+    data,
   };
 }

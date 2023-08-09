@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, message, Pagination } from 'antd';
+import { Button, Pagination } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
 import TransferDocModal from 'components/TransferDocModal';
-import { DocSystemRoleEnum, TransferDocDto } from 'models/doc-main-models';
+import {
+  DocSystemRoleEnum,
+  OutgoingDocumentGetListDto,
+  TransferDocDto,
+} from 'models/doc-main-models';
 import { transferDocModalState } from 'pages/shared/IncomingDocListPage/core/states';
 import { useRecoilValue } from 'recoil';
 import outgoingDocumentService from 'services/OutgoingDocumentService';
@@ -15,12 +19,17 @@ import { useOutgoingDocReq, useOutgoingDocRes } from 'shared/hooks/OutgoingDocum
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import { initialTransferQueryState, useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
 import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
-import { formatDateToDDMMYYYY, isValidDateFormat } from 'utils/DateTimeUtils';
+import {
+  DAY_MONTH_YEAR_FORMAT,
+  formatDateToDDMMYYYY,
+  isValidDateFormat,
+} from 'utils/DateTimeUtils';
 
+import { PRIMARY_COLOR } from '../../../../config/constant';
 import { getSelectedDocsMessage } from '../core/common';
 import { FooterProps } from '../core/models';
 
-const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData }) => {
+const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
   const { t } = useTranslation();
   const [outgoingDocReqQuery, setOutgoingDocReqQuery] = useOutgoingDocReq();
   const { data } = useOutgoingDocRes(false);
@@ -33,6 +42,8 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData 
   const showAlert = useSweetAlert();
   const transferDocModalItem = useRecoilValue(transferDocModalState);
   const transferQuerySetter = useTransferQuerySetter();
+  const [csvData, setCsvData] = useState<OutgoingDocumentGetListDto[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const handleOnChange = (page: number, pageSize: number) => {
     setSelectedDocs([]);
     setOutgoingDocReqQuery({ ...outgoingDocReqQuery, page, pageSize });
@@ -113,6 +124,52 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData 
   };
   const hasSelected = selectedDocs.length > 0;
 
+  const fetchDataCSV = async () => {
+    await outgoingDocumentService
+      .getAllOutgoingDocuments({
+        releaseDateFrom: outgoingDocReqQuery.releaseDate?.[0].format(DAY_MONTH_YEAR_FORMAT),
+        releaseDateTo: outgoingDocReqQuery.releaseDate?.[1].format(DAY_MONTH_YEAR_FORMAT),
+        ...outgoingDocReqQuery,
+      })
+      .then((data) => {
+        data.forEach((item) => {
+          item.outgoingNumber = item.outgoingNumber !== null ? `'${item.outgoingNumber}'` : '';
+          item.status = t(`PROCESSING_STATUS.${item.status}`);
+          item.customProcessingDuration =
+            item.customProcessingDuration !== '' ? `'${item.customProcessingDuration}'` : '';
+        });
+        setCsvData(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchDataCSV();
+  }, [outgoingDocReqQuery]);
+
+  const handleExportToCSV = async () => {
+    setIsLoading(true);
+    try {
+      await fetchDataCSV();
+      await showAlert({
+        icon: 'success',
+        html:
+          t('outgoingDocListPage.message.file_name') +
+          ' ' +
+          t('outgoingDocListPage.message.file_downloaded'),
+        showConfirmButton: true,
+      });
+    } catch (error) {
+      await showAlert({
+        icon: 'error',
+        html: t('outgoingDocListPage.message.file_download_failed'),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const headers = [
     {
       label: t('outgoingDocListPage.table.columns.ordinalNumber'),
@@ -124,15 +181,15 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData 
     },
     {
       label: t('outgoingDocListPage.table.columns.originId'),
-      key: 'originId',
+      key: 'originalSymbolNumber',
     },
     {
       label: t('outgoingDocListPage.table.columns.release_number'),
-      key: 'releaseNumber',
+      key: 'outgoingNumber',
     },
     {
       label: t('outgoingDocListPage.table.columns.type'),
-      key: 'type',
+      key: 'documentTypeName',
     },
     {
       label: t('outgoingDocListPage.table.columns.status'),
@@ -140,11 +197,15 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData 
     },
     {
       label: t('outgoingDocListPage.table.columns.issuePlace'),
-      key: 'issuePlace',
+      key: 'publishingDepartmentName',
     },
     {
       label: t('outgoingDocListPage.table.columns.summary'),
       key: 'summary',
+    },
+    {
+      label: t('outgoingDocListPage.table.columns.deadline'),
+      key: 'customProcessingDuration',
     },
   ];
 
@@ -152,18 +213,16 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs, csvData 
     <div className='mt-5 flex justify-between'>
       <div className='float-left transfer-doc-wrapper'>
         <div style={{ marginTop: 0 }}>
-          <Button type='primary' style={{ marginRight: '0.5rem' }} className='transfer-doc-btn'>
+          <Button
+            type='primary'
+            style={{ marginRight: '0.5rem' }}
+            className='transfer-doc-btn'
+            loading={isLoading}>
             <CSVLink
               filename={`${t('outgoingDocListPage.message.file_name')}`}
               headers={headers}
-              data={csvData || []}
-              onClick={() => {
-                message.success(
-                  `${t('outgoingDocListPage.message.file_name')} ${t(
-                    'outgoingDocListPage.message.file_downloading'
-                  )}`
-                );
-              }}>
+              data={csvData}
+              onClick={handleExportToCSV}>
               {t('outgoing_doc_detail_page.button.export')}
             </CSVLink>
           </Button>

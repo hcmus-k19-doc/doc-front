@@ -67,6 +67,14 @@ function getOutgoingDocuments(
     .then((response) => response.data);
 }
 
+function getAllOutgoingDocuments(
+  searchCriteria: Partial<OutgoingDocSearchCriteriaDto>
+): Promise<OutgoingDocumentGetListDto[]> {
+  return axios
+    .post<OutgoingDocumentGetListDto[]>(`${OUTGOING_DOCUMENTS_URL}/search/all`, searchCriteria)
+    .then((response) => response.data);
+}
+
 async function transferDocuments(transferDocDto: TransferDocDto) {
   return await axios.post<void>(`${OUTGOING_DOCUMENTS_URL}/transfer-documents`, transferDocDto);
 }
@@ -119,6 +127,7 @@ const outgoingDocumentService = {
   getOutgoingDocumentById,
   updateOutgoingDocument,
   getOutgoingDocuments,
+  getAllOutgoingDocuments,
   transferDocuments,
   publishOutgoingDocument,
   getTransferOutgoingDocumentsSetting,

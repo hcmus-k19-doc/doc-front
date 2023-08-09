@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterFilled } from '@ant-design/icons';
-import { Button, Col, Collapse, DatePicker, Form, Row, Select } from 'antd';
+import { Button, Col, Collapse, DatePicker, Divider, Form, Row, Select, Space } from 'antd';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useForm } from 'antd/es/form/Form';
 import { PRIMARY_COLOR } from 'config/constant';
@@ -20,11 +20,17 @@ const ExpandIcon = () => {
 
 const StatisticsSearchForm = () => {
   const { t } = useTranslation();
-  const { allUsers } = useAllUsers();
+  const { allUsers, data } = useAllUsers();
   const [form] = useForm();
   const [statisticsReqQuery, setstatisticsReqQuery] = useStatisticsReq();
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSelectAll = () => {
+    const allUserIds = data?.map((user) => user.id);
+    console.log(allUserIds);
+    form.setFieldsValue({ expertIds: allUserIds });
+  };
 
   return (
     <Collapse bordered={false} expandIcon={ExpandIcon}>
@@ -42,7 +48,9 @@ const StatisticsSearchForm = () => {
               <Row>
                 <Col span={7}>
                   <Form.Item
-                    initialValue={[allUsers?.find((user) => user.value === currentUser?.id)?.value]}
+                    initialValue={[
+                      currentUser?.id, // Only set the current user's ID in the initialValue array
+                    ]}
                     name='expertIds'
                     label={t('search_criteria_bar.name_of_handler')}>
                     <Select
@@ -50,6 +58,23 @@ const StatisticsSearchForm = () => {
                       style={{ width: '100%' }}
                       allowClear
                       options={allUsers}
+                      filterOption={(inputValue, option) =>
+                        option?.label
+                          ?.toString()
+                          .toUpperCase()
+                          .indexOf(inputValue.toUpperCase()) !== -1
+                      }
+                      dropdownRender={(menu) => (
+                        <>
+                          {menu}
+                          <Divider style={{ margin: '8px 0' }} />
+                          <Space className='flex justify-center' style={{ padding: '0 8px 4px' }}>
+                            <Button onClick={handleSelectAll} type='text'>
+                              {t('statistics.button.select_all')}{' '}
+                            </Button>
+                          </Space>
+                        </>
+                      )}
                     />
                   </Form.Item>
                 </Col>
