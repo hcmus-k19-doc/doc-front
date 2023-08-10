@@ -278,7 +278,8 @@
     "message": {
       "attachment": {
         "not_found": "Không có dữ liệu",
-        "download_success": "Tải tệp đính kèm thành công"
+        "download_success": "Tải tệp đính kèm thành công",
+        "download_attachment_error": "Tải tệp đính kèm thất bại"
       },
       "selected_docs": {
         "unprocessed": "Chưa xử lý",

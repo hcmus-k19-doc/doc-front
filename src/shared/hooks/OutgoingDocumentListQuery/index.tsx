@@ -61,6 +61,7 @@ export const useOutgoingDocRes = (isModal: boolean) => {
               outgoingNumber: item.outgoingNumber,
               deadline: item.customProcessingDuration,
               isDocTransferredByNextUserInFlow: false,
+              isLoading: false,
             };
           });
 

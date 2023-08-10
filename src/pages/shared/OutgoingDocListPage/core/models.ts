@@ -20,6 +20,7 @@ export type TableRowDataType = {
   isTransferable: boolean;
   deadline: string;
   isDocTransferredByNextUserInFlow: boolean;
+  isLoading: boolean;
 };
 
 export type TableDataType = {

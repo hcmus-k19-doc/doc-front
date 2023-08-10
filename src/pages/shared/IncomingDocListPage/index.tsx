@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FileZipOutlined, LoadingOutlined } from '@ant-design/icons';
@@ -48,6 +48,12 @@ const IncomingDocListPage: React.FC = () => {
   const [transferDocumentDetail, setTransferDocumentDetail] =
     useState<GetTransferDocumentDetailCustomResponse>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [rowDataList, setRowDataList] = useState<TableRowDataType[]>([]);
+  const [downloadingRowId, setDownloadingRowId] = useState<number | null>(null);
+
+  useEffect(() => {
+    setRowDataList(data?.payload || []);
+  }, [data?.payload]);
 
   const handleOnOpenDetailModal = async (event: any, tableRecord: TableRowDataType) => {
     event.preventDefault();
@@ -88,6 +94,48 @@ const IncomingDocListPage: React.FC = () => {
   const handleOnCloseDetailModal = () => {
     setIsDetailTransferModalOpen(false);
     transferDocDetailModalForm.resetFields();
+  };
+
+  const handleDownload = async (record: TableRowDataType) => {
+    if (downloadingRowId !== null) {
+      return; // Another download is already in progress
+    }
+
+    setDownloadingRowId(record.id);
+
+    setRowDataList(
+      rowDataList.map((item) => {
+        if (item.id === record.id) {
+          return { ...item, isLoading: true };
+        }
+        return item;
+      })
+    );
+    try {
+      await attachmentService.handleDownloadAttachment(
+        record,
+        ParentFolderEnum.ICD,
+        setError,
+        setLoading
+      );
+    } catch (error) {
+      await showAlert({
+        icon: 'error',
+        html: t('incomingDocListPage.message.download_attachment_error'),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+      });
+    } finally {
+      setRowDataList(
+        rowDataList.map((item) => {
+          if (item.id === record.id) {
+            return { ...item, isLoading: false };
+          }
+          return item;
+        })
+      );
+      setDownloadingRowId(null);
+    }
   };
 
   const columns: ColumnsType<TableRowDataType> = [
@@ -156,33 +204,35 @@ const IncomingDocListPage: React.FC = () => {
       title: t('incomingDocListPage.table.columns.fullText'),
       dataIndex: 'fullText',
       align: 'center',
-      render: () => {
-        if (loading) {
+      render: (_, record) => {
+        if (record.isLoading) {
           return <LoadingOutlined />;
         }
+
+        const isDownloading = downloadingRowId === record.id;
 
         return (
           <Tooltip
             title={t('incomingDocListPage.table.tooltip.downloadAttachment')}
             placement='bottom'>
-            <FileZipOutlined className='zip-icon' style={{ color: PRIMARY_COLOR }} />
+            <div
+              onClick={(event) => {
+                event.stopPropagation();
+                handleDownload(record);
+              }}>
+              <FileZipOutlined
+                disabled={isDownloading}
+                className='zip-icon'
+                style={{ color: PRIMARY_COLOR }}
+              />
+            </div>
           </Tooltip>
         );
       },
-      onCell: (record) => {
-        if (loading) {
-          return {};
-        }
-
+      onCell: () => {
         return {
           onClick: (event) => {
             event.stopPropagation();
-            attachmentService.handleDownloadAttachment(
-              record,
-              ParentFolderEnum.ICD,
-              setError,
-              setLoading
-            );
           },
         };
       },
@@ -248,7 +298,7 @@ const IncomingDocListPage: React.FC = () => {
           }),
         }}
         columns={columns}
-        dataSource={data?.payload}
+        dataSource={rowDataList}
         scroll={{ x: 1500 }}
         pagination={false}
         footer={() => <Footer selectedDocs={selectedDocs} setSelectedDocs={setSelectedDocs} />}
