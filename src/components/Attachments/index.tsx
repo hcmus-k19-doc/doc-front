@@ -46,8 +46,8 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
     event.preventDefault();
     setLoading(true);
     try {
-      const data = await attachmentService.getFileContentFromS3Key(
-        selectedFile?.alfrescoFileId as string
+      const data = await attachmentService.getFileContentFromMinioByKey(
+        selectedFile?.alfrescoFileId
       );
       downloadFileFromBlob(data.data, selectedFile?.fileName as string);
     } catch (error) {
