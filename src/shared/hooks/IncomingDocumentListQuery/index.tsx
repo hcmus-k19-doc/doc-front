@@ -64,6 +64,7 @@ export const useIncomingDocRes = (isModal: boolean) => {
               isDocCollaborator: item.isDocCollaborator,
               isTransferable: item.isTransferable,
               isDocTransferredByNextUserInFlow: item.isDocTransferredByNextUserInFlow,
+              isLoading: false,
             };
           });
 

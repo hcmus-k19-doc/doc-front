@@ -277,7 +277,8 @@
     "message": {
       "attachment": {
         "not_found": "No data available",
-        "download_success": "Attachment downloaded successfully"
+        "download_success": "Attachment downloaded successfully",
+        "download_attachment_error": "Failed to download attachment"
       },
       "selected_docs": {
         "unprocessed": "Unprocessed",

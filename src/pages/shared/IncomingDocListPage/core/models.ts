@@ -20,6 +20,7 @@ export type TableRowDataType = {
   isDocCollaborator: boolean;
   isTransferable: boolean;
   isDocTransferredByNextUserInFlow: boolean;
+  isLoading: boolean;
 };
 
 export type TableDataType = {
