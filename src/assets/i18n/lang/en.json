@@ -9,6 +9,11 @@
       "placeholder": "Username",
       "invalid_message": "Please enter your username"
     },
+    "email": {
+      "placeholder": "Email",
+      "none_whitespace": "Email cannot contain spaces",
+      "invalid_message": "Please enter your email"
+    },
     "password": {
       "placeholder": "Password",
       "invalid_message": "Please enter your password",

@@ -9,13 +9,18 @@
       "placeholder": "Tên đăng nhập",
       "invalid_message": "Tên đăng nhập không hợp lệ"
     },
+    "email": {
+      "placeholder": "Địa chỉ email",
+      "none_whitespace": "Địa chỉ email không được chứa khoảng trắng",
+      "invalid_message": "Địa chỉ email không hợp lệ"
+    },
     "password": {
       "placeholder": "Mật khẩu",
       "invalid_message": "Mật khẩu không hợp lệ",
       "forgot_password": "Quên mật khẩu",
       "reset_password": "Đặt lại mật khẩu",
       "back_to_login": "Quay lại đăng nhập",
-      "forgot_password_description": "Nhập email của bạn để đặt lại mật khẩu",
+      "forgot_password_description": "Nhập email của bạn để yêu cầu đặt lại mật khẩu",
       "send_request_success": "Yêu cầu đặt lại mật khẩu thành công",
       "send_request_failed": "Yêu cầu đặt lại mật khẩu thất bại"
     }

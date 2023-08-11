@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
 import { Card } from 'antd';
 import logoDoc from 'assets/icons/logo.png';
@@ -25,25 +25,26 @@ const ForgotPasswordPage: React.FC = () => {
   const alert = useSweetAlert();
 
   const handleOnFinish = async (values: Record<string, string>) => {
-    try {
-      const { data: token } = await securityService.login(values['username'], values['password']);
-      saveAuth(token);
-      const { data: user } = await userService.getCurrentUser();
-      setCurrentUser(user);
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        alert({
-          icon: 'error',
-          html: t(e.response?.data.message),
-          confirmButtonColor: PRIMARY_COLOR,
-          confirmButtonText: 'OK',
-          showConfirmButton: true,
-        });
-        setError(e.response?.data.message);
-      } else {
-        console.error(e);
-      }
-    }
+    console.log('values', values);
+    // try {
+    //   const { data: token } = await securityService.login(values['username'], values['password']);
+    //   saveAuth(token);
+    //   const { data: user } = await userService.getCurrentUser();
+    //   setCurrentUser(user);
+    // } catch (e) {
+    //   if (axios.isAxiosError(e)) {
+    //     alert({
+    //       icon: 'error',
+    //       html: t(e.response?.data.message),
+    //       confirmButtonColor: PRIMARY_COLOR,
+    //       confirmButtonText: 'OK',
+    //       showConfirmButton: true,
+    //     });
+    //     setError(e.response?.data.message);
+    //   } else {
+    //     console.error(e);
+    //   }
+    // }
   };
 
   const bgStyle = {
@@ -84,18 +85,23 @@ const ForgotPasswordPage: React.FC = () => {
               }}
               onFinish={handleOnFinish}>
               <ProFormText
-                name='username'
+                name='email'
                 hasFeedback={!!error}
                 validateStatus={error ? 'error' : 'success'}
                 fieldProps={{
                   size: 'large',
-                  prefix: <UserOutlined className='prefixIcon' />,
+                  prefix: <MailOutlined className='prefixIcon' />,
                 }}
-                placeholder={t(`${I18N_PREFIX}.username.placeholder`).toString()}
+                placeholder={t(`${I18N_PREFIX}.email.placeholder`).toString()}
                 rules={[
                   DocFormValidators.NoneBlankOrWhiteSpaceValidator(
-                    `${t(`${I18N_PREFIX}.username.invalid_message`)}`
+                    `${t(`${I18N_PREFIX}.email.none_whitespace`)}`
                   ),
+                  {
+                    required: true,
+                    message: `${t(`${I18N_PREFIX}.email.invalid_message`)}`,
+                    type: 'email',
+                  },
                 ]}
               />
             </LoginForm>
