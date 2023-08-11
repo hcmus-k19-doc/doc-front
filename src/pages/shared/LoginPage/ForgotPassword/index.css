@@ -23,14 +23,11 @@
   border-radius: 30px;
 }
 
-.forgot-password {
+.back-to-login {
   color: #1a34ab;
   font-weight: bold;
-  float: right;
-  margin-bottom: 23px;
-  margin-top: -15px;
 }
 
-.forgot-password:hover {
+.back-to-login:hover {
   color: #546bbf;
 }

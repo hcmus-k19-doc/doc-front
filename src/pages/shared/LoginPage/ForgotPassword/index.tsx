@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRightOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
 import { Card } from 'antd';
 import logoDoc from 'assets/icons/logo.png';
@@ -19,7 +19,7 @@ import './index.css';
 
 const I18N_PREFIX = 'login';
 
-const LoginPage: React.FC = () => {
+const ForgotPasswordPage: React.FC = () => {
   const { saveAuth, setCurrentUser } = useAuth();
   const [error, setError] = useState<string>();
   const alert = useSweetAlert();
@@ -58,9 +58,9 @@ const LoginPage: React.FC = () => {
     // backgroundColor: 'rgba(255, 255, 255, 0.2)',
   };
 
-  const onForgotPasswordClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const onBackToLoginPageClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    globalNavigate('/forgot-password');
+    globalNavigate('/login');
   };
 
   return (
@@ -72,10 +72,14 @@ const LoginPage: React.FC = () => {
               <img src={logoHcmus} alt='logo-doc' className='logo mr-10' />
               <img src={logoDoc} alt='logo-hcmus' className='logo' />
             </div>
+            <div className='text-center mb-3 mt-2'>
+              <h1 className='text-2xl font-bold'> {t('login.password.forgot_password')}</h1>
+              <p className='text-base'>{t('login.password.forgot_password_description')}</p>
+            </div>
             <LoginForm
               submitter={{
                 searchConfig: {
-                  submitText: t(`${I18N_PREFIX}.submitter.submit_text`),
+                  submitText: t(`${I18N_PREFIX}.submitter.send_request`),
                 },
               }}
               onFinish={handleOnFinish}>
@@ -94,26 +98,13 @@ const LoginPage: React.FC = () => {
                   ),
                 ]}
               />
-              <ProFormText.Password
-                name='password'
-                hasFeedback={!!error}
-                validateStatus={error ? 'error' : 'success'}
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined className='prefixIcon' />,
-                }}
-                placeholder={t(`${I18N_PREFIX}.password.placeholder`).toString()}
-                rules={DocFormValidators.PasswordValidators(
-                  `${t('login.password.invalid_message')}`
-                )}
-              />
-              <div>
-                <a className='forgot-password' onClick={(e) => onForgotPasswordClick(e)}>
-                  {`${t('login.password.forgot_password')}?`}
-                  <ArrowRightOutlined className='ml-1' />
-                </a>
-              </div>
             </LoginForm>
+            <div className='text-center'>
+              <a className='back-to-login' onClick={(e) => onBackToLoginPageClick(e)}>
+                <ArrowLeftOutlined className='mr-1' />
+                {t('login.password.back_to_login')}
+              </a>
+            </div>
           </ProConfigProvider>
         </Card>
       </div>
@@ -121,4 +112,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default ForgotPasswordPage;

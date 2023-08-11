@@ -2,7 +2,8 @@
   "login": {
     "subtitle": "Hệ thống phê duyệt và phát hành văn thư",
     "submitter": {
-      "submit_text": "Đăng nhập"
+      "submit_text": "Đăng nhập",
+      "send_request": "Gửi yêu cầu"
     },
     "username": {
       "placeholder": "Tên đăng nhập",
@@ -11,8 +12,12 @@
     "password": {
       "placeholder": "Mật khẩu",
       "invalid_message": "Mật khẩu không hợp lệ",
-      "forgot_password": "Quên mật khẩu?",
-      "reset_password": "Đặt lại mật khẩu"
+      "forgot_password": "Quên mật khẩu",
+      "reset_password": "Đặt lại mật khẩu",
+      "back_to_login": "Quay lại đăng nhập",
+      "forgot_password_description": "Nhập email của bạn để đặt lại mật khẩu",
+      "send_request_success": "Yêu cầu đặt lại mật khẩu thành công",
+      "send_request_failed": "Yêu cầu đặt lại mật khẩu thất bại"
     }
   },
   "main_page": {
