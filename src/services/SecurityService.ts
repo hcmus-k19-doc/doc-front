@@ -22,9 +22,19 @@ const logout = (refreshToken: string | undefined) => {
   );
 };
 
+const forgotPassword = (email: string) => {
+  return axios.post<number>(
+    `${REACT_APP_DOC_MAIN_SERVICE_URL}/security/auth/forgot-password`,
+    qs.stringify({
+      email,
+    })
+  );
+};
+
 const securityService = {
   login,
   logout,
+  forgotPassword,
 };
 
 export default securityService;

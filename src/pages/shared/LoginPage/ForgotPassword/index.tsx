@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeftOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, MailOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormText } from '@ant-design/pro-components';
 import { Card } from 'antd';
 import logoDoc from 'assets/icons/logo.png';
 import logoHcmus from 'assets/icons/logo-hcmus.png';
 import hcmusBg from 'assets/images/hcmus-bg.jpeg';
-import axios from 'axios';
-import { useAuth } from 'components/AuthComponent';
 import { PRIMARY_COLOR } from 'config/constant';
 import { t } from 'i18next';
 import securityService from 'services/SecurityService';
-import userService from 'services/UserService';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 import DocFormValidators from 'shared/validators/DocFormValidators';
 import { globalNavigate } from 'utils/RoutingUtils';
@@ -20,31 +17,32 @@ import './index.css';
 const I18N_PREFIX = 'login';
 
 const ForgotPasswordPage: React.FC = () => {
-  const { saveAuth, setCurrentUser } = useAuth();
   const [error, setError] = useState<string>();
   const alert = useSweetAlert();
 
   const handleOnFinish = async (values: Record<string, string>) => {
-    console.log('values', values);
-    // try {
-    //   const { data: token } = await securityService.login(values['username'], values['password']);
-    //   saveAuth(token);
-    //   const { data: user } = await userService.getCurrentUser();
-    //   setCurrentUser(user);
-    // } catch (e) {
-    //   if (axios.isAxiosError(e)) {
-    //     alert({
-    //       icon: 'error',
-    //       html: t(e.response?.data.message),
-    //       confirmButtonColor: PRIMARY_COLOR,
-    //       confirmButtonText: 'OK',
-    //       showConfirmButton: true,
-    //     });
-    //     setError(e.response?.data.message);
-    //   } else {
-    //     console.error(e);
-    //   }
-    // }
+    try {
+      const response = await securityService.forgotPassword(values['email']);
+      if (response) {
+        alert({
+          icon: 'success',
+          html: t(`${I18N_PREFIX}.password.send_request_success`),
+          confirmButtonColor: PRIMARY_COLOR,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        globalNavigate('/login');
+      }
+    } catch (e) {
+      alert({
+        icon: 'error',
+        html: t(`${I18N_PREFIX}.password.send_request_failed`),
+        confirmButtonColor: PRIMARY_COLOR,
+        confirmButtonText: 'OK',
+        showConfirmButton: true,
+      });
+      console.error(e);
+    }
   };
 
   const bgStyle = {
