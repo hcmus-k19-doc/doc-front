@@ -13,7 +13,6 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 const DOC_FILE_SERVICE_FILE_URL = `${REACT_APP_DOC_FILE_SERVICE_URL}/files`;
 const ATTACHMENT_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/attachments`;
-const S3_URL = `${DOC_FILE_SERVICE_FILE_URL}/s3`;
 const MINIO_URL = `${DOC_FILE_SERVICE_FILE_URL}/minio`;
 
 async function downloadAttachments(attachmentDtoList: AttachmentDto[], incomingDocId: string) {
@@ -77,7 +76,7 @@ export async function handleDownloadAttachment(
   try {
     const fileNameList = await axios.get(`${ATTACHMENT_URL}/${parentFolder}/${record.id}`);
 
-    const responseStatus = await downloadZipFileFromS3IgnoreDeleted(
+    const responseStatus = await downloadZipFileIgnoreDeleted(
       parentFolder,
       record.id,
       fileNameList.data
@@ -116,11 +115,7 @@ export async function handleDownloadAttachmentInTransferHistory(
   try {
     const fileNameList = await axios.get(`${ATTACHMENT_URL}/${parentFolder}/${id}`);
 
-    const responseStatus = await downloadZipFileFromS3IgnoreDeleted(
-      parentFolder,
-      id,
-      fileNameList.data
-    );
+    const responseStatus = await downloadZipFileIgnoreDeleted(parentFolder, id, fileNameList.data);
     if (responseStatus === 204) {
       showAlert({
         icon: 'error',
@@ -147,7 +142,7 @@ export async function deleteAttachmentById(id: number) {
   return await axios.delete(`${ATTACHMENT_URL}/${id}`);
 }
 
-async function downloadZipFileFromS3IgnoreDeleted(
+async function downloadZipFileIgnoreDeleted(
   parentFolder: ParentFolderEnum,
   folderName: number,
   fileNameList: string[]
