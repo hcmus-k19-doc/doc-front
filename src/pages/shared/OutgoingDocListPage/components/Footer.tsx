@@ -22,6 +22,7 @@ import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import {
   DAY_MONTH_YEAR_FORMAT,
   formatDateToDDMMYYYY,
+  isFutureOrPresent,
   isValidDateFormat,
 } from 'utils/DateTimeUtils';
 
@@ -65,6 +66,11 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
         processingTime: formatDateToDDMMYYYY(modalForm.getFieldValue('processingTime')),
       });
     }
+
+    if (!isFutureOrPresent(modalForm.getFieldValue('processingTime'))) {
+      return;
+    }
+
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
