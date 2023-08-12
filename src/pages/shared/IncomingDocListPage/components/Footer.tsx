@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, Pagination } from 'antd';
+import { Button, message, Pagination } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import axios from 'axios';
 import { useAuth } from 'components/AuthComponent';
@@ -64,10 +64,6 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
       });
     }
 
-    if (!isFutureOrPresent(modalForm.getFieldValue('processingTime'))) {
-      return;
-    }
-
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
@@ -99,13 +95,14 @@ const Footer: React.FC<FooterProps> = ({ selectedDocs, setSelectedDocs }) => {
           queryClient.invalidateQueries(['QUERIES.INCOMING_DOCUMENT_LIST']);
           showAlert({
             icon: 'success',
-            html: t('incomingDocListPage.message.transfer_success') as string,
+            html: t('incomingDocListPage.message.transfer_success'),
             showConfirmButton: false,
             timer: 2000,
           });
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
+          message.error(t(error.response?.data.message));
           setError(error.response?.data.message);
           console.error(error.response?.data.message);
         } else {

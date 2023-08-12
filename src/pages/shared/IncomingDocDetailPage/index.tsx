@@ -219,10 +219,6 @@ function IncomingDocPage() {
       });
     }
 
-    if (!isFutureOrPresent(modalForm.getFieldValue('processingTime'))) {
-      return;
-    }
-
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
@@ -257,13 +253,14 @@ function IncomingDocPage() {
           }
           showAlert({
             icon: 'success',
-            html: t('incomingDocListPage.message.transfer_success') as string,
+            html: t('incomingDocListPage.message.transfer_success'),
             showConfirmButton: false,
             timer: 2000,
           });
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
+          message.error(t(error.response?.data.message));
           setError(error.response?.data.message);
           console.error(error.response?.data.message);
         } else {
