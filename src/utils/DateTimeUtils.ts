@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const DAY_MONTH_YEAR_FORMAT = 'DD-MM-YYYY';
 export const DEFAULT_DATE_FORMAT = 'dd-MM-yyyy';
@@ -23,4 +23,10 @@ export function isValidDateFormat(dateString: string) {
 
 export function formatDateToDDMMYYYY(date: dayjs.Dayjs) {
   return date?.format(DAY_MONTH_YEAR_FORMAT_3);
+}
+
+export function isFutureOrPresent(date: Dayjs | string) {
+  const now = dayjs();
+  const dateToBeChecked = dayjs(date);
+  return dateToBeChecked.isAfter(now) || dateToBeChecked.isSame(now, 'day');
 }

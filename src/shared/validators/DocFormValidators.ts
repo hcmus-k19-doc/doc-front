@@ -55,11 +55,12 @@ function FutureDateValidator(message?: string): Rule {
     required: true,
     validator: (_, value: Dayjs) => {
       if (value) {
+        const dateToBeChecked = dayjs(value);
         const now = dayjs();
-        if (value.isAfter(now)) {
+        if (dateToBeChecked.isAfter(now)) {
           return Promise.resolve();
         }
-        return Promise.reject(new Error(message ?? 'common.error.date.must_be_future'));
+        return Promise.reject(new Error(message ?? `${t('common.error.date.must_be_future')}`));
       }
       return Promise.resolve();
     },

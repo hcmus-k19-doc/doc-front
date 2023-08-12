@@ -9,6 +9,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { IncomingDocumentDto, OutgoingDocumentGetDto } from 'models/doc-main-models';
 import { useSecretaryTransferRes } from 'shared/hooks/SecretaryTransferQuery';
 import { useTransferQuerySetter } from 'shared/hooks/TransferDocQuery';
+import DocFormValidators from 'shared/validators/DocFormValidators';
 
 import {
   i18_collaborators,
@@ -193,7 +194,13 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
                 {t(i18n_processing_time)}
               </Typography.Text>
             </Col>
-            <Form.Item name='processingTime'>
+            <Form.Item
+              name='processingTime'
+              rules={[
+                DocFormValidators.FutureDateValidator(
+                  `${t('transfer_modal.form.processing_time_must_be_future')}`
+                ),
+              ]}>
               <Space direction='vertical' size={12}>
                 {isReadOnlyMode ? (
                   <Text>{processingDuration}</Text>
