@@ -21,8 +21,10 @@
       "reset_password": "Đặt lại mật khẩu",
       "back_to_login": "Quay lại đăng nhập",
       "forgot_password_description": "Nhập email của bạn để yêu cầu đặt lại mật khẩu",
-      "send_request_success": "Yêu cầu đặt lại mật khẩu thành công",
-      "send_request_failed": "Yêu cầu đặt lại mật khẩu thất bại"
+      "send_request_success": "Yêu cầu đặt lại mật khẩu thành công. \nĐang chuyển hướng đến trang đăng nhập...",
+      "send_request_failed": "Yêu cầu đặt lại mật khẩu thất bại. Vui lòng kiểm tra lại email của bạn",
+      "change_password_success": "Đổi mật khẩu thành công. \nĐang chuyển hướng đến trang đăng nhập...",
+      "change_password_failed": "Đổi mật khẩu thất bại. Vui lòng kiểm tra lại"
     }
   },
   "main_page": {
@@ -218,11 +220,12 @@
     "email": {
       "existed": "Email đã tồn tại"
     },
-    "not_found": "Không tìm thấy người dùng",
+    "not_found": "Thông tin đăng nhập không chính xác",
     "password": {
-      "incorrect": "Mật khẩu không chính xác",
+      "incorrect": "Thông tin đăng nhập không chính xác",
       "invalid": "Mật khẩu phải có độ dài từ 6 đến 20 ký tự, phải chứa ít nhất 1 chữ cái viết hoa, 1 chữ cái viết thường, 1 số và 1 ký tự đặc biệt",
-      "required": "Hãy điền mật khẩu"
+      "required": "Hãy điền mật khẩu",
+      "need_changed": "Vui lòng đổi mật khẩu để tiếp tục sử dụng hệ thống"
     }
   },
   "SENDING_LEVEL": {

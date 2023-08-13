@@ -32,14 +32,23 @@ const LoginPage: React.FC = () => {
       setCurrentUser(user);
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        alert({
-          icon: 'error',
-          html: t(e.response?.data.message),
-          confirmButtonColor: PRIMARY_COLOR,
-          confirmButtonText: 'OK',
-          showConfirmButton: true,
-        });
-        setError(e.response?.data.message);
+        if (e?.response?.data?.message === 'user.password.need_changed') {
+          globalNavigate('/change-password', {
+            state: {
+              username: values['username'],
+            },
+          });
+          return;
+        } else {
+          alert({
+            icon: 'error',
+            html: t(e.response?.data.message),
+            confirmButtonColor: PRIMARY_COLOR,
+            confirmButtonText: 'OK',
+            showConfirmButton: true,
+          });
+          setError(e.response?.data.message);
+        }
       } else {
         console.error(e);
       }

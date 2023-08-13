@@ -29,7 +29,7 @@ const ForgotPasswordPage: React.FC = () => {
           html: t(`${I18N_PREFIX}.password.send_request_success`),
           confirmButtonColor: PRIMARY_COLOR,
           showConfirmButton: false,
-          timer: 2000,
+          timer: 4000,
         });
         globalNavigate('/login');
       }
@@ -91,6 +91,7 @@ const ForgotPasswordPage: React.FC = () => {
                   prefix: <MailOutlined className='prefixIcon' />,
                 }}
                 placeholder={t(`${I18N_PREFIX}.email.placeholder`).toString()}
+                validateFirst
                 rules={[
                   DocFormValidators.NoneBlankOrWhiteSpaceValidator(
                     `${t(`${I18N_PREFIX}.email.none_whitespace`)}`

@@ -66,13 +66,35 @@ export default function ChangePasswordCard() {
         <Form.Item
           label={t('user.detail.new_password')}
           name='newPassword'
-          rules={DocFormValidators.PasswordValidators()}>
+          dependencies={['oldPassword']}
+          rules={[
+            ...DocFormValidators.PasswordValidators(),
+            ({ getFieldValue }: any) => ({
+              validator(_, value: any) {
+                if (!value || getFieldValue('oldPassword') !== value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error(t('user.detail.password_not_change').toString()));
+              },
+            }),
+          ]}>
           <Input.Password />
         </Form.Item>
         <Form.Item
           label={t('user.detail.confirm_password')}
           name='confirmPassword'
-          rules={DocFormValidators.PasswordValidators()}>
+          dependencies={['newPassword']}
+          rules={[
+            ...DocFormValidators.PasswordValidators(),
+            ({ getFieldValue }: any) => ({
+              validator(_, value: any) {
+                if (!value || getFieldValue('newPassword') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error(t('user.detail.password_not_match').toString()));
+              },
+            }),
+          ]}>
           <Input.Password />
         </Form.Item>
 
