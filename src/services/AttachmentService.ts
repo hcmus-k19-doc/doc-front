@@ -13,7 +13,7 @@ import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
 const DOC_FILE_SERVICE_FILE_URL = `${REACT_APP_DOC_FILE_SERVICE_URL}/files`;
 const ATTACHMENT_URL = `${REACT_APP_DOC_MAIN_SERVICE_URL}/attachments`;
-const S3_URL = `${DOC_FILE_SERVICE_FILE_URL}/s3`;
+const MINIO_URL = `${DOC_FILE_SERVICE_FILE_URL}/minio`;
 
 async function downloadAttachments(attachmentDtoList: AttachmentDto[], incomingDocId: string) {
   return await axios.post(
@@ -31,6 +31,12 @@ async function getFileContentFromS3Key(key: string) {
   });
 }
 
+async function getFileContentFromMinioByKey(key?: string) {
+  return await axios.get(`${DOC_FILE_SERVICE_FILE_URL}/minio/files?fileKey=${key}`, {
+    responseType: 'blob',
+  });
+}
+
 function saveZipFileToDisk(response: AxiosResponse<any, any>) {
   const url: string = window.URL.createObjectURL(new Blob([response.data]));
   const link: HTMLAnchorElement = document.createElement('a');
@@ -44,7 +50,7 @@ function saveZipFileToDisk(response: AxiosResponse<any, any>) {
 
 async function downloadZipFileFromS3(parentFolder: ParentFolderEnum, folderName: number) {
   try {
-    const res = await axios.get(`${S3_URL}/${parentFolder}/${folderName}`, {
+    const res = await axios.get(`${MINIO_URL}/${parentFolder}/${folderName}`, {
       responseType: 'blob',
     });
 
@@ -70,7 +76,7 @@ export async function handleDownloadAttachment(
   try {
     const fileNameList = await axios.get(`${ATTACHMENT_URL}/${parentFolder}/${record.id}`);
 
-    const responseStatus = await downloadZipFileFromS3IgnoreDeleted(
+    const responseStatus = await downloadZipFileIgnoreDeleted(
       parentFolder,
       record.id,
       fileNameList.data
@@ -109,11 +115,7 @@ export async function handleDownloadAttachmentInTransferHistory(
   try {
     const fileNameList = await axios.get(`${ATTACHMENT_URL}/${parentFolder}/${id}`);
 
-    const responseStatus = await downloadZipFileFromS3IgnoreDeleted(
-      parentFolder,
-      id,
-      fileNameList.data
-    );
+    const responseStatus = await downloadZipFileIgnoreDeleted(parentFolder, id, fileNameList.data);
     if (responseStatus === 204) {
       showAlert({
         icon: 'error',
@@ -140,15 +142,19 @@ export async function deleteAttachmentById(id: number) {
   return await axios.delete(`${ATTACHMENT_URL}/${id}`);
 }
 
-async function downloadZipFileFromS3IgnoreDeleted(
+async function downloadZipFileIgnoreDeleted(
   parentFolder: ParentFolderEnum,
   folderName: number,
   fileNameList: string[]
 ) {
   try {
-    const res = await axios.post(`${S3_URL}/download/${parentFolder}/${folderName}`, fileNameList, {
-      responseType: 'blob',
-    });
+    const res = await axios.post(
+      `${MINIO_URL}/download/${parentFolder}/${folderName}`,
+      fileNameList,
+      {
+        responseType: 'blob',
+      }
+    );
 
     if (res.status !== 200) {
       return res.status;
@@ -166,6 +172,7 @@ const attachmentService = {
   saveZipFileToDisk,
   handleDownloadAttachment,
   getFileContentFromS3Key,
+  getFileContentFromMinioByKey,
   handleDownloadAttachmentInTransferHistory,
   deleteAttachmentById,
 };

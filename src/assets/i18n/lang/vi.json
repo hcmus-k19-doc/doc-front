@@ -676,6 +676,7 @@
       "assignee_required": "Hãy chọn người nhận",
       "processing_time_required": "Hãy chọn hạn xử lý",
       "processing_time_invalid": "Hạn xử lý không hợp lệ",
+      "processing_time_must_be_future": "Hạn xử lý phải là ngày trong tương lai",
       "processing_time_infinite": "Không thời hạn",
       "collaborators_required": "Hãy chọn người tham gia",
       "processing_method_required": "Hãy chọn cách thức xử lý",

@@ -77,6 +77,7 @@ import { validateTransferDocs } from 'shared/validators/TransferDocValidator';
 import {
   DAY_MONTH_YEAR_FORMAT,
   formatDateToDDMMYYYY,
+  isFutureOrPresent,
   isValidDateFormat,
 } from 'utils/DateTimeUtils';
 import { globalNavigate } from 'utils/RoutingUtils';
@@ -536,6 +537,7 @@ function OutgoingDocDetailPage() {
         processingTime: formatDateToDDMMYYYY(modalForm.getFieldValue('processingTime')),
       });
     }
+
     const transferDocDto: TransferDocDto = {
       documentIds: selectedDocs.map((doc) => doc.id),
       summary: modalForm.getFieldValue('summary'),
@@ -564,24 +566,24 @@ function OutgoingDocDetailPage() {
       try {
         const response = await outgoingDocumentService.transferDocuments(transferDocDto);
         if (response.status === 200) {
-          queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId || 1)]);
-          // navigate('/docout/out-list');
+          queryClient.invalidateQueries(['QUERIES.OUTGOING_DOCUMENT_DETAIL', +(docId ?? 1)]);
           currentUser?.role !== DocSystemRoleEnum.HIEU_TRUONG
             ? showAlert({
                 icon: 'success',
-                html: t('outgoing_doc_detail_page.message.report_success') as string,
+                html: t('outgoing_doc_detail_page.message.report_success'),
                 showConfirmButton: false,
                 timer: 2000,
               })
             : showAlert({
                 icon: 'success',
-                html: t('outgoing_doc_detail_page.message.transfer_secretary_success') as string,
+                html: t('outgoing_doc_detail_page.message.transfer_secretary_success'),
                 showConfirmButton: false,
                 timer: 2000,
               });
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
+          message.error(t(error.response?.data.message));
           setError(error.response?.data.message);
           console.error(error.response?.data.message);
         } else {

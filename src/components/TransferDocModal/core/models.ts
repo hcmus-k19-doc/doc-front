@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormInstance, MenuProps, SelectProps } from 'antd';
+import { FormInstance, MenuProps } from 'antd';
 import {
   GetTransferDocumentDetailCustomResponse,
   IncomingDocumentDto,
