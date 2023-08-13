@@ -21,8 +21,10 @@
       "reset_password": "Reset password",
       "back_to_login": "Back to login",
       "forgot_password_description": "Please enter your email address to send a password reset request",
-      "send_request_success": "Password reset request sent successfully",
-      "send_request_failed": "Password reset request failed. Please try again"
+      "send_request_success": "Password reset request sent successfully. Redirecting to login page...",
+      "send_request_failed": "Password reset request failed. Please try again",
+      "change_password_success": "Password changed successfully. Redirecting to login page...",
+      "change_password_failed": "Password change failed. Please try again"
     }
   },
   "main_page": {
@@ -221,7 +223,8 @@
     "password": {
       "incorrect": "Incorrect login information",
       "invalid": "Password must be between 6 and 20 characters, including at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
-      "required": "Please enter your password"
+      "required": "Please enter your password",
+      "need_changed": "Please change your password to continue"
     }
   },
   "SENDING_LEVEL": {

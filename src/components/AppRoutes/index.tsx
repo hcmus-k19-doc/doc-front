@@ -8,6 +8,7 @@ import { DocSystemRoleEnum } from 'models/doc-main-models';
 import NotFoundPage from 'pages/error/NotFoundPage';
 import ServerErrorPage from 'pages/error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
+import ChangePasswordPage from 'pages/shared/LoginPage/ChangePassword';
 import ForgotPasswordPage from 'pages/shared/LoginPage/ForgotPassword';
 import MainPage from 'pages/shared/MainPage';
 import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
@@ -55,6 +56,7 @@ const AppRoutes = () => {
             <>
               <Route path='/login' element={<LoginPage />} />
               <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+              <Route path='/change-password' element={<ChangePasswordPage />} />
               <Route path='/*' element={<Navigate to='/login' />} />
             </>
           )}
