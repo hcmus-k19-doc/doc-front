@@ -29,6 +29,8 @@
   float: right;
   margin-bottom: 23px;
   margin-top: -15px;
+  position: relative;
+  z-index: 1000;
 }
 
 .forgot-password:hover {
