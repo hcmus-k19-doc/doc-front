@@ -32,7 +32,6 @@ const LoginPage: React.FC = () => {
       setCurrentUser(user);
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        console.log('Axios error:', e);
         if (e?.response?.data?.message === 'user.password.need_changed') {
           globalNavigate('/change-password', {
             state: {
@@ -51,7 +50,6 @@ const LoginPage: React.FC = () => {
           setError(e.response?.data.message);
         }
       } else {
-        console.log('normal error:', e);
         console.error(e);
       }
     }
