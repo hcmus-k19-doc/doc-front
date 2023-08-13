@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from 'App';
 import { useAuth } from 'components/AuthComponent';
@@ -8,6 +8,7 @@ import { DocSystemRoleEnum } from 'models/doc-main-models';
 import NotFoundPage from 'pages/error/NotFoundPage';
 import ServerErrorPage from 'pages/error/ServerErrorPage';
 import LoginPage from 'pages/shared/LoginPage';
+import ForgotPasswordPage from 'pages/shared/LoginPage/ForgotPassword';
 import MainPage from 'pages/shared/MainPage';
 import ProcessingDetailsPageWrapper from 'pages/shared/ProcessingDetailsPage';
 import StatisticsPage from 'pages/shared/StatisticsPage';
@@ -53,6 +54,7 @@ const AppRoutes = () => {
           ) : (
             <>
               <Route path='/login' element={<LoginPage />} />
+              <Route path='/forgot-password' element={<ForgotPasswordPage />} />
               <Route path='/*' element={<Navigate to='/login' />} />
             </>
           )}

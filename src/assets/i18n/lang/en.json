@@ -2,17 +2,27 @@
   "login": {
     "subtitle": "Document approval and Publication system",
     "submitter": {
-      "submit_text": "Log in"
+      "submit_text": "Log in",
+      "send_request": "Send Request"
     },
     "username": {
       "placeholder": "Username",
       "invalid_message": "Please enter your username"
     },
+    "email": {
+      "placeholder": "Email",
+      "none_whitespace": "Email cannot contain spaces",
+      "invalid_message": "Please enter your email"
+    },
     "password": {
       "placeholder": "Password",
       "invalid_message": "Please enter your password",
-      "forgot_password": "Forgot password?",
-      "reset_password": "Reset password"
+      "forgot_password": "Forgot password",
+      "reset_password": "Reset password",
+      "back_to_login": "Back to login",
+      "forgot_password_description": "Please enter your email address to send a password reset request",
+      "send_request_success": "Password reset request sent successfully",
+      "send_request_failed": "Password reset request failed"
     }
   },
   "main_page": {
