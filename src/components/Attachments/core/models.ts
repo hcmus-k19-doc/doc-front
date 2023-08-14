@@ -12,3 +12,10 @@ export interface AttachmentPreviewModalProps {
   isPreviewModalOpen: boolean;
   handleClose: () => void;
 }
+
+export interface ImagePreviewModalProps {
+  attachment: AttachmentDto;
+  isPreviewModalOpen: boolean;
+  setIsPreviewModalOpen: (isOpen: boolean) => void;
+  handleClose: () => void;
+}
