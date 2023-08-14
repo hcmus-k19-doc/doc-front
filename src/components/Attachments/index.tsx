@@ -7,7 +7,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { Dropdown, Empty, List, MenuProps, Modal, Spin } from 'antd';
-import { AttachmentDto } from 'models/doc-main-models';
+import { AttachmentDto, FileType } from 'models/doc-main-models';
 import attachmentService from 'services/AttachmentService';
 
 import { PRIMARY_COLOR } from '../../config/constant';
@@ -16,6 +16,7 @@ import { useSweetAlert } from '../../shared/hooks/SwalAlert';
 import { downloadFileFromBlob, parseLocalDateTimeToFormatedDate } from './core/common';
 import { AttachmentsComponentProps } from './core/models';
 import AttachmentPreviewModal from './AttachmentPreviewModal';
+import ImagePreviewModal from './ImagePreviewModal';
 
 import './index.css';
 
@@ -146,11 +147,20 @@ const Attachments: React.FC<AttachmentsComponentProps> = ({
         />
       ) : (
         <>
-          <AttachmentPreviewModal
-            attachment={selectedFile as AttachmentDto}
-            handleClose={handleCancel}
-            isPreviewModalOpen={isPreviewModalOpen}
-          />
+          {selectedFile?.fileType === FileType.PDF ? (
+            <AttachmentPreviewModal
+              attachment={selectedFile as AttachmentDto}
+              handleClose={handleCancel}
+              isPreviewModalOpen={isPreviewModalOpen}
+            />
+          ) : (
+            <ImagePreviewModal
+              attachment={selectedFile as AttachmentDto}
+              handleClose={handleCancel}
+              isPreviewModalOpen={isPreviewModalOpen}
+              setIsPreviewModalOpen={setIsPreviewModalOpen}
+            />
+          )}
 
           <List
             itemLayout='horizontal'

@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react';
-import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
-import { Modal, Spin } from 'antd';
+import { Image, Spin } from 'antd';
+import imageNoContent from 'assets/images/no-image.png';
 import attachmentService from 'services/AttachmentService';
 
-import { AttachmentPreviewModalProps } from '../core/models';
+import { ImagePreviewModalProps } from '../core/models';
 
 import './index.css';
 
-function AttachmentPreviewModal({
+function ImagePreviewModal({
   attachment,
   isPreviewModalOpen,
   handleClose,
-}: AttachmentPreviewModalProps) {
+  setIsPreviewModalOpen,
+}: ImagePreviewModalProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [docs, setDocs] = useState<any>([]);
 
   useEffect(() => {
+    setDocs([]);
     if (attachment) {
       const downloadFile = async () => {
         setLoading(true);
@@ -23,6 +25,7 @@ function AttachmentPreviewModal({
           const data = await attachmentService.getFileContentFromMinioByKey(
             attachment.alfrescoFileId
           );
+
           setDocs([
             {
               uri: URL.createObjectURL(data.data),
@@ -40,24 +43,19 @@ function AttachmentPreviewModal({
     }
   }, [attachment]);
 
-  return (
-    <Modal
-      title={''}
-      open={isPreviewModalOpen}
-      onCancel={handleClose}
-      centered
-      footer={[]}
-      width={1000}
-      bodyStyle={{ height: '800px' }}>
-      <Spin spinning={loading}>
-        <DocViewer
-          documents={docs}
-          pluginRenderers={DocViewerRenderers}
-          className={'modal-preview-body'}
-        />
-      </Spin>
-    </Modal>
-  );
+  return isPreviewModalOpen ? (
+    <Spin spinning={loading}>
+      <Image
+        width={200}
+        src={docs?.[0]?.uri || imageNoContent}
+        preview={{
+          visible: isPreviewModalOpen,
+          onVisibleChange: (visible, prevVisible) => setIsPreviewModalOpen(visible),
+        }}
+        style={{ display: 'none' }}
+      />
+    </Spin>
+  ) : null;
 }
 
-export default AttachmentPreviewModal;
+export default ImagePreviewModal;
