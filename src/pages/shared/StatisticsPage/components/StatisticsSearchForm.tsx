@@ -10,6 +10,7 @@ import { DAY_MONTH_YEAR_FORMAT } from 'utils/DateTimeUtils';
 import { useAuth } from '../../../../components/AuthComponent';
 import { useStatisticsReq } from '../../../../shared/hooks/StatisticsQuery';
 import { docTypeOptions, SearchState } from '../../../../shared/hooks/StatisticsQuery/core/states';
+import DocFormValidators from '../../../../shared/validators/DocFormValidators';
 
 const { Panel } = Collapse;
 
@@ -20,7 +21,7 @@ const ExpandIcon = () => {
 const StatisticsSearchForm = () => {
   const { t } = useTranslation();
   const [form] = useForm();
-  const [statisticsReqQuery, setstatisticsReqQuery] = useStatisticsReq();
+  const [statisticsReqQuery, setStatisticsReqQuery] = useStatisticsReq();
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -31,7 +32,7 @@ const StatisticsSearchForm = () => {
           form={form}
           onFinish={(values: SearchState) => {
             setLoading(true);
-            setstatisticsReqQuery({ ...statisticsReqQuery, ...values, page: 1 });
+            setStatisticsReqQuery({ ...statisticsReqQuery, ...values, page: 1 });
             setLoading(false);
           }}
           layout='vertical'>
@@ -45,7 +46,11 @@ const StatisticsSearchForm = () => {
                   <Form.Item
                     initialValue={docTypeOptions?.[0].value}
                     name='docType'
-                    label={t('search_criteria_bar.doc_types')}>
+                    label={t('search_criteria_bar.doc_types')}
+                    rules={[
+                      DocFormValidators.NoneChoiceValidator(t('statistics.form.docTypeRequired')),
+                    ]}
+                    required>
                     <Select allowClear options={docTypeOptions} />
                   </Form.Item>
                 </Col>

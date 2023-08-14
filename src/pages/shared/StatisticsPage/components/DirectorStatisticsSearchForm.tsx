@@ -11,6 +11,7 @@ import { useAuth } from '../../../../components/AuthComponent';
 import { useStatisticsReq } from '../../../../shared/hooks/StatisticsQuery';
 import { docTypeOptions, SearchState } from '../../../../shared/hooks/StatisticsQuery/core/states';
 import { useAllUsers } from '../../../../shared/hooks/UserQuery';
+import DocFormValidators from '../../../../shared/validators/DocFormValidators';
 
 const { Panel } = Collapse;
 
@@ -22,13 +23,12 @@ const StatisticsSearchForm = () => {
   const { t } = useTranslation();
   const { allUsers, data } = useAllUsers();
   const [form] = useForm();
-  const [statisticsReqQuery, setstatisticsReqQuery] = useStatisticsReq();
+  const [statisticsReqQuery, setStatisticsReqQuery] = useStatisticsReq();
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSelectAll = () => {
     const allUserIds = data?.map((user) => user.id);
-    console.log(allUserIds);
     form.setFieldsValue({ expertIds: allUserIds });
   };
 
@@ -39,7 +39,7 @@ const StatisticsSearchForm = () => {
           form={form}
           onFinish={(values: SearchState) => {
             setLoading(true);
-            setstatisticsReqQuery({ ...statisticsReqQuery, ...values, page: 1 });
+            setStatisticsReqQuery({ ...statisticsReqQuery, ...values, page: 1 });
             setLoading(false);
           }}
           layout='vertical'>
@@ -52,7 +52,13 @@ const StatisticsSearchForm = () => {
                       currentUser?.id, // Only set the current user's ID in the initialValue array
                     ]}
                     name='expertIds'
-                    label={t('search_criteria_bar.name_of_handler')}>
+                    label={t('search_criteria_bar.name_of_handler')}
+                    rules={[
+                      DocFormValidators.NoneChoiceValidator(
+                        t('statistics.form.nameOfHandlerRequired')
+                      ),
+                    ]}
+                    required>
                     <Select
                       mode='multiple'
                       style={{ width: '100%' }}
@@ -83,7 +89,11 @@ const StatisticsSearchForm = () => {
                   <Form.Item
                     initialValue={docTypeOptions?.[0].value}
                     name='docType'
-                    label={t('search_criteria_bar.doc_types')}>
+                    label={t('search_criteria_bar.doc_types')}
+                    rules={[
+                      DocFormValidators.NoneChoiceValidator(t('statistics.form.docTypeRequired')),
+                    ]}
+                    required>
                     <Select allowClear options={docTypeOptions} />
                   </Form.Item>
                 </Col>

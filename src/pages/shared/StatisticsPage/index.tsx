@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { Button, Divider, Layout, Table, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
@@ -7,10 +7,14 @@ import { useAuth } from 'components/AuthComponent';
 import PageHeader from 'components/PageHeader';
 import ReactECharts from 'echarts-for-react';
 import { t } from 'i18next';
-import { DocSystemRoleEnum, ProcessingStatus } from 'models/doc-main-models';
+import { DocSystemRoleEnum } from 'models/doc-main-models';
 import { RecoilRoot } from 'recoil';
 import { useDocumentTypesRes } from 'shared/hooks/DocumentTypesQuery';
-import { useChartStatisticsRes, useStatisticsRes } from 'shared/hooks/StatisticsQuery';
+import {
+  useChartStatisticsRes,
+  useStatisticsReq,
+  useStatisticsRes,
+} from 'shared/hooks/StatisticsQuery';
 
 import { PRIMARY_COLOR } from '../../../config/constant';
 import { useSweetAlert } from '../../../shared/hooks/SwalAlert';
@@ -24,8 +28,8 @@ import './index.css';
 const StatisticsPage: React.FC = () => {
   const { data: DocStatisticsData, isLoading } = useStatisticsRes();
   const { data: chartStatisticsDto } = useChartStatisticsRes();
-  const { incomingDocumentStatisticsDto, documentTypeStatisticsWrapperDto } =
-    chartStatisticsDto ?? {};
+  const [statisticsReqQuery] = useStatisticsReq();
+  const { documentTypeStatisticsWrapperDto } = chartStatisticsDto ?? {};
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -33,14 +37,39 @@ const StatisticsPage: React.FC = () => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const showAlert = useSweetAlert();
+  const [selectedRow, setSelectedRow] = useState<TableRowDataType>();
 
-  const incomingPieChartOptions = {
+  useEffect(() => {
+    if (DocStatisticsData !== undefined && DocStatisticsData?.rowsData !== undefined) {
+      setSelectedRow(
+        DocStatisticsData?.rowsData.find((row) => row.expertName === currentUser?.username)
+      );
+    }
+  }, [DocStatisticsData?.rowsData]);
+
+  const pieChartOptions = {
     title: {
-      text: t('statistics.incoming_document_pie_chart_title'),
-      subtext: t('statistics.quarter', {
-        quarter: chartStatisticsDto?.quarter,
-        year: chartStatisticsDto?.year,
-      }),
+      text:
+        statisticsReqQuery?.docType === undefined ||
+        statisticsReqQuery?.docType === 'INCOMING_DOCUMENT'
+          ? t('statistics.incoming_document_pie_chart_title')
+          : t('statistics.outgoing_document_pie_chart_title'),
+      subtext:
+        DocStatisticsData?.fromDate !== '' && DocStatisticsData?.toDate !== ''
+          ? t('statistics.from_date') +
+            DocStatisticsData?.fromDate +
+            t('statistics.to_date') +
+            ' ' +
+            DocStatisticsData?.toDate +
+            ' - ' +
+            t('statistics.pie_series.executor') +
+            ': ' +
+            selectedRow?.expertName
+          : t('statistics.all_the_time') +
+            ' - ' +
+            t('statistics.pie_series.executor') +
+            ': ' +
+            selectedRow?.expertName,
       x: 'center',
     },
     textStyle: {
@@ -54,9 +83,10 @@ const StatisticsPage: React.FC = () => {
       orient: 'vertical',
       left: 'left',
       data: [
-        t(`statistics.series.data.${ProcessingStatus.UNPROCESSED}`),
-        t(`statistics.series.data.${ProcessingStatus.IN_PROGRESS}`),
-        t(`statistics.series.data.${ProcessingStatus.CLOSED}`),
+        t(`statistics.pie_series.data.on_time`),
+        t(`statistics.pie_series.data.overdue_closed`),
+        t(`statistics.pie_series.data.unexpired`),
+        t(`statistics.pie_series.data.overdue_unprocessed`),
       ],
     },
     series: [
@@ -67,16 +97,20 @@ const StatisticsPage: React.FC = () => {
         center: ['50%', '60%'],
         data: [
           {
-            value: incomingDocumentStatisticsDto?.numberOfUnprocessedDocument,
-            name: t(`statistics.series.data.${ProcessingStatus.UNPROCESSED}`),
+            value: selectedRow?.onTime,
+            name: t(`statistics.pie_series.data.on_time`),
           },
           {
-            value: incomingDocumentStatisticsDto?.numberOfProcessingDocument,
-            name: t(`statistics.series.data.${ProcessingStatus.IN_PROGRESS}`),
+            value: selectedRow?.overdueClosedDoc,
+            name: t(`statistics.pie_series.data.overdue_closed`),
           },
           {
-            value: incomingDocumentStatisticsDto?.numberOfProcessedDocument,
-            name: t(`statistics.series.data.${ProcessingStatus.CLOSED}`),
+            value: selectedRow?.unexpired,
+            name: t(`statistics.pie_series.data.unexpired`),
+          },
+          {
+            value: selectedRow?.overdueUnprocessedDoc,
+            name: t(`statistics.pie_series.data.overdue_unprocessed`),
           },
         ],
         emphasis: {
@@ -131,10 +165,12 @@ const StatisticsPage: React.FC = () => {
     {
       title: t('statistics.table.columns.ordinal_number'),
       dataIndex: 'ordinalNumber',
+      sorter: (a, b) => a.ordinalNumber - b.ordinalNumber,
     },
     {
       title: t('statistics.table.columns.name_of_handler'),
       dataIndex: 'expertName',
+      sorter: (a, b) => a.expertName.localeCompare(b.expertName),
     },
     {
       title: t('statistics.table.columns.closed'),
@@ -143,14 +179,17 @@ const StatisticsPage: React.FC = () => {
         {
           title: t('statistics.table.columns.on_time'),
           dataIndex: 'onTime',
+          sorter: (a, b) => a.onTime - b.onTime,
         },
         {
           title: t('statistics.table.columns.overdue'),
           dataIndex: 'overdueClosedDoc',
+          sorter: (a, b) => a.overdueClosedDoc - b.overdueClosedDoc,
         },
         {
           title: t('statistics.table.columns.total'),
           dataIndex: 'totalClosedDoc',
+          sorter: (a, b) => a.totalClosedDoc - b.totalClosedDoc,
         },
       ],
     },
@@ -161,20 +200,36 @@ const StatisticsPage: React.FC = () => {
         {
           title: t('statistics.table.columns.unexpired'),
           dataIndex: 'unexpired',
+          sorter: (a, b) => a.unexpired - b.unexpired,
         },
         {
           title: t('statistics.table.columns.overdue'),
           dataIndex: 'overdueUnprocessedDoc',
+          sorter: (a, b) => a.overdueUnprocessedDoc - b.overdueUnprocessedDoc,
         },
         {
           title: t('statistics.table.columns.total'),
           dataIndex: 'totalUnprocessedDoc',
+          sorter: (a, b) => a.totalUnprocessedDoc - b.totalUnprocessedDoc,
         },
       ],
     },
     {
       title: t('statistics.table.columns.on_time_processing_percentage'),
       dataIndex: 'onTimeProcessingPercentage',
+      sorter: (a, b) => {
+        const aPercentage =
+          typeof a.onTimeProcessingPercentage === 'number'
+            ? a.onTimeProcessingPercentage
+            : parseFloat(a.onTimeProcessingPercentage);
+
+        const bPercentage =
+          typeof b.onTimeProcessingPercentage === 'number'
+            ? b.onTimeProcessingPercentage
+            : parseFloat(b.onTimeProcessingPercentage);
+
+        return aPercentage - bPercentage;
+      },
     },
   ];
 
@@ -274,6 +329,13 @@ const StatisticsPage: React.FC = () => {
           ) : (
             <div className='flex justify-center small-text'>({t('statistics.all_the_time')})</div>
           )}
+          <div
+            className='flex justify-center'
+            style={{ marginBottom: '1rem', fontStyle: 'italic' }}>
+            {statisticsReqQuery?.docType === undefined
+              ? t('statistics.document_type.INCOMING_DOCUMENT')
+              : t(`statistics.document_type.${statisticsReqQuery?.docType}`)}
+          </div>
           <Table
             style={{ width: '100%' }}
             loading={isLoading}
@@ -281,6 +343,13 @@ const StatisticsPage: React.FC = () => {
             columns={columns}
             dataSource={DocStatisticsData?.rowsData}
             pagination={false}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  setSelectedRow(record);
+                },
+              };
+            }}
           />
           <div className='mt-5 flex' style={{ justifyContent: 'flex-end' }}>
             <div className='transfer-doc-wrapper'>
@@ -305,7 +374,7 @@ const StatisticsPage: React.FC = () => {
           <div className='flex justify-between'>
             <ReactECharts
               showLoading={isLoading}
-              option={incomingPieChartOptions}
+              option={pieChartOptions}
               style={{ height: 400, width: '50%' }}
               opts={{ renderer: 'svg' }}
             />

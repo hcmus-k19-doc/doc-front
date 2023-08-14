@@ -54,7 +54,7 @@ export function useStatisticsRes() {
                   item.numberOfUnprocessedDocumentUnexpired +
                   item.numberOfUnprocessedDocumentOverdue ===
                 0
-                  ? 0
+                  ? '0.00'
                   : (
                       (item.numberOfProcessedDocumentOnTime /
                         (item.numberOfProcessedDocumentOnTime +

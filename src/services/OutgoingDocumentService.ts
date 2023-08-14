@@ -111,7 +111,6 @@ async function linkDocuments(targetDocumentId: number, incomingDocuments: number
     `${OUTGOING_DOCUMENTS_URL}/link-documents/${targetDocumentId}`,
     incomingDocuments
   );
-  console && console.log('linkDocuments', targetDocumentId, incomingDocuments);
   return data;
 }
 
