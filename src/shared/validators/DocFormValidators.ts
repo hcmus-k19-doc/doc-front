@@ -12,6 +12,20 @@ function NoneBlankValidator(message: string): Rule {
   };
 }
 
+function NoneChoiceValidator(message: string): Rule {
+  return {
+    required: true,
+    whitespace: true,
+    message,
+    validator: (_, value: string[]) => {
+      if (value && value.length > 0) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error(message));
+    },
+  };
+}
+
 function NoneWhiteSpaceValidator(message: string): Rule {
   return {
     required: true,
@@ -95,6 +109,7 @@ const DocFormValidators = {
   FutureDateValidator,
   PasswordValidators,
   addFilesFieldError,
+  NoneChoiceValidator,
 };
 
 export default DocFormValidators;

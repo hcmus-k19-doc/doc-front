@@ -141,9 +141,6 @@ function ReceiveIncomingDocPage() {
     },
     onChange(info) {
       const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
       if (status === 'done') {
         message.success(`${info.file.name} ${t('receiveIncomingDocPage.message.file_success')}`);
       } else if (status === 'error') {

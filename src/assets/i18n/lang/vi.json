@@ -841,6 +841,7 @@
   },
   "statistics": {
     "incoming_document_pie_chart_title": "TỈ LỆ XỬ LÝ VĂN BẢN ĐẾN",
+    "outgoing_document_pie_chart_title": "TỈ LỆ XỬ LÝ VĂN BẢN ĐI",
     "document_type_processed_title": "SỐ LƯỢNG VĂN BẢN THEO LOẠI ĐÃ XỬ LÝ\n QUÝ {{quarter}} NĂM {{year}}",
     "quarter": "Quý {{quarter}} năm {{year}}",
     "document_statistics_title": "THỐNG KÊ TÌNH HÌNH THỤ LÝ VĂN BẢN",
@@ -851,13 +852,30 @@
     "legend": {
       "document_type": "Loại văn bản"
     },
+    "form": {
+      "nameOfHandlerRequired": "Hãy chọn tên người xử lý",
+      "docTypeRequired": "Hãy chọn loại văn bản"
+    },
     "series": {
-      "name": "Số lượng văn bản theo quý",
+      "name": "Số lượng văn bản",
       "data": {
         "UNPROCESSED": "Chưa xử lý",
         "IN_PROGRESS": "Đang xử lý",
         "CLOSED": "Đã xử lý"
       }
+    },
+    "pie_series": {
+      "executor": "Người xử lý",
+      "data": {
+        "on_time": "Đúng hạn (Đã xử lý)",
+        "overdue_closed": "Trễ hạn (Đã xử lý)",
+        "unexpired": "Trong hạn (Chưa xử lý)",
+        "overdue_unprocessed": "Trễ hạn (Chưa xử lý)"
+      }
+    },
+    "document_type": {
+      "INCOMING_DOCUMENT": "Văn bản đến",
+      "OUTGOING_DOCUMENT": "Văn bản đi"
     },
     "table": {
       "columns": {

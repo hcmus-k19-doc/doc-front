@@ -827,6 +827,7 @@
   },
   "statistics": {
     "incoming_document_pie_chart_title": "INCOMING DOCUMENT PROCESSING RATIO",
+    "outgoing_document_pie_chart_title": "OUTGOING DOCUMENT PROCESSING RATIO",
     "document_type_processed_title": "NUMBER OF PROCESSED DOCUMENTS BY TYPE\n QUARTER {{quarter}} YEAR {{year}}",
     "quarter": "Quarter {{quarter}} Year {{year}}",
     "document_statistics_title": "DOCUMENT STATISTICS",
@@ -837,13 +838,29 @@
     "legend": {
       "document_type": "Document Type"
     },
+    "form": {
+      "nameOfHandlerRequired": "Please select a handler",
+      "docTypeRequired": "Please select a document type"
+    },
     "series": {
-      "name": "Number of Documents by Quarter",
+      "name": "Number of Documents",
       "data": {
         "UNPROCESSED": "Unprocessed",
         "IN_PROGRESS": "In Progress",
         "CLOSED": "Closed"
       }
+    },
+    "pie_series": {
+      "data": {
+        "on_time": "On Time (Processed)",
+        "overdue_closed": "Overdue (Processed)",
+        "unexpired": "Unexpired (Unprocessed)",
+        "overdue_unprocessed": "Overdue (Unprocessed)"
+      }
+    },
+    "document_type": {
+      "INCOMING_DOCUMENT": "Incoming document",
+      "OUTGOING_DOCUMENT": "Outgoing document"
     },
     "table": {
       "columns": {
