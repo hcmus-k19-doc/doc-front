@@ -3,6 +3,8 @@ import { REACT_APP_DOC_MAIN_SERVICE_URL } from 'config/constant';
 import {
   DepartmentDto,
   DepartmentSearchCriteria,
+  DistributionOrganizationDto,
+  DistributionOrganizationSearchCriteria,
   DocPaginationDto,
   DocumentTypeDto,
   DocumentTypeSearchCriteria,
@@ -115,6 +117,34 @@ async function isUserAlreadyTruongPhongOfAnotherDepartment(userId: number, depar
   return data;
 }
 
+async function searchDistributionOrganizations(
+  searchCriteria: Partial<DistributionOrganizationSearchCriteria>,
+  page: number,
+  pageSize: number
+) {
+  const { data } = await axios.post<DocPaginationDto<DistributionOrganizationDto>>(
+    `${ADMIN_URL}/search/distribution-organizations`,
+    searchCriteria,
+    {
+      params: {
+        page: page - 1,
+        pageSize,
+      },
+    }
+  );
+  return data;
+}
+
+async function saveDistributionOrganization(
+  distributionOrganization: Partial<DistributionOrganizationDto>
+) {
+  const { data } = await axios.post<number>(
+    `${ADMIN_URL}/distribution-organizations`,
+    distributionOrganization
+  );
+  return data;
+}
+
 const AdminService = {
   searchUsers,
   getSelectionDepartments,
@@ -129,6 +159,8 @@ const AdminService = {
   deleteDepartmentsByIds,
   isUserAlreadyTruongPhongOfAnotherDepartment,
   resetUserPassword,
+  searchDistributionOrganizations,
+  saveDistributionOrganization,
 };
 
 export default AdminService;

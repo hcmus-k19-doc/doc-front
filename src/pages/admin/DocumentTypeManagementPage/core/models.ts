@@ -12,8 +12,3 @@ export interface DocumentTypeTableDataType {
   totalElements: number;
   payload: DocumentTypeTableRowDataType[];
 }
-
-export interface FooterProps {
-  selectedDocumentTypes: number[];
-  setSelectedDocumentTypes: (users: number[]) => void;
-}

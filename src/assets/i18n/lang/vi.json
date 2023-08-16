@@ -42,6 +42,7 @@
         "users": "Người dùng",
         "document_types": "Loại văn bản",
         "departments": "Phòng ban",
+        "distribution_organizations": "Cơ quan ban hành",
         "calendar": "Lịch",
         "report": "Báo cáo",
         "statistics": "Thống kê"
@@ -837,6 +838,32 @@
     "button": {
       "add": "Thêm phòng ban",
       "delete": "Xóa phòng ban"
+    }
+  },
+  "distribution_organizations_management": {
+    "table": {
+      "column": {
+        "order": "STT",
+        "name": "Tên cơ quan ban hành",
+        "symbol": "Ký hiệu",
+        "created_by": "Người tạo"
+      }
+    },
+    "distribution_organizations": {
+      "detail": {
+        "title": "Chi tiết cơ quan ban hành",
+        "id": "ID",
+        "name": "Tên cơ quan ban hành",
+        "name_required": "Hãy nhập tên cơ quan ban hành",
+        "symbol": "Ký hiệu",
+        "symbol_required": "Hãy nhập ký hiệu"
+      },
+      "create_distribution_organizations_success": "Tạo cơ quan ban hành thành công",
+      "update_distribution_organizations_success": "Cập nhật cơ quan ban hành thành công",
+      "error": "Đã có lỗi xảy ra, vui lòng thử lại"
+    },
+    "button": {
+      "add": "Thêm cơ quan ban hành"
     }
   },
   "statistics": {
