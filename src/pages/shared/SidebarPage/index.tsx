@@ -27,6 +27,9 @@ const SidebarPage: React.FC<MenuProps> = () => {
   const { currentUser } = useAuth();
   const DocumentTypeManagementPage = lazy(() => import('pages/admin/DocumentTypeManagementPage'));
   const DepartmentManagementPage = lazy(() => import('pages/admin/DepartmentManagementPage'));
+  const DistributionOrganizationManagementPage = lazy(
+    () => import('pages/admin/DistributionOrganizationManagementPage')
+  );
   const CalendarPage = lazy(() => import('pages/shared/CalendarPage'));
 
   const getRoutes = () => {
@@ -129,6 +132,14 @@ const SidebarPage: React.FC<MenuProps> = () => {
               element={
                 <DocSuspenseComponent>
                   <DepartmentManagementPage />
+                </DocSuspenseComponent>
+              }
+            />
+            <Route
+              path='/distribution_organizations'
+              element={
+                <DocSuspenseComponent>
+                  <DistributionOrganizationManagementPage />
                 </DocSuspenseComponent>
               }
             />

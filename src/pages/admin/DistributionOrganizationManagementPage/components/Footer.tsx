@@ -5,23 +5,25 @@ import { Button, Pagination, Space } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import useModal from 'antd/es/modal/useModal';
 import { t } from 'i18next';
-import {
-  useDocumentTypesReq,
-  usePaginationDocumentTypesRes,
-} from 'shared/hooks/DocumentTypesQuery';
 import { useSweetAlert } from 'shared/hooks/SwalAlert';
 
-import DocumentTypeDetailModal from './DocumentTypeDetailModal';
+import {
+  useDistributionOrganizationReq,
+  usePaginationDistributionOrganizations,
+} from '../../../../shared/hooks/DistributionOrganizationsQuery';
+
+import DistributionOrganizationDetailModal from './DistributionOrganizationDetailModal';
 
 export default function Footer() {
-  const [userReqQuery, setUserReqQuery] = useDocumentTypesReq();
-  const { data, refetch, isFetching } = usePaginationDocumentTypesRes();
+  const [distributionOrganizationReqQuery, setDistributionOrganizationReqQuery] =
+    useDistributionOrganizationReq();
+  const { data, refetch, isFetching } = usePaginationDistributionOrganizations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalForm] = useForm();
   const [modal, contextHolder] = useModal();
   const showAlert = useSweetAlert();
   function handleOnChange(page: number, pageSize: number) {
-    setUserReqQuery({ ...userReqQuery, page, pageSize });
+    setDistributionOrganizationReqQuery({ ...distributionOrganizationReqQuery, page, pageSize });
   }
 
   function handleOnOpenModal() {
@@ -41,14 +43,16 @@ export default function Footer() {
       modalForm.submit();
       showAlert({
         icon: 'success',
-        html: t('document_type_management.document_type.create_document_type_success'),
+        html: t(
+          'distribution_organizations_management.distribution_organizations.create_distribution_organizations_success'
+        ),
         showConfirmButton: true,
       });
     } catch (e) {
       console.error(e);
       showAlert({
         icon: 'error',
-        html: t('document_type_management.document_type.error'),
+        html: t('distribution_organizations_management.distribution_organizations.error'),
         showConfirmButton: true,
       });
     }
@@ -66,28 +70,19 @@ export default function Footer() {
         </Button>
 
         <Button type='primary' onClick={handleOnOpenModal} loading={isFetching}>
-          {t('document_type_management.button.add')}
+          {t('distribution_organizations_management.button.add')}
         </Button>
-
-        {/* <Button
-          type='primary'
-          className='danger-button'
-          danger
-          onClick={handleOnClickDeleteUser}
-          disabled={selectedDocumentTypes.length === 0}>
-          {t('document_type_management.button.delete')}
-        </Button> */}
       </Space>
 
       <Pagination
-        current={userReqQuery.page}
+        current={distributionOrganizationReqQuery.page}
         defaultCurrent={1}
         onChange={handleOnChange}
         total={data?.totalElements}
         showTotal={(total) => t('common.pagination.show_total', { total })}
       />
 
-      <DocumentTypeDetailModal
+      <DistributionOrganizationDetailModal
         form={modalForm}
         isModalOpen={isModalOpen}
         handleCancel={handleOnCancelModal}

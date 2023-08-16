@@ -42,6 +42,7 @@
         "users": "Users",
         "document_types": "Document Types",
         "departments": "Departments",
+        "distribution_organizations": "Distribution Organizations",
         "calendar": "Calendar",
         "report": "Report",
         "statistics": "Statistics"
@@ -823,6 +824,32 @@
     "button": {
       "add": "Add Department",
       "delete": "Delete Department"
+    }
+  },
+  "distribution_organizations_management": {
+    "table": {
+      "column": {
+        "order": "Order",
+        "name": "Name",
+        "symbol": "Symbol",
+        "created_by": "Created By"
+      }
+    },
+    "distribution_organizations": {
+      "detail": {
+        "title": "Distribution Organization Detail",
+        "id": "ID",
+        "name": "Name",
+        "name_required": "Please enter the name",
+        "symbol": "Symbol",
+        "symbol_required": "Please enter the symbol"
+      },
+      "create_distribution_organizations_success": "Create distribution organization successfully",
+      "update_distribution_organizations_success": "Update distribution organization successfully",
+      "error": "An error occurred, please try again"
+    },
+    "button": {
+      "add": "Add Distribution Organization"
     }
   },
   "statistics": {

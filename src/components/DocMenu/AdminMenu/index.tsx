@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { EditOutlined, FileTextOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import {
+  BankOutlined,
+  EditOutlined,
+  FileTextOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { t } from 'i18next';
 import { globalNavigate } from 'utils/RoutingUtils';
@@ -8,45 +13,15 @@ import { globalNavigate } from 'utils/RoutingUtils';
 import '../menu.css';
 
 const AdminMenu = () => {
-  const [openKey, setOpenKey] = useState('docin');
-  const [current, setCurrent] = useState('in-list');
-
-  const location = useLocation();
-
-  useEffect(() => {
-    const path = location.pathname.split('/');
-
-    if (location.pathname.includes('/docout')) {
-      handleDocOutMenuKeys(path);
-    } else {
-      handleDocInMenuKeys(path);
-    }
-  }, [location]);
-
-  const handleDocInMenuKeys = (path: string[]) => {
-    setOpenKey('docin');
-    if (!path[2]) {
-      setCurrent('in-list');
-    } else {
-      setCurrent(path[2]);
-    }
-  };
-  // TODO: handle docout menu keys
-  const handleDocOutMenuKeys = (path: string[]) => {
-    setOpenKey('docout');
-    if (!path[2]) {
-      setCurrent('outList');
-    } else {
-      setCurrent(path[2]);
-    }
-  };
+  const [openKey, setOpenKey] = useState<string[]>(['admin-management']);
+  const [current, setCurrent] = useState<string>('users');
 
   const onSelect = ({ key }: { key: string }) => {
     setCurrent(key);
   };
 
   const onOpenChange = (keys: string[]) => {
-    setOpenKey(keys[1]);
+    setOpenKey(keys);
   };
 
   const adminMenuItems: MenuProps['items'] = [
@@ -80,25 +55,34 @@ const AdminMenu = () => {
             globalNavigate('/main/departments');
           },
         },
+        {
+          key: 'distribution_organizations',
+          label: t('main_page.menu.items.distribution_organizations'),
+          icon: <BankOutlined />,
+          onClick: () => {
+            globalNavigate('/main/distribution_organizations');
+          },
+        },
       ],
     },
   ];
 
   const adminMenuProps: MenuProps = {
     mode: 'inline',
-    defaultSelectedKeys: ['in-list'],
-    defaultOpenKeys: ['docin'],
+    defaultSelectedKeys: ['users'],
+    defaultOpenKeys: ['admin-management'],
     items: adminMenuItems,
   };
 
   return (
     <Menu
       mode={adminMenuProps.mode}
-      openKeys={[openKey]}
+      openKeys={openKey}
       selectedKeys={[current]}
       onSelect={onSelect}
       onOpenChange={onOpenChange}
       items={adminMenuProps.items}
+      defaultOpenKeys={adminMenuProps.defaultOpenKeys}
     />
   );
 };
