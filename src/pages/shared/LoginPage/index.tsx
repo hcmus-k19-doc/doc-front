@@ -112,9 +112,11 @@ const LoginPage: React.FC = () => {
                   prefix: <LockOutlined className='prefixIcon' />,
                 }}
                 placeholder={t(`${I18N_PREFIX}.password.placeholder`).toString()}
-                rules={DocFormValidators.PasswordValidators(
-                  `${t('login.password.invalid_message')}`
-                )}
+                rules={[
+                  DocFormValidators.NoneBlankOrWhiteSpaceValidator(
+                    `${t('user.password.required')}`
+                  ),
+                ]}
               />
               <div>
                 <a className='forgot-password' onClick={(e) => onForgotPasswordClick(e)}>

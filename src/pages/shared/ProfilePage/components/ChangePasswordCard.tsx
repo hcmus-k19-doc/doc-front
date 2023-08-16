@@ -60,7 +60,9 @@ export default function ChangePasswordCard() {
         <Form.Item
           label={t('user.detail.old_password')}
           name='oldPassword'
-          rules={DocFormValidators.PasswordValidators()}>
+          rules={[
+            DocFormValidators.NoneBlankOrWhiteSpaceValidator(`${t('user.password.required')}`),
+          ]}>
           <Input.Password />
         </Form.Item>
         <Form.Item

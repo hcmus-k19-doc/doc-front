@@ -82,7 +82,7 @@ const ChangePasswordPage: React.FC = () => {
   return (
     <div className='login-screen' style={bgStyle}>
       <div style={contentStyle} className='flex items-center justify-center content'>
-        <Card className='flex items-center justify-center' style={{ height: '70vh' }}>
+        <Card className='flex items-center justify-center' style={{ height: 'fit-content' }}>
           <ProConfigProvider hashed={false}>
             <div className='flex items-center justify-center'>
               <img src={logoHcmus} alt='logo-doc' className='logo mr-10' />
@@ -125,9 +125,11 @@ const ChangePasswordPage: React.FC = () => {
                   prefix: <LockOutlined className='prefixIcon' />,
                 }}
                 placeholder={t('user.detail.old_password').toString()}
-                rules={DocFormValidators.PasswordValidators(
-                  `${t('login.password.invalid_message')}`
-                )}
+                rules={[
+                  DocFormValidators.NoneBlankOrWhiteSpaceValidator(
+                    `${t('user.password.required')}`
+                  ),
+                ]}
               />
               <ProFormText.Password
                 name='newPassword'
@@ -138,9 +140,10 @@ const ChangePasswordPage: React.FC = () => {
                   prefix: <LockOutlined className='prefixIcon' />,
                 }}
                 dependencies={['oldPassword']}
+                validateFirst
                 placeholder={t('user.detail.new_password').toString()}
                 rules={[
-                  ...DocFormValidators.PasswordValidators(`${t('login.password.invalid_message')}`),
+                  ...DocFormValidators.PasswordValidators(),
                   ({ getFieldValue }: any) => ({
                     validator(_, value: any) {
                       if (!value || getFieldValue('oldPassword') !== value) {
@@ -165,7 +168,7 @@ const ChangePasswordPage: React.FC = () => {
                 placeholder={t('user.detail.confirm_password').toString()}
                 validateFirst
                 rules={[
-                  ...DocFormValidators.PasswordValidators(`${t('login.password.invalid_message')}`),
+                  ...DocFormValidators.PasswordValidators(),
                   ({ getFieldValue }: any) => ({
                     validator(_, value: any) {
                       if (!value || getFieldValue('newPassword') === value) {

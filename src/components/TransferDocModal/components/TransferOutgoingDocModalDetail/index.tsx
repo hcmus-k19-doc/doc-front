@@ -249,6 +249,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
     // doi voi outgoing document => van thu khong duoc rut lai van ban
     // neu cap tren chua xu ly => co the rut lai
     if (
+      docId &&
       currentUser?.role !== DocSystemRoleEnum.VAN_THU &&
       transferredDoc?.isDocTransferredByNextUserInFlow === false &&
       !transferredDoc?.isDocCollaborator
@@ -267,6 +268,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
     // doi voi outgoing document => chuyen vien khong duoc tra lai van ban
     // neu ban chua xu ly => co the tra lai
     if (
+      docId &&
       currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
       transferredDoc?.isDocTransferred === false &&
       !transferredDoc?.isDocCollaborator
@@ -284,7 +286,7 @@ const TransferOutgoingDocModalDetail: React.FC<TransferModalDetailProps> = ({
     }
     buttons.push(
       <Button key='ok' type='primary' onClick={handleClose} loading={isLoading}>
-        OK
+        {t('transfer_modal.button.close_modal')}
       </Button>
     );
     return buttons;
