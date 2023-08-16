@@ -223,7 +223,7 @@
     "not_found": "Incorrect login information",
     "password": {
       "incorrect": "Incorrect login information",
-      "invalid": "Password must be between 6 and 20 characters, including at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+      "invalid": "Password must be between 6 and 20 characters, including at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character and not contain spaces",
       "required": "Please enter your password",
       "need_changed": "Please change your password to continue"
     }
