@@ -250,6 +250,7 @@ const TransferDocModalDetail: React.FC<TransferModalDetailProps> = ({
     // doi voi incoming document => chuyen vien khong duoc rut lai van ban
     // neu cap tren chua xu ly => co the rut lai
     if (
+      docId &&
       currentUser?.role !== DocSystemRoleEnum.CHUYEN_VIEN &&
       transferredDoc?.isDocTransferredByNextUserInFlow === false &&
       !transferredDoc?.isDocCollaborator
