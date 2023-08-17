@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import {
   AutoComplete,
   Checkbox,
@@ -63,7 +64,7 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
   const [selectedAssignee, setSelectedAssignee] = useState();
   const setManagerTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
-
+  const { docId } = useParams();
   if (!isDocCollaborator) {
     managers?.map((manager) => {
       if (manager.value === currentUser?.id) {
@@ -144,12 +145,15 @@ const ManagerScreenComponent: React.FC<TransferDocScreenProps> = ({
           .map((item: IncomingDocumentDto | OutgoingDocumentGetDto) => {
             return (
               <React.Fragment key={item.id}>
-                <Row className='mt-3 mb-3'>
-                  <Col span='6'>
-                    <Text strong>{t(i18n_ordinal_number)}</Text>
-                  </Col>
-                  <Col span='18'>{t(i18n_document_number, { id: item.ordinalNumber })}</Col>
-                </Row>
+                {!docId && (
+                  <Row className='mt-3 mb-3'>
+                    <Col span='6'>
+                      <Text strong>{t(i18n_ordinal_number)}</Text>
+                    </Col>
+                    <Col span='18'>{t(i18n_document_number, { id: item.ordinalNumber })}</Col>
+                  </Row>
+                )}
+
                 <Row className='mt-3 mb-3'>
                   <Col span='6'>
                     <Text strong>{t(i18n_document)}</Text>

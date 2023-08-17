@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { Checkbox, Col, DatePicker, Divider, Form, Row, Select, Space, Typography } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { RangePickerProps } from 'antd/es/date-picker';
@@ -47,7 +48,7 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
   const [selectedAssignee, setSelectedAssignee] = useState();
   const setSecretaryTransferQuery = useTransferQuerySetter();
   const [isInfiniteProcessingTime, setIsInfiniteProcessingTime] = React.useState(false);
-
+  const { docId } = useParams();
   if (!isDocCollaborator) {
     secretaries?.map((secretarie) => {
       if (secretarie.value === currentUser?.id) {
@@ -127,12 +128,15 @@ const SecretaryScreenComponent: React.FC<TransferDocScreenProps> = ({
           .map((item: IncomingDocumentDto | OutgoingDocumentGetDto) => {
             return (
               <React.Fragment key={item.id}>
-                <Row className='mt-3 mb-3'>
-                  <Col span='6'>
-                    <Text strong>{t(i18n_ordinal_number)}</Text>
-                  </Col>
-                  <Col span='18'>{t(i18n_document_number, { id: item.ordinalNumber })}</Col>
-                </Row>
+                {!docId && (
+                  <Row className='mt-3 mb-3'>
+                    <Col span='6'>
+                      <Text strong>{t(i18n_ordinal_number)}</Text>
+                    </Col>
+                    <Col span='18'>{t(i18n_document_number, { id: item.ordinalNumber })}</Col>
+                  </Row>
+                )}
+
                 <Row className='mt-3 mb-3'>
                   <Col span='6'>
                     <Text strong>{t(i18n_document)}</Text>
