@@ -35,7 +35,6 @@ const ChangePasswordPage: React.FC = () => {
   const alert = useSweetAlert();
 
   const handleOnFinish = async (values: Record<string, string>) => {
-    console.log(values);
     try {
       await securityService.updatePassword(
         values['username'],
